@@ -7,6 +7,7 @@ import org.gradle.api.provider.SetProperty
 import org.gradle.api.tasks.CacheableTask
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.InputFile
+import org.gradle.api.tasks.OutputFile
 import org.gradle.api.tasks.PathSensitive
 import org.gradle.api.tasks.PathSensitivity.RELATIVE
 import org.gradle.api.tasks.TaskAction
@@ -27,11 +28,15 @@ abstract class PackageAarTask : DefaultTask() {
   @get:Input
   abstract val packagesToRemove: SetProperty<String>
 
+  @get:OutputFile
+  abstract val outputAar: RegularFileProperty
+
   @TaskAction
   fun packageAar() {
     println("inputAar = ${inputAar.get().asFile.absolutePath}")
     println("prefix = ${prefix.get()}")
     println("packagesToShade = ${packagesToShade.get()}")
     println("packagesToRemove = ${packagesToRemove.get()}")
+    println("outputAar = ${outputAar.get().asFile.absolutePath}")
   }
 }

@@ -1,5 +1,6 @@
 [versions]
 agp = "7.3.1"
+agp-tools = "30.3.1"
 kotlin = "1.8.0"
 
 [plugins]
@@ -7,3 +8,7 @@ kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 
 [libraries]
 agp-api = { module = "com.android.tools.build:gradle-api", version.ref = "agp" }
+agp-layoutlib = { module = "com.android.tools.layoutlib:layoutlib-api", version.ref = "agp-tools" }
+agp-tools-common = { module = "com.android.tools:common", version.ref = "agp-tools" }
+agp-tools-manifestmerger = { module = "com.android.tools.build:manifest-merger", version.ref = "agp-tools" }
+agp-tools-sdk = { module = "com.android.tools:sdk-common", version.ref = "agp-tools" }

@@ -14,6 +14,7 @@ version = "1.0-SNAPSHOT"
 dependencies {
   implementation(platform(kotlin("bom")))
   implementation(libs.agp.api)
+  implementation(libs.agp.tools.common)
 
   testImplementation(kotlin("test"))
 }
