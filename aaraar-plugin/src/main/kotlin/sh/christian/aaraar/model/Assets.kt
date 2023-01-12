@@ -8,6 +8,10 @@ private constructor(
 ) {
   fun isEmpty(): Boolean = files.isEmpty()
 
+  operator fun plus(other: Assets): Assets {
+    return Assets(files + other.files)
+  }
+
   companion object {
     fun from(path: Path): Assets? {
       return CollapsedFileTree.from(path)?.let { files -> Assets(files) }

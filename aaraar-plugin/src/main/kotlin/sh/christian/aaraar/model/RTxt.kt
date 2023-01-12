@@ -9,6 +9,10 @@ class RTxt
 private constructor(
   private val symbolTable: SymbolTable,
 ) {
+  operator fun plus(other: RTxt): RTxt {
+    return RTxt(symbolTable.merge(other.symbolTable))
+  }
+
   companion object {
     fun from(path: Path, packageName: String): RTxt? {
       if (!Files.isRegularFile(path)) return null

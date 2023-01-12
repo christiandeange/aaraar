@@ -8,6 +8,10 @@ private constructor(
 ) {
   fun isEmpty(): Boolean = files.isEmpty()
 
+  operator fun plus(other: Jni): Jni {
+    return Jni(files + other.files)
+  }
+
   companion object {
     fun from(path: Path): Jni? {
       return CollapsedFileTree.from(path)?.let { files -> Jni(files) }

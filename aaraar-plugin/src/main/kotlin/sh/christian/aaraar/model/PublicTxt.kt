@@ -9,6 +9,10 @@ class PublicTxt
 private constructor(
   private val symbolTable: SymbolTable,
 ) {
+  operator fun plus(other: PublicTxt): PublicTxt {
+    return PublicTxt(symbolTable.merge(other.symbolTable))
+  }
+
   companion object {
     fun from(path: Path, packageName: String): PublicTxt? {
       if (!Files.isRegularFile(path)) return null

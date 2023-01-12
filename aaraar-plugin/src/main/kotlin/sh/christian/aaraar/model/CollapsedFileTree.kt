@@ -9,6 +9,10 @@ class CollapsedFileTree(
 ) {
   fun isEmpty(): Boolean = indexedFiles.isEmpty()
 
+  operator fun plus(other: CollapsedFileTree): CollapsedFileTree {
+    return CollapsedFileTree(indexedFiles + other.indexedFiles)
+  }
+
   companion object {
     fun from(path: Path): CollapsedFileTree? {
       if (!Files.exists(path)) return null

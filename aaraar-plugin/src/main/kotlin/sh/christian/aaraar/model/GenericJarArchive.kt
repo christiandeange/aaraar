@@ -9,6 +9,10 @@ class GenericJarArchive
 private constructor(
   private val entries: Map<JarEntry, ByteArray>,
 ) {
+  operator fun plus(other: GenericJarArchive): GenericJarArchive {
+    return GenericJarArchive(entries + other.entries)
+  }
+
   companion object {
     fun from(path: Path): GenericJarArchive? {
       if (!Files.isRegularFile(path)) return null
