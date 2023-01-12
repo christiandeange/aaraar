@@ -14,6 +14,8 @@ import org.gradle.api.tasks.PathSensitive
 import org.gradle.api.tasks.PathSensitivity.RELATIVE
 import org.gradle.api.tasks.TaskAction
 import sh.christian.aaraar.model.ArtifactArchive
+import sh.christian.aaraar.utils.deleteIfExists
+import java.nio.file.Path
 
 @CacheableTask
 abstract class PackageAarTask : DefaultTask() {
@@ -40,21 +42,20 @@ abstract class PackageAarTask : DefaultTask() {
 
   @TaskAction
   fun packageAar() {
-    println("inputAar = ${inputAar.get().asFile.absolutePath}")
-    println("prefix = ${prefix.get()}")
-    println("packagesToShade = ${packagesToShade.get()}")
-    println("packagesToRemove = ${packagesToRemove.get()}")
-    println("outputAar = ${outputAar.get().asFile.absolutePath}")
-    println()
+    val inputAar = ArtifactArchive.from(inputAar.getPath())
 
-    println("Main AAR: ${ArtifactArchive.from(inputAar.get().asFile.toPath())}")
-    embedClasspath.asFileTree.files.forEach {
-      val path = it.toPath()
+    val finalAar = embedClasspath.asFileTree.files
+      .asSequence()
+      .map { ArtifactArchive.from(it.toPath()) }
+      .fold(initial = inputAar, ArtifactArchive::plus)
 
-      val archive = ArtifactArchive.from(path)
-      println()
-      println("    Path: $path")
-      println(" Archive: $archive")
-    }
+    // TODO Shading
+
+    val outputPath = outputAar.getPath().deleteIfExists()
+    finalAar.writeTo(path = outputPath)
+  }
+
+  private fun RegularFileProperty.getPath(): Path {
+    return get().asFile.toPath()
   }
 }

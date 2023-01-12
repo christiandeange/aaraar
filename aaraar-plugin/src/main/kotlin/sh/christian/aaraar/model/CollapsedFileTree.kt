@@ -1,5 +1,6 @@
 package sh.christian.aaraar.model
 
+import sh.christian.aaraar.utils.mkdirs
 import java.nio.file.Files
 import java.nio.file.Path
 import kotlin.streams.asSequence
@@ -11,6 +12,12 @@ class CollapsedFileTree(
 
   operator fun plus(other: CollapsedFileTree): CollapsedFileTree {
     return CollapsedFileTree(indexedFiles + other.indexedFiles)
+  }
+
+  fun writeTo(path: Path) {
+    indexedFiles.forEach { (subpath, bytes) ->
+      Files.write(path.resolve(subpath).mkdirs(), bytes)
+    }
   }
 
   companion object {

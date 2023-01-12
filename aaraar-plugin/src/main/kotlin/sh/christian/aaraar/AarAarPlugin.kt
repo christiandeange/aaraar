@@ -42,7 +42,8 @@ class AarAarPlugin : Plugin<Project> {
         }
 
         val aar = variant.artifacts.get(SingleArtifact.AAR)
-        val outFile = project.buildDir / FD_OUTPUTS / "aaraar-${variant.name}.aar"
+        val fileName = "${project.name}-${variant.name}.aar"
+        val outFile = project.buildDir / FD_OUTPUTS / "aaraar" / fileName
 
         project.tasks.register<PackageAarTask>(variant.taskName("package", "Aar")) {
           inputAar.set(aar)

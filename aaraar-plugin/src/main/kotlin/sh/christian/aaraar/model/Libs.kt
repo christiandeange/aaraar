@@ -12,6 +12,10 @@ private constructor(
     return Libs(files + other.files)
   }
 
+  fun writeTo(path: Path) {
+    files.writeTo(path)
+  }
+
   companion object {
     fun from(path: Path): Libs {
       return CollapsedFileTree.from(path)

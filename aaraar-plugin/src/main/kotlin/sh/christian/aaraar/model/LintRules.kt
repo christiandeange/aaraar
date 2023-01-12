@@ -10,6 +10,10 @@ private constructor(
     return LintRules(archive + other.archive)
   }
 
+  fun writeTo(path: Path) {
+    archive.writeTo(path)
+  }
+
   companion object {
     fun from(path: Path): LintRules {
       return GenericJarArchive.from(path)

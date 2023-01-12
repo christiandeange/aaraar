@@ -12,6 +12,10 @@ private constructor(
     return Jni(files + other.files)
   }
 
+  fun writeTo(path: Path) {
+    files.writeTo(path)
+  }
+
   companion object {
     fun from(path: Path): Jni {
       return CollapsedFileTree.from(path)

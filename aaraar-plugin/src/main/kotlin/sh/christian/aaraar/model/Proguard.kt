@@ -12,6 +12,10 @@ private constructor(
     return Proguard(lines + other.lines)
   }
 
+  fun writeTo(path: Path) {
+    Files.write(path, lines)
+  }
+
   companion object {
     fun from(path: Path): Proguard {
       if (!Files.isRegularFile(path)) return Proguard(lines = emptyList())

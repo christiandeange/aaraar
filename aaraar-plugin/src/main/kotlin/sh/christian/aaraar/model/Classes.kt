@@ -10,6 +10,10 @@ private constructor(
     return Classes(archive + other.archive)
   }
 
+  fun writeTo(path: Path) {
+    archive.writeTo(path)
+  }
+
   companion object {
     fun from(path: Path): Classes {
       return GenericJarArchive.from(path)

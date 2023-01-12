@@ -13,6 +13,10 @@ private constructor(
     return RTxt(symbolTable.merge(other.symbolTable))
   }
 
+  fun writeTo(path: Path) {
+    SymbolIo.writeForAar(symbolTable, path)
+  }
+
   companion object {
     fun from(path: Path, packageName: String): RTxt {
       if (!Files.isRegularFile(path)) return RTxt(symbolTable = SymbolTable.builder().build())
