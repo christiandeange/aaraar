@@ -10,12 +10,12 @@ android {
 
   defaultConfig {
     minSdk 24
+    consumerProguardFiles 'consumer-rules.pro'
   }
 
   buildTypes {
     release {
       minifyEnabled false
-      consumerProguardFiles 'consumer-rules.pro'
     }
   }
 
@@ -30,6 +30,7 @@ android {
 }
 
 dependencies {
+  embed 'androidx.core:core-ktx:1.9.0'
   implementation 'androidx.core:core-ktx:1.9.0'
   implementation 'androidx.appcompat:appcompat:1.6.0'
   implementation 'com.google.android.material:material:1.7.0'

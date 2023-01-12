@@ -16,15 +16,37 @@ class AarAarPlugin : Plugin<Project> {
 
     val extension = project.extensions.create("aaraar", AarAarExtension::class.java)
 
+    val embed = project.configurations.create("embed") {
+      isTransitive = false
+      isCanBeConsumed = true
+      isCanBeResolved = false
+    }
+
     project.pluginManager.withPlugin("com.android.library") {
       val androidComponents = project.extensions.getByType<LibraryAndroidComponentsExtension>()
 
       androidComponents.onVariants { variant ->
+        val variantEmbed = project.configurations.create("${variant.name}Embed") {
+          isTransitive = false
+          isCanBeConsumed = true
+          isCanBeResolved = false
+        }
+
+        val variantEmbedClasspath = project.configurations.create("${variant.name}EmbedClasspath") {
+          extendsFrom(embed)
+          extendsFrom(variantEmbed)
+
+          isTransitive = true
+          isCanBeConsumed = false
+          isCanBeResolved = true
+        }
+
         val aar = variant.artifacts.get(SingleArtifact.AAR)
         val outFile = project.buildDir / FD_OUTPUTS / "aaraar-${variant.name}.aar"
 
         project.tasks.register<PackageAarTask>(variant.taskName("package", "Aar")) {
           inputAar.set(aar)
+          embedClasspath.from(variantEmbedClasspath)
           prefix.set(extension.prefix)
           packagesToShade.set(extension.packagesToShade)
           packagesToRemove.set(extension.packagesToRemove)

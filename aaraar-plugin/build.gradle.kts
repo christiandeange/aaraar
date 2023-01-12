@@ -15,6 +15,7 @@ dependencies {
   implementation(platform(kotlin("bom")))
   implementation(libs.agp.api)
   implementation(libs.agp.tools.common)
+  implementation(libs.agp.tools.sdk)
 
   testImplementation(kotlin("test"))
 }
