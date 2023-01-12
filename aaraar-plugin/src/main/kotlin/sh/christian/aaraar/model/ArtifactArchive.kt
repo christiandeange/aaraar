@@ -157,7 +157,7 @@ sealed class ArtifactArchive {
           path.toAbsolutePath().openJar { aarRoot ->
             val androidManifest = AndroidManifest.from(aarRoot.android_manifest)
             val classes = Classes.from(aarRoot.classes_jar)
-            val resources = Resources.from(aarRoot.res)
+            val resources = Resources.from(aarRoot.res, androidManifest.packageName, androidManifest.minSdk)
             val rTxt = RTxt.from(aarRoot.r_txt, androidManifest.packageName)
             val publicTxt = PublicTxt.from(aarRoot.public_txt, androidManifest.packageName)
             val assets = Assets.from(aarRoot.assets)

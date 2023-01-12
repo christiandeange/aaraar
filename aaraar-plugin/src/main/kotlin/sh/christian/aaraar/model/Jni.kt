@@ -4,7 +4,7 @@ import java.nio.file.Path
 
 class Jni
 private constructor(
-  private val files: CollapsedFileTree,
+  private val files: FileSet,
 ) {
   fun isEmpty(): Boolean = files.isEmpty()
 
@@ -18,9 +18,9 @@ private constructor(
 
   companion object {
     fun from(path: Path): Jni {
-      return CollapsedFileTree.from(path)
+      return FileSet.fromFileTree(path)
         ?.let { files -> Jni(files) }
-        ?: Jni(files = CollapsedFileTree.EMPTY)
+        ?: Jni(files = FileSet.EMPTY)
     }
   }
 }

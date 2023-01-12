@@ -20,7 +20,7 @@ internal operator fun FileSystem.div(path: String): Path {
 }
 
 internal fun Path.mkdirs(): Path {
-  return apply { Files.createDirectories(parent) }
+  return apply { parent?.let(Files::createDirectories) }
 }
 
 internal fun Path.deleteIfExists(): Path {

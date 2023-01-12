@@ -36,13 +36,12 @@ private constructor(
 
     val inputJarFile = inputJar.toFile()
     val outputJarFile = outputJar.toFile()
-    val transformer = JarTransformer(outputJarFile, processor)
     val classpath = ClassPath(
-      inputJarFile.parentFile,
-      arrayOf(inputJarFile.relativeTo(inputJarFile.parentFile))
+      /* root */ inputJarFile.parentFile,
+      /* entries */ arrayOf(inputJarFile.relativeTo(inputJarFile.parentFile))
     )
 
-    transformer.transform(classpath)
+    JarTransformer(outputJarFile, processor).transform(classpath)
 
     return from(outputJar)
   }

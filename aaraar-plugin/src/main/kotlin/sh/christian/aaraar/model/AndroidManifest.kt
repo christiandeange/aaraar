@@ -10,6 +10,7 @@ import com.android.utils.StdLogger.Level
 import com.android.utils.childrenIterator
 import org.w3c.dom.Document
 import org.xml.sax.InputSource
+import sh.christian.aaraar.utils.writeTo
 import java.io.*
 import java.nio.file.Files
 import java.nio.file.Path
@@ -33,6 +34,17 @@ private constructor(
       .textContent
   }
 
+  val minSdk: Int by lazy {
+    document.childrenIterator().asSequence()
+      .single { it.nodeName == "manifest" }
+      .childrenIterator().asSequence()
+      .single { it.nodeName == "uses-sdk" }
+      .attributes
+      .getNamedItem("android:minSdkVersion")
+      .textContent
+      .toInt()
+  }
+
   operator fun plus(other: AndroidManifest): AndroidManifest {
     val mergeReport = newMerger(asTempFile(), StdLogger(Level.WARNING), APPLICATION)
       .withFeatures(Feature.NO_PLACEHOLDER_REPLACEMENT)
@@ -54,24 +66,13 @@ private constructor(
   }
 
   fun writeTo(path: Path) {
-    writeDocumentTo(OutputStreamWriter(Files.newOutputStream(path)))
+    document.writeTo(OutputStreamWriter(Files.newOutputStream(path)))
   }
 
   private fun asTempFile(): File {
     val file = Files.createTempFile("AndroidManifest", ".xml").toFile()
-    writeDocumentTo(FileWriter(file))
+    document.writeTo(FileWriter(file))
     return file
-  }
-
-  private fun writeDocumentTo(writer: Writer) {
-    writer.use {
-      val source = DOMSource(document)
-      val result = StreamResult(writer)
-
-      val transformerFactory: TransformerFactory = TransformerFactory.newInstance()
-      val transformer: Transformer = transformerFactory.newTransformer()
-      transformer.transform(source, result)
-    }
   }
 
   companion object {
