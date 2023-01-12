@@ -27,7 +27,7 @@ private constructor(
       }
     }
 
-    Files.copy(tempClassesJar, path)
+    Files.move(tempClassesJar, path)
   }
 
   companion object {
