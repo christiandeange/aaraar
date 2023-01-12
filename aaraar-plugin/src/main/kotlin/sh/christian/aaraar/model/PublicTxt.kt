@@ -14,8 +14,8 @@ private constructor(
   }
 
   companion object {
-    fun from(path: Path, packageName: String): PublicTxt? {
-      if (!Files.isRegularFile(path)) return null
+    fun from(path: Path, packageName: String): PublicTxt {
+      if (!Files.isRegularFile(path)) return PublicTxt(symbolTable = SymbolTable.builder().build())
 
       val symbolTable = SymbolIo.readFromPublicTxtFile(
         /* inputStream */ Files.newInputStream(path),

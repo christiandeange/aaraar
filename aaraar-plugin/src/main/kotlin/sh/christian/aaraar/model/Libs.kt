@@ -13,8 +13,10 @@ private constructor(
   }
 
   companion object {
-    fun from(path: Path): Libs? {
-      return CollapsedFileTree.from(path)?.let { files -> Libs(files) }
+    fun from(path: Path): Libs {
+      return CollapsedFileTree.from(path)
+        ?.let { files -> Libs(files) }
+        ?: Libs(files = CollapsedFileTree.EMPTY)
     }
   }
 }

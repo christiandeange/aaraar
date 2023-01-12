@@ -8,15 +8,15 @@ import java.nio.file.Path
 sealed class ArtifactArchive {
   class AarArchive(
     val androidManifest: AndroidManifest,
-    val classes: Classes?,
-    val resources: Resources?,
-    val rTxt: RTxt?,
-    val publicTxt: PublicTxt?,
-    val assets: Assets?,
-    val libs: Libs?,
-    val jni: Jni?,
-    val proguard: Proguard?,
-    val lintRules: LintRules?,
+    val classes: Classes,
+    val resources: Resources,
+    val rTxt: RTxt,
+    val publicTxt: PublicTxt,
+    val assets: Assets,
+    val libs: Libs,
+    val jni: Jni,
+    val proguard: Proguard,
+    val lintRules: LintRules,
     /**
      * TODO
      * no idea how /prefab folder works, add support for it later.
@@ -35,7 +35,7 @@ sealed class ArtifactArchive {
 
       return when (extension) {
         "jar" -> {
-          val classes = Classes.from(path)!!
+          val classes = Classes.from(path)
           JarArchive(classes)
         }
 

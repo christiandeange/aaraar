@@ -14,6 +14,8 @@ private constructor(
   }
 
   companion object {
+    val NONE = GenericJarArchive(entries = emptyMap())
+
     fun from(path: Path): GenericJarArchive? {
       if (!Files.isRegularFile(path)) return null
 

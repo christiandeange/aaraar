@@ -11,8 +11,10 @@ private constructor(
   }
 
   companion object {
-    fun from(path: Path): Classes? {
-      return GenericJarArchive.from(path)?.let { archive -> Classes(archive) }
+    fun from(path: Path): Classes {
+      return GenericJarArchive.from(path)
+        ?.let { archive -> Classes(archive) }
+        ?: Classes(GenericJarArchive.NONE)
     }
   }
 }

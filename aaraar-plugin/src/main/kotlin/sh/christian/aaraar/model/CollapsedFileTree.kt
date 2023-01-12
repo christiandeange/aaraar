@@ -14,6 +14,8 @@ class CollapsedFileTree(
   }
 
   companion object {
+    val EMPTY = CollapsedFileTree(indexedFiles = emptyMap())
+
     fun from(path: Path): CollapsedFileTree? {
       if (!Files.exists(path)) return null
 

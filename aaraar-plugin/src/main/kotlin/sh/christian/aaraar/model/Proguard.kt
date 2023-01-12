@@ -13,8 +13,8 @@ private constructor(
   }
 
   companion object {
-    fun from(path: Path): Proguard? {
-      if (!Files.isRegularFile(path)) return null
+    fun from(path: Path): Proguard {
+      if (!Files.isRegularFile(path)) return Proguard(lines = emptyList())
 
       val lines = Files.lines(path).toList()
       return Proguard(lines)

@@ -11,8 +11,10 @@ private constructor(
   }
 
   companion object {
-    fun from(path: Path): LintRules? {
-      return GenericJarArchive.from(path)?.let { archive -> LintRules(archive) }
+    fun from(path: Path): LintRules {
+      return GenericJarArchive.from(path)
+        ?.let { archive -> LintRules(archive) }
+        ?: LintRules(GenericJarArchive.NONE)
     }
   }
 }

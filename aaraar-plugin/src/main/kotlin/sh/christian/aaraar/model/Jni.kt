@@ -13,8 +13,10 @@ private constructor(
   }
 
   companion object {
-    fun from(path: Path): Jni? {
-      return CollapsedFileTree.from(path)?.let { files -> Jni(files) }
+    fun from(path: Path): Jni {
+      return CollapsedFileTree.from(path)
+        ?.let { files -> Jni(files) }
+        ?: Jni(files = CollapsedFileTree.EMPTY)
     }
   }
 }
