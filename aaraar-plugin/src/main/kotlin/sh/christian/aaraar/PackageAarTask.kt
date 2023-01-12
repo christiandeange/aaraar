@@ -3,7 +3,7 @@ package sh.christian.aaraar
 import org.gradle.api.DefaultTask
 import org.gradle.api.file.ConfigurableFileCollection
 import org.gradle.api.file.RegularFileProperty
-import org.gradle.api.provider.Property
+import org.gradle.api.provider.MapProperty
 import org.gradle.api.provider.SetProperty
 import org.gradle.api.tasks.CacheableTask
 import org.gradle.api.tasks.Input
@@ -29,10 +29,7 @@ abstract class PackageAarTask : DefaultTask() {
   abstract val embedClasspath: ConfigurableFileCollection
 
   @get:Input
-  abstract val prefix: Property<String>
-
-  @get:Input
-  abstract val packagesToShade: SetProperty<String>
+  abstract val packagesToShade: MapProperty<String, String>
 
   @get:Input
   abstract val packagesToRemove: SetProperty<String>
@@ -44,15 +41,26 @@ abstract class PackageAarTask : DefaultTask() {
   fun packageAar() {
     val inputAar = ArtifactArchive.from(inputAar.getPath())
 
-    val finalAar = embedClasspath.asFileTree.files
+    val mergedArchive = embedClasspath.asFileTree.files
       .asSequence()
       .map { ArtifactArchive.from(it.toPath()) }
       .fold(initial = inputAar, ArtifactArchive::plus)
+      .shaded(
+        packagesToShade = packagesToShade.get(),
+        packagesToRemove = packagesToRemove.get(),
+      )
 
-    // TODO Shading
+    val packagesToShade = packagesToShade.get()
+    val packagesToRemove = packagesToRemove.get()
+
+    val finalArchive = if (packagesToShade.isEmpty() && packagesToRemove.isEmpty()) {
+      mergedArchive
+    } else {
+      mergedArchive.shaded(packagesToShade, packagesToRemove)
+    }
 
     val outputPath = outputAar.getPath().deleteIfExists()
-    finalAar.writeTo(path = outputPath)
+    finalArchive.writeTo(path = outputPath)
   }
 
   private fun RegularFileProperty.getPath(): Path {

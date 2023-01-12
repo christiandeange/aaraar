@@ -4,6 +4,11 @@ import sh.christian.aaraar.utils.*
 import java.nio.file.Path
 
 sealed class ArtifactArchive {
+  abstract fun shaded(
+    packagesToShade: Map<String, String>,
+    packagesToRemove: Set<String>,
+  ): ArtifactArchive
+
   abstract fun writeTo(path: Path)
 
   class AarArchive(
@@ -24,6 +29,24 @@ sealed class ArtifactArchive {
      * https://issuetracker.google.com/issues/64315897
      */
   ) : ArtifactArchive() {
+    override fun shaded(
+      packagesToShade: Map<String, String>,
+      packagesToRemove: Set<String>,
+    ): ArtifactArchive {
+      return AarArchive(
+        androidManifest = androidManifest,
+        classes = classes.shaded(packagesToShade, packagesToRemove),
+        resources = resources,
+        rTxt = rTxt,
+        publicTxt = publicTxt,
+        assets = assets,
+        libs = libs,
+        jni = jni,
+        proguard = proguard,
+        lintRules = lintRules,
+      )
+    }
+
     override fun writeTo(path: Path) {
       path.createJar { outputAar ->
         androidManifest.writeTo(outputAar.android_manifest)
@@ -73,6 +96,13 @@ sealed class ArtifactArchive {
   class JarArchive(
     val classes: Classes,
   ) : ArtifactArchive() {
+    override fun shaded(
+      packagesToShade: Map<String, String>,
+      packagesToRemove: Set<String>,
+    ): ArtifactArchive {
+      return JarArchive(classes.shaded(packagesToShade, packagesToRemove))
+    }
+
     override fun writeTo(path: Path) {
       classes.writeTo(path)
     }

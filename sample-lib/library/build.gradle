@@ -31,11 +31,14 @@ android {
 
 dependencies {
   embed 'androidx.core:core-ktx:1.9.0'
+  embed 'io.reactivex.rxjava3:rxjava:3.1.5'
+
   implementation 'androidx.core:core-ktx:1.9.0'
   implementation 'androidx.appcompat:appcompat:1.6.0'
   implementation 'com.google.android.material:material:1.7.0'
+  implementation 'io.reactivex.rxjava3:rxjava:3.1.5'
 }
 
 aaraar {
-  prefix = "shaded"
+  packagesToShade["io.reactivex.rxjava3.**"] = "shaded.io.reactivex.rxjava3.@1"
 }

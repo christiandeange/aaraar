@@ -17,6 +17,7 @@ dependencies {
   implementation(libs.agp.tools.common)
   implementation(libs.agp.tools.manifestmerger)
   implementation(libs.agp.tools.sdk)
+  implementation(libs.jarjar)
 
   testImplementation(kotlin("test"))
 }

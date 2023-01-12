@@ -48,7 +48,6 @@ class AarAarPlugin : Plugin<Project> {
         project.tasks.register<PackageAarTask>(variant.taskName("package", "Aar")) {
           inputAar.set(aar)
           embedClasspath.from(variantEmbedClasspath)
-          prefix.set(extension.prefix)
           packagesToShade.set(extension.packagesToShade)
           packagesToRemove.set(extension.packagesToRemove)
           outputAar.set(outFile)
