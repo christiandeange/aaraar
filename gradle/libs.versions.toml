@@ -1,7 +1,9 @@
 [versions]
+agp = "7.3.1"
 kotlin = "1.8.0"
 
 [plugins]
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 
 [libraries]
+agp-api = { module = "com.android.tools.build:gradle-api", version.ref = "agp" }

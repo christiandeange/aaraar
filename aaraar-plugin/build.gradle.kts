@@ -11,12 +11,10 @@ plugins {
 group = "sh.christian.aaraar"
 version = "1.0-SNAPSHOT"
 
-repositories {
-  mavenCentral()
-}
-
 dependencies {
   implementation(platform(kotlin("bom")))
+  implementation(libs.agp.api)
+
   testImplementation(kotlin("test"))
 }
 
