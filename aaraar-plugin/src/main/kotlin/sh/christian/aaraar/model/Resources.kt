@@ -24,10 +24,12 @@ private constructor(
   private val files: FileSet,
   private val packageName: String,
   private val minSdk: Int,
-) {
+) : Mergeable<Resources> {
   fun isEmpty(): Boolean = files.isEmpty()
 
-  operator fun plus(other: Resources): Resources {
+  override operator fun plus(other: Resources): Resources = plus(listOf(other))
+
+  override fun plus(others: List<Resources>): Resources {
     fun FileSet.toResourceSet(isFromDependency: Boolean): ResourceSet {
       return ResourceSet(packageName, RES_AUTO, null, false, "").apply {
         this.isFromDependency = isFromDependency
@@ -43,8 +45,10 @@ private constructor(
     val consumer = ResourceMergerConsumer()
 
     ResourceMerger(minSdk).apply {
-      addDataSet(files.toResourceSet(isFromDependency = true))
-      addDataSet(other.files.toResourceSet(isFromDependency = true))
+      addDataSet(files.toResourceSet(isFromDependency = false))
+      others.forEach { other ->
+        addDataSet(other.files.toResourceSet(isFromDependency = true))
+      }
       mergeData(consumer, false)
     }
 

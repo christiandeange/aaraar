@@ -11,21 +11,20 @@ import com.android.utils.childrenIterator
 import org.w3c.dom.Document
 import org.xml.sax.InputSource
 import sh.christian.aaraar.utils.writeTo
-import java.io.*
+import java.io.File
+import java.io.FileWriter
+import java.io.OutputStreamWriter
+import java.io.StringReader
 import java.nio.file.Files
 import java.nio.file.Path
 import javax.xml.parsers.DocumentBuilder
 import javax.xml.parsers.DocumentBuilderFactory
-import javax.xml.transform.Transformer
-import javax.xml.transform.TransformerFactory
-import javax.xml.transform.dom.DOMSource
-import javax.xml.transform.stream.StreamResult
 
 
 class AndroidManifest
 private constructor(
   private val document: Document,
-) {
+) : Mergeable<AndroidManifest> {
   val packageName: String by lazy {
     document.childrenIterator().asSequence()
       .single { it.nodeName == "manifest" }
@@ -45,18 +44,21 @@ private constructor(
       .toInt()
   }
 
-  operator fun plus(other: AndroidManifest): AndroidManifest {
+  override operator fun plus(other: AndroidManifest): AndroidManifest = plus(listOf(other))
+
+  override operator fun plus(others: List<AndroidManifest>): AndroidManifest {
     val mergeReport = newMerger(asTempFile(), StdLogger(Level.WARNING), APPLICATION)
       .withFeatures(Feature.NO_PLACEHOLDER_REPLACEMENT)
-      .addLibraryManifests(other.asTempFile())
+      .apply {
+        others.forEach { other ->
+          addLibraryManifests(other.asTempFile())
+        }
+      }
       .merge()
 
     check(mergeReport.result != MergingReport.Result.ERROR) {
       """
-        Failed to merge manifest.
-        Into: $packageName
-        From: ${other.packageName}
-        Logs: ${mergeReport.reportString}
+        Failed to merge manifest. ${mergeReport.reportString}
 
         ${mergeReport.loggingRecords.joinToString("\n")}
       """.trimIndent()

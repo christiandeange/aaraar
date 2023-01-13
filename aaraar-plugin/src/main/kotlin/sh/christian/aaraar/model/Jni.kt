@@ -5,10 +5,10 @@ import java.nio.file.Path
 class Jni
 private constructor(
   private val files: FileSet,
-) {
+) : Mergeable<Jni> {
   fun isEmpty(): Boolean = files.isEmpty()
 
-  operator fun plus(other: Jni): Jni {
+  override operator fun plus(other: Jni): Jni {
     return Jni(files + other.files)
   }
 

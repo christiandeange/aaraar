@@ -5,10 +5,10 @@ import java.nio.file.Path
 class Assets
 private constructor(
   private val files: FileSet,
-) {
+) : Mergeable<Assets> {
   fun isEmpty(): Boolean = files.isEmpty()
 
-  operator fun plus(other: Assets): Assets {
+  override operator fun plus(other: Assets): Assets {
     return Assets(files + other.files)
   }
 

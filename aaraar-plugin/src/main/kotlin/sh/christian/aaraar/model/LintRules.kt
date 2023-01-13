@@ -5,8 +5,8 @@ import java.nio.file.Path
 class LintRules
 private constructor(
   private val archive: GenericJarArchive,
-) {
-  operator fun plus(other: LintRules): LintRules {
+) : Mergeable<LintRules> {
+  override operator fun plus(other: LintRules): LintRules {
     return LintRules(archive + other.archive)
   }
 

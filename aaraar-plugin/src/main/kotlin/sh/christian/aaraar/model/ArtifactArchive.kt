@@ -1,9 +1,22 @@
 package sh.christian.aaraar.model
 
-import sh.christian.aaraar.utils.*
+import sh.christian.aaraar.utils.android_manifest
+import sh.christian.aaraar.utils.assets
+import sh.christian.aaraar.utils.classes_jar
+import sh.christian.aaraar.utils.createJar
+import sh.christian.aaraar.utils.jni
+import sh.christian.aaraar.utils.libs
+import sh.christian.aaraar.utils.lint_jar
+import sh.christian.aaraar.utils.openJar
+import sh.christian.aaraar.utils.proguard_txt
+import sh.christian.aaraar.utils.public_txt
+import sh.christian.aaraar.utils.r_txt
+import sh.christian.aaraar.utils.res
 import java.nio.file.Path
 
 sealed class ArtifactArchive {
+  abstract val classes: Classes
+
   abstract fun shaded(
     packagesToShade: Map<String, String>,
     packagesToRemove: Set<String>,
@@ -13,7 +26,7 @@ sealed class ArtifactArchive {
 
   class AarArchive(
     val androidManifest: AndroidManifest,
-    val classes: Classes,
+    override val classes: Classes,
     val resources: Resources,
     val rTxt: RTxt,
     val publicTxt: PublicTxt,
@@ -47,6 +60,22 @@ sealed class ArtifactArchive {
       )
     }
 
+    fun mergeWith(others: List<ArtifactArchive>): ArtifactArchive {
+      val aars = others.filterIsInstance<AarArchive>()
+      return AarArchive(
+        androidManifest = androidManifest + aars.map { it.androidManifest },
+        classes = classes + others.map { it.classes },
+        resources = resources + aars.map { it.resources },
+        rTxt = rTxt + aars.map { it.rTxt },
+        publicTxt = publicTxt + aars.map { it.publicTxt },
+        assets = assets + aars.map { it.assets },
+        libs = libs + aars.map { it.libs },
+        jni = jni + aars.map { it.jni },
+        proguard = proguard + aars.map { it.proguard },
+        lintRules = lintRules + aars.map { it.lintRules },
+      )
+    }
+
     override fun writeTo(path: Path) {
       path.createJar { outputAar ->
         androidManifest.writeTo(outputAar.android_manifest)
@@ -61,40 +90,10 @@ sealed class ArtifactArchive {
         lintRules.writeTo(outputAar.lint_jar)
       }
     }
-
-    operator fun plus(other: AarArchive): AarArchive {
-      return AarArchive(
-        androidManifest = androidManifest + other.androidManifest,
-        classes = classes + other.classes,
-        resources = resources + other.resources,
-        rTxt = rTxt + other.rTxt,
-        publicTxt = publicTxt + other.publicTxt,
-        assets = assets + other.assets,
-        libs = libs + other.libs,
-        jni = jni + other.jni,
-        proguard = proguard + other.proguard,
-        lintRules = lintRules + other.lintRules,
-      )
-    }
-
-    operator fun plus(other: JarArchive): AarArchive {
-      return AarArchive(
-        androidManifest = androidManifest,
-        classes = classes + other.classes,
-        resources = resources,
-        rTxt = rTxt,
-        publicTxt = publicTxt,
-        assets = assets,
-        libs = libs,
-        jni = jni,
-        proguard = proguard,
-        lintRules = lintRules,
-      )
-    }
   }
 
   class JarArchive(
-    val classes: Classes,
+    override val classes: Classes,
   ) : ArtifactArchive() {
     override fun shaded(
       packagesToShade: Map<String, String>,
@@ -105,41 +104,6 @@ sealed class ArtifactArchive {
 
     override fun writeTo(path: Path) {
       classes.writeTo(path)
-    }
-
-    operator fun plus(other: AarArchive): AarArchive {
-      return AarArchive(
-        androidManifest = other.androidManifest,
-        classes = classes + other.classes,
-        resources = other.resources,
-        rTxt = other.rTxt,
-        publicTxt = other.publicTxt,
-        assets = other.assets,
-        libs = other.libs,
-        jni = other.jni,
-        proguard = other.proguard,
-        lintRules = other.lintRules,
-      )
-    }
-
-    operator fun plus(other: JarArchive): JarArchive {
-      return JarArchive(
-        classes = classes + other.classes,
-      )
-    }
-  }
-
-  // These look repetitive and useless, but the smart casts actually cause us to end up
-  // using the concrete methods declared above.
-  operator fun plus(other: ArtifactArchive): ArtifactArchive = when (this) {
-    is AarArchive -> when (other) {
-      is AarArchive -> this + other
-      is JarArchive -> this + other
-    }
-
-    is JarArchive -> when (other) {
-      is AarArchive -> this + other
-      is JarArchive -> this + other
     }
   }
 

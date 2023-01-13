@@ -14,6 +14,7 @@ import org.gradle.api.tasks.PathSensitive
 import org.gradle.api.tasks.PathSensitivity.RELATIVE
 import org.gradle.api.tasks.TaskAction
 import sh.christian.aaraar.model.ArtifactArchive
+import sh.christian.aaraar.model.ArtifactArchive.AarArchive
 import sh.christian.aaraar.utils.deleteIfExists
 import java.nio.file.Path
 
@@ -39,16 +40,20 @@ abstract class PackageAarTask : DefaultTask() {
 
   @TaskAction
   fun packageAar() {
-    val inputAar = ArtifactArchive.from(inputAar.getPath())
+    val inputAar = ArtifactArchive.from(inputAar.getPath()) as AarArchive
+    val dependencyArchives =
+      embedClasspath.asFileTree.files
+        .asSequence()
+        .map { ArtifactArchive.from(it.toPath()) }
+        .toList()
 
-    val mergedArchive = embedClasspath.asFileTree.files
-      .asSequence()
-      .map { ArtifactArchive.from(it.toPath()) }
-      .fold(initial = inputAar, ArtifactArchive::plus)
-      .shaded(
-        packagesToShade = packagesToShade.get(),
-        packagesToRemove = packagesToRemove.get(),
-      )
+    val mergedArchive =
+      inputAar
+        .mergeWith(dependencyArchives)
+        .shaded(
+          packagesToShade = packagesToShade.get(),
+          packagesToRemove = packagesToRemove.get(),
+        )
 
     val packagesToShade = packagesToShade.get()
     val packagesToRemove = packagesToRemove.get()

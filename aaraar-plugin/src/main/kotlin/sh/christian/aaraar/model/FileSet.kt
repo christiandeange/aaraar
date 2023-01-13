@@ -1,8 +1,6 @@
 package sh.christian.aaraar.model
 
-import sh.christian.aaraar.utils.mapToSet
 import sh.christian.aaraar.utils.mkdirs
-import java.nio.charset.Charset
 import java.nio.file.FileSystem
 import java.nio.file.FileSystems
 import java.nio.file.Files
@@ -12,13 +10,13 @@ import kotlin.streams.asSequence
 class FileSet
 private constructor(
   private val indexedFiles: Map<Path, ByteArray>,
-) {
+) : Mergeable<FileSet> {
   val fileSystem: FileSystem
     get() = indexedFiles.keys.firstOrNull()?.fileSystem ?: FileSystems.getDefault()
 
   fun isEmpty(): Boolean = indexedFiles.isEmpty()
 
-  operator fun plus(other: FileSet): FileSet {
+  override operator fun plus(other: FileSet): FileSet {
     val duplicateKeys = indexedFiles.keys intersect other.indexedFiles.keys
     val duplicateKeysDifferentValues = duplicateKeys.filter {
       !indexedFiles[it].contentEquals(other.indexedFiles[it])

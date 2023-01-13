@@ -7,8 +7,8 @@ import kotlin.streams.toList
 class Proguard
 private constructor(
   private val lines: List<String>,
-) {
-  operator fun plus(other: Proguard): Proguard {
+) : Mergeable<Proguard> {
+  override operator fun plus(other: Proguard): Proguard {
     return Proguard(lines + other.lines)
   }
 

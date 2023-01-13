@@ -14,8 +14,8 @@ import java.util.jar.JarInputStream
 class GenericJarArchive
 private constructor(
   private val entries: Map<String, ByteArray>,
-) {
-  operator fun plus(other: GenericJarArchive): GenericJarArchive {
+) : Mergeable<GenericJarArchive> {
+  override operator fun plus(other: GenericJarArchive): GenericJarArchive {
     val duplicateKeysDifferentValues = mutableSetOf<String>()
 
     @OptIn(ExperimentalStdlibApi::class)
