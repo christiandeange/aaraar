@@ -52,8 +52,11 @@ private constructor(
 
     @OptIn(ExperimentalStdlibApi::class)
     val resourcePaths: Map<Path, ByteArray> = buildMap {
-      putAll(consumer.files.associate { it.file.toPath() to Files.readAllBytes(it.file.toPath()) })
-      putAll(consumer.generated.associate { it.file.toPath() to Files.readAllBytes(it.file.toPath()) })
+      (consumer.files + consumer.generated).forEach { item ->
+        val path = item.file.toPath()
+        val outputPath = path.parent.fileName.resolve(path.fileName)
+        put(outputPath, Files.readAllBytes(item.file.toPath()))
+      }
 
       consumer.values.forEach { (qualifiers, items) ->
         val document = consumer.factory.newDocumentBuilder().newDocument()
