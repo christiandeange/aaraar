@@ -6,6 +6,7 @@ plugins {
   alias(plugins.kotlin.jvm)
   `java-gradle-plugin`
   `kotlin-dsl`
+  `maven-publish`
 }
 
 group = "sh.christian.aaraar"
