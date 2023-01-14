@@ -2,39 +2,49 @@ package sh.christian.aaraar
 
 import com.android.SdkConstants.FD_OUTPUTS
 import com.android.build.api.artifact.SingleArtifact
+import com.android.build.api.dsl.LibraryExtension
 import com.android.build.api.variant.LibraryAndroidComponentsExtension
 import com.android.build.api.variant.Variant
 import org.gradle.api.Plugin
 import org.gradle.api.Project
+import org.gradle.kotlin.dsl.get
 import org.gradle.kotlin.dsl.getByType
 import org.gradle.kotlin.dsl.register
 import sh.christian.aaraar.utils.div
 
+@Suppress("UnstableApiUsage")
 class AarAarPlugin : Plugin<Project> {
   override fun apply(target: Project) {
     val project = target
 
-    val extension = project.extensions.create("aaraar", AarAarExtension::class.java)
-
-    val embed = project.configurations.create("embed") {
-      isTransitive = false
-      isCanBeConsumed = true
-      isCanBeResolved = false
-    }
-
     project.pluginManager.withPlugin("com.android.library") {
+      val android = project.extensions.getByType<LibraryExtension>()
       val androidComponents = project.extensions.getByType<LibraryAndroidComponentsExtension>()
 
-      androidComponents.onVariants { variant ->
-        val variantEmbed = project.configurations.create("${variant.name}Embed") {
+      val aaraar = project.extensions.create("aaraar", AarAarExtension::class.java)
+
+      val embed = project.configurations.create("embed") {
+        isTransitive = false
+        isCanBeConsumed = true
+        isCanBeResolved = false
+      }
+
+      android.buildTypes.configureEach {
+        project.configurations.create("${name}Embed") {
           isTransitive = false
           isCanBeConsumed = true
           isCanBeResolved = false
         }
+      }
+
+      androidComponents.onVariants { variant ->
+        println("onVariant ${variant.name}")
 
         val variantEmbedClasspath = project.configurations.create("${variant.name}EmbedClasspath") {
           extendsFrom(embed)
-          extendsFrom(variantEmbed)
+          variant.buildType?.let { buildType ->
+            extendsFrom(project.configurations.getAt("${buildType}Embed"))
+          }
 
           isTransitive = true
           isCanBeConsumed = false
@@ -48,8 +58,8 @@ class AarAarPlugin : Plugin<Project> {
         project.tasks.register<PackageAarTask>(variant.taskName("package", "Aar")) {
           inputAar.set(aar)
           embedClasspath.from(variantEmbedClasspath)
-          packagesToShade.set(extension.packagesToShade)
-          packagesToRemove.set(extension.packagesToRemove)
+          packagesToShade.set(aaraar.packagesToShade)
+          packagesToRemove.set(aaraar.packagesToRemove)
           outputAar.set(outFile)
         }
       }
