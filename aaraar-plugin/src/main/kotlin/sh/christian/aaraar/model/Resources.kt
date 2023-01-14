@@ -108,8 +108,8 @@ private constructor(
 
     override fun removeItem(removedItem: ResourceMergerItem, replacedBy: ResourceMergerItem?) {
       when (removedItem.sourceType!!) {
-        SINGLE_FILE -> files.add(removedItem)
-        GENERATED_FILES -> generated.add(removedItem)
+        SINGLE_FILE -> files.remove(removedItem)
+        GENERATED_FILES -> generated.remove(removedItem)
         XML_VALUES -> values[removedItem.qualifiers]!!.remove(removedItem)
       }
 
