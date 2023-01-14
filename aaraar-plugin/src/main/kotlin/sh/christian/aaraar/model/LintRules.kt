@@ -6,8 +6,8 @@ class LintRules
 private constructor(
   private val archive: GenericJarArchive,
 ) : Mergeable<LintRules> {
-  override operator fun plus(other: LintRules): LintRules {
-    return LintRules(archive + other.archive)
+  override fun plus(others: List<LintRules>): LintRules {
+    return LintRules(archive + others.map { it.archive })
   }
 
   fun writeTo(path: Path) {

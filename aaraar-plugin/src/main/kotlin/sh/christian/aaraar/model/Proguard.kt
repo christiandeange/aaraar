@@ -8,8 +8,8 @@ class Proguard
 private constructor(
   private val lines: List<String>,
 ) : Mergeable<Proguard> {
-  override operator fun plus(other: Proguard): Proguard {
-    return Proguard(lines + other.lines)
+  override fun plus(others: List<Proguard>): Proguard {
+    return Proguard(lines + others.flatMap { it.lines })
   }
 
   fun writeTo(path: Path) {

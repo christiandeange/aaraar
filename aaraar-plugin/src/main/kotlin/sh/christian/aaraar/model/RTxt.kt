@@ -9,10 +9,6 @@ class RTxt
 private constructor(
   private val symbolTable: SymbolTable,
 ) : Mergeable<RTxt> {
-  override operator fun plus(other: RTxt): RTxt {
-    return RTxt(symbolTable.merge(other.symbolTable))
-  }
-
   override operator fun plus(others: List<RTxt>): RTxt {
     return RTxt(SymbolTable.merge(listOf(symbolTable) + others.map { it.symbolTable }))
   }

@@ -44,8 +44,6 @@ private constructor(
       .toInt()
   }
 
-  override operator fun plus(other: AndroidManifest): AndroidManifest = plus(listOf(other))
-
   override operator fun plus(others: List<AndroidManifest>): AndroidManifest {
     val mergeReport = newMerger(asTempFile(), StdLogger(Level.WARNING), APPLICATION)
       .withFeatures(Feature.NO_PLACEHOLDER_REPLACEMENT)

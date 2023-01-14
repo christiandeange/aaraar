@@ -27,8 +27,6 @@ private constructor(
 ) : Mergeable<Resources> {
   fun isEmpty(): Boolean = files.isEmpty()
 
-  override operator fun plus(other: Resources): Resources = plus(listOf(other))
-
   override fun plus(others: List<Resources>): Resources {
     fun FileSet.toResourceSet(isFromDependency: Boolean): ResourceSet {
       return ResourceSet(packageName, RES_AUTO, null, false, "").apply {

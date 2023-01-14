@@ -16,16 +16,19 @@ private constructor(
 
   fun isEmpty(): Boolean = indexedFiles.isEmpty()
 
-  override operator fun plus(other: FileSet): FileSet {
-    val duplicateKeys = indexedFiles.keys intersect other.indexedFiles.keys
-    val duplicateKeysDifferentValues = duplicateKeys.filter {
-      !indexedFiles[it].contentEquals(other.indexedFiles[it])
+  override operator fun plus(others: List<FileSet>): FileSet {
+    val duplicateKeys = mutableSetOf<Path>()
+    val mergedIndexedFiles = mutableMapOf<Path, ByteArray>()
+    (indexedFiles.entries + others.flatMap { it.indexedFiles.entries }).forEach { (key, value) ->
+      if (mergedIndexedFiles.put(key, value) != null) {
+        duplicateKeys.add(key)
+      }
     }
 
-    check(duplicateKeysDifferentValues.isEmpty()) {
-      val filesToShow = duplicateKeysDifferentValues.toList().take(5)
+    check(duplicateKeys.isEmpty()) {
+      val filesToShow = duplicateKeys.toList().take(5)
         .map { it.toAbsolutePath().toString() }
-      val moreFileCount = (duplicateKeysDifferentValues.count() - 5).coerceAtLeast(0)
+      val moreFileCount = (duplicateKeys.count() - 5).coerceAtLeast(0)
 
       val toStringList = if (moreFileCount > 0) {
         filesToShow + "($moreFileCount more...)"
@@ -36,7 +39,7 @@ private constructor(
       "Found differing files in file sets when merging: $toStringList"
     }
 
-    return FileSet(indexedFiles + other.indexedFiles)
+    return FileSet(mergedIndexedFiles)
   }
 
   fun writeTo(path: Path) {

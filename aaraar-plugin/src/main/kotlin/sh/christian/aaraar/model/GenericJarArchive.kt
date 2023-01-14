@@ -15,14 +15,14 @@ class GenericJarArchive
 private constructor(
   private val entries: Map<String, ByteArray>,
 ) : Mergeable<GenericJarArchive> {
-  override operator fun plus(other: GenericJarArchive): GenericJarArchive {
+  override operator fun plus(others: List<GenericJarArchive>): GenericJarArchive {
     val duplicateKeysDifferentValues = mutableSetOf<String>()
 
     @OptIn(ExperimentalStdlibApi::class)
     val newEntries: Map<String, ByteArray> = buildMap {
       putAll(this@GenericJarArchive.entries)
 
-      other.entries.forEach { (name, contents) ->
+      others.flatMap { it.entries.entries }.forEach { (name, contents) ->
         if (name in this) {
           when (val result = merge(name, this[name]!!, contents)) {
             is Conflict -> duplicateKeysDifferentValues += name

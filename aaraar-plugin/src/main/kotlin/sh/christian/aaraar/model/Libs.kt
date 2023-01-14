@@ -8,8 +8,8 @@ private constructor(
 ) : Mergeable<Libs> {
   fun isEmpty(): Boolean = files.isEmpty()
 
-  override operator fun plus(other: Libs): Libs {
-    return Libs(files + other.files)
+  override fun plus(others: List<Libs>): Libs {
+    return Libs(files + others.map { it.files })
   }
 
   fun writeTo(path: Path) {

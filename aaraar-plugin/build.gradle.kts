@@ -40,6 +40,8 @@ kotlin {
       }
     }
   }
+
+  jvmToolchain(11)
 }
 
 gradlePlugin {

@@ -9,10 +9,6 @@ class PublicTxt
 private constructor(
   private val symbolTable: SymbolTable,
 ) : Mergeable<PublicTxt> {
-  override operator fun plus(other: PublicTxt): PublicTxt {
-    return PublicTxt(symbolTable.merge(other.symbolTable))
-  }
-
   override operator fun plus(others: List<PublicTxt>): PublicTxt {
     return PublicTxt(SymbolTable.merge(listOf(symbolTable) + others.map { it.symbolTable }))
   }

@@ -13,8 +13,8 @@ class Classes
 private constructor(
   private val archive: GenericJarArchive,
 ) : Mergeable<Classes> {
-  override operator fun plus(other: Classes): Classes {
-    return Classes(archive + other.archive)
+  override operator fun plus(others: List<Classes>): Classes {
+    return Classes(archive + others.map { it.archive })
   }
 
   fun shaded(
