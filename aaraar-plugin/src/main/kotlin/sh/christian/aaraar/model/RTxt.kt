@@ -22,12 +22,9 @@ private constructor(
       if (!Files.isRegularFile(path)) return RTxt(symbolTable = SymbolTable.builder().build())
 
       val symbolTable = SymbolIo.readFromAaptNoValues(
-        /* reader */
-        Files.newBufferedReader(path),
-        /* filename */
-        path.toString(),
-        /* tablePackage */
-        packageName,
+        /* reader */ Files.newBufferedReader(path),
+        /* filename */ path.toString(),
+        /* tablePackage */ packageName,
       )
 
       return RTxt(symbolTable)

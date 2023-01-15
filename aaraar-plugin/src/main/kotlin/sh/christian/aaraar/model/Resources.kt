@@ -22,6 +22,7 @@ private constructor(
   private val files: FileSet,
   private val packageName: String,
   private val minSdk: Int,
+  private val androidAaptIgnore: String,
 ) : Mergeable<Resources> {
   fun isEmpty(): Boolean = files.isEmpty()
 
@@ -29,11 +30,11 @@ private constructor(
     val consumer = ResourceMergerConsumer()
 
     ResourceMerger(minSdk).apply {
-      addDataSet(files.toResourceSet(packageName, isFromDependency = false))
+      addDataSet(files.toResourceSet(packageName, androidAaptIgnore, isFromDependency = false))
       others.forEach { other ->
-        addDataSet(other.files.toResourceSet(other.packageName, isFromDependency = true))
+        addDataSet(other.files.toResourceSet(other.packageName, other.androidAaptIgnore, isFromDependency = true))
       }
-      mergeData(consumer, false)
+      mergeData(consumer, /* doCleanUp */ false)
     }
 
     @OptIn(ExperimentalStdlibApi::class)
@@ -61,7 +62,7 @@ private constructor(
       }
     }
 
-    return Resources(FileSet.from(resourcePaths), packageName, minSdk)
+    return Resources(FileSet.from(resourcePaths), packageName, minSdk, androidAaptIgnore)
   }
 
   fun writeTo(path: Path) {
@@ -107,6 +108,7 @@ private constructor(
       path: Path,
       packageName: String,
       minSdk: Int,
+      androidAaptIgnore: String,
     ): Resources {
       return FileSet.fromFileTree(path)
         ?.let { files ->
@@ -114,20 +116,23 @@ private constructor(
             files = files,
             packageName = packageName,
             minSdk = minSdk,
+            androidAaptIgnore = androidAaptIgnore,
           )
         }
         ?: Resources(
           files = FileSet.EMPTY,
           packageName = packageName,
           minSdk = minSdk,
+          androidAaptIgnore = androidAaptIgnore,
         )
     }
 
     private fun FileSet.toResourceSet(
       packageName: String,
+      androidAaptIgnore: String,
       isFromDependency: Boolean,
     ): ResourceSet {
-      return ResourceSet(packageName, RES_AUTO, null, false, "").apply {
+      return ResourceSet(packageName, RES_AUTO, null, false, androidAaptIgnore).apply {
         this.isFromDependency = isFromDependency
         setCheckDuplicates(false)
 

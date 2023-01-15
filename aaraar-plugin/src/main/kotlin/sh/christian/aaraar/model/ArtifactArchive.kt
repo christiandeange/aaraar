@@ -1,5 +1,6 @@
 package sh.christian.aaraar.model
 
+import sh.christian.aaraar.Environment
 import sh.christian.aaraar.utils.android_manifest
 import sh.christian.aaraar.utils.assets
 import sh.christian.aaraar.utils.classes_jar
@@ -108,10 +109,11 @@ sealed class ArtifactArchive {
   }
 
   companion object {
-    fun from(path: Path): ArtifactArchive {
-      val extension = path.toFile().extension
-
-      return when (extension) {
+    fun from(
+      path: Path,
+      environment: Environment,
+    ): ArtifactArchive {
+      return when (path.toFile().extension) {
         "jar" -> {
           val classes = Classes.from(path)
           JarArchive(classes)
@@ -121,7 +123,12 @@ sealed class ArtifactArchive {
           path.toAbsolutePath().openJar { aarRoot ->
             val androidManifest = AndroidManifest.from(aarRoot.android_manifest)
             val classes = Classes.from(aarRoot.classes_jar)
-            val resources = Resources.from(aarRoot.res, androidManifest.packageName, androidManifest.minSdk)
+            val resources = Resources.from(
+              aarRoot.res,
+              androidManifest.packageName,
+              androidManifest.minSdk,
+              environment.androidAaptIgnore,
+            )
             val rTxt = RTxt.from(aarRoot.r_txt, androidManifest.packageName)
             val publicTxt = PublicTxt.from(aarRoot.public_txt, androidManifest.packageName)
             val assets = Assets.from(aarRoot.assets)

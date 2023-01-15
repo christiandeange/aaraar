@@ -7,12 +7,10 @@ import com.android.build.api.variant.LibraryAndroidComponentsExtension
 import com.android.build.api.variant.Variant
 import org.gradle.api.Plugin
 import org.gradle.api.Project
-import org.gradle.kotlin.dsl.get
 import org.gradle.kotlin.dsl.getByType
 import org.gradle.kotlin.dsl.register
 import sh.christian.aaraar.utils.div
 
-@Suppress("UnstableApiUsage")
 class AarAarPlugin : Plugin<Project> {
   override fun apply(target: Project) {
     val project = target
@@ -49,6 +47,9 @@ class AarAarPlugin : Plugin<Project> {
           isCanBeResolved = true
         }
 
+        val androidAaptIgnoreEnv =
+          project.providers.environmentVariable("ANDROID_AAPT_IGNORE").orElse("")
+
         val aar = variant.artifacts.get(SingleArtifact.AAR)
         val fileName = "${project.name}-${variant.name}.aar"
         val outFile = project.buildDir / FD_OUTPUTS / "aaraar" / fileName
@@ -58,6 +59,7 @@ class AarAarPlugin : Plugin<Project> {
           embedClasspath.from(variantEmbedClasspath)
           classRenames.set(aaraar.classRenames)
           classDeletes.set(aaraar.classDeletes)
+          androidAaptIgnore.set(androidAaptIgnoreEnv)
           outputAar.set(outFile)
         }
       }

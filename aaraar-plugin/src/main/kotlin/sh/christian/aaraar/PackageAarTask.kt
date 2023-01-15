@@ -4,11 +4,13 @@ import org.gradle.api.DefaultTask
 import org.gradle.api.file.ConfigurableFileCollection
 import org.gradle.api.file.RegularFileProperty
 import org.gradle.api.provider.MapProperty
+import org.gradle.api.provider.Property
 import org.gradle.api.provider.SetProperty
 import org.gradle.api.tasks.CacheableTask
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.InputFile
 import org.gradle.api.tasks.InputFiles
+import org.gradle.api.tasks.Optional
 import org.gradle.api.tasks.OutputFile
 import org.gradle.api.tasks.PathSensitive
 import org.gradle.api.tasks.PathSensitivity.RELATIVE
@@ -35,16 +37,24 @@ abstract class PackageAarTask : DefaultTask() {
   @get:Input
   abstract val classDeletes: SetProperty<String>
 
+  @get:Input
+  @get:Optional
+  abstract val androidAaptIgnore: Property<String>
+
   @get:OutputFile
   abstract val outputAar: RegularFileProperty
 
   @TaskAction
   fun packageAar() {
-    val inputAar = ArtifactArchive.from(inputAar.getPath()) as AarArchive
+    val environment = Environment(
+      androidAaptIgnore = androidAaptIgnore.get(),
+    )
+
+    val inputAar = ArtifactArchive.from(inputAar.getPath(), environment) as AarArchive
     val dependencyArchives =
       embedClasspath.asFileTree.files
         .asSequence()
-        .map { ArtifactArchive.from(it.toPath()) }
+        .map { ArtifactArchive.from(it.toPath(), environment) }
         .toList()
 
     val mergedArchive =
