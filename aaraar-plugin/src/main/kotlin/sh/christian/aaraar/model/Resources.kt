@@ -26,24 +26,12 @@ private constructor(
   fun isEmpty(): Boolean = files.isEmpty()
 
   override fun plus(others: List<Resources>): Resources {
-    fun FileSet.toResourceSet(isFromDependency: Boolean): ResourceSet {
-      return ResourceSet(packageName, RES_AUTO, null, false, "").apply {
-        this.isFromDependency = isFromDependency
-        setCheckDuplicates(false)
-
-        val dir = Files.createTempDirectory("res-merger-$packageName")
-        writeTo(dir)
-        addSources(listOf(dir.toFile()))
-        loadFromFiles(StdLogger(Level.WARNING))
-      }
-    }
-
     val consumer = ResourceMergerConsumer()
 
     ResourceMerger(minSdk).apply {
-      addDataSet(files.toResourceSet(isFromDependency = false))
+      addDataSet(files.toResourceSet(packageName, isFromDependency = false))
       others.forEach { other ->
-        addDataSet(other.files.toResourceSet(isFromDependency = true))
+        addDataSet(other.files.toResourceSet(other.packageName, isFromDependency = true))
       }
       mergeData(consumer, false)
     }
@@ -133,6 +121,21 @@ private constructor(
           packageName = packageName,
           minSdk = minSdk,
         )
+    }
+
+    private fun FileSet.toResourceSet(
+      packageName: String,
+      isFromDependency: Boolean,
+    ): ResourceSet {
+      return ResourceSet(packageName, RES_AUTO, null, false, "").apply {
+        this.isFromDependency = isFromDependency
+        setCheckDuplicates(false)
+
+        val dir = Files.createTempDirectory("res-merger-$packageName")
+        writeTo(dir)
+        addSources(listOf(dir.toFile()))
+        loadFromFiles(StdLogger(Level.WARNING))
+      }
     }
   }
 }
