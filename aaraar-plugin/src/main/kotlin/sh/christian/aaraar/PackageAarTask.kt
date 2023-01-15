@@ -30,10 +30,10 @@ abstract class PackageAarTask : DefaultTask() {
   abstract val embedClasspath: ConfigurableFileCollection
 
   @get:Input
-  abstract val packagesToShade: MapProperty<String, String>
+  abstract val classRenames: MapProperty<String, String>
 
   @get:Input
-  abstract val packagesToRemove: SetProperty<String>
+  abstract val classDeletes: SetProperty<String>
 
   @get:OutputFile
   abstract val outputAar: RegularFileProperty
@@ -51,17 +51,17 @@ abstract class PackageAarTask : DefaultTask() {
       inputAar
         .mergeWith(dependencyArchives)
         .shaded(
-          packagesToShade = packagesToShade.get(),
-          packagesToRemove = packagesToRemove.get(),
+          classRenames = classRenames.get(),
+          classDeletes = classDeletes.get(),
         )
 
-    val packagesToShade = packagesToShade.get()
-    val packagesToRemove = packagesToRemove.get()
+    val classRenames = classRenames.get()
+    val classDeletes = classDeletes.get()
 
-    val finalArchive = if (packagesToShade.isEmpty() && packagesToRemove.isEmpty()) {
+    val finalArchive = if (classRenames.isEmpty() && classDeletes.isEmpty()) {
       mergedArchive
     } else {
-      mergedArchive.shaded(packagesToShade, packagesToRemove)
+      mergedArchive.shaded(classRenames, classDeletes)
     }
 
     val outputPath = outputAar.getPath().deleteIfExists()

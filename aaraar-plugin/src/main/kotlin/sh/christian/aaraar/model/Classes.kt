@@ -18,18 +18,18 @@ private constructor(
   }
 
   fun shaded(
-    packagesToShade: Map<String, String>,
-    packagesToRemove: Set<String>,
+    classRenames: Map<String, String>,
+    classDeletes: Set<String>,
   ): Classes {
     val inputJar = Files.createTempFile("classes", ".jar").deleteIfExists()
     val outputJar = Files.createTempFile("classes", ".jar").deleteIfExists()
     writeTo(inputJar)
 
     val processor = DefaultJarProcessor().apply {
-      packagesToShade.forEach { (pattern, result) ->
+      classRenames.forEach { (pattern, result) ->
         addClassRename(ClassRename(pattern, result))
       }
-      packagesToRemove.forEach { pattern ->
+      classDeletes.forEach { pattern ->
         addClassDelete(ClassDelete(pattern))
       }
     }

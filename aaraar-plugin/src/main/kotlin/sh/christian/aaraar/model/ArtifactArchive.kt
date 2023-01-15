@@ -18,8 +18,8 @@ sealed class ArtifactArchive {
   abstract val classes: Classes
 
   abstract fun shaded(
-    packagesToShade: Map<String, String>,
-    packagesToRemove: Set<String>,
+    classRenames: Map<String, String>,
+    classDeletes: Set<String>,
   ): ArtifactArchive
 
   abstract fun writeTo(path: Path)
@@ -43,12 +43,12 @@ sealed class ArtifactArchive {
      */
   ) : ArtifactArchive() {
     override fun shaded(
-      packagesToShade: Map<String, String>,
-      packagesToRemove: Set<String>,
+      classRenames: Map<String, String>,
+      classDeletes: Set<String>,
     ): ArtifactArchive {
       return AarArchive(
         androidManifest = androidManifest,
-        classes = classes.shaded(packagesToShade, packagesToRemove),
+        classes = classes.shaded(classRenames, classDeletes),
         resources = resources,
         rTxt = rTxt,
         publicTxt = publicTxt,
@@ -96,10 +96,10 @@ sealed class ArtifactArchive {
     override val classes: Classes,
   ) : ArtifactArchive() {
     override fun shaded(
-      packagesToShade: Map<String, String>,
-      packagesToRemove: Set<String>,
+      classRenames: Map<String, String>,
+      classDeletes: Set<String>,
     ): ArtifactArchive {
-      return JarArchive(classes.shaded(packagesToShade, packagesToRemove))
+      return JarArchive(classes.shaded(classRenames, classDeletes))
     }
 
     override fun writeTo(path: Path) {

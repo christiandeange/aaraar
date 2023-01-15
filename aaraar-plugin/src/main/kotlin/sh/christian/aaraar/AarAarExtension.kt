@@ -11,6 +11,14 @@ abstract class AarAarExtension
 @Inject constructor(
   objects: ObjectFactory,
 ) {
-  val packagesToShade: MapProperty<String, String> = objects.mapProperty<String, String>().convention(mutableMapOf())
-  val packagesToRemove: SetProperty<String> = objects.setProperty<String>().convention(mutableSetOf())
+  val classRenames: MapProperty<String, String> = objects.mapProperty<String, String>().convention(mutableMapOf())
+  val classDeletes: SetProperty<String> = objects.setProperty<String>().convention(mutableSetOf())
+
+  fun rename(pattern: String, replacement: String) {
+    classRenames.put(pattern, replacement)
+  }
+
+  fun delete(pattern: String) {
+    classDeletes.add(pattern)
+  }
 }
