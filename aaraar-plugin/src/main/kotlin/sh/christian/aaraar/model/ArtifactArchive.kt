@@ -25,89 +25,6 @@ sealed class ArtifactArchive {
 
   abstract fun writeTo(path: Path)
 
-  class AarArchive(
-    val androidManifest: AndroidManifest,
-    override val classes: Classes,
-    val resources: Resources,
-    val rTxt: RTxt,
-    val publicTxt: PublicTxt,
-    val assets: Assets,
-    val libs: Libs,
-    val jni: Jni,
-    val proguard: Proguard,
-    val lintRules: LintRules,
-    /**
-     * TODO
-     * no idea how /prefab folder works, add support for it later.
-     * api.jar is read by tooling, but no easy way to create it using APIs or standard tooling:
-     * https://issuetracker.google.com/issues/64315897
-     */
-  ) : ArtifactArchive() {
-    override fun shaded(
-      classRenames: Map<String, String>,
-      classDeletes: Set<String>,
-    ): ArtifactArchive {
-      return AarArchive(
-        androidManifest = androidManifest,
-        classes = classes.shaded(classRenames, classDeletes),
-        resources = resources,
-        rTxt = rTxt,
-        publicTxt = publicTxt,
-        assets = assets,
-        libs = libs,
-        jni = jni,
-        proguard = proguard,
-        lintRules = lintRules,
-      )
-    }
-
-    fun mergeWith(others: List<ArtifactArchive>): ArtifactArchive {
-      val aars = others.filterIsInstance<AarArchive>()
-      return AarArchive(
-        androidManifest = androidManifest + aars.map { it.androidManifest },
-        classes = classes + others.map { it.classes },
-        resources = resources + aars.map { it.resources },
-        rTxt = rTxt + aars.map { it.rTxt },
-        publicTxt = publicTxt + aars.map { it.publicTxt },
-        assets = assets + aars.map { it.assets },
-        libs = libs + aars.map { it.libs },
-        jni = jni + aars.map { it.jni },
-        proguard = proguard + aars.map { it.proguard },
-        lintRules = lintRules + aars.map { it.lintRules },
-      )
-    }
-
-    override fun writeTo(path: Path) {
-      path.createJar { outputAar ->
-        androidManifest.writeTo(outputAar.android_manifest)
-        classes.writeTo(outputAar.classes_jar)
-        resources.writeTo(outputAar.res)
-        rTxt.writeTo(outputAar.r_txt)
-        publicTxt.writeTo(outputAar.public_txt)
-        assets.writeTo(outputAar.assets)
-        libs.writeTo(outputAar.libs)
-        jni.writeTo(outputAar.jni)
-        proguard.writeTo(outputAar.proguard_txt)
-        lintRules.writeTo(outputAar.lint_jar)
-      }
-    }
-  }
-
-  class JarArchive(
-    override val classes: Classes,
-  ) : ArtifactArchive() {
-    override fun shaded(
-      classRenames: Map<String, String>,
-      classDeletes: Set<String>,
-    ): ArtifactArchive {
-      return JarArchive(classes.shaded(classRenames, classDeletes))
-    }
-
-    override fun writeTo(path: Path) {
-      classes.writeTo(path)
-    }
-  }
-
   companion object {
     fun from(
       path: Path,
@@ -156,6 +73,89 @@ sealed class ArtifactArchive {
           error("Unknown dependency type: $path")
         }
       }
+    }
+  }
+}
+
+class JarArchive(
+  override val classes: Classes,
+) : ArtifactArchive() {
+  override fun shaded(
+    classRenames: Map<String, String>,
+    classDeletes: Set<String>,
+  ): ArtifactArchive {
+    return JarArchive(classes.shaded(classRenames, classDeletes))
+  }
+
+  override fun writeTo(path: Path) {
+    classes.writeTo(path)
+  }
+}
+
+class AarArchive(
+  val androidManifest: AndroidManifest,
+  override val classes: Classes,
+  val resources: Resources,
+  val rTxt: RTxt,
+  val publicTxt: PublicTxt,
+  val assets: Assets,
+  val libs: Libs,
+  val jni: Jni,
+  val proguard: Proguard,
+  val lintRules: LintRules,
+  /**
+   * TODO
+   * no idea how /prefab folder works, add support for it later.
+   * api.jar is read by tooling, but no easy way to create it using APIs or standard tooling:
+   * https://issuetracker.google.com/issues/64315897
+   */
+) : ArtifactArchive() {
+  override fun shaded(
+    classRenames: Map<String, String>,
+    classDeletes: Set<String>,
+  ): ArtifactArchive {
+    return AarArchive(
+      androidManifest = androidManifest,
+      classes = classes.shaded(classRenames, classDeletes),
+      resources = resources,
+      rTxt = rTxt,
+      publicTxt = publicTxt,
+      assets = assets,
+      libs = libs,
+      jni = jni,
+      proguard = proguard,
+      lintRules = lintRules,
+    )
+  }
+
+  fun mergeWith(others: List<ArtifactArchive>): ArtifactArchive {
+    val aars = others.filterIsInstance<AarArchive>()
+    return AarArchive(
+      androidManifest = androidManifest + aars.map { it.androidManifest },
+      classes = classes + others.map { it.classes },
+      resources = resources + aars.map { it.resources },
+      rTxt = rTxt + aars.map { it.rTxt },
+      publicTxt = publicTxt + aars.map { it.publicTxt },
+      assets = assets + aars.map { it.assets },
+      libs = libs + aars.map { it.libs },
+      jni = jni + aars.map { it.jni },
+      proguard = proguard + aars.map { it.proguard },
+      lintRules = lintRules + aars.map { it.lintRules },
+    )
+  }
+
+  override fun writeTo(path: Path) {
+    path.createJar { outputAar ->
+      androidManifest.writeTo(outputAar.android_manifest)
+      classes.writeTo(outputAar.classes_jar)
+      resources.writeTo(outputAar.res)
+      rTxt.writeTo(outputAar.r_txt)
+      publicTxt.writeTo(outputAar.public_txt)
+      assets.writeTo(outputAar.assets)
+      libs.writeTo(outputAar.libs)
+      jni.writeTo(outputAar.jni)
+      proguard.writeTo(outputAar.proguard_txt)
+      lintRules.writeTo(outputAar.lint_jar)
     }
   }
 }

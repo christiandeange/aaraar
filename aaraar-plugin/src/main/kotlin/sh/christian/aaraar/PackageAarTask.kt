@@ -15,8 +15,8 @@ import org.gradle.api.tasks.OutputFile
 import org.gradle.api.tasks.PathSensitive
 import org.gradle.api.tasks.PathSensitivity.RELATIVE
 import org.gradle.api.tasks.TaskAction
+import sh.christian.aaraar.model.AarArchive
 import sh.christian.aaraar.model.ArtifactArchive
-import sh.christian.aaraar.model.ArtifactArchive.AarArchive
 import sh.christian.aaraar.utils.deleteIfExists
 import java.nio.file.Path
 
