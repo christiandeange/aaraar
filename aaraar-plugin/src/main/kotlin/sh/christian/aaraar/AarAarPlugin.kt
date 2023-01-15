@@ -38,8 +38,6 @@ class AarAarPlugin : Plugin<Project> {
       }
 
       androidComponents.onVariants { variant ->
-        println("onVariant ${variant.name}")
-
         val variantEmbedClasspath = project.configurations.create("${variant.name}EmbedClasspath") {
           extendsFrom(embed)
           variant.buildType?.let { buildType ->

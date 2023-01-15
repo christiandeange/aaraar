@@ -17,6 +17,10 @@ android {
     release {
       minifyEnabled false
     }
+
+    publish {
+      initWith release
+    }
   }
 
   packagingOptions {
@@ -35,16 +39,16 @@ android {
 
 dependencies {
   implementation 'androidx.core:core-ktx:1.9.0'
-  embed 'androidx.core:core-ktx:1.9.0'
+  publishEmbed 'androidx.core:core-ktx:1.9.0'
 
   implementation 'androidx.appcompat:appcompat:1.6.0'
-  embed 'androidx.appcompat:appcompat:1.6.0'
+  publishEmbed 'androidx.appcompat:appcompat:1.6.0'
 
   implementation 'com.google.android.material:material:1.7.0'
-  embed 'com.google.android.material:material:1.7.0'
+  publishEmbed 'com.google.android.material:material:1.7.0'
 
   implementation 'io.reactivex.rxjava3:rxjava:3.1.5'
-  embed 'io.reactivex.rxjava3:rxjava:3.1.5'
+  publishEmbed 'io.reactivex.rxjava3:rxjava:3.1.5'
 }
 
 aaraar {
