@@ -7,41 +7,24 @@ import com.android.manifmerger.MergingReport
 import com.android.manifmerger.MergingReport.MergedManifestKind
 import com.android.utils.StdLogger
 import com.android.utils.StdLogger.Level
-import com.android.utils.childrenIterator
-import org.w3c.dom.Document
-import org.xml.sax.InputSource
-import sh.christian.aaraar.utils.writeTo
+import org.redundent.kotlin.xml.Node
+import org.redundent.kotlin.xml.parse
 import java.io.File
-import java.io.FileWriter
+import java.io.FileOutputStream
 import java.io.OutputStreamWriter
-import java.io.StringReader
 import java.nio.file.Files
 import java.nio.file.Path
-import javax.xml.parsers.DocumentBuilder
-import javax.xml.parsers.DocumentBuilderFactory
-
 
 class AndroidManifest
 private constructor(
-  private val document: Document,
+  private val manifestNode: Node,
 ) : Mergeable<AndroidManifest> {
   val packageName: String by lazy {
-    document.childrenIterator().asSequence()
-      .single { it.nodeName == "manifest" }
-      .attributes
-      .getNamedItem("package")
-      .textContent
+    manifestNode.get<String>("package")!!
   }
 
   val minSdk: Int by lazy {
-    document.childrenIterator().asSequence()
-      .single { it.nodeName == "manifest" }
-      .childrenIterator().asSequence()
-      .single { it.nodeName == "uses-sdk" }
-      .attributes
-      .getNamedItem("android:minSdkVersion")
-      .textContent
-      .toInt()
+    manifestNode.first("uses-sdk").get<String>("android:minSdkVersion")!!.toInt()
   }
 
   override operator fun plus(others: List<AndroidManifest>): AndroidManifest {
@@ -49,7 +32,7 @@ private constructor(
       .withFeatures(Feature.NO_PLACEHOLDER_REPLACEMENT)
       .apply {
         others.forEach { other ->
-          addLibraryManifests(other.asTempFile())
+          addLibraryManifest(other.asTempFile())
         }
       }
       .merge()
@@ -66,34 +49,26 @@ private constructor(
   }
 
   fun writeTo(path: Path) {
-    document.writeTo(OutputStreamWriter(Files.newOutputStream(path)))
+    OutputStreamWriter(Files.newOutputStream(path)).use {
+      manifestNode.writeTo(it)
+    }
   }
 
   private fun asTempFile(): File {
     val file = Files.createTempFile("AndroidManifest", ".xml").toFile()
-    document.writeTo(FileWriter(file))
+    FileOutputStream(file).writer().use {
+      manifestNode.writeTo(it)
+    }
     return file
   }
 
   companion object {
     fun from(path: Path): AndroidManifest {
-      val dbf: DocumentBuilderFactory = DocumentBuilderFactory.newInstance()
-      val db: DocumentBuilder = dbf.newDocumentBuilder()
-      val document: Document = db.parse(Files.newInputStream(path)).apply {
-        documentElement.normalize()
-      }
-
-      return AndroidManifest(document)
+      return AndroidManifest(parse(Files.newInputStream(path)))
     }
 
     fun from(xmlSource: String): AndroidManifest {
-      val dbf: DocumentBuilderFactory = DocumentBuilderFactory.newInstance()
-      val db: DocumentBuilder = dbf.newDocumentBuilder()
-      val document: Document = db.parse(InputSource(StringReader(xmlSource))).apply {
-        documentElement.normalize()
-      }
-
-      return AndroidManifest(document)
+      return AndroidManifest(parse(xmlSource.byteInputStream()))
     }
   }
 }

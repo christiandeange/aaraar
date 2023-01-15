@@ -10,14 +10,12 @@ import com.android.resources.ResourceConstants.FD_RES_VALUES
 import com.android.resources.ResourceConstants.RES_QUALIFIER_SEP
 import com.android.utils.StdLogger
 import com.android.utils.StdLogger.Level
+import org.redundent.kotlin.xml.xml
 import sh.christian.aaraar.utils.div
-import sh.christian.aaraar.utils.writeTo
-import java.io.ByteArrayOutputStream
-import java.io.OutputStreamWriter
+import sh.christian.aaraar.utils.toNode
 import java.nio.file.Files
 import java.nio.file.Path
 import javax.xml.parsers.DocumentBuilderFactory
-
 
 class Resources
 private constructor(
@@ -59,11 +57,10 @@ private constructor(
       }
 
       consumer.values.forEach { (qualifiers, items) ->
-        val document = consumer.factory.newDocumentBuilder().newDocument()
-        val resources = document.createElement("resources")
-        document.appendChild(resources)
-        items.forEach { item ->
-          resources.appendChild(document.adoptNode(item.value))
+        val mergedResourceValues = xml("resources") {
+          items.forEach { item ->
+            addNode(item.value.toNode())
+          }
         }
 
         val path = if (qualifiers.isEmpty()) {
@@ -72,11 +69,7 @@ private constructor(
           files.fileSystem / "$FD_RES_VALUES$RES_QUALIFIER_SEP$qualifiers" / "$FD_RES_VALUES.xml"
         }
 
-        val outputStream = ByteArrayOutputStream()
-        document.writeTo(OutputStreamWriter(outputStream))
-        val xmlBytes: ByteArray = outputStream.toByteArray()
-
-        put(path, xmlBytes)
+        put(path, mergedResourceValues.toString().toByteArray())
       }
     }
 
