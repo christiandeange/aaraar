@@ -1,9 +1,9 @@
 package sh.christian.aaraar.model
 
 import com.tonicsystems.jarjar.transform.jar.JarProcessorChain
-import sh.christian.aaraar.model.GenericJarArchive.MergeResult.Conflict
-import sh.christian.aaraar.model.GenericJarArchive.MergeResult.MergedContents
-import sh.christian.aaraar.model.GenericJarArchive.MergeResult.Skip
+import sh.christian.aaraar.model.MergeResult.Conflict
+import sh.christian.aaraar.model.MergeResult.MergedContents
+import sh.christian.aaraar.model.MergeResult.Skip
 import sh.christian.aaraar.shading.ClassFilesProcessor
 import sh.christian.aaraar.shading.ClassFilter
 import sh.christian.aaraar.shading.ClassShader
@@ -112,12 +112,6 @@ private constructor(
 
       else -> Conflict
     }
-  }
-
-  private sealed class MergeResult {
-    object Skip : MergeResult()
-    object Conflict : MergeResult()
-    class MergedContents(val contents: ByteArray) : MergeResult()
   }
 
   companion object {

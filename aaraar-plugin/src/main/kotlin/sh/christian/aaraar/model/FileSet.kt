@@ -1,5 +1,8 @@
 package sh.christian.aaraar.model
 
+import sh.christian.aaraar.model.MergeResult.Conflict
+import sh.christian.aaraar.model.MergeResult.MergedContents
+import sh.christian.aaraar.model.MergeResult.Skip
 import sh.christian.aaraar.utils.div
 import sh.christian.aaraar.utils.mkdirs
 import java.nio.file.Files
@@ -11,17 +14,28 @@ private constructor(
   private val indexedFiles: Map<String, ByteArray>,
 ) : Mergeable<FileSet>, Map<String, ByteArray> by indexedFiles {
   override operator fun plus(others: List<FileSet>): FileSet {
-    val duplicateKeys = mutableSetOf<String>()
-    val mergedIndexedFiles = mutableMapOf<String, ByteArray>()
-    (indexedFiles.entries + others.flatMap { it.indexedFiles.entries }).forEach { (key, value) ->
-      if (mergedIndexedFiles.put(key, value) != null) {
-        duplicateKeys.add(key)
+    val duplicateKeysDifferentValues = mutableSetOf<String>()
+
+    @OptIn(ExperimentalStdlibApi::class)
+    val newEntries: Map<String, ByteArray> = buildMap {
+      putAll(this@FileSet)
+
+      others.flatMap { it.entries }.forEach { (name, contents) ->
+        if (name in this) {
+          when (val result = merge(name, this[name]!!, contents)) {
+            is Conflict -> duplicateKeysDifferentValues += name
+            is MergedContents -> put(name, result.contents)
+            is Skip -> remove(name)
+          }
+        } else {
+          put(name, contents)
+        }
       }
     }
 
-    check(duplicateKeys.isEmpty()) {
-      val filesToShow = duplicateKeys.toList().take(5)
-      val moreFileCount = (duplicateKeys.count() - 5).coerceAtLeast(0)
+    check(duplicateKeysDifferentValues.isEmpty()) {
+      val filesToShow = duplicateKeysDifferentValues.toList().take(5)
+      val moreFileCount = (duplicateKeysDifferentValues.count() - 5).coerceAtLeast(0)
 
       val toStringList = if (moreFileCount > 0) {
         filesToShow + "($moreFileCount more...)"
@@ -32,7 +46,23 @@ private constructor(
       "Found differing files in file sets when merging: $toStringList"
     }
 
-    return FileSet(mergedIndexedFiles)
+    return FileSet(newEntries)
+  }
+
+  private fun merge(
+    entry: String,
+    contents1: ByteArray,
+    contents2: ByteArray,
+  ): MergeResult {
+    return when {
+      entry.substringAfterLast('.') == "jar" -> {
+        val archive1 = GenericJarArchive.from(contents1, keepMetaFiles = true)!!
+        val archive2 = GenericJarArchive.from(contents2, keepMetaFiles = true)!!
+        MergedContents((archive1 + archive2).bytes())
+      }
+
+      else -> Conflict
+    }
   }
 
   fun writeTo(path: Path) {
