@@ -13,7 +13,11 @@ private constructor(
   }
 
   fun writeTo(path: Path) {
-    Files.write(path, lines)
+    if (lines.isEmpty()) {
+      Files.deleteIfExists(path)
+    } else {
+      Files.write(path, lines)
+    }
   }
 
   companion object {

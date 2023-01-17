@@ -6,8 +6,6 @@ class Assets
 private constructor(
   private val files: FileSet,
 ) : Mergeable<Assets> {
-  fun isEmpty(): Boolean = files.isEmpty()
-
   override fun plus(others: List<Assets>): Assets {
     return Assets(files + others.map { it.files })
   }

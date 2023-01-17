@@ -6,8 +6,6 @@ class Jni
 private constructor(
   private val files: FileSet,
 ) : Mergeable<Jni> {
-  fun isEmpty(): Boolean = files.isEmpty()
-
   override fun plus(others: List<Jni>): Jni {
     return Jni(files + others.map { it.files })
   }

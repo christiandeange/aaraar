@@ -6,8 +6,6 @@ class Libs
 private constructor(
   private val files: FileSet,
 ) : Mergeable<Libs> {
-  fun isEmpty(): Boolean = files.isEmpty()
-
   override fun plus(others: List<Libs>): Libs {
     return Libs(files + others.map { it.files })
   }

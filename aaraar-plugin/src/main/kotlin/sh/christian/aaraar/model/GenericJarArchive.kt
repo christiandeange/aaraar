@@ -46,6 +46,11 @@ private constructor(
   }
 
   fun writeTo(path: Path) {
+    if (isEmpty()) {
+      Files.deleteIfExists(path)
+      return
+    }
+
     val tempClassesJar = Files.createTempFile("classes", ".jar").deleteIfExists()
 
     tempClassesJar.createJar { classesJar ->

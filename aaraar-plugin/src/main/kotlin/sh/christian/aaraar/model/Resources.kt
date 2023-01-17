@@ -24,8 +24,6 @@ private constructor(
   private val minSdk: Int,
   private val androidAaptIgnore: String,
 ) : Mergeable<Resources> {
-  fun isEmpty(): Boolean = files.isEmpty()
-
   override fun plus(others: List<Resources>): Resources {
     val consumer = ResourceMergerConsumer()
 

@@ -14,7 +14,11 @@ private constructor(
   }
 
   fun writeTo(path: Path) {
-    SymbolIo.writeForAar(symbolTable, path)
+    if (symbolTable.symbols.isEmpty) {
+      Files.deleteIfExists(path)
+    } else {
+      SymbolIo.writeForAar(symbolTable, path)
+    }
   }
 
   companion object {

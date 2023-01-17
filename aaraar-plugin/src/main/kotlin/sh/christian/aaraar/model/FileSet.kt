@@ -14,8 +14,6 @@ private constructor(
   val fileSystem: FileSystem
     get() = indexedFiles.keys.firstOrNull()?.fileSystem ?: FileSystems.getDefault()
 
-  fun isEmpty(): Boolean = indexedFiles.isEmpty()
-
   override operator fun plus(others: List<FileSet>): FileSet {
     val duplicateKeys = mutableSetOf<Path>()
     val mergedIndexedFiles = mutableMapOf<Path, ByteArray>()
