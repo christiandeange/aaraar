@@ -4,13 +4,12 @@ import com.android.SdkConstants.XMLNS_PREFIX
 import com.android.utils.forEach
 import org.redundent.kotlin.xml.Node
 import org.redundent.kotlin.xml.node
-import kotlin.math.min
 import org.w3c.dom.Node as W3CNode
 
 fun W3CNode.toNode(): Node {
   return node(nodeName) {
     copyNode(this@toNode, this)
-  }
+  }.first(nodeName)
 }
 
 private fun copyNode(source: W3CNode, dest: Node) {
@@ -43,7 +42,7 @@ private fun copyAttributes(source: W3CNode, dest: Node) {
 
   attributes.forEach {
     if (it.nodeName.startsWith(XMLNS_PREFIX)) {
-      dest.namespace(it.nodeName.substring(min(6, it.nodeName.length)), it.nodeValue)
+      dest.namespace(it.nodeName.removePrefix(XMLNS_PREFIX), it.nodeValue)
     } else {
       dest.attribute(it.nodeName, it.nodeValue)
     }
