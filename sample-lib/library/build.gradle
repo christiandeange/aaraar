@@ -39,6 +39,11 @@ android {
 }
 
 dependencies {
+  implementation 'org.jetbrains.kotlin:kotlin-stdlib:1.7.21'
+
+  implementation project(':helper-library')
+  publishEmbed project(':helper-library')
+
   implementation 'androidx.core:core-ktx:1.9.0'
   publishEmbed 'androidx.core:core-ktx:1.9.0'
 
@@ -55,5 +60,5 @@ dependencies {
 aaraar {
   rename("io.reactivex.rxjava3.**", "shaded.io.reactivex.rxjava3.@1")
   rename("sh.christian.samplelib.ContextsKt", "sh.christian.samplelib.MyAppPackage")
-  delete("sh.christian.samplelib.SecretsKt")
+  delete("sh.christian.helperlib.SecretsKt")
 }

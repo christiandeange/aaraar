@@ -16,5 +16,6 @@ dependencyResolutionManagement {
 rootProject.name = "samplelib"
 
 include ':library'
+include ':helper-library'
 
 includeBuild '..'
