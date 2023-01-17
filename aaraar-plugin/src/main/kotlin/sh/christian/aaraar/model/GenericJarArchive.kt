@@ -9,7 +9,9 @@ import sh.christian.aaraar.utils.div
 import sh.christian.aaraar.utils.mkdirs
 import java.nio.file.Files
 import java.nio.file.Path
+import java.nio.file.attribute.FileTime
 import java.util.jar.JarInputStream
+import kotlin.streams.asSequence
 
 class GenericJarArchive
 private constructor(
@@ -48,8 +50,14 @@ private constructor(
 
     tempClassesJar.createJar { classesJar ->
       entries.forEach { (entry, contents) ->
-        Files.write((classesJar / entry).mkdirs(), contents)
+        val entryPath = (classesJar / entry).mkdirs()
+        Files.write(entryPath, contents)
       }
+
+      classesJar.rootDirectories
+        .asSequence()
+        .flatMap { Files.walk(it).asSequence() - setOf(it) }
+        .forEach { Files.setLastModifiedTime(it, EPOCH) }
     }
 
     Files.move(tempClassesJar, path)
@@ -82,6 +90,8 @@ private constructor(
 
   companion object {
     val NONE = GenericJarArchive(archiveEntries = emptyMap())
+
+    private val EPOCH = FileTime.fromMillis(0L)
 
     fun from(
       path: Path,
