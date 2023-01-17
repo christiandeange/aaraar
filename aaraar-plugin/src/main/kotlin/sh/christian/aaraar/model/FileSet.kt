@@ -1,22 +1,18 @@
 package sh.christian.aaraar.model
 
+import sh.christian.aaraar.utils.div
 import sh.christian.aaraar.utils.mkdirs
-import java.nio.file.FileSystem
-import java.nio.file.FileSystems
 import java.nio.file.Files
 import java.nio.file.Path
 import kotlin.streams.asSequence
 
 class FileSet
 private constructor(
-  private val indexedFiles: Map<Path, ByteArray>,
-) : Mergeable<FileSet>, Map<Path, ByteArray> by indexedFiles {
-  val fileSystem: FileSystem
-    get() = indexedFiles.keys.firstOrNull()?.fileSystem ?: FileSystems.getDefault()
-
+  private val indexedFiles: Map<String, ByteArray>,
+) : Mergeable<FileSet>, Map<String, ByteArray> by indexedFiles {
   override operator fun plus(others: List<FileSet>): FileSet {
-    val duplicateKeys = mutableSetOf<Path>()
-    val mergedIndexedFiles = mutableMapOf<Path, ByteArray>()
+    val duplicateKeys = mutableSetOf<String>()
+    val mergedIndexedFiles = mutableMapOf<String, ByteArray>()
     (indexedFiles.entries + others.flatMap { it.indexedFiles.entries }).forEach { (key, value) ->
       if (mergedIndexedFiles.put(key, value) != null) {
         duplicateKeys.add(key)
@@ -25,7 +21,6 @@ private constructor(
 
     check(duplicateKeys.isEmpty()) {
       val filesToShow = duplicateKeys.toList().take(5)
-        .map { it.toAbsolutePath().toString() }
       val moreFileCount = (duplicateKeys.count() - 5).coerceAtLeast(0)
 
       val toStringList = if (moreFileCount > 0) {
@@ -41,15 +36,16 @@ private constructor(
   }
 
   fun writeTo(path: Path) {
-    indexedFiles.forEach { (subpath, bytes) ->
-      Files.write(path.resolve(subpath.toString()).mkdirs(), bytes)
+    indexedFiles.forEach { (entry, bytes) ->
+      val filePath = (path / entry).mkdirs()
+      Files.write(filePath, bytes)
     }
   }
 
   companion object {
     val EMPTY = FileSet(indexedFiles = emptyMap())
 
-    fun from(fileSet: Map<Path, ByteArray>): FileSet {
+    fun from(fileSet: Map<String, ByteArray>): FileSet {
       return FileSet(fileSet)
     }
 
@@ -59,7 +55,7 @@ private constructor(
       val indexedFiles = Files.walk(path)
         .asSequence()
         .filter(Files::isRegularFile)
-        .map { path.relativize(it) to Files.readAllBytes(it) }
+        .map { path.relativize(it).toString() to Files.readAllBytes(it) }
         .toMap()
 
       return FileSet(indexedFiles)

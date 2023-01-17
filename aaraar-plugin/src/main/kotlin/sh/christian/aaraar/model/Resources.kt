@@ -11,7 +11,6 @@ import com.android.resources.ResourceConstants.RES_QUALIFIER_SEP
 import com.android.utils.StdLogger
 import com.android.utils.StdLogger.Level
 import org.redundent.kotlin.xml.xml
-import sh.christian.aaraar.utils.div
 import sh.christian.aaraar.utils.toNode
 import java.nio.file.Files
 import java.nio.file.Path
@@ -37,10 +36,10 @@ private constructor(
     }
 
     @OptIn(ExperimentalStdlibApi::class)
-    val resourcePaths: Map<Path, ByteArray> = buildMap {
+    val resourcePaths: Map<String, ByteArray> = buildMap {
       (consumer.files + consumer.generated).forEach { item ->
         val path = item.file.toPath()
-        val outputPath = path.parent.fileName.resolve(path.fileName)
+        val outputPath = path.parent.fileName.resolve(path.fileName).toString()
         put(outputPath, Files.readAllBytes(item.file.toPath()))
       }
 
@@ -52,9 +51,9 @@ private constructor(
         }
 
         val path = if (qualifiers.isEmpty()) {
-          files.fileSystem / FD_RES_VALUES / "$FD_RES_VALUES.xml"
+          "$FD_RES_VALUES/$FD_RES_VALUES.xml"
         } else {
-          files.fileSystem / "$FD_RES_VALUES$RES_QUALIFIER_SEP$qualifiers" / "$FD_RES_VALUES.xml"
+          "$FD_RES_VALUES$RES_QUALIFIER_SEP$qualifiers/$FD_RES_VALUES.xml"
         }
 
         put(path, mergedResourceValues.toString().toByteArray())
