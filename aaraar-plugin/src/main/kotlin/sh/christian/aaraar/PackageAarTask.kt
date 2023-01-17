@@ -57,13 +57,7 @@ abstract class PackageAarTask : DefaultTask() {
         .map { ArtifactArchive.from(it.toPath(), environment) }
         .toList()
 
-    val mergedArchive =
-      inputAar
-        .mergeWith(dependencyArchives)
-        .shaded(
-          classRenames = classRenames.get(),
-          classDeletes = classDeletes.get(),
-        )
+    val mergedArchive = inputAar.mergeWith(dependencyArchives)
 
     val classRenames = classRenames.get()
     val classDeletes = classDeletes.get()
