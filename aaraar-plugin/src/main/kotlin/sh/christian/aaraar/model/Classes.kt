@@ -4,7 +4,6 @@ import com.tonicsystems.jarjar.transform.jar.JarProcessorChain
 import sh.christian.aaraar.shading.ClassFilesProcessor
 import sh.christian.aaraar.shading.ClassFilter
 import sh.christian.aaraar.shading.ClassShader
-import sh.christian.aaraar.shading.DirectoryFilter
 import java.nio.file.Path
 
 class Classes
@@ -20,7 +19,6 @@ private constructor(
     classDeletes: Set<String>,
   ): Classes {
     val processor = JarProcessorChain().apply {
-      add(DirectoryFilter)
       add(ClassFilter(classDeletes))
       add(ClassShader(classRenames))
     }
