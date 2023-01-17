@@ -28,10 +28,11 @@ private constructor(
     val consumer = ResourceMergerConsumer()
 
     ResourceMerger(minSdk).apply {
-      addDataSet(files.toResourceSet(packageName, androidAaptIgnore, isFromDependency = false))
-      others.forEach { other ->
+      // Add data sets in increasing order of priority.
+      others.reversed().forEach { other ->
         addDataSet(other.files.toResourceSet(other.packageName, other.androidAaptIgnore, isFromDependency = true))
       }
+      addDataSet(files.toResourceSet(packageName, androidAaptIgnore, isFromDependency = false))
       mergeData(consumer, /* doCleanUp */ false)
     }
 
