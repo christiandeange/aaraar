@@ -6,7 +6,7 @@ import org.gradle.api.attributes.CompatibilityCheckDetails
 import org.gradle.api.attributes.MultipleCandidatesDetails
 
 const val MERGEABLE_ARTIFACT_TYPE = "mergeable-artifact"
-private val MERGEABLE_TYPES = setOf("aar", "jar")
+private val MERGEABLE_TYPES = setOf("aar", "android-lint-local-aar", "jar")
 
 class ArtifactTypeCompatibilityDependencyRule : AttributeCompatibilityRule<String> {
   override fun execute(t: CompatibilityCheckDetails<String>) {
