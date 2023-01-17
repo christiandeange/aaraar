@@ -1,12 +1,10 @@
 package sh.christian.aaraar.model
 
-import com.tonicsystems.jarjar.classpath.ClassPath
-import com.tonicsystems.jarjar.transform.JarTransformer
-import com.tonicsystems.jarjar.transform.config.ClassDelete
-import com.tonicsystems.jarjar.transform.config.ClassRename
-import com.tonicsystems.jarjar.transform.jar.DefaultJarProcessor
-import sh.christian.aaraar.utils.deleteIfExists
-import java.nio.file.Files
+import com.tonicsystems.jarjar.transform.jar.JarProcessorChain
+import sh.christian.aaraar.shading.ClassFilesProcessor
+import sh.christian.aaraar.shading.ClassFilter
+import sh.christian.aaraar.shading.ClassShader
+import sh.christian.aaraar.shading.DirectoryFilter
 import java.nio.file.Path
 
 class Classes
@@ -21,29 +19,15 @@ private constructor(
     classRenames: Map<String, String>,
     classDeletes: Set<String>,
   ): Classes {
-    val inputJar = Files.createTempFile("classes", ".jar").deleteIfExists()
-    val outputJar = Files.createTempFile("classes", ".jar").deleteIfExists()
-    writeTo(inputJar)
-
-    val processor = DefaultJarProcessor().apply {
-      classRenames.forEach { (pattern, result) ->
-        addClassRename(ClassRename(pattern, result))
-      }
-      classDeletes.forEach { pattern ->
-        addClassDelete(ClassDelete(pattern))
-      }
+    val processor = JarProcessorChain().apply {
+      add(DirectoryFilter)
+      add(ClassFilter(classDeletes))
+      add(ClassShader(classRenames))
     }
 
-    val inputJarFile = inputJar.toFile()
-    val outputJarFile = outputJar.toFile()
-    val classpath = ClassPath(
-      /* root */ inputJarFile.parentFile,
-      /* entries */ arrayOf(inputJarFile.relativeTo(inputJarFile.parentFile))
-    )
+    val newArchiveEntries = ClassFilesProcessor(processor).process(archive)
 
-    JarTransformer(outputJarFile, processor).transform(classpath)
-
-    return from(outputJar)
+    return Classes(GenericJarArchive.from(newArchiveEntries))
   }
 
   fun writeTo(path: Path) {

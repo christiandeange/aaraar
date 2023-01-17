@@ -19,7 +19,13 @@ dependencies {
   implementation(libs.agp.tools.common)
   implementation(libs.agp.tools.manifestmerger)
   implementation(libs.agp.tools.sdk)
-  implementation(libs.jarjar)
+  implementation(libs.asm)
+  implementation(libs.jarjar) {
+    exclude(
+      group = libs.asm.get().module.group,
+      module = libs.asm.get().module.name,
+    )
+  }
   implementation(libs.kotlinxml)
 
   testImplementation(kotlin("test"))

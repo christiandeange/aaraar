@@ -13,6 +13,7 @@ agp-tools-common = { module = "com.android.tools:common", version.ref = "agp-too
 agp-tools-manifestmerger = { module = "com.android.tools.build:manifest-merger", version.ref = "agp-tools" }
 agp-tools-sdk = { module = "com.android.tools:sdk-common", version.ref = "agp-tools" }
 
+asm = { module = "org.ow2.asm:asm-commons", version = "9.4" }
 jarjar = { module = "org.anarres.jarjar:jarjar-core", version = "1.0.1" }
 
 kotlinxml = { module = "org.redundent:kotlin-xml-builder", version = "1.8.0" }

@@ -13,16 +13,17 @@ import java.util.jar.JarInputStream
 
 class GenericJarArchive
 private constructor(
-  private val entries: Map<String, ByteArray>,
-) : Mergeable<GenericJarArchive> {
+  private val archiveEntries: Map<String, ByteArray>,
+) : Mergeable<GenericJarArchive>, Map<String, ByteArray> by archiveEntries {
+
   override operator fun plus(others: List<GenericJarArchive>): GenericJarArchive {
     val duplicateKeysDifferentValues = mutableSetOf<String>()
 
     @OptIn(ExperimentalStdlibApi::class)
     val newEntries: Map<String, ByteArray> = buildMap {
-      putAll(this@GenericJarArchive.entries)
+      putAll(this@GenericJarArchive)
 
-      others.flatMap { it.entries.entries }.forEach { (name, contents) ->
+      others.flatMap { it.entries }.forEach { (name, contents) ->
         if (name in this) {
           when (val result = merge(name, this[name]!!, contents)) {
             is Conflict -> duplicateKeysDifferentValues += name
@@ -36,16 +37,7 @@ private constructor(
     }
 
     check(duplicateKeysDifferentValues.isEmpty()) {
-      val filesToShow = duplicateKeysDifferentValues.toList().take(5)
-      val moreFileCount = (duplicateKeysDifferentValues.count() - 5).coerceAtLeast(0)
-
-      val toStringList = if (moreFileCount > 0) {
-        filesToShow + "($moreFileCount more...)"
-      } else {
-        filesToShow
-      }
-
-      "Found differing files in jar archives when merging: $toStringList"
+      "Found differing files in jar archives when merging: $duplicateKeysDifferentValues"
     }
 
     return GenericJarArchive(newEntries)
@@ -77,6 +69,7 @@ private constructor(
           (contents1.decodeToString() + "\n" + contents2.decodeToString()).trim().toByteArray()
         )
       }
+
       else -> Conflict
     }
   }
@@ -88,7 +81,7 @@ private constructor(
   }
 
   companion object {
-    val NONE = GenericJarArchive(entries = emptyMap())
+    val NONE = GenericJarArchive(archiveEntries = emptyMap())
 
     fun from(path: Path): GenericJarArchive? {
       if (!Files.isRegularFile(path)) return null
@@ -102,6 +95,10 @@ private constructor(
 
         GenericJarArchive(indexedEntries)
       }
+    }
+
+    fun from(entries: Map<String, ByteArray>): GenericJarArchive {
+      return GenericJarArchive(entries.toMap())
     }
   }
 }
