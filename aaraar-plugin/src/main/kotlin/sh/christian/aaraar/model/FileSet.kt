@@ -10,7 +10,7 @@ import kotlin.streams.asSequence
 class FileSet
 private constructor(
   private val indexedFiles: Map<Path, ByteArray>,
-) : Mergeable<FileSet> {
+) : Mergeable<FileSet>, Map<Path, ByteArray> by indexedFiles {
   val fileSystem: FileSystem
     get() = indexedFiles.keys.firstOrNull()?.fileSystem ?: FileSystems.getDefault()
 

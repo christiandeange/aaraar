@@ -1,12 +1,17 @@
 package sh.christian.aaraar.model
 
+import com.tonicsystems.jarjar.transform.jar.JarProcessorChain
 import sh.christian.aaraar.model.GenericJarArchive.MergeResult.Conflict
 import sh.christian.aaraar.model.GenericJarArchive.MergeResult.MergedContents
 import sh.christian.aaraar.model.GenericJarArchive.MergeResult.Skip
+import sh.christian.aaraar.shading.ClassFilesProcessor
+import sh.christian.aaraar.shading.ClassFilter
+import sh.christian.aaraar.shading.ClassShader
 import sh.christian.aaraar.utils.createJar
 import sh.christian.aaraar.utils.deleteIfExists
 import sh.christian.aaraar.utils.div
 import sh.christian.aaraar.utils.mkdirs
+import java.io.InputStream
 import java.nio.file.Files
 import java.nio.file.Path
 import java.nio.file.attribute.FileTime
@@ -17,6 +22,20 @@ class GenericJarArchive
 private constructor(
   private val archiveEntries: Map<String, ByteArray>,
 ) : Mergeable<GenericJarArchive>, Map<String, ByteArray> by archiveEntries {
+
+  fun shaded(
+    classRenames: Map<String, String>,
+    classDeletes: Set<String>,
+  ): GenericJarArchive {
+    val processor = JarProcessorChain().apply {
+      add(ClassFilter(classDeletes))
+      add(ClassShader(classRenames))
+    }
+
+    val newArchiveEntries = ClassFilesProcessor(processor).process(archiveEntries)
+
+    return GenericJarArchive(newArchiveEntries)
+  }
 
   override operator fun plus(others: List<GenericJarArchive>): GenericJarArchive {
     val duplicateKeysDifferentValues = mutableSetOf<String>()
@@ -43,6 +62,14 @@ private constructor(
     }
 
     return GenericJarArchive(newEntries)
+  }
+
+  fun bytes(): ByteArray {
+    val tempJarFile = Files.createTempFile("out", ".jar").deleteIfExists()
+    writeTo(tempJarFile)
+    return Files.readAllBytes(tempJarFile).also {
+      tempJarFile.deleteIfExists()
+    }
   }
 
   fun writeTo(path: Path) {
@@ -102,10 +129,29 @@ private constructor(
       path: Path,
       keepMetaFiles: Boolean,
     ): GenericJarArchive? {
-      if (!Files.isRegularFile(path)) return null
+      return if (!Files.isRegularFile(path)) {
+        null
+      } else {
+        from(Files.newInputStream(path), keepMetaFiles)
+      }
+    }
 
-      val jarInputStream = JarInputStream(Files.newInputStream(path))
-      return jarInputStream.use { stream ->
+    fun from(
+      bytes: ByteArray,
+      keepMetaFiles: Boolean,
+    ): GenericJarArchive? {
+      return if (bytes.isEmpty()) {
+        null
+      } else {
+        from(bytes.inputStream(), keepMetaFiles)
+      }
+    }
+
+    private fun from(
+      byteStream: InputStream,
+      keepMetaFiles: Boolean,
+    ): GenericJarArchive {
+      return JarInputStream(byteStream).use { stream ->
         val indexedEntries = generateSequence { stream.nextJarEntry }
           .filterNot { it.isDirectory }
           .filter { !it.name.startsWith("META-INF/") || keepMetaFiles }
@@ -114,10 +160,6 @@ private constructor(
 
         GenericJarArchive(indexedEntries)
       }
-    }
-
-    fun from(entries: Map<String, ByteArray>): GenericJarArchive {
-      return GenericJarArchive(entries.toMap())
     }
   }
 }

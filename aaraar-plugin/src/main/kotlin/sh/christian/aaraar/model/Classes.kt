@@ -18,14 +18,7 @@ private constructor(
     classRenames: Map<String, String>,
     classDeletes: Set<String>,
   ): Classes {
-    val processor = JarProcessorChain().apply {
-      add(ClassFilter(classDeletes))
-      add(ClassShader(classRenames))
-    }
-
-    val newArchiveEntries = ClassFilesProcessor(processor).process(archive)
-
-    return Classes(GenericJarArchive.from(newArchiveEntries))
+    return Classes(archive.shaded(classRenames, classDeletes))
   }
 
   fun writeTo(path: Path) {

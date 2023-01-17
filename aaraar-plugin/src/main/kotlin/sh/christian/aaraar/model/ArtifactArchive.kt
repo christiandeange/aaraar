@@ -121,7 +121,7 @@ class AarArchive(
       rTxt = rTxt,
       publicTxt = publicTxt,
       assets = assets,
-      libs = libs,
+      libs = libs.shaded(classRenames, classDeletes),
       jni = jni,
       proguard = proguard,
       lintRules = lintRules,
