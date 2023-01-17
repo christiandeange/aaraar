@@ -7,7 +7,6 @@ import com.tonicsystems.jarjar.transform.jar.JarProcessor.Result.DISCARD
 import com.tonicsystems.jarjar.transform.jar.JarProcessor.Result.KEEP
 import com.tonicsystems.jarjar.util.ClassNameUtils
 import com.tonicsystems.jarjar.util.ClassNameUtils.EXT_CLASS
-import com.tonicsystems.jarjar.util.ClassNameUtils.pathToJavaName
 
 class ClassFilter(
   classDeletes: Set<String>,

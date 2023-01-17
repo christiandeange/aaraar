@@ -33,8 +33,11 @@ private constructor(
   }
 
   companion object {
-    fun from(path: Path): Classes {
-      return GenericJarArchive.from(path)
+    fun from(
+      path: Path,
+      keepMetaFiles: Boolean,
+    ): Classes {
+      return GenericJarArchive.from(path, keepMetaFiles)
         ?.let { archive -> Classes(archive) }
         ?: Classes(GenericJarArchive.NONE)
     }

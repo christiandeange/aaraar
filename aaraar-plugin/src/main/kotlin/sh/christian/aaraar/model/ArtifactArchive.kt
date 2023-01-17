@@ -32,14 +32,14 @@ sealed class ArtifactArchive {
     ): ArtifactArchive {
       return when (path.toFile().extension) {
         "jar" -> {
-          val classes = Classes.from(path)
+          val classes = Classes.from(path, environment.keepClassesMetaFiles)
           JarArchive(classes)
         }
 
         "aar" -> {
           path.toAbsolutePath().openJar { aarRoot ->
             val androidManifest = AndroidManifest.from(aarRoot.android_manifest)
-            val classes = Classes.from(aarRoot.classes_jar)
+            val classes = Classes.from(aarRoot.classes_jar, environment.keepClassesMetaFiles)
             val resources = Resources.from(
               aarRoot.res,
               androidManifest.packageName,

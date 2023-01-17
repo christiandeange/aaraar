@@ -83,13 +83,17 @@ private constructor(
   companion object {
     val NONE = GenericJarArchive(archiveEntries = emptyMap())
 
-    fun from(path: Path): GenericJarArchive? {
+    fun from(
+      path: Path,
+      keepMetaFiles: Boolean,
+    ): GenericJarArchive? {
       if (!Files.isRegularFile(path)) return null
 
       val jarInputStream = JarInputStream(Files.newInputStream(path))
       return jarInputStream.use { stream ->
         val indexedEntries = generateSequence { stream.nextJarEntry }
           .filterNot { it.isDirectory }
+          .filter { !it.name.startsWith("META-INF/") || keepMetaFiles }
           .map { it.name to stream.readAllBytes() }
           .toMap()
 

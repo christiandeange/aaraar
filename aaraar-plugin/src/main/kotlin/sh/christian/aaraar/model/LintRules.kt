@@ -16,7 +16,7 @@ private constructor(
 
   companion object {
     fun from(path: Path): LintRules {
-      return GenericJarArchive.from(path)
+      return GenericJarArchive.from(path, keepMetaFiles = true)
         ?.let { archive -> LintRules(archive) }
         ?: LintRules(GenericJarArchive.NONE)
     }

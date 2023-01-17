@@ -38,6 +38,9 @@ abstract class PackageAarTask : DefaultTask() {
   abstract val classDeletes: SetProperty<String>
 
   @get:Input
+  abstract val keepMetaFiles: Property<Boolean>
+
+  @get:Input
   @get:Optional
   abstract val androidAaptIgnore: Property<String>
 
@@ -48,14 +51,13 @@ abstract class PackageAarTask : DefaultTask() {
   fun packageAar() {
     val environment = Environment(
       androidAaptIgnore = androidAaptIgnore.get(),
+      keepClassesMetaFiles = keepMetaFiles.get(),
     )
 
     val inputAar = ArtifactArchive.from(inputAar.getPath(), environment) as AarArchive
     val dependencyArchives =
       embedClasspath.asFileTree.files
-        .asSequence()
         .map { ArtifactArchive.from(it.toPath(), environment) }
-        .toList()
 
     val mergedArchive = inputAar.mergeWith(dependencyArchives)
 

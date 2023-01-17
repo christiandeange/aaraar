@@ -78,6 +78,7 @@ class AarAarPlugin : Plugin<Project> {
           embedClasspath.from(variantEmbedClasspath)
           classRenames.set(aaraar.classRenames)
           classDeletes.set(aaraar.classDeletes)
+          keepMetaFiles.set(aaraar.keepMetaFiles)
           androidAaptIgnore.set(androidAaptIgnoreEnv)
           outputAar.set(outFile)
         }
