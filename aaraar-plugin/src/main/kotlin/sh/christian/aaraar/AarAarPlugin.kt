@@ -1,13 +1,19 @@
+@file:Suppress("UnstableApiUsage")
+
 package sh.christian.aaraar
 
 import com.android.SdkConstants.FD_OUTPUTS
 import com.android.build.api.artifact.SingleArtifact
+import com.android.build.api.attributes.BuildTypeAttr
 import com.android.build.api.dsl.LibraryExtension
 import com.android.build.api.variant.LibraryAndroidComponentsExtension
 import com.android.build.api.variant.Variant
 import org.gradle.api.Plugin
 import org.gradle.api.Project
+import org.gradle.api.artifacts.type.ArtifactTypeDefinition.ARTIFACT_TYPE_ATTRIBUTE
+import org.gradle.kotlin.dsl.add
 import org.gradle.kotlin.dsl.getByType
+import org.gradle.kotlin.dsl.named
 import org.gradle.kotlin.dsl.register
 import sh.christian.aaraar.utils.div
 
@@ -18,6 +24,13 @@ class AarAarPlugin : Plugin<Project> {
     project.pluginManager.withPlugin("com.android.library") {
       val android = project.extensions.getByType<LibraryExtension>()
       val androidComponents = project.extensions.getByType<LibraryAndroidComponentsExtension>()
+
+      project.dependencies.attributesSchema {
+        attribute(ARTIFACT_TYPE_ATTRIBUTE) {
+          compatibilityRules.add(ArtifactTypeCompatibilityDependencyRule::class)
+          disambiguationRules.add(ArtifactTypeDisambiguationDependencyRule::class)
+        }
+      }
 
       val aaraar = project.extensions.create("aaraar", AarAarExtension::class.java)
 
@@ -40,11 +53,17 @@ class AarAarPlugin : Plugin<Project> {
           extendsFrom(embed)
           variant.buildType?.let { buildType ->
             extendsFrom(project.configurations.getAt("${buildType}Embed"))
+            attributes {
+              attribute(BuildTypeAttr.ATTRIBUTE, project.objects.named(buildType))
+            }
           }
 
-          isTransitive = true
+          isTransitive = false
           isCanBeConsumed = false
           isCanBeResolved = true
+          attributes {
+            attribute(ARTIFACT_TYPE_ATTRIBUTE, MERGEABLE_ARTIFACT_TYPE)
+          }
         }
 
         val androidAaptIgnoreEnv =
