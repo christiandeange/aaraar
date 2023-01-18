@@ -49,7 +49,9 @@ class AarAarPlugin : Plugin<Project> {
       }
 
       androidComponents.onVariants { variant ->
-        val variantEmbedClasspath = project.configurations.create("${variant.name}EmbedClasspath") {
+        val variantEmbedClasspath = project.configurations.create(
+          variant.name(suffix = "EmbedClasspath")
+        ) {
           extendsFrom(embed)
           variant.buildType?.let { buildType ->
             extendsFrom(project.configurations.getAt("${buildType}Embed"))
@@ -66,6 +68,19 @@ class AarAarPlugin : Plugin<Project> {
           }
         }
 
+        val embedAar = project.configurations.create(variant.name(suffix = "EmbedAar")) {
+          isTransitive = true
+          isCanBeConsumed = true
+          isCanBeResolved = true
+
+          variant.buildType?.let { buildType ->
+            attributes {
+              attribute(BuildTypeAttr.ATTRIBUTE, project.objects.named(buildType))
+              attribute(ARTIFACT_TYPE_ATTRIBUTE, "fat-aar")
+            }
+          }
+        }
+
         val androidAaptIgnoreEnv =
           project.providers.environmentVariable("ANDROID_AAPT_IGNORE").orElse("")
 
@@ -73,7 +88,9 @@ class AarAarPlugin : Plugin<Project> {
         val fileName = "${project.name}-${variant.name}.aar"
         val outFile = project.buildDir / FD_OUTPUTS / "aaraar" / fileName
 
-        project.tasks.register<PackageAarTask>(variant.taskName("package", "Aar")) {
+        val packageVariantAar = project.tasks.register<PackageAarTask>(
+          variant.name("package", "Aar")
+        ) {
           inputAar.set(aar)
           embedClasspath.from(variantEmbedClasspath)
           classRenames.set(aaraar.classRenames)
@@ -82,11 +99,17 @@ class AarAarPlugin : Plugin<Project> {
           androidAaptIgnore.set(androidAaptIgnoreEnv)
           outputAar.set(outFile)
         }
+
+        project.artifacts {
+          add(embedAar.name, outFile) {
+            builtBy(packageVariantAar)
+          }
+        }
       }
     }
   }
 
-  private fun Variant.taskName(
+  private fun Variant.name(
     prefix: String = "",
     suffix: String = "",
   ): String {

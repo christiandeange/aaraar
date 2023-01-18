@@ -38,6 +38,22 @@ android {
   }
 }
 
+configurations {
+  uploadableArtifact
+}
+
+dependencies {
+  uploadableArtifact project(path: path, configuration: 'publishEmbedAar')
+}
+
+tasks.register("printPublishableAarPath") {
+  it.inputs.files configurations.named('uploadableArtifact')
+
+  doLast {
+    println("AAR to upload: ${inputs.files.files}")
+  }
+}
+
 dependencies {
   implementation 'org.jetbrains.kotlin:kotlin-stdlib:1.7.21'
 
