@@ -39,7 +39,7 @@ gradlePlugin {
   plugins {
     create("aaraar") {
       id = "sh.christian.aaraar"
-      implementationClass = "sh.christian.aaraar.AarAarPlugin"
+      implementationClass = "sh.christian.aaraar.gradle.AarAarPlugin"
     }
   }
 }

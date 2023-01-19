@@ -1,6 +1,6 @@
 @file:Suppress("UnstableApiUsage")
 
-package sh.christian.aaraar
+package sh.christian.aaraar.gradle
 
 import com.android.build.api.artifact.SingleArtifact
 import com.android.build.api.attributes.BuildTypeAttr

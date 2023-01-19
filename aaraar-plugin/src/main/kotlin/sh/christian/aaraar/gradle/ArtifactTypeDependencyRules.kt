@@ -1,4 +1,4 @@
-package sh.christian.aaraar
+package sh.christian.aaraar.gradle
 
 import org.gradle.api.attributes.AttributeCompatibilityRule
 import org.gradle.api.attributes.AttributeDisambiguationRule

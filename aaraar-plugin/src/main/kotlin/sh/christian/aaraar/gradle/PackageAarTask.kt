@@ -1,4 +1,4 @@
-package sh.christian.aaraar
+package sh.christian.aaraar.gradle
 
 import org.gradle.api.DefaultTask
 import org.gradle.api.file.ConfigurableFileCollection
@@ -15,6 +15,7 @@ import org.gradle.api.tasks.OutputFile
 import org.gradle.api.tasks.PathSensitive
 import org.gradle.api.tasks.PathSensitivity.RELATIVE
 import org.gradle.api.tasks.TaskAction
+import sh.christian.aaraar.Environment
 import sh.christian.aaraar.model.AarArchive
 import sh.christian.aaraar.model.ArtifactArchive
 import sh.christian.aaraar.utils.deleteIfExists
