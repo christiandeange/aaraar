@@ -11,6 +11,7 @@
                 <projects>
                   <project path="$PROJECT_DIR$/.." />
                   <project path="$PROJECT_DIR$/../aaraar-plugin" />
+                  <project path="$PROJECT_DIR$/../core" />
                 </projects>
               </build>
             </builds>
@@ -23,6 +24,7 @@
           <set>
             <option value="$PROJECT_DIR$/.." />
             <option value="$PROJECT_DIR$/../aaraar-plugin" />
+            <option value="$PROJECT_DIR$/../core" />
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/helper-library" />
             <option value="$PROJECT_DIR$/library" />

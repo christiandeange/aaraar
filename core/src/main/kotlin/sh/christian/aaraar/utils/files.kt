@@ -7,23 +7,23 @@ import java.nio.file.FileSystems
 import java.nio.file.Files
 import java.nio.file.Path
 
-internal operator fun File.div(path: String): File {
+operator fun File.div(path: String): File {
   return resolve(path)
 }
 
-internal operator fun Path.div(path: String): Path {
+operator fun Path.div(path: String): Path {
   return resolve(path)
 }
 
-internal operator fun FileSystem.div(path: String): Path {
+operator fun FileSystem.div(path: String): Path {
   return getPath(path)
 }
 
-internal fun Path.mkdirs(): Path {
+fun Path.mkdirs(): Path {
   return apply { parent?.let(Files::createDirectories) }
 }
 
-internal fun Path.deleteIfExists(): Path {
+fun Path.deleteIfExists(): Path {
   return apply { Files.deleteIfExists(this) }
 }
 

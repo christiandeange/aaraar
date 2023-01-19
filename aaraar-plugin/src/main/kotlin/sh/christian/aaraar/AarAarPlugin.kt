@@ -2,7 +2,6 @@
 
 package sh.christian.aaraar
 
-import com.android.SdkConstants.FD_OUTPUTS
 import com.android.build.api.artifact.SingleArtifact
 import com.android.build.api.attributes.BuildTypeAttr
 import com.android.build.api.dsl.LibraryExtension
@@ -86,7 +85,7 @@ class AarAarPlugin : Plugin<Project> {
 
         val aar = variant.artifacts.get(SingleArtifact.AAR)
         val fileName = "${project.name}-${variant.name}.aar"
-        val outFile = project.buildDir / FD_OUTPUTS / "aaraar" / fileName
+        val outFile = project.buildDir / "outputs" / "aaraar" / fileName
 
         val packageVariantAar = project.tasks.register<PackageAarTask>(
           variant.name("package", "Aar")
