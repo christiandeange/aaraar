@@ -5,12 +5,12 @@ import com.google.common.jimfs.Jimfs
 import java.io.Closeable
 import java.nio.file.Files
 import java.nio.file.Path
-import kotlin.streams.toList
+import kotlin.streams.asSequence
 
 class VirtualOutputContext : Closeable {
   private val fileSystem = Jimfs.newFileSystem(Configuration.unix())
 
-  val root = fileSystem.rootDirectories.first()
+  val root: Path = fileSystem.rootDirectories.first()
 
   fun withFile(block: VirtualOutputFileContext.() -> Unit) {
     val tempFile = Files.createTempFile(root, "test-file", ".tmp")
@@ -38,17 +38,28 @@ class VirtualOutputFileContext(val filePath: Path) {
 }
 
 class VirtualOutputDirectoryContext(val root: Path) {
-  fun files(): List<Path> {
-    return Files.walk(root).toList()
+  fun filePaths(): List<String> {
+    return Files.walk(root)
+      .asSequence()
+      .filter(Files::isRegularFile)
+      .map { it.toString() }
+      .toList()
+  }
+
+  fun files(): Map<String, String> {
+    return Files.walk(root)
+      .asSequence()
+      .filter(Files::isRegularFile)
+      .associate { root.relativize(it).toString() to Files.readString(it) }
   }
 }
 
-inline fun assert(block: VirtualOutputContext.() -> Unit) {
+inline fun withFileSystem(block: VirtualOutputContext.() -> Unit) {
   VirtualOutputContext().use {
     it.block()
   }
 }
 
-fun withFile(block: VirtualOutputFileContext.() -> Unit) = assert { withFile(block) }
+fun withFile(block: VirtualOutputFileContext.() -> Unit) = withFileSystem { withFile(block) }
 
-fun withDirectory(block: VirtualOutputDirectoryContext.() -> Unit) = assert { withDirectory(block) }
+fun withDirectory(block: VirtualOutputDirectoryContext.() -> Unit) = withFileSystem { withDirectory(block) }

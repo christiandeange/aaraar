@@ -55,6 +55,7 @@ private constructor(
     contents2: ByteArray,
   ): MergeResult {
     return when {
+      contents1.contentEquals(contents2) -> MergedContents(contents1)
       entry.substringAfterLast('.') == "jar" -> {
         val archive1 = GenericJarArchive.from(contents1, keepMetaFiles = true)!!
         val archive2 = GenericJarArchive.from(contents2, keepMetaFiles = true)!!
