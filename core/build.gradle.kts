@@ -26,6 +26,7 @@ dependencies {
   implementation(libs.kotlinxml)
 
   testImplementation(kotlin("test"))
+  testImplementation(libs.jimfs)
 }
 
 tasks.test {

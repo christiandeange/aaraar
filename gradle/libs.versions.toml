@@ -16,4 +16,6 @@ agp-tools-sdk = { module = "com.android.tools:sdk-common", version.ref = "agp-to
 asm = { module = "org.ow2.asm:asm-commons", version = "9.4" }
 jarjar = { module = "org.anarres.jarjar:jarjar-core", version = "1.0.1" }
 
+jimfs = { module = "com.google.jimfs:jimfs", version = "1.2" }
+
 kotlinxml = { module = "org.redundent:kotlin-xml-builder", version = "1.8.0" }

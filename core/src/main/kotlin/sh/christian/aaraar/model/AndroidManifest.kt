@@ -30,6 +30,7 @@ private constructor(
   override operator fun plus(others: List<AndroidManifest>): AndroidManifest {
     val mergeReport = newMerger(asTempFile(), StdLogger(Level.WARNING), APPLICATION)
       .withFeatures(Feature.NO_PLACEHOLDER_REPLACEMENT)
+      .withFeatures(Feature.REMOVE_TOOLS_DECLARATIONS)
       .apply {
         others.forEach { other ->
           addLibraryManifest(other.asTempFile())
