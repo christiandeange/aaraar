@@ -1,9 +1,6 @@
 package sh.christian.aaraar.model
 
 import com.tonicsystems.jarjar.transform.jar.JarProcessorChain
-import sh.christian.aaraar.model.MergeResult.Conflict
-import sh.christian.aaraar.model.MergeResult.MergedContents
-import sh.christian.aaraar.model.MergeResult.Skip
 import sh.christian.aaraar.shading.ClassFilesProcessor
 import sh.christian.aaraar.shading.ClassFilter
 import sh.christian.aaraar.shading.ClassShader
@@ -38,30 +35,7 @@ private constructor(
   }
 
   override operator fun plus(others: List<GenericJarArchive>): GenericJarArchive {
-    val duplicateKeysDifferentValues = mutableSetOf<String>()
-
-    @OptIn(ExperimentalStdlibApi::class)
-    val newEntries: Map<String, ByteArray> = buildMap {
-      putAll(this@GenericJarArchive)
-
-      others.flatMap { it.entries }.forEach { (name, contents) ->
-        if (name in this) {
-          when (val result = merge(name, this[name]!!, contents)) {
-            is Conflict -> duplicateKeysDifferentValues += name
-            is MergedContents -> put(name, result.contents)
-            is Skip -> remove(name)
-          }
-        } else {
-          put(name, contents)
-        }
-      }
-    }
-
-    check(duplicateKeysDifferentValues.isEmpty()) {
-      "Found differing files in jar archives when merging: $duplicateKeysDifferentValues"
-    }
-
-    return GenericJarArchive(newEntries)
+    return GenericJarArchive(mergeContents(this, others))
   }
 
   fun bytes(): ByteArray {
@@ -93,23 +67,6 @@ private constructor(
     }
 
     Files.move(tempClassesJar, path)
-  }
-
-  private fun merge(
-    entry: String,
-    contents1: ByteArray,
-    contents2: ByteArray,
-  ): MergeResult {
-    return when {
-      contents1.contentEquals(contents2) -> MergedContents(contents1)
-      entry.startsWith("META-INF/services/") -> {
-        MergedContents(
-          (contents1.decodeToString() + "\n" + contents2.decodeToString()).trim().encodeToByteArray()
-        )
-      }
-
-      else -> Conflict
-    }
   }
 
   companion object {
