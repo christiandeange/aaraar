@@ -10,6 +10,7 @@ import com.android.resources.ResourceConstants.FD_RES_VALUES
 import com.android.resources.ResourceConstants.RES_QUALIFIER_SEP
 import com.android.utils.StdLogger
 import com.android.utils.StdLogger.Level
+import org.redundent.kotlin.xml.PrintOptions
 import org.redundent.kotlin.xml.xml
 import sh.christian.aaraar.utils.toNode
 import java.nio.file.Files
@@ -56,7 +57,7 @@ private constructor(
           "$FD_RES_VALUES$RES_QUALIFIER_SEP$qualifiers/$FD_RES_VALUES.xml"
         }
 
-        put(path, mergedResourceValues.toString().toByteArray())
+        put(path, mergedResourceValues.toString(RESOURCE_VALUE_PRINT_OPTIONS).toByteArray())
       }
     }
 
@@ -102,6 +103,8 @@ private constructor(
   }
 
   companion object {
+    private val RESOURCE_VALUE_PRINT_OPTIONS = PrintOptions(singleLineTextElements = true)
+
     fun from(
       path: Path,
       packageName: String,
