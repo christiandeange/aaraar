@@ -10,13 +10,18 @@ import com.android.build.api.variant.Variant
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.artifacts.type.ArtifactTypeDefinition.ARTIFACT_TYPE_ATTRIBUTE
+import org.gradle.api.component.SoftwareComponentFactory
 import org.gradle.kotlin.dsl.add
 import org.gradle.kotlin.dsl.getByType
 import org.gradle.kotlin.dsl.named
 import org.gradle.kotlin.dsl.register
 import sh.christian.aaraar.utils.div
+import javax.inject.Inject
 
-class AarAarPlugin : Plugin<Project> {
+class AarAarPlugin
+@Inject constructor(
+  private val softwareComponentFactory: SoftwareComponentFactory,
+) : Plugin<Project> {
   override fun apply(target: Project) {
     val project = target
 
@@ -95,6 +100,16 @@ class AarAarPlugin : Plugin<Project> {
         project.artifacts {
           add(embedAarConfiguration.name, outFile) {
             builtBy(packageVariantAar)
+          }
+        }
+
+        with(softwareComponentFactory.adhoc(variant.name(suffix = "EmbedAar"))) {
+          project.components.add(this)
+          addVariantsFromConfiguration(embedAarConfiguration) {
+            mapToMavenScope("runtime")
+          }
+          addVariantsFromConfiguration(variant.runtimeConfiguration) {
+            mapToMavenScope("runtime")
           }
         }
       }
