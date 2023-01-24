@@ -2,6 +2,7 @@
 agp = "7.3.1"
 agp-tools = "30.3.1"
 kotlin = "1.8.0"
+maven-publish = "0.23.2"
 
 [plugins]
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
@@ -19,3 +20,5 @@ jarjar = { module = "org.anarres.jarjar:jarjar-core", version = "1.0.1" }
 jimfs = { module = "com.google.jimfs:jimfs", version = "1.2" }
 
 kotlinxml = { module = "org.redundent:kotlin-xml-builder", version = "1.8.0" }
+
+maven-publish = { module = "com.vanniktech:gradle-maven-publish-plugin", version.ref = "maven-publish" }

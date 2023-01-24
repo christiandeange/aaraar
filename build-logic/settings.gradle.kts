@@ -1,4 +1,4 @@
-rootProject.name = "aaraar"
+rootProject.name = "build-logic"
 
 pluginManagement {
   repositories {
@@ -10,13 +10,14 @@ pluginManagement {
 
 @Suppress("UnstableApiUsage")
 dependencyResolutionManagement {
+  versionCatalogs {
+    create("libs") {
+      from(files("../gradle/libs.versions.toml"))
+    }
+  }
+
   repositories {
     google()
     mavenCentral()
   }
 }
-
-include(":core")
-include(":gradle-plugin")
-
-includeBuild("build-logic")

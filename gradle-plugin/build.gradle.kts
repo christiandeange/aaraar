@@ -6,11 +6,11 @@ plugins {
   alias(plugins.kotlin.jvm)
   `java-gradle-plugin`
   `kotlin-dsl`
-  `maven-publish`
+  id("aaraar-publish")
 }
 
 group = "sh.christian.aaraar"
-version = "1.0-SNAPSHOT"
+version = "0.0.1-SNAPSHOT"
 
 dependencies {
   implementation(project(":core"))
@@ -42,4 +42,10 @@ gradlePlugin {
       implementationClass = "sh.christian.aaraar.gradle.AarAarPlugin"
     }
   }
+}
+
+`aaraar-publish` {
+  group.set("sh.christian.aaraar")
+  artifact.set("gradle-plugin")
+  version.set("0.0.1-SNAPSHOT")
 }

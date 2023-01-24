@@ -5,11 +5,11 @@ plugins {
 
   alias(plugins.kotlin.jvm)
   `kotlin-dsl`
-  `maven-publish`
+  id("aaraar-publish")
 }
 
 group = "sh.christian.aaraar"
-version = "1.0-SNAPSHOT"
+version = "0.0.1-SNAPSHOT"
 
 dependencies {
   implementation(platform(kotlin("bom")))
@@ -48,4 +48,10 @@ kotlin {
   }
 
   jvmToolchain(11)
+}
+
+`aaraar-publish` {
+  group.set("sh.christian.aaraar")
+  artifact.set("core")
+  version.set("0.0.1-SNAPSHOT")
 }

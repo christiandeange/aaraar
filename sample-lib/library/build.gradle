@@ -1,7 +1,7 @@
 plugins {
   id 'com.android.library'
   id 'org.jetbrains.kotlin.android'
-  id 'sh.christian.aaraar'
+  id 'sh.christian.aaraar' version '0.0.1-SNAPSHOT'
 }
 
 android {
@@ -55,7 +55,7 @@ tasks.register("printPublishableAarPath") {
 }
 
 dependencies {
-  implementation 'org.jetbrains.kotlin:kotlin-stdlib:1.7.21'
+  implementation 'org.jetbrains.kotlin:kotlin-stdlib:1.8.0'
 
   implementation project(':helper-library')
   publishEmbed project(':helper-library')

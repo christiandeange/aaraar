@@ -29,7 +29,9 @@ aaraar {
 <summary>Kotlin DSL</summary>
 
 ```kotlin
-apply plugin: "sh.christian.aaraar"
+plugins {
+  id("sh.christian.aaraar") version '0.0.1-SNAPSHOT'
+}
 
 dependencies {
   embed(project(":lib-a"))
