@@ -67,17 +67,10 @@ class AarAarPlugin : Plugin<Project> {
           }
         }
 
-        val embedAar = project.configurations.create(variant.name(suffix = "EmbedAar")) {
+        val embedAarConfiguration = project.configurations.create(variant.name(suffix = "EmbedAar")) {
           isTransitive = true
           isCanBeConsumed = true
           isCanBeResolved = true
-
-          variant.buildType?.let { buildType ->
-            attributes {
-              attribute(BuildTypeAttr.ATTRIBUTE, project.objects.named(buildType))
-              attribute(ARTIFACT_TYPE_ATTRIBUTE, "fat-aar")
-            }
-          }
         }
 
         val androidAaptIgnoreEnv =
@@ -100,7 +93,7 @@ class AarAarPlugin : Plugin<Project> {
         }
 
         project.artifacts {
-          add(embedAar.name, outFile) {
+          add(embedAarConfiguration.name, outFile) {
             builtBy(packageVariantAar)
           }
         }
