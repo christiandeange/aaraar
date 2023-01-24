@@ -102,8 +102,6 @@ private constructor(
   ): MergeResult {
     return when {
       contents1.contentEquals(contents2) -> MergedContents(contents1)
-      entry.substringAfterLast('/') == "module-info.class" -> Skip
-      entry.substringAfterLast('.') == "pro" -> Skip
       entry.startsWith("META-INF/services/") -> {
         MergedContents(
           (contents1.decodeToString() + "\n" + contents2.decodeToString()).trim().encodeToByteArray()
