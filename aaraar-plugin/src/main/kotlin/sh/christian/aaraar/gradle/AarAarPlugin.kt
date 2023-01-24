@@ -105,6 +105,10 @@ class AarAarPlugin
 
         with(softwareComponentFactory.adhoc(variant.name(suffix = "EmbedAar"))) {
           project.components.add(this)
+
+          addVariantsFromConfiguration(project.configurations.getAt(variant.name(suffix = "ApiDependenciesMetadata"))) {
+            mapToMavenScope("compile")
+          }
           addVariantsFromConfiguration(embedAarConfiguration) {
             mapToMavenScope("runtime")
           }
