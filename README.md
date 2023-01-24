@@ -30,7 +30,7 @@ aaraar {
 
 ```kotlin
 plugins {
-  id("sh.christian.aaraar") version '0.0.1-SNAPSHOT'
+  id("sh.christian.aaraar") version '0.0.1'
 }
 
 dependencies {
