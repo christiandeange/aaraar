@@ -106,7 +106,7 @@ private constructor(
       entry.substringAfterLast('.') == "pro" -> Skip
       entry.startsWith("META-INF/services/") -> {
         MergedContents(
-          (contents1.decodeToString() + "\n" + contents2.decodeToString()).trim().toByteArray()
+          (contents1.decodeToString() + "\n" + contents2.decodeToString()).trim().encodeToByteArray()
         )
       }
 
