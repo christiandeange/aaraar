@@ -8,9 +8,6 @@ plugins {
   id("aaraar-publish")
 }
 
-group = "sh.christian.aaraar"
-version = "0.0.2-SNAPSHOT"
-
 dependencies {
   implementation(platform(kotlin("bom")))
   implementation(libs.agp.layoutlib)
@@ -48,10 +45,4 @@ kotlin {
   }
 
   jvmToolchain(11)
-}
-
-`aaraar-publish` {
-  group.set("sh.christian.aaraar")
-  artifact.set("core")
-  version.set("0.0.2-SNAPSHOT")
 }

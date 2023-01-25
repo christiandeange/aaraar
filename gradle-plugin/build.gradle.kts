@@ -9,9 +9,6 @@ plugins {
   id("aaraar-publish")
 }
 
-group = "sh.christian.aaraar"
-version = "0.0.2-SNAPSHOT"
-
 dependencies {
   implementation(project(":core"))
 
@@ -42,10 +39,4 @@ gradlePlugin {
       implementationClass = "sh.christian.aaraar.gradle.AarAarPlugin"
     }
   }
-}
-
-`aaraar-publish` {
-  group.set("sh.christian.aaraar")
-  artifact.set("gradle-plugin")
-  version.set("0.0.2-SNAPSHOT")
 }

@@ -7,20 +7,29 @@ import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.apply
 import org.gradle.kotlin.dsl.configure
-import org.gradle.kotlin.dsl.create
-import org.gradle.kotlin.dsl.getByType
 
 @Suppress("UnstableApiUsage")
 class PublishingPlugin : Plugin<Project> {
   override fun apply(target: Project) {
+    val groupId = target.stringProperty("POM_GROUP_ID")
+    val artifactId = target.path.trimStart(':').replace(':', '-')
+    val version = target.stringProperty("POM_VERSION")
+
+    target.group = groupId
+    target.version = version
+
     target.plugins.apply(MavenPublishPlugin::class)
 
-    val extension = target.extensions.create<PublishingExtension>("aaraar-publish")
-
     target.extensions.configure<MavenPublishBaseExtension> {
+      coordinates(
+        groupId = groupId,
+        artifactId = artifactId,
+        version = version,
+      )
+
       pom {
-        name.set("AarAar")
-        description.set("A plugin for creating a merged aar file.")
+        name.set(target.stringProperty("POM_NAME"))
+        description.set(target.stringProperty("POM_DESCRIPTION"))
         inceptionYear.set("2023")
         url.set("https://github.com/christiandeange/aaraar")
 
@@ -50,15 +59,9 @@ class PublishingPlugin : Plugin<Project> {
       publishToMavenCentral(SonatypeHost.S01)
       signAllPublications()
     }
+  }
 
-    target.afterEvaluate {
-      target.extensions.configure<MavenPublishBaseExtension> {
-        coordinates(
-          groupId = extension.group.get(),
-          artifactId = extension.artifact.get(),
-          version = extension.version.get(),
-        )
-      }
-    }
+  private fun Project.stringProperty(name: String): String {
+    return property(name) as String
   }
 }
