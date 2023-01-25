@@ -1,36 +1,16 @@
 # aaraar
 
-A plugin for creating a merged "fat" aar file.
+A plugin for creating a merged aar file.
 
 Work in progress.
 
 ### Usage
 
-<details open>
-<summary>Groovy</summary>
-
-```groovy
-apply plugin: 'sh.christian.aaraar'
-
-dependencies {
-  embed project(':lib-a')
-}
-
-aaraar {
-  rename 'com.example.dep.**', 'shaded.com.example.internal.@1'
-  delete 'com.example.debug.**'
-}
-```
-</details>
-
----
-
-<details>
-<summary>Kotlin DSL</summary>
-
 ```kotlin
+// build.gradle[.kts]
+
 plugins {
-  id("sh.christian.aaraar") version '0.0.1'
+  id("sh.christian.aaraar") version "0.0.1"
 }
 
 dependencies {
@@ -38,10 +18,7 @@ dependencies {
 }
 
 aaraar {
-  rename("com.example.dep.**", "shaded.com.example.internal.@1")
-  delete("com.example.debug.**")
+  rename("com.external.**", "shaded.com.external.@1")
+  delete("com.internal.debug.**")
 }
 ```
-</details>
-
----
