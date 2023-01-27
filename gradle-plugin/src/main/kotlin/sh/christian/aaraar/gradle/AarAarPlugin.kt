@@ -22,30 +22,28 @@ class AarAarPlugin
 @Inject constructor(
   private val softwareComponentFactory: SoftwareComponentFactory,
 ) : Plugin<Project> {
-  override fun apply(target: Project) {
-    val project = target
+  override fun apply(target: Project) = with(target) {
+    extensions.create("aaraar", AarAarExtension::class.java)
 
-    val aaraar = project.extensions.create("aaraar", AarAarExtension::class.java)
+    pluginManager.withPlugin("com.android.library") {
+      val android = extensions.getByType<LibraryExtension>()
+      val androidComponents = extensions.getByType<LibraryAndroidComponentsExtension>()
 
-    project.pluginManager.withPlugin("com.android.library") {
-      val android = project.extensions.getByType<LibraryExtension>()
-      val androidComponents = project.extensions.getByType<LibraryAndroidComponentsExtension>()
-
-      project.dependencies.attributesSchema {
+      dependencies.attributesSchema {
         attribute(ARTIFACT_TYPE_ATTRIBUTE) {
           compatibilityRules.add(ArtifactTypeCompatibilityDependencyRule::class)
           disambiguationRules.add(ArtifactTypeDisambiguationDependencyRule::class)
         }
       }
 
-      val embed = project.configurations.create("embed") {
+      configurations.create("embed") {
         isTransitive = false
         isCanBeConsumed = true
         isCanBeResolved = false
       }
 
       android.buildTypes.configureEach {
-        project.configurations.create("${name}Embed") {
+        configurations.create("${name}Embed") {
           isTransitive = false
           isCanBeConsumed = true
           isCanBeResolved = false
@@ -53,69 +51,70 @@ class AarAarPlugin
       }
 
       androidComponents.onVariants { variant ->
-        val variantEmbedClasspath = project.configurations.create(
-          variant.name(suffix = "EmbedClasspath")
-        ) {
-          extendsFrom(embed)
-          variant.buildType?.let { buildType ->
-            extendsFrom(project.configurations.getAt("${buildType}Embed"))
-            attributes {
-              attribute(BuildTypeAttr.ATTRIBUTE, project.objects.named(buildType))
-            }
-          }
+        applyPluginToVariant(variant)
+      }
+    }
+  }
 
-          isTransitive = false
-          isCanBeConsumed = false
-          isCanBeResolved = true
-          attributes {
-            attribute(ARTIFACT_TYPE_ATTRIBUTE, MERGEABLE_ARTIFACT_TYPE)
-          }
+  private fun Project.applyPluginToVariant(variant: Variant) {
+    val variantEmbedClasspath = configurations.create(variant.name(suffix = "EmbedClasspath")) {
+      extendsFrom(configurations.getAt("embed"))
+      variant.buildType?.let { buildType ->
+        extendsFrom(configurations.getAt("${buildType}Embed"))
+        attributes {
+          attribute(BuildTypeAttr.ATTRIBUTE, objects.named(buildType))
         }
+      }
 
-        val embedAarConfiguration = project.configurations.create(variant.name(suffix = "EmbedAar")) {
-          isTransitive = true
-          isCanBeConsumed = true
-          isCanBeResolved = true
-        }
+      isTransitive = false
+      isCanBeConsumed = false
+      isCanBeResolved = true
+      attributes {
+        attribute(ARTIFACT_TYPE_ATTRIBUTE, MERGEABLE_ARTIFACT_TYPE)
+      }
+    }
 
-        val androidAaptIgnoreEnv =
-          project.providers.environmentVariable("ANDROID_AAPT_IGNORE").orElse("")
+    val embedAarConfiguration = configurations.create(variant.name(suffix = "EmbedAar")) {
+      isTransitive = true
+      isCanBeConsumed = true
+      isCanBeResolved = true
+    }
 
-        val aar = variant.artifacts.get(SingleArtifact.AAR)
-        val fileName = "${project.name}-${variant.name}.aar"
-        val outFile = project.buildDir / "outputs" / "aaraar" / fileName
+    val aaraar = extensions.getByType<AarAarExtension>()
+    val androidAaptIgnoreEnv =
+      providers.environmentVariable("ANDROID_AAPT_IGNORE").orElse("")
 
-        val packageVariantAar = project.tasks.register<PackageAarTask>(
-          variant.name("package", "Aar")
-        ) {
-          inputAar.set(aar)
-          embedClasspath.from(variantEmbedClasspath)
-          classRenames.set(aaraar.classRenames)
-          classDeletes.set(aaraar.classDeletes)
-          keepMetaFiles.set(aaraar.keepMetaFiles)
-          androidAaptIgnore.set(androidAaptIgnoreEnv)
-          outputAar.set(outFile)
-        }
+    val aar = variant.artifacts.get(SingleArtifact.AAR)
+    val fileName = "${this@applyPluginToVariant.name}-${variant.name}.aar"
+    val outFile = buildDir / "outputs" / "aaraar" / fileName
 
-        project.artifacts {
-          add(embedAarConfiguration.name, outFile) {
-            builtBy(packageVariantAar)
-          }
-        }
+    val packageVariantAar = tasks.register<PackageAarTask>(variant.name("package", "Aar")) {
+      inputAar.set(aar)
+      embedClasspath.from(variantEmbedClasspath)
+      classRenames.set(aaraar.classRenames)
+      classDeletes.set(aaraar.classDeletes)
+      keepMetaFiles.set(aaraar.keepMetaFiles)
+      androidAaptIgnore.set(androidAaptIgnoreEnv)
+      outputAar.set(outFile)
+    }
 
-        with(softwareComponentFactory.adhoc(variant.name(suffix = "EmbedAar"))) {
-          project.components.add(this)
+    artifacts {
+      add(embedAarConfiguration.name, outFile) {
+        builtBy(packageVariantAar)
+      }
+    }
 
-          addVariantsFromConfiguration(project.configurations.getAt(variant.name(suffix = "ApiDependenciesMetadata"))) {
-            mapToMavenScope("compile")
-          }
-          addVariantsFromConfiguration(embedAarConfiguration) {
-            mapToMavenScope("runtime")
-          }
-          addVariantsFromConfiguration(variant.runtimeConfiguration) {
-            mapToMavenScope("runtime")
-          }
-        }
+    with(softwareComponentFactory.adhoc(variant.name(suffix = "EmbedAar"))) {
+      components.add(this)
+
+      addVariantsFromConfiguration(configurations.getAt(variant.name(suffix = "ApiDependenciesMetadata"))) {
+        mapToMavenScope("compile")
+      }
+      addVariantsFromConfiguration(embedAarConfiguration) {
+        mapToMavenScope("runtime")
+      }
+      addVariantsFromConfiguration(variant.runtimeConfiguration) {
+        mapToMavenScope("runtime")
       }
     }
   }
