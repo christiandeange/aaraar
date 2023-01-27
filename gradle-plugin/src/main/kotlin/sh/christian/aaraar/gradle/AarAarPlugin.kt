@@ -25,6 +25,8 @@ class AarAarPlugin
   override fun apply(target: Project) {
     val project = target
 
+    val aaraar = project.extensions.create("aaraar", AarAarExtension::class.java)
+
     project.pluginManager.withPlugin("com.android.library") {
       val android = project.extensions.getByType<LibraryExtension>()
       val androidComponents = project.extensions.getByType<LibraryAndroidComponentsExtension>()
@@ -35,8 +37,6 @@ class AarAarPlugin
           disambiguationRules.add(ArtifactTypeDisambiguationDependencyRule::class)
         }
       }
-
-      val aaraar = project.extensions.create("aaraar", AarAarExtension::class.java)
 
       val embed = project.configurations.create("embed") {
         isTransitive = false
