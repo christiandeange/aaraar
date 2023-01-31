@@ -18,6 +18,11 @@ import org.gradle.kotlin.dsl.register
 import sh.christian.aaraar.utils.div
 import javax.inject.Inject
 
+/**
+ * A plugin for creating a merged aar file. Configurable via the `aaraar` extension.
+ * @see AarAarExtension
+ */
+@Suppress("unused")
 class AarAarPlugin
 @Inject constructor(
   private val softwareComponentFactory: SoftwareComponentFactory,
