@@ -54,11 +54,18 @@ abstract class PackageAarTask : DefaultTask() {
       androidAaptIgnore = androidAaptIgnore.get(),
       keepClassesMetaFiles = keepMetaFiles.get(),
     )
+    logger.info("Packaging environment: $environment")
 
-    val inputAar = ArtifactArchive.from(inputAar.getPath(), environment) as AarArchive
+    val inputAarPath = inputAar.getPath()
+    val inputAar = ArtifactArchive.from(inputAarPath, environment) as AarArchive
+    logger.info("Merge base AAR: $inputAarPath")
+
     val dependencyArchives =
       embedClasspath.asFileTree.files
-        .map { ArtifactArchive.from(it.toPath(), environment) }
+        .map {
+          logger.info("  From ${it.toPath()}")
+          ArtifactArchive.from(it.toPath(), environment)
+        }
 
     val mergedArchive = inputAar.mergeWith(dependencyArchives)
 
@@ -68,10 +75,14 @@ abstract class PackageAarTask : DefaultTask() {
     val finalArchive = if (classRenames.isEmpty() && classDeletes.isEmpty()) {
       mergedArchive
     } else {
+      logger.info("Shading input AAR with rules:")
+      classRenames.forEach { (pattern, result) -> logger.info("  Rename '$pattern' → '$result'") }
+      classDeletes.forEach { target -> logger.info("  Delete '$target'") }
       mergedArchive.shaded(classRenames, classDeletes)
     }
 
     val outputPath = outputAar.getPath().deleteIfExists()
+    logger.info("Merge AAR into: $outputPath")
     finalArchive.writeTo(path = outputPath)
   }
 
