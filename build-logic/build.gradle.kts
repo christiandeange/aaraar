@@ -10,6 +10,10 @@ dependencies {
   implementation(libs.maven.publish)
 }
 
+kotlinDslPluginOptions {
+  jvmTarget.set("11")
+}
+
 gradlePlugin {
   plugins {
     create("build-logic") {

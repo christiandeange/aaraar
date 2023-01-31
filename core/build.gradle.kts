@@ -36,8 +36,8 @@ tasks.test {
   }
 }
 
-tasks.withType<KotlinCompile> {
-  kotlinOptions.jvmTarget = "11"
+kotlinDslPluginOptions {
+  jvmTarget.set("11")
 }
 
 kotlin {
@@ -48,6 +48,4 @@ kotlin {
       }
     }
   }
-
-  jvmToolchain(11)
 }
