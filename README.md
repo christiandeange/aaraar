@@ -10,7 +10,7 @@ Work in progress.
 // build.gradle[.kts]
 
 plugins {
-  id("sh.christian.aaraar") version "0.0.2"
+  id("sh.christian.aaraar") version "0.0.3"
 }
 
 dependencies {
