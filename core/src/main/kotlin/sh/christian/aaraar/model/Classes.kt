@@ -10,6 +10,10 @@ private constructor(
     return Classes(archive + others.map { it.archive })
   }
 
+  operator fun plus(libs: Libs): Classes {
+    return Classes(archive + libs.jars())
+  }
+
   fun shaded(
     classRenames: Map<String, String>,
     classDeletes: Set<String>,

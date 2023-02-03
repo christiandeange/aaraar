@@ -15,7 +15,7 @@ private constructor(
     classDeletes: Set<String>,
   ): Libs {
     val shadedFiles = files.mapValues { (path, contents) ->
-      if (path.toString().substringAfterLast('.') == "jar") {
+      if (path.substringAfterLast('.') == "jar") {
         GenericJarArchive.from(contents, keepMetaFiles = true)
           ?.shaded(classRenames, classDeletes)
           ?.bytes()
@@ -28,15 +28,27 @@ private constructor(
     return Libs(FileSet.from(shadedFiles))
   }
 
+  fun jars(): List<GenericJarArchive> {
+    return files.mapNotNull { (path, contents) ->
+      if (path.substringAfterLast('.') == "jar") {
+        GenericJarArchive.from(contents, keepMetaFiles = true)
+      } else {
+        null
+      }
+    }
+  }
+
   fun writeTo(path: Path) {
     files.writeTo(path)
   }
 
   companion object {
+    val EMPTY = Libs(files = FileSet.EMPTY)
+
     fun from(path: Path): Libs {
       return FileSet.fromFileTree(path)
         ?.let { files -> Libs(files) }
-        ?: Libs(files = FileSet.EMPTY)
+        ?: EMPTY
     }
   }
 }
