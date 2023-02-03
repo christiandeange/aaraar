@@ -1,9 +1,5 @@
 package sh.christian.aaraar.model
 
-import com.tonicsystems.jarjar.transform.jar.JarProcessorChain
-import sh.christian.aaraar.shading.ClassFilesProcessor
-import sh.christian.aaraar.shading.ClassFilter
-import sh.christian.aaraar.shading.ClassShader
 import java.nio.file.Path
 
 class Classes

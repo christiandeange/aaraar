@@ -12,6 +12,7 @@ import javax.inject.Inject
 /**
  * Configures behaviour of [AarAarPlugin]. Accessible via the `aaraar` extension.
  */
+@Suppress("UnnecessaryAbstractClass")
 abstract class AarAarExtension
 @Inject constructor(
   objects: ObjectFactory,

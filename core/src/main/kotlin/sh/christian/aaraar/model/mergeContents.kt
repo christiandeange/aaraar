@@ -4,12 +4,6 @@ import sh.christian.aaraar.model.MergeResult.Conflict
 import sh.christian.aaraar.model.MergeResult.MergedContents
 import sh.christian.aaraar.model.MergeResult.Skip
 
-internal sealed class MergeResult {
-  object Skip : MergeResult()
-  object Conflict : MergeResult()
-  class MergedContents(val contents: ByteArray) : MergeResult()
-}
-
 internal fun mergeContents(
   original: Map<String, ByteArray>,
   dependencies: List<Map<String, ByteArray>>,

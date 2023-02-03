@@ -1,7 +1,9 @@
 package sh.christian.aaraar.model
 
 import com.android.ide.common.rendering.api.ResourceNamespace.RES_AUTO
-import com.android.ide.common.resources.DataFile.FileType.*
+import com.android.ide.common.resources.DataFile.FileType.GENERATED_FILES
+import com.android.ide.common.resources.DataFile.FileType.SINGLE_FILE
+import com.android.ide.common.resources.DataFile.FileType.XML_VALUES
 import com.android.ide.common.resources.MergeConsumer
 import com.android.ide.common.resources.ResourceMerger
 import com.android.ide.common.resources.ResourceMergerItem

@@ -2,7 +2,8 @@ package sh.christian.aaraar.shading
 
 import com.tonicsystems.jarjar.transform.Transformable
 import com.tonicsystems.jarjar.transform.jar.JarProcessor
-import com.tonicsystems.jarjar.transform.jar.JarProcessor.Result.*
+import com.tonicsystems.jarjar.transform.jar.JarProcessor.Result.DISCARD
+import com.tonicsystems.jarjar.transform.jar.JarProcessor.Result.KEEP
 
 class ClassFilesProcessor(
   private val jarProcessor: JarProcessor,
