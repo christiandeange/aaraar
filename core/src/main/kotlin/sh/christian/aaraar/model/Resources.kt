@@ -10,9 +10,12 @@ import com.android.resources.ResourceConstants.FD_RES_VALUES
 import com.android.resources.ResourceConstants.RES_QUALIFIER_SEP
 import com.android.utils.StdLogger
 import com.android.utils.StdLogger.Level
+import org.redundent.kotlin.xml.Namespace
 import org.redundent.kotlin.xml.PrintOptions
+import org.redundent.kotlin.xml.parse
 import org.redundent.kotlin.xml.xml
 import sh.christian.aaraar.utils.toNode
+import java.io.File
 import java.nio.file.Files
 import java.nio.file.Path
 import javax.xml.parsers.DocumentBuilderFactory
@@ -46,6 +49,12 @@ private constructor(
 
       consumer.values.forEach { (qualifiers, items) ->
         val mergedResourceValues = xml("resources") {
+          consumer.namespaces
+            .filter { it.key.second == qualifiers }
+            .flatMap { it.value }
+            .toSet()
+            .forEach { namespace -> namespace(namespace) }
+
           items.forEach { item ->
             addNode(item.value.toNode())
           }
@@ -72,6 +81,7 @@ private constructor(
     val files = mutableListOf<ResourceMergerItem>()
     val generated = mutableListOf<ResourceMergerItem>()
     val values = mutableMapOf<String, MutableList<ResourceMergerItem>>()
+    val namespaces = mutableMapOf<Pair<File, String>, Set<Namespace>>()
 
     lateinit var factory: DocumentBuilderFactory
 
@@ -83,7 +93,13 @@ private constructor(
       when (item.sourceType!!) {
         SINGLE_FILE -> files.add(item)
         GENERATED_FILES -> generated.add(item)
-        XML_VALUES -> values.getOrPut(item.qualifiers) { mutableListOf() }.add(item)
+        XML_VALUES -> {
+          namespaces.computeIfAbsent(Pair(item.file, item.qualifiers)) { (file, _) ->
+            parse(file).namespaces.toSet()
+          }
+
+          values.getOrPut(item.qualifiers) { mutableListOf() }.add(item)
+        }
       }
     }
 
@@ -139,7 +155,7 @@ private constructor(
 
         val dir = Files.createTempDirectory("res-merger-$packageName")
         writeTo(dir)
-        addSources(listOf(dir.toFile()))
+        addSource(dir.toFile())
         loadFromFiles(StdLogger(Level.WARNING))
       }
     }
