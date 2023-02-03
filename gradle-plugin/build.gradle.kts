@@ -1,11 +1,10 @@
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
-
 plugins {
   @Suppress("DSL_SCOPE_VIOLATION") val plugins = libs.plugins
 
   alias(plugins.kotlin.jvm)
   `java-gradle-plugin`
   `kotlin-dsl`
+  id("aaraar-detekt")
   id("aaraar-publish")
 }
 

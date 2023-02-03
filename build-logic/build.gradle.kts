@@ -7,6 +7,9 @@ plugins {
 }
 
 dependencies {
+  implementation(files(libs.javaClass.superclass.protectionDomain.codeSource.location))
+
+  implementation(libs.detekt.plugin)
   implementation(libs.maven.publish)
 }
 
@@ -16,9 +19,14 @@ kotlinDslPluginOptions {
 
 gradlePlugin {
   plugins {
-    create("build-logic") {
+    create("aaraar-publish") {
       id = "aaraar-publish"
-      implementationClass = "sh.christian.plugin.publishing.PublishingPlugin"
+      implementationClass = "sh.christian.plugin.PublishingPlugin"
+    }
+
+    create("aaraar-detekt") {
+      id = "aaraar-detekt"
+      implementationClass = "sh.christian.plugin.DetektPlugin"
     }
   }
 }

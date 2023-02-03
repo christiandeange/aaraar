@@ -1,0 +1,9 @@
+complexity:
+  LongParameterList:
+    constructorThreshold: 999
+
+formatting:
+  Filename:
+    active: false
+  Indentation:
+    indentSize: 2

@@ -1,4 +1,4 @@
-package sh.christian.plugin.publishing
+package sh.christian.plugin
 
 import com.vanniktech.maven.publish.MavenPublishBaseExtension
 import com.vanniktech.maven.publish.MavenPublishPlugin

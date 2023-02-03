@@ -1,6 +1,7 @@
 [versions]
 agp = "7.3.1"
 agp-tools = "30.3.1"
+detekt = "1.22.0"
 kotlin = "1.8.0"
 maven-publish = "0.23.2"
 
@@ -22,3 +23,6 @@ jimfs = { module = "com.google.jimfs:jimfs", version = "1.2" }
 kotlinxml = { module = "org.redundent:kotlin-xml-builder", version = "1.8.0" }
 
 maven-publish = { module = "com.vanniktech:gradle-maven-publish-plugin", version.ref = "maven-publish" }
+
+detekt-plugin = { module = "io.gitlab.arturbosch.detekt:detekt-gradle-plugin", version.ref = "detekt" }
+detekt-rules-formatting = { module = "io.gitlab.arturbosch.detekt:detekt-formatting", version.ref = "detekt" }
