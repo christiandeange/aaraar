@@ -1,9 +1,9 @@
 package sh.christian.aaraar
 
+import io.kotest.assertions.throwables.shouldThrow
+import io.kotest.matchers.maps.shouldContainExactly
 import sh.christian.aaraar.model.mergeContents
 import kotlin.test.Test
-import kotlin.test.assertEquals
-import kotlin.test.assertFailsWith
 
 class MergeContentsTest {
 
@@ -14,7 +14,7 @@ class MergeContentsTest {
 
     val mergedContents = merge(contents1, listOf(contents2))
 
-    mergedContents.assertHasExactContents(
+    mergedContents.shouldBeExactly(
       "foo.txt" to "foo",
       "bar.txt" to "bar",
     )
@@ -27,7 +27,7 @@ class MergeContentsTest {
 
     val mergedContents = merge(contents1, listOf(contents2))
 
-    mergedContents.assertHasExactContents(
+    mergedContents.shouldBeExactly(
       "1/foo.txt" to "foo",
       "1/2/bar.txt" to "bar",
     )
@@ -40,17 +40,17 @@ class MergeContentsTest {
 
     val mergedContents = merge(contents1, listOf(contents2))
 
-    mergedContents.assertHasExactContents(
+    mergedContents.shouldBeExactly(
       "foo.txt" to "foo",
     )
   }
 
   @Test
   fun `merging two files with same name and different contents fails`() {
-    val contents1 = mapOf("foo.txt" to "foo")
-    val contents2 = mapOf("foo.txt" to "bar")
+    val contents1 = mapOf("file.txt" to "foo")
+    val contents2 = mapOf("file.txt" to "bar")
 
-    assertFailsWith<IllegalStateException> {
+    shouldThrow<IllegalStateException> {
       merge(contents1, listOf(contents2))
     }
   }
@@ -67,13 +67,10 @@ class MergeContentsTest {
     )
   }
 
-  private fun Map<String, ByteArray>.assertHasExactContents(vararg contents: Pair<String, String>) {
+  private fun Map<String, ByteArray>.shouldBeExactly(vararg contents: Pair<String, String>) {
     require(contents.isNotEmpty()) {
       "At least one file with contents must be specified!"
     }
-    assertEquals(
-      expected = contents.toMap(),
-      actual = mapValues { it.value.decodeToString() },
-    )
+    mapValues { it.value.decodeToString() } shouldContainExactly contents.toMap()
   }
 }

@@ -1,16 +1,16 @@
 package sh.christian.aaraar
 
+import io.kotest.matchers.shouldBe
 import sh.christian.aaraar.model.AndroidManifest
 import sh.christian.aaraar.utils.withFile
 import kotlin.test.Test
-import kotlin.test.assertEquals
 
 class AndroidManifestTest {
 
   @Test
   fun `parses package name from manifest`() {
     val manifest = AndroidManifest.from("""<manifest package="com.library.main" />""")
-    assertEquals("com.library.main", manifest.packageName)
+    manifest.packageName shouldBe "com.library.main"
   }
 
   @Test
@@ -22,10 +22,10 @@ class AndroidManifestTest {
               android:minSdkVersion="21"
               android:targetSdkVersion="30"/>
       </manifest>
-      """.trimIndent()
+      """
     )
 
-    assertEquals(21, manifest.minSdk)
+    manifest.minSdk shouldBe 21
   }
 
   @Test
@@ -35,13 +35,11 @@ class AndroidManifestTest {
 
     val mergedManifest = mainLibManifest + helperModuleManifest
 
-    mergedManifest.assertEqualTo(
-      """
+    mergedManifest shouldBe """
       <manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.library.main">
           <application/>
       </manifest>
       """
-    )
   }
 
   @Test
@@ -53,19 +51,17 @@ class AndroidManifestTest {
       <manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.library.helper.core">
           <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
       </manifest>
-      """.trimIndent()
+      """
     )
 
     val mergedManifest = mainLibManifest + helperModuleManifest
 
-    mergedManifest.assertEqualTo(
-      """
+    mergedManifest shouldBe """
       <manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.library.main">
           <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
           <application/>
       </manifest>
       """
-    )
   }
 
   @Test
@@ -79,7 +75,7 @@ class AndroidManifestTest {
 
           <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" tools:node="remove" />
       </manifest>
-      """.trimIndent()
+      """
     )
 
     val helperModuleManifest = AndroidManifest.from(
@@ -87,18 +83,16 @@ class AndroidManifestTest {
       <manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.library.helper.core">
           <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
       </manifest>
-      """.trimIndent()
+      """
     )
 
     val mergedManifest = mainLibManifest + helperModuleManifest
 
-    mergedManifest.assertEqualTo(
-      """
+    mergedManifest shouldBe """
       <manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.library.main">
           <application/>
       </manifest>
       """
-    )
   }
 
   @Test
@@ -114,29 +108,24 @@ class AndroidManifestTest {
                   android:screenOrientation="${'$'}screenOrientation}" />
           </application>
       </manifest>
-      """.trimIndent()
+      """
     )
 
     val mergedManifest = mainLibManifest + helperModuleManifest
 
-    mergedManifest.assertEqualTo(
-      """
+    mergedManifest shouldBe """
       <manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.library.main">
           <application>
               <activity android:name="com.library.helper.core.MainActivity" android:screenOrientation="${'$'}screenOrientation}"/>
           </application>
       </manifest>
       """
-    )
   }
 
-  private fun AndroidManifest.assertEqualTo(contents: String) {
+  private infix fun AndroidManifest.shouldBe(contents: String) {
     withFile {
       writeTo(filePath)
-      assertEquals(
-        expected = contents.trimIndent(),
-        actual = string().trim().replace("\t", "    "),
-      )
+      string().trim().replace("\t", "    ") shouldBe contents.trimIndent()
     }
   }
 }
