@@ -11,7 +11,7 @@ internal constructor(
   }
 
   operator fun plus(libs: Libs): Classes {
-    return Classes(archive + libs.jars())
+    return Classes(archive + libs.jars().values.filterNotNull())
   }
 
   fun shaded(

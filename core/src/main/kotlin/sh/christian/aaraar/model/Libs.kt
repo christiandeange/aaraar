@@ -28,14 +28,14 @@ internal constructor(
     return Libs(FileSet.from(shadedFiles))
   }
 
-  fun jars(): List<GenericJarArchive> {
+  fun jars(): Map<String, GenericJarArchive> {
     return files.mapNotNull { (path, contents) ->
       if (path.substringAfterLast('.') == "jar") {
-        GenericJarArchive.from(contents, keepMetaFiles = true)
+        GenericJarArchive.from(contents, keepMetaFiles = true)?.let { path to it }
       } else {
         null
       }
-    }
+    }.toMap()
   }
 
   fun writeTo(path: Path) {
