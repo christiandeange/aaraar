@@ -3,7 +3,7 @@ package sh.christian.aaraar.model
 import java.nio.file.Path
 
 class LintRules
-private constructor(
+internal constructor(
   private val archive: GenericJarArchive,
 ) : Mergeable<LintRules> {
   override fun plus(others: List<LintRules>): LintRules {

@@ -7,7 +7,7 @@ import java.nio.file.Path
 import kotlin.streams.asSequence
 
 class FileSet
-private constructor(
+internal constructor(
   private val indexedFiles: Map<String, ByteArray>,
 ) : Mergeable<FileSet>, Map<String, ByteArray> by indexedFiles {
   override operator fun plus(others: List<FileSet>): FileSet {

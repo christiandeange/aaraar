@@ -5,7 +5,7 @@ import java.nio.file.Path
 import kotlin.streams.toList
 
 class Proguard
-private constructor(
+internal constructor(
   private val lines: List<String>,
 ) : Mergeable<Proguard> {
   override fun plus(others: List<Proguard>): Proguard {

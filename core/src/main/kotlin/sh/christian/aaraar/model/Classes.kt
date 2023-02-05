@@ -3,7 +3,7 @@ package sh.christian.aaraar.model
 import java.nio.file.Path
 
 class Classes
-private constructor(
+internal constructor(
   private val archive: GenericJarArchive,
 ) : Mergeable<Classes> {
   override operator fun plus(others: List<Classes>): Classes {

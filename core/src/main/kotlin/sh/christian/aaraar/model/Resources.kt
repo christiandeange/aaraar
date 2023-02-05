@@ -23,7 +23,7 @@ import java.nio.file.Path
 import javax.xml.parsers.DocumentBuilderFactory
 
 class Resources
-private constructor(
+internal constructor(
   private val files: FileSet,
   private val packageName: String,
   private val minSdk: Int,

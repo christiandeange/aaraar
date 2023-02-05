@@ -16,7 +16,7 @@ import java.util.jar.JarInputStream
 import kotlin.streams.asSequence
 
 class GenericJarArchive
-private constructor(
+internal constructor(
   private val archiveEntries: Map<String, ByteArray>,
 ) : Mergeable<GenericJarArchive>, Map<String, ByteArray> by archiveEntries {
 
@@ -96,7 +96,7 @@ private constructor(
       }
     }
 
-    private fun from(
+    fun from(
       byteStream: InputStream,
       keepMetaFiles: Boolean,
     ): GenericJarArchive {

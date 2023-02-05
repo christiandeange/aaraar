@@ -6,7 +6,7 @@ import java.nio.file.Files
 import java.nio.file.Path
 
 class RTxt
-private constructor(
+internal constructor(
   private val symbolTable: SymbolTable,
 ) : Mergeable<RTxt> {
   override operator fun plus(others: List<RTxt>): RTxt {

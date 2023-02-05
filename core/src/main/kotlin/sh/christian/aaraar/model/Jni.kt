@@ -3,7 +3,7 @@ package sh.christian.aaraar.model
 import java.nio.file.Path
 
 class Jni
-private constructor(
+internal constructor(
   private val files: FileSet,
 ) : Mergeable<Jni> {
   override fun plus(others: List<Jni>): Jni {

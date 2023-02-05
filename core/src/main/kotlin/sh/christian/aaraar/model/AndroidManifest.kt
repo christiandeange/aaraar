@@ -16,7 +16,7 @@ import java.nio.file.Files
 import java.nio.file.Path
 
 class AndroidManifest
-private constructor(
+internal constructor(
   private val manifestNode: Node,
 ) : Mergeable<AndroidManifest> {
   val packageName: String by lazy {
