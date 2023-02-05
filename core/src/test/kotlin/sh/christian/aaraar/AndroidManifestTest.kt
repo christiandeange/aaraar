@@ -2,7 +2,6 @@ package sh.christian.aaraar
 
 import io.kotest.matchers.shouldBe
 import sh.christian.aaraar.model.AndroidManifest
-import sh.christian.aaraar.utils.withFile
 import kotlin.test.Test
 
 class AndroidManifestTest {
@@ -123,9 +122,6 @@ class AndroidManifestTest {
   }
 
   private infix fun AndroidManifest.shouldBe(contents: String) {
-    withFile {
-      writeTo(filePath)
-      string().trim().replace("\t", "    ") shouldBe contents.trimIndent()
-    }
+    toString().trim().replace("\t", "    ") shouldBe contents.trimIndent()
   }
 }

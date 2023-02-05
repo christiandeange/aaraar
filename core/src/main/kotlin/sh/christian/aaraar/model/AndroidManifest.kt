@@ -49,6 +49,10 @@ internal constructor(
     return from(mergeReport.getMergedDocument(MergedManifestKind.MERGED))
   }
 
+  override fun toString(): String {
+    return manifestNode.toString()
+  }
+
   fun writeTo(path: Path) {
     OutputStreamWriter(Files.newOutputStream(path)).use {
       manifestNode.writeTo(it)

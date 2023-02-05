@@ -4,7 +4,7 @@ import java.nio.file.Path
 
 class Classes
 internal constructor(
-  private val archive: GenericJarArchive,
+  val archive: GenericJarArchive,
 ) : Mergeable<Classes> {
   override operator fun plus(others: List<Classes>): Classes {
     return Classes(archive + others.map { it.archive })

@@ -7,7 +7,7 @@ import java.nio.file.Path
 
 class RTxt
 internal constructor(
-  private val symbolTable: SymbolTable,
+  val symbolTable: SymbolTable,
 ) : Mergeable<RTxt> {
   override operator fun plus(others: List<RTxt>): RTxt {
     return RTxt(SymbolTable.merge(listOf(symbolTable) + others.map { it.symbolTable }))

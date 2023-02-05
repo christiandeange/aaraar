@@ -7,7 +7,7 @@ import java.nio.file.Path
 
 class PublicTxt
 internal constructor(
-  private val symbolTable: SymbolTable,
+  val symbolTable: SymbolTable,
 ) : Mergeable<PublicTxt> {
   override operator fun plus(others: List<PublicTxt>): PublicTxt {
     return PublicTxt(SymbolTable.merge(listOf(symbolTable) + others.map { it.symbolTable }))

@@ -10,9 +10,10 @@ plugins {
 }
 
 dependencies {
+  api(libs.agp.tools.common)
+
   implementation(platform(kotlin("bom")))
   implementation(libs.agp.layoutlib)
-  implementation(libs.agp.tools.common)
   implementation(libs.agp.tools.manifestmerger)
   implementation(libs.agp.tools.sdk)
   implementation(libs.asm)

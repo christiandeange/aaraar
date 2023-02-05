@@ -5,14 +5,11 @@ import io.kotest.matchers.maps.shouldHaveKey
 import io.kotest.matchers.maps.shouldHaveSize
 import sh.christian.aaraar.model.Classes
 import sh.christian.aaraar.model.GenericJarArchive
-import sh.christian.aaraar.model.GenericJarArchive.Companion.NONE
 import sh.christian.aaraar.model.Libs
 import sh.christian.aaraar.utils.animalJarPath
-import sh.christian.aaraar.utils.deleteIfExists
 import sh.christian.aaraar.utils.externalLibsPath
 import sh.christian.aaraar.utils.foo2JarPath
 import sh.christian.aaraar.utils.fooJarPath
-import sh.christian.aaraar.utils.withFile
 import java.nio.file.Path
 import kotlin.test.Test
 
@@ -22,8 +19,9 @@ class ClassesTest {
   fun `simple merge with classes`() {
     val animalClasses = animalJarPath.loadClasses()
     val fooClasses = fooJarPath.loadClasses()
+    val classpath = animalClasses + fooClasses
 
-    withClasses(animalClasses + fooClasses) {
+    with(classpath.archive) {
       this shouldHaveSize 4
       this shouldHaveKey "com/example/Animal.class"
       this shouldHaveKey "com/example/Cat.class"
@@ -36,8 +34,9 @@ class ClassesTest {
   fun `simple merge with libs`() {
     val animalClasses = animalJarPath.loadClasses()
     val externalLibs = Libs.from(externalLibsPath)
+    val classpath = animalClasses + externalLibs
 
-    withClasses(animalClasses + externalLibs) {
+    with(classpath.archive) {
       this shouldHaveSize 5
       this shouldHaveKey "com/example/Animal.class"
       this shouldHaveKey "com/example/Cat.class"
@@ -64,18 +63,6 @@ class ClassesTest {
 
     shouldThrow<IllegalStateException> {
       foo2Classes + fooLibs
-    }
-  }
-
-  private fun withClasses(
-    classes: Classes,
-    block: GenericJarArchive.() -> Unit,
-  ) {
-    withFile {
-      filePath.deleteIfExists()
-      classes.writeTo(filePath)
-
-      with(GenericJarArchive.from(filePath, true) ?: NONE, block)
     }
   }
 

@@ -4,7 +4,7 @@ import java.nio.file.Path
 
 class Libs
 internal constructor(
-  private val files: FileSet,
+  val files: FileSet,
 ) : Mergeable<Libs> {
   override fun plus(others: List<Libs>): Libs {
     return Libs(files + others.map { it.files })

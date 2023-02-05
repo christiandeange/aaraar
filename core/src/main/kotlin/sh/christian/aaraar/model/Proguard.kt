@@ -7,9 +7,13 @@ import kotlin.streams.toList
 class Proguard
 internal constructor(
   private val lines: List<String>,
-) : Mergeable<Proguard> {
+) : Mergeable<Proguard>, List<String> by lines {
   override fun plus(others: List<Proguard>): Proguard {
     return Proguard(lines + others.flatMap { it.lines })
+  }
+
+  override fun toString(): String {
+    return lines.joinToString(separator = "\n")
   }
 
   fun writeTo(path: Path) {

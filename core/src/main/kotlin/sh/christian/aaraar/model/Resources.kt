@@ -24,10 +24,10 @@ import javax.xml.parsers.DocumentBuilderFactory
 
 class Resources
 internal constructor(
-  private val files: FileSet,
-  private val packageName: String,
-  private val minSdk: Int,
-  private val androidAaptIgnore: String,
+  val files: FileSet,
+  val packageName: String,
+  val minSdk: Int,
+  val androidAaptIgnore: String,
 ) : Mergeable<Resources> {
   override fun plus(others: List<Resources>): Resources {
     val consumer = ResourceMergerConsumer()
