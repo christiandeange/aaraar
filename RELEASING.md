@@ -2,7 +2,7 @@
 
 1. Run the release script. Any unsaved local changes will be ignored.
    ```shell
-   ./release.sh
+   ./release.sh <next-snapshot-version>
    ```
 2. Push the commits. A new release will automatically be published on Sonatype.
    ```shell
