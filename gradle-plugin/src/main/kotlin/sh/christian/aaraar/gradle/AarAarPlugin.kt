@@ -2,6 +2,7 @@
 
 package sh.christian.aaraar.gradle
 
+import com.android.SdkConstants.FD_OUTPUTS
 import com.android.build.api.artifact.SingleArtifact
 import com.android.build.api.attributes.BuildTypeAttr
 import com.android.build.api.dsl.LibraryExtension
@@ -86,12 +87,11 @@ class AarAarPlugin
     }
 
     val aaraar = extensions.getByType<AarAarExtension>()
-    val androidAaptIgnoreEnv =
-      providers.environmentVariable("ANDROID_AAPT_IGNORE").orElse("")
+    val androidAaptIgnoreEnv = providers.environmentVariable("ANDROID_AAPT_IGNORE").orElse("")
 
     val aar = variant.artifacts.get(SingleArtifact.AAR)
-    val fileName = "${this@applyPluginToVariant.name}-${variant.name}.aar"
-    val outFile = buildDir / "outputs" / "aaraar" / fileName
+    val fileName = variant.name(prefix = "${this@applyPluginToVariant.name}-", suffix = ".aar")
+    val outFile = buildDir / FD_OUTPUTS / "aaraar" / fileName
 
     val packageVariantAar = tasks.register<PackageAarTask>(variant.name("package", "Aar")) {
       inputAar.set(aar)
@@ -130,8 +130,10 @@ class AarAarPlugin
   ): String {
     return if (prefix.isEmpty()) {
       name + suffix
-    } else {
+    } else if (prefix.last().isLetterOrDigit()) {
       prefix + name.capitalize() + suffix
+    } else {
+      prefix + name + suffix
     }
   }
 }
