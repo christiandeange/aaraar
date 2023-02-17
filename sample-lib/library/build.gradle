@@ -2,7 +2,11 @@ plugins {
   id 'com.android.library'
   id 'org.jetbrains.kotlin.android'
   id 'sh.christian.aaraar' version '0.0.4'
+  id 'maven-publish'
 }
+
+group = "sh.christian.samplelib"
+version = "1.0.0"
 
 android {
   namespace 'sh.christian.samplelib'
@@ -57,24 +61,34 @@ tasks.register("printPublishableAarPath") {
 dependencies {
   implementation 'org.jetbrains.kotlin:kotlin-stdlib:1.8.0'
 
-  implementation project(':helper-library')
-  publishEmbed project(':helper-library')
+  compileOnly project(':helper-library')
+  embed project(':helper-library')
 
-  implementation 'androidx.core:core-ktx:1.9.0'
-  publishEmbed 'androidx.core:core-ktx:1.9.0'
+  compileOnly 'androidx.core:core-ktx:1.9.0'
+  embed 'androidx.core:core-ktx:1.9.0'
 
-  implementation 'androidx.appcompat:appcompat:1.6.0'
-  publishEmbed 'androidx.appcompat:appcompat:1.6.0'
+  compileOnly 'androidx.appcompat:appcompat:1.6.0'
+  embed 'androidx.appcompat:appcompat:1.6.0'
 
-  implementation 'com.google.android.material:material:1.7.0'
-  publishEmbed 'com.google.android.material:material:1.7.0'
+  compileOnly 'com.google.android.material:material:1.7.0'
+  embed 'com.google.android.material:material:1.7.0'
 
   implementation 'io.reactivex.rxjava3:rxjava:3.1.5'
-  publishEmbed 'io.reactivex.rxjava3:rxjava:3.1.5'
+  embed 'io.reactivex.rxjava3:rxjava:3.1.5'
 }
 
 aaraar {
   rename("io.reactivex.rxjava3.**", "shaded.io.reactivex.rxjava3.@1")
   rename("sh.christian.samplelib.ContextsKt", "sh.christian.samplelib.MyAppPackage")
   delete("sh.christian.helperlib.SecretsKt")
+}
+
+afterEvaluate {
+  publishing {
+    publications {
+      maven(MavenPublication) {
+        from components.publishEmbedAar
+      }
+    }
+  }
 }

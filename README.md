@@ -49,7 +49,10 @@ The `embed` configuration does not affect which dependencies are available at co
 to declare dependencies as `implementation`, `api`, etc. as normal to compile against them.
 
 Dependencies marked as `api` will be included as `compile` dependencies in the published pom file.
-`embed` dependencies will be included as `runtime` in the pom.
+`implementation` dependencies will be included as `runtime` in the pom.
+
+_*`compileOnly` and `embed` dependencies will not show up in the published pom file unless also marked as `api` or
+`implementation` dependencies as well._
 
 ### Shading
 
