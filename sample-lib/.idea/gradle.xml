@@ -4,27 +4,11 @@
   <component name="GradleSettings">
     <option name="linkedExternalProjectsSettings">
       <GradleProjectSettings>
-        <compositeConfiguration>
-          <compositeBuild compositeDefinitionSource="SCRIPT">
-            <builds>
-              <build path="$PROJECT_DIR$/.." name="aaraar">
-                <projects>
-                  <project path="$PROJECT_DIR$/.." />
-                  <project path="$PROJECT_DIR$/../aaraar-plugin" />
-                  <project path="$PROJECT_DIR$/../core" />
-                </projects>
-              </build>
-            </builds>
-          </compositeBuild>
-        </compositeConfiguration>
         <option name="testRunner" value="GRADLE" />
         <option name="distributionType" value="WRAPPED" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
         <option name="modules">
           <set>
-            <option value="$PROJECT_DIR$/.." />
-            <option value="$PROJECT_DIR$/../aaraar-plugin" />
-            <option value="$PROJECT_DIR$/../core" />
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/helper-library" />
             <option value="$PROJECT_DIR$/library" />
