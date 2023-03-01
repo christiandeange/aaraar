@@ -1,4 +1,4 @@
-![Maven Central](https://img.shields.io/maven-central/v/sh.christian.aaraar/gradle-plugin?versionPrefix=0.0.4) ![CI](https://github.com/christiandeange/aaraar/actions/workflows/ci.yml/badge.svg)
+![Maven Central](https://img.shields.io/maven-central/v/sh.christian.aaraar/gradle-plugin?versionPrefix=0.0.5) ![CI](https://github.com/christiandeange/aaraar/actions/workflows/ci.yml/badge.svg)
 
 # aaraar
 
@@ -12,7 +12,7 @@ Work in progress.
 // build.gradle[.kts]
 
 plugins {
-  id("sh.christian.aaraar") version "0.0.4"
+  id("sh.christian.aaraar") version "0.0.5"
 }
 ```
 
