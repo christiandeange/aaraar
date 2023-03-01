@@ -11,14 +11,11 @@ internal constructor(
   }
 
   operator fun plus(libs: Libs): Classes {
-    return Classes(archive + libs.jars().values.filterNotNull())
+    return Classes(archive + libs.jars().values.toList())
   }
 
-  fun shaded(
-    classRenames: Map<String, String>,
-    classDeletes: Set<String>,
-  ): Classes {
-    return Classes(archive.shaded(classRenames, classDeletes))
+  fun shaded(shadeConfiguration: ShadeConfiguration): Classes {
+    return Classes(archive.shaded(shadeConfiguration))
   }
 
   fun writeTo(path: Path) {

@@ -29,7 +29,8 @@ android {
   }
 
   packagingOptions {
-    exclude "**/module-info.class"
+    resources.excludes += "**/module-info.class"
+    resources.excludes += "exclude-me.txt"
   }
 
   compileOptions {

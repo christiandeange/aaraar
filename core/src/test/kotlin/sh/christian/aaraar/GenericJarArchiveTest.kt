@@ -9,6 +9,7 @@ import io.kotest.matchers.maps.shouldHaveSize
 import io.kotest.matchers.maps.shouldNotHaveKey
 import io.kotest.matchers.shouldBe
 import sh.christian.aaraar.model.GenericJarArchive
+import sh.christian.aaraar.model.ShadeConfiguration
 import sh.christian.aaraar.utils.animalJarPath
 import sh.christian.aaraar.utils.deleteIfExists
 import sh.christian.aaraar.utils.foo2JarPath
@@ -55,10 +56,20 @@ class GenericJarArchiveTest {
   }
 
   @Test
+  fun `shade with no rules does nothing`() {
+    val shadedClasses = animalJarPath.loadJar().shaded()
+    with(shadedClasses) {
+      this shouldHaveSize 3
+      this shouldHaveKey "com/example/Animal.class"
+      this shouldHaveKey "com/example/Cat.class"
+      this shouldHaveKey "com/example/Dog.class"
+    }
+  }
+
+  @Test
   fun `shade by class name`() {
     val shadedClasses = animalJarPath.loadJar().shaded(
       classRenames = mapOf("com.example.Animal" to "com.example.Pet"),
-      classDeletes = emptySet(),
     )
     with(shadedClasses) {
       this shouldHaveSize 3
@@ -72,7 +83,6 @@ class GenericJarArchiveTest {
   fun `shade by package name`() {
     val shadedClasses = animalJarPath.loadJar().shaded(
       classRenames = mapOf("com.example.**" to "com.biganimalcorp.@1"),
-      classDeletes = emptySet(),
     )
     with(shadedClasses) {
       this shouldHaveSize 3
@@ -85,7 +95,6 @@ class GenericJarArchiveTest {
   @Test
   fun `delete by class name`() {
     val shadedClasses = animalJarPath.loadJar().shaded(
-      classRenames = emptyMap(),
       classDeletes = setOf("com.example.Cat"),
     )
     with(shadedClasses) {
@@ -99,7 +108,6 @@ class GenericJarArchiveTest {
   @Test
   fun `delete all classes by package name`() {
     val shadedClasses = animalJarPath.loadJar().shaded(
-      classRenames = emptyMap(),
       classDeletes = setOf("com.example.**"),
     )
     with(shadedClasses) {
@@ -111,7 +119,6 @@ class GenericJarArchiveTest {
   fun `delete some classes by package name`() {
     val classpath = animalJarPath.loadJar() + fooJarPath.loadJar().shaded(
       classRenames = mapOf("com.example.**" to "com.foo.@1"),
-      classDeletes = emptySet(),
     )
 
     with(classpath) {
@@ -123,12 +130,24 @@ class GenericJarArchiveTest {
     }
 
     val shadedClasspath = classpath.shaded(
-      classRenames = emptyMap(),
       classDeletes = setOf("com.example.**"),
     )
     with(shadedClasspath) {
       this shouldHaveSize 1
       this shouldHaveKey "com/foo/Foo.class"
+    }
+  }
+
+  @Test
+  fun `delete by resource name`() {
+    val shadedClasses = animalJarPath.loadJar().shaded(
+      resourceDeletes = setOf("**/Cat.class"),
+    )
+    with(shadedClasses) {
+      this shouldHaveSize 2
+      this shouldHaveKey "com/example/Animal.class"
+      this shouldHaveKey "com/example/Dog.class"
+      this shouldNotHaveKey "com/example/Cat.class"
     }
   }
 
@@ -153,5 +172,13 @@ class GenericJarArchiveTest {
 
   private fun Path.loadJar(): GenericJarArchive {
     return GenericJarArchive.from(this, keepMetaFiles = true) ?: GenericJarArchive.NONE
+  }
+
+  private fun GenericJarArchive.shaded(
+    classRenames: Map<String, String> = emptyMap(),
+    classDeletes: Set<String> = emptySet(),
+    resourceDeletes: Set<String> = emptySet(),
+  ): GenericJarArchive {
+    return shaded(ShadeConfiguration(classRenames, classDeletes, resourceDeletes))
   }
 }

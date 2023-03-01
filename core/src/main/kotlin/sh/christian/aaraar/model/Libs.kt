@@ -10,14 +10,11 @@ internal constructor(
     return Libs(files + others.map { it.files })
   }
 
-  fun shaded(
-    classRenames: Map<String, String>,
-    classDeletes: Set<String>,
-  ): Libs {
+  fun shaded(shadeConfiguration: ShadeConfiguration): Libs {
     val shadedFiles = files.mapValues { (path, contents) ->
       if (path.substringAfterLast('.') == "jar") {
         GenericJarArchive.from(contents, keepMetaFiles = true)
-          ?.shaded(classRenames, classDeletes)
+          ?.shaded(shadeConfiguration)
           ?.bytes()
           ?: ByteArray(0)
       } else {

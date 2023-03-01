@@ -18,10 +18,7 @@ import java.nio.file.Path
 sealed class ArtifactArchive {
   abstract val classes: Classes
 
-  abstract fun shaded(
-    classRenames: Map<String, String>,
-    classDeletes: Set<String>,
-  ): ArtifactArchive
+  abstract fun shaded(shadeConfiguration: ShadeConfiguration): ArtifactArchive
 
   abstract fun writeTo(path: Path)
 
@@ -80,11 +77,8 @@ sealed class ArtifactArchive {
 class JarArchive(
   override val classes: Classes,
 ) : ArtifactArchive() {
-  override fun shaded(
-    classRenames: Map<String, String>,
-    classDeletes: Set<String>,
-  ): ArtifactArchive {
-    return JarArchive(classes.shaded(classRenames, classDeletes))
+  override fun shaded(shadeConfiguration: ShadeConfiguration): ArtifactArchive {
+    return JarArchive(classes.shaded(shadeConfiguration))
   }
 
   override fun writeTo(path: Path) {
@@ -110,18 +104,15 @@ class AarArchive(
    * https://issuetracker.google.com/issues/64315897
    */
 ) : ArtifactArchive() {
-  override fun shaded(
-    classRenames: Map<String, String>,
-    classDeletes: Set<String>,
-  ): ArtifactArchive {
+  override fun shaded(shadeConfiguration: ShadeConfiguration): ArtifactArchive {
     return AarArchive(
       androidManifest = androidManifest,
-      classes = classes.shaded(classRenames, classDeletes),
+      classes = classes.shaded(shadeConfiguration),
       resources = resources,
       rTxt = rTxt,
       publicTxt = publicTxt,
       assets = assets,
-      libs = libs.shaded(classRenames, classDeletes),
+      libs = libs.shaded(shadeConfiguration),
       jni = jni,
       proguard = proguard,
       lintRules = lintRules,

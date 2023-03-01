@@ -3,9 +3,7 @@ package sh.christian.aaraar.gradle
 import org.gradle.api.DefaultTask
 import org.gradle.api.file.ConfigurableFileCollection
 import org.gradle.api.file.RegularFileProperty
-import org.gradle.api.provider.MapProperty
 import org.gradle.api.provider.Property
-import org.gradle.api.provider.SetProperty
 import org.gradle.api.tasks.CacheableTask
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.InputFile
@@ -18,6 +16,7 @@ import org.gradle.api.tasks.TaskAction
 import sh.christian.aaraar.Environment
 import sh.christian.aaraar.model.AarArchive
 import sh.christian.aaraar.model.ArtifactArchive
+import sh.christian.aaraar.model.ShadeConfiguration
 import sh.christian.aaraar.utils.deleteIfExists
 import java.nio.file.Path
 
@@ -33,10 +32,7 @@ abstract class PackageAarTask : DefaultTask() {
   abstract val embedClasspath: ConfigurableFileCollection
 
   @get:Input
-  abstract val classRenames: MapProperty<String, String>
-
-  @get:Input
-  abstract val classDeletes: SetProperty<String>
+  abstract val shadeConfiguration: Property<ShadeConfiguration>
 
   @get:Input
   abstract val keepMetaFiles: Property<Boolean>
@@ -68,17 +64,24 @@ abstract class PackageAarTask : DefaultTask() {
         }
 
     val mergedArchive = inputAar.mergeWith(dependencyArchives)
+    val shadingConfiguration = shadeConfiguration.get()
 
-    val classRenames = classRenames.get()
-    val classDeletes = classDeletes.get()
-
-    val finalArchive = if (classRenames.isEmpty() && classDeletes.isEmpty()) {
+    val finalArchive = if (shadingConfiguration.isEmpty()) {
+      logger.info("Skipping shading input AAR since no rules are defined.")
       mergedArchive
     } else {
       logger.info("Shading input AAR with rules:")
-      classRenames.forEach { (pattern, result) -> logger.info("  Rename '$pattern' → '$result'") }
-      classDeletes.forEach { target -> logger.info("  Delete '$target'") }
-      mergedArchive.shaded(classRenames, classDeletes)
+      shadingConfiguration.classRenames.forEach { (pattern, result) ->
+        logger.info("    Rename class '$pattern' → '$result'")
+      }
+      shadingConfiguration.classDeletes.forEach { target ->
+        logger.info("     Delete class '$target'")
+      }
+      shadingConfiguration.resourceExclusions.forEach { target ->
+        logger.info("  Delete resource '$target'")
+      }
+
+      mergedArchive.shaded(shadingConfiguration)
     }
 
     val outputPath = outputAar.getPath().deleteIfExists()

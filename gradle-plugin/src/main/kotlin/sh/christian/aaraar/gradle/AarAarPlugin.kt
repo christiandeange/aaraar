@@ -17,6 +17,7 @@ import org.gradle.kotlin.dsl.add
 import org.gradle.kotlin.dsl.getByType
 import org.gradle.kotlin.dsl.named
 import org.gradle.kotlin.dsl.register
+import sh.christian.aaraar.model.ShadeConfiguration
 import sh.christian.aaraar.utils.div
 import javax.inject.Inject
 
@@ -64,6 +65,9 @@ class AarAarPlugin
   }
 
   private fun Project.applyPluginToVariant(variant: Variant) {
+    val android = extensions.getByType<LibraryExtension>()
+    val aaraar = extensions.getByType<AarAarExtension>()
+
     val variantEmbedClasspath = configurations.create(variant.name(suffix = "EmbedClasspath")) {
       extendsFrom(configurations.getAt("embed"))
       variant.buildType?.let { buildType ->
@@ -91,18 +95,23 @@ class AarAarPlugin
       }
     }
 
-    val aaraar = extensions.getByType<AarAarExtension>()
     val androidAaptIgnoreEnv = providers.environmentVariable("ANDROID_AAPT_IGNORE").orElse("")
 
     val aar = variant.artifacts.get(SingleArtifact.AAR)
-    val fileName = variant.name(prefix = "${this@applyPluginToVariant.name}-", suffix = ".aar")
+    val fileName = variant.name(prefix = "${project.name}-", suffix = ".aar")
     val outFile = buildDir / FD_OUTPUTS / "aaraar" / fileName
 
     val packageVariantAar = tasks.register<PackageAarTask>(variant.name("package", "Aar")) {
       inputAar.set(aar)
       embedClasspath.from(variantEmbedClasspath)
-      classRenames.set(aaraar.classRenames)
-      classDeletes.set(aaraar.classDeletes)
+
+      shadeConfiguration.set(
+        ShadeConfiguration(
+          classRenames = aaraar.classRenames.get(),
+          classDeletes = aaraar.classDeletes.get(),
+          resourceExclusions = android.packagingOptions.resources.excludes.toSet(),
+        )
+      )
       keepMetaFiles.set(aaraar.keepMetaFiles)
       androidAaptIgnore.set(androidAaptIgnoreEnv)
       outputAar.set(outFile)

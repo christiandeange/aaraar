@@ -78,6 +78,19 @@ For class renames, the replacement string is a class name which can reference th
 A numbered reference is available for every wildcard in the pattern, starting from left to right: `@1`, `@2`, etc.
 A special `@0` reference contains the entire matched class name.
 
+Exclusions configured via [`packagingOptions`](https://developer.android.com/reference/tools/gradle-api/com/android/build/api/dsl/PackagingOptions)
+to delete resource files will also be respected:
+
+```kotlin
+android {
+  packagingOptions {
+    resources {
+      excludes += "**/module-info.class"
+    }
+  }
+}
+```
+
 ### Publishing
 
 The merged aar is included in a Gradle `SoftwareComponent` that you can publish using your plugin of choice.

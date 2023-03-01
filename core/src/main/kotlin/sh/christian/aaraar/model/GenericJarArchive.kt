@@ -4,6 +4,7 @@ import com.tonicsystems.jarjar.transform.jar.JarProcessorChain
 import sh.christian.aaraar.shading.ClassFilesProcessor
 import sh.christian.aaraar.shading.ClassFilter
 import sh.christian.aaraar.shading.ClassShader
+import sh.christian.aaraar.shading.ResourceFilter
 import sh.christian.aaraar.utils.createJar
 import sh.christian.aaraar.utils.deleteIfExists
 import sh.christian.aaraar.utils.div
@@ -20,13 +21,11 @@ internal constructor(
   private val archiveEntries: Map<String, ByteArray>,
 ) : Mergeable<GenericJarArchive>, Map<String, ByteArray> by archiveEntries {
 
-  fun shaded(
-    classRenames: Map<String, String>,
-    classDeletes: Set<String>,
-  ): GenericJarArchive {
+  fun shaded(shadeConfiguration: ShadeConfiguration): GenericJarArchive {
     val processor = JarProcessorChain().apply {
-      add(ClassFilter(classDeletes))
-      add(ClassShader(classRenames))
+      add(ResourceFilter(shadeConfiguration.resourceExclusions))
+      add(ClassFilter(shadeConfiguration.classDeletes))
+      add(ClassShader(shadeConfiguration.classRenames))
     }
 
     val newArchiveEntries = ClassFilesProcessor(processor).process(archiveEntries)

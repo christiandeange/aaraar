@@ -33,7 +33,7 @@ abstract class AarAarExtension
   /**
    * Renames any classes that match the provided [pattern].
    *
-   * The [pattern] must match a class name with optional wildcards.
+   * The [pattern] will match class names, with optional wildcards:
    * - `*` will match a single package component.
    * - `**` will match against the remainder of any valid fully-qualified class name.
    *
@@ -48,7 +48,7 @@ abstract class AarAarExtension
   /**
    * Deletes any classes that match the provided [pattern].
    *
-   * The [pattern] must match a class name with optional wildcards.
+   * The [pattern] will match class names, with optional wildcards:
    * - `*` will match a single package component.
    * - `**` will match against the remainder of any valid fully-qualified class name.
    */

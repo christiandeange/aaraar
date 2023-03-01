@@ -1,6 +1,8 @@
 complexity:
   LongParameterList:
     constructorThreshold: 999
+  LongMethod:
+    threshold: 100
 
 formatting:
   Filename:
