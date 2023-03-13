@@ -60,7 +60,7 @@ tasks.register("printPublishableAarPath") {
 }
 
 dependencies {
-  implementation 'org.jetbrains.kotlin:kotlin-stdlib:1.8.0'
+  api 'org.jetbrains.kotlin:kotlin-stdlib:1.8.0'
 
   compileOnly project(':helper-library')
   embed project(':helper-library')

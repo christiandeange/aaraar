@@ -123,10 +123,20 @@ class AarAarPlugin
       }
     }
 
+    val apiCompileElements = configurations.create(variant.name(suffix = "ApiCompileElements")) {
+      extendsFrom(configurations.getAt("apiDependenciesMetadata"))
+      variant.buildType?.let { buildType ->
+        extendsFrom(configurations.getAt("${buildType}ApiDependenciesMetadata"))
+        attributes {
+          attribute(BuildTypeAttr.ATTRIBUTE, objects.named(buildType))
+        }
+      }
+    }
+
     with(softwareComponentFactory.adhoc(variant.name(suffix = "EmbedAar"))) {
       components.add(this)
 
-      addVariantsFromConfiguration(configurations.getAt(variant.name(suffix = "ApiDependenciesMetadata"))) {
+      addVariantsFromConfiguration(apiCompileElements) {
         mapToMavenScope("compile")
       }
       addVariantsFromConfiguration(embedAarConfiguration) {
