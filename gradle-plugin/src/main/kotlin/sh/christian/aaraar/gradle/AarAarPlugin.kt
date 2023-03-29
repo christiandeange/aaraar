@@ -125,6 +125,10 @@ class AarAarPlugin
 
     val apiCompileElements = configurations.create(variant.name(suffix = "ApiCompileElements")) {
       extendsFrom(configurations.getAt("apiDependenciesMetadata"))
+      attributes {
+        attribute(USAGE_ATTRIBUTE, objects.named("pom-compile-elements"))
+      }
+
       variant.buildType?.let { buildType ->
         extendsFrom(configurations.getAt("${buildType}ApiDependenciesMetadata"))
         attributes {
