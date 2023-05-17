@@ -20,6 +20,10 @@
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
+            <option value="$PROJECT_DIR$/agp-compat" />
+            <option value="$PROJECT_DIR$/agp-compat/agp7" />
+            <option value="$PROJECT_DIR$/agp-compat/agp8" />
+            <option value="$PROJECT_DIR$/agp-compat/base" />
             <option value="$PROJECT_DIR$/build-logic" />
             <option value="$PROJECT_DIR$/core" />
             <option value="$PROJECT_DIR$/gradle-plugin" />

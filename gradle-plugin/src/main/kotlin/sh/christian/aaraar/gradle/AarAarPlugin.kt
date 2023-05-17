@@ -2,12 +2,6 @@
 
 package sh.christian.aaraar.gradle
 
-import com.android.SdkConstants.FD_OUTPUTS
-import com.android.build.api.artifact.SingleArtifact
-import com.android.build.api.attributes.BuildTypeAttr
-import com.android.build.api.dsl.LibraryExtension
-import com.android.build.api.variant.LibraryAndroidComponentsExtension
-import com.android.build.api.variant.Variant
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.artifacts.type.ArtifactTypeDefinition.ARTIFACT_TYPE_ATTRIBUTE
@@ -17,6 +11,9 @@ import org.gradle.kotlin.dsl.add
 import org.gradle.kotlin.dsl.getByType
 import org.gradle.kotlin.dsl.named
 import org.gradle.kotlin.dsl.register
+import sh.christian.aaraar.gradle.agp.AgpCompat
+import sh.christian.aaraar.gradle.agp.AndroidVariant
+import sh.christian.aaraar.gradle.agp.FileArtifactType
 import sh.christian.aaraar.model.ShadeConfiguration
 import sh.christian.aaraar.utils.div
 import javax.inject.Inject
@@ -34,8 +31,7 @@ class AarAarPlugin
     extensions.create("aaraar", AarAarExtension::class.java)
 
     pluginManager.withPlugin("com.android.library") {
-      val android = extensions.getByType<LibraryExtension>()
-      val androidComponents = extensions.getByType<LibraryAndroidComponentsExtension>()
+      val agp = project.agp
 
       dependencies.attributesSchema {
         attribute(ARTIFACT_TYPE_ATTRIBUTE) {
@@ -50,22 +46,24 @@ class AarAarPlugin
         isCanBeResolved = false
       }
 
-      android.buildTypes.configureEach {
-        configurations.create("${name}Embed") {
+      agp.android.onBuildTypes { buildType ->
+        configurations.create("${buildType}Embed") {
           isTransitive = false
           isCanBeConsumed = true
           isCanBeResolved = false
         }
       }
 
-      androidComponents.onVariants { variant ->
-        applyPluginToVariant(variant)
+      agp.onVariants { variant ->
+        applyPluginToVariant(agp, variant)
       }
     }
   }
 
-  private fun Project.applyPluginToVariant(variant: Variant) {
-    val android = extensions.getByType<LibraryExtension>()
+  private fun Project.applyPluginToVariant(
+    agp: AgpCompat,
+    variant: AndroidVariant,
+  ) {
     val aaraar = extensions.getByType<AarAarExtension>()
 
     val variantEmbedClasspath = configurations.create(variant.name(suffix = "EmbedClasspath")) {
@@ -73,7 +71,7 @@ class AarAarPlugin
       variant.buildType?.let { buildType ->
         extendsFrom(configurations.getAt("${buildType}Embed"))
         attributes {
-          attribute(BuildTypeAttr.ATTRIBUTE, objects.named(buildType))
+          with(agp) { buildTypeAttribute(buildType) }
         }
       }
 
@@ -97,9 +95,9 @@ class AarAarPlugin
 
     val androidAaptIgnoreEnv = providers.environmentVariable("ANDROID_AAPT_IGNORE").orElse("")
 
-    val aar = variant.artifacts.get(SingleArtifact.AAR)
+    val aar = variant.artifactFile(FileArtifactType.AAR)
     val fileName = variant.name(prefix = "${project.name}-", suffix = ".aar")
-    val outFile = buildDir / FD_OUTPUTS / "aaraar" / fileName
+    val outFile = buildDir / "outputs" / "aaraar" / fileName
 
     val packageVariantAar = tasks.register<PackageAarTask>(variant.name("package", "Aar")) {
       inputAar.set(aar)
@@ -109,7 +107,7 @@ class AarAarPlugin
         ShadeConfiguration(
           classRenames = aaraar.classRenames.get(),
           classDeletes = aaraar.classDeletes.get(),
-          resourceExclusions = android.packagingOptions.resources.excludes.toSet(),
+          resourceExclusions = agp.android.packagingResourceExcludes(),
         )
       )
       keepMetaFiles.set(aaraar.keepMetaFiles)
@@ -132,7 +130,7 @@ class AarAarPlugin
       variant.buildType?.let { buildType ->
         extendsFrom(configurations.getAt("${buildType}ApiDependenciesMetadata"))
         attributes {
-          attribute(BuildTypeAttr.ATTRIBUTE, objects.named(buildType))
+          with(agp) { buildTypeAttribute(buildType) }
         }
       }
     }
@@ -149,19 +147,6 @@ class AarAarPlugin
       addVariantsFromConfiguration(variant.runtimeConfiguration) {
         mapToMavenScope("runtime")
       }
-    }
-  }
-
-  private fun Variant.name(
-    prefix: String = "",
-    suffix: String = "",
-  ): String {
-    return if (prefix.isEmpty()) {
-      name + suffix
-    } else if (prefix.last().isLetterOrDigit()) {
-      prefix + name.capitalize() + suffix
-    } else {
-      prefix + name + suffix
     }
   }
 }

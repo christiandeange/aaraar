@@ -10,15 +10,20 @@ plugins {
 
 dependencies {
   implementation(project(":core"))
+  implementation(project(":agp-compat:agp7"))
+  implementation(project(":agp-compat:agp8"))
 
   implementation(platform(kotlin("bom")))
-  implementation(libs.agp.api)
+  compileOnly(libs.agp.api.latest)
 }
 
 kotlinDslPluginOptions {
   jvmTarget.set("11")
 }
 
+tasks.withType<JavaCompile>().configureEach {
+  sourceCompatibility = "11"
+  targetCompatibility = "11"
 }
 
 gradlePlugin {
