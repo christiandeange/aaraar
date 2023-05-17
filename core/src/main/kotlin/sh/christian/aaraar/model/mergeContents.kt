@@ -10,7 +10,6 @@ internal fun mergeContents(
 ): Map<String, ByteArray> {
   val mergeConflictKeys = mutableSetOf<String>()
 
-  @OptIn(ExperimentalStdlibApi::class)
   val newEntries: Map<String, ByteArray> = buildMap {
     putAll(original)
 

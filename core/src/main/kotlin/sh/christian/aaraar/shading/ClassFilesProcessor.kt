@@ -8,7 +8,6 @@ import com.tonicsystems.jarjar.transform.jar.JarProcessor.Result.KEEP
 class ClassFilesProcessor(
   private val jarProcessor: JarProcessor,
 ) {
-  @OptIn(ExperimentalStdlibApi::class)
   fun process(entries: Map<String, ByteArray>): Map<String, ByteArray> = buildMap {
     entries.forEach { (path, contents) ->
       val entry = Transformable().apply {

@@ -41,7 +41,6 @@ internal constructor(
       mergeData(consumer, /* doCleanUp */ false)
     }
 
-    @OptIn(ExperimentalStdlibApi::class)
     val resourcePaths: Map<String, ByteArray> = buildMap {
       (consumer.files + consumer.generated).forEach { item ->
         val path = item.file.toPath()

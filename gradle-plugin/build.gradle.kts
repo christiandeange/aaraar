@@ -19,14 +19,6 @@ kotlinDslPluginOptions {
   jvmTarget.set("11")
 }
 
-kotlin {
-  sourceSets {
-    all {
-      languageSettings.apply {
-        optIn("kotlin.RequiresOptIn")
-      }
-    }
-  }
 }
 
 gradlePlugin {

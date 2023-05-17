@@ -46,7 +46,7 @@ kotlin {
   sourceSets {
     all {
       languageSettings.apply {
-        optIn("kotlin.RequiresOptIn")
+        optIn("kotlin.ExperimentalStdlibApi")
       }
     }
   }
