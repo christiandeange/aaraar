@@ -53,7 +53,7 @@ abstract class PackageAarTask : DefaultTask() {
     logger.info("Packaging environment: $environment")
 
     val inputAarPath = inputAar.getPath()
-    val inputAar = ArtifactArchive.from(inputAarPath, environment) as AarArchive
+    val inputAar = AarArchive.from(inputAarPath, environment)
     logger.info("Merge base AAR: $inputAarPath")
 
     val dependencyArchives =

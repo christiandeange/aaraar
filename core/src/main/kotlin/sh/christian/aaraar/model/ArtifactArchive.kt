@@ -28,47 +28,9 @@ sealed class ArtifactArchive {
       environment: Environment,
     ): ArtifactArchive {
       return when (path.toFile().extension) {
-        "jar" -> {
-          val classes = Classes.from(path, environment.keepClassesMetaFiles)
-          JarArchive(classes)
-        }
-
-        "aar" -> {
-          path.toAbsolutePath().openJar { aarRoot ->
-            val androidManifest = AndroidManifest.from(aarRoot.android_manifest)
-            val classes = Classes.from(aarRoot.classes_jar, environment.keepClassesMetaFiles)
-            val resources = Resources.from(
-              aarRoot.res,
-              androidManifest.packageName,
-              androidManifest.minSdk,
-              environment.androidAaptIgnore,
-            )
-            val rTxt = RTxt.from(aarRoot.r_txt, androidManifest.packageName)
-            val publicTxt = PublicTxt.from(aarRoot.public_txt, androidManifest.packageName)
-            val assets = Assets.from(aarRoot.assets)
-            val libs = Libs.from(aarRoot.libs)
-            val jni = Jni.from(aarRoot.jni)
-            val proguard = Proguard.from(aarRoot.proguard_txt)
-            val lintRules = LintRules.from(aarRoot.lint_jar)
-
-            AarArchive(
-              androidManifest = androidManifest,
-              classes = classes,
-              resources = resources,
-              rTxt = rTxt,
-              publicTxt = publicTxt,
-              assets = assets,
-              libs = libs,
-              jni = jni,
-              proguard = proguard,
-              lintRules = lintRules,
-            )
-          }
-        }
-
-        else -> {
-          error("Unknown dependency type: $path")
-        }
+        "jar" -> JarArchive(Classes.from(path, environment.keepClassesMetaFiles))
+        "aar" -> AarArchive.from(path, environment)
+        else -> error("Unknown dependency type: $path")
       }
     }
   }
@@ -153,6 +115,42 @@ class AarArchive(
       jni.writeTo(outputAar.jni)
       proguard.writeTo(outputAar.proguard_txt)
       lintRules.writeTo(outputAar.lint_jar)
+    }
+  }
+
+  companion object {
+    fun from(
+      path: Path,
+      environment: Environment,
+    ): AarArchive = path.toAbsolutePath().openJar { aarRoot ->
+      val androidManifest = AndroidManifest.from(aarRoot.android_manifest)
+      val classes = Classes.from(aarRoot.classes_jar, environment.keepClassesMetaFiles)
+      val resources = Resources.from(
+        aarRoot.res,
+        androidManifest.packageName,
+        androidManifest.minSdk,
+        environment.androidAaptIgnore,
+      )
+      val rTxt = RTxt.from(aarRoot.r_txt, androidManifest.packageName)
+      val publicTxt = PublicTxt.from(aarRoot.public_txt, androidManifest.packageName)
+      val assets = Assets.from(aarRoot.assets)
+      val libs = Libs.from(aarRoot.libs)
+      val jni = Jni.from(aarRoot.jni)
+      val proguard = Proguard.from(aarRoot.proguard_txt)
+      val lintRules = LintRules.from(aarRoot.lint_jar)
+
+      AarArchive(
+        androidManifest = androidManifest,
+        classes = classes,
+        resources = resources,
+        rTxt = rTxt,
+        publicTxt = publicTxt,
+        assets = assets,
+        libs = libs,
+        jni = jni,
+        proguard = proguard,
+        lintRules = lintRules,
+      )
     }
   }
 }

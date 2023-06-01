@@ -31,6 +31,19 @@ abstract class AarAarExtension
   val keepMetaFiles: Property<Boolean> = objects.property<Boolean>().convention(false)
 
   /**
+   * Dictates whether aaraar packaging should be applied to the given variant.
+   *
+   * Defaults to `true` for all variants.
+   * Recommended to only be applied to variant(s) you intend to publish.
+   */
+  val isEnabledForVariant: Property<(VariantDescriptor) -> Boolean> =
+    objects.property<(VariantDescriptor) -> Boolean>().convention { true }
+
+  fun isEnabledForVariant(filter: (VariantDescriptor) -> Boolean) {
+    isEnabledForVariant.set(filter)
+  }
+
+  /**
    * Renames any classes that match the provided [pattern].
    *
    * The [pattern] will match class names, with optional wildcards:

@@ -2,9 +2,10 @@ package sh.christian.aaraar.gradle.agp
 
 import com.android.build.api.artifact.SingleArtifact
 import com.android.build.api.variant.LibraryVariant
+import org.gradle.api.Task
 import org.gradle.api.artifacts.Configuration
-import org.gradle.api.file.RegularFile
-import org.gradle.api.provider.Provider
+import org.gradle.api.file.RegularFileProperty
+import org.gradle.api.tasks.TaskProvider
 
 @Suppress("UnstableApiUsage")
 internal class Agp8AndroidVariant(
@@ -15,7 +16,14 @@ internal class Agp8AndroidVariant(
   override val compileConfiguration: Configuration = variant.compileConfiguration
   override val runtimeConfiguration: Configuration = variant.runtimeConfiguration
 
-  override fun artifactFile(type: FileArtifactType): Provider<RegularFile> = when (type) {
-    FileArtifactType.AAR -> variant.artifacts.get(SingleArtifact.AAR)
+  override fun <T : Task> registerAarTransform(
+    task: TaskProvider<T>,
+    inputAar: (T) -> RegularFileProperty,
+    outputAar: (T) -> RegularFileProperty,
+  ) {
+    variant.artifacts
+      .use(task)
+      .wiredWithFiles(inputAar, outputAar)
+      .toTransform(SingleArtifact.AAR)
   }
 }
