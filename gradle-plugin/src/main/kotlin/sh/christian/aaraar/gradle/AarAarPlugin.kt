@@ -45,7 +45,7 @@ class AarAarPlugin : Plugin<Project> {
       }
 
       agp.onVariants { variant ->
-        val isEnabledForVariant = aaraar.isEnabledForVariant.apply { disallowChanges() }.get()
+        val isEnabledForVariant = aaraar.variantFilter.apply { disallowChanges() }.get()
         if (isEnabledForVariant(VariantDescriptor(variant.variantName, variant.buildType))) {
           applyPluginToVariant(agp, variant)
         } else {
