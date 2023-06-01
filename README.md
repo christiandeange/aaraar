@@ -46,13 +46,28 @@ dependencies {
 ```
 
 The `embed` configuration does not affect which dependencies are available at compilation time, so you will still need
-to declare dependencies as `implementation`, `api`, etc. as normal to compile against them.
+to declare dependencies as `implementation`, `api`, etc. as per usual to compile against them.
 
 Dependencies marked as `api` will be included as `compile` dependencies in the published pom file.
 `implementation` dependencies will be included as `runtime` in the pom.
 
-_*`compileOnly` and `embed` dependencies will not show up in the published pom file unless also marked as `api` or
-`implementation` dependencies as well._
+> **Note**
+> 
+> `compileOnly` and `embed` dependencies will not show up in the published pom file unless also marked as `api` or
+`implementation` dependencies.
+
+By default, aaraar is enabled to run automatically as part of the assemble pipeline for all variants, unless you
+configure it otherwise via the provided extension:
+
+```kotlin
+aaraar {
+  isEnabledForVariant { variant ->
+    variant.name == "publish"
+  }
+}
+```
+
+It is recommended that you only enable aaraar for variant(s) you intend to publish.
 
 ### Shading
 
@@ -94,7 +109,7 @@ android {
 ### Publishing
 
 The merged aar is included in a Gradle `SoftwareComponent` that you can publish using your plugin of choice.
-One component is created per library variant, following the naming convention of `<variant>EmbedAar`.
+One component is created per library variant, using the same name.
 
 Below are examples of how to integrate this with the two most common publishing plugins:
 
@@ -113,7 +128,7 @@ https://docs.gradle.org/current/userguide/publishing_maven.html
         publishing {
           publications {
             create<MavenPublication>("maven") {
-              from(components["releaseEmbedAar"])
+              from(components["release"])
             }
           }
         }
@@ -129,7 +144,7 @@ https://docs.gradle.org/current/userguide/publishing_maven.html
         publishing {
           publications {
             maven(MavenPublication) {
-              from(components.releaseEmbedAar)
+              from(components.release)
             }
           }
         }
@@ -148,11 +163,13 @@ https://github.com/vanniktech/gradle-maven-publish-plugin
 You will need to specify which flavor of the merged aar you want to publish via a project property:
 
 ```kotlin
-project.ext.set("ANDROID_VARIANT_TO_PUBLISH", "releaseEmbedAar")
+project.ext.set("ANDROID_VARIANT_TO_PUBLISH", "release")
 ```
 
-**_You can also always set this property through the command line, but neglecting to do so will cause it to
-default to `"release"`, which will **not** be the merged aar artifact produced by this plugin._
+> **Note**
+>
+> You could also always set this property through the command line, but neglecting to do so will cause it to
+default to `"release"`, which will **not** be the merged aar artifact produced by this plugin.
 </details>
 
 # License
