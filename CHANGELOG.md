@@ -1,6 +1,20 @@
 Change Log
 ==========
 
+## Version 0.0.8
+
+_2023-06-01_
+
+* New: Run aaraar packaging during assemble pipeline.
+  * Developers can choose which variants enable aaraar packaging using the existing `aaraar` extension:
+    ```
+    aaraar {
+      isEnabledForVariant { it.name == "release" }
+    }
+    ```
+* Update: Support for consuming Gradle Module Metadata.
+* Update: Support for Android Gradle Plugin 8.
+
 ## Version 0.0.7
 
 _2023-03-29_
