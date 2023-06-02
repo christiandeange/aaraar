@@ -41,11 +41,21 @@ dependencies {
   implementation 'org.jetbrains.kotlin:kotlin-stdlib:1.8.0'
 }
 
+tasks.register('androidSourcesJar', Jar) {
+  archiveClassifier.set('sources')
+  from android.sourceSets.main.java.srcDirs
+}
+
 afterEvaluate {
+  artifacts {
+    archives androidSourcesJar
+  }
+
   publishing {
     publications {
       maven(MavenPublication) {
         from components.release
+        artifact androidSourcesJar
       }
     }
   }

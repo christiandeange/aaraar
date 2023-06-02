@@ -67,11 +67,21 @@ aaraar {
   }
 }
 
+tasks.register('androidSourcesJar', Jar) {
+  archiveClassifier.set('sources')
+  from android.sourceSets.main.java.srcDirs
+}
+
 afterEvaluate {
+  artifacts {
+    archives androidSourcesJar
+  }
+
   publishing {
     publications {
       maven(MavenPublication) {
         from components.publish
+        artifact androidSourcesJar
       }
     }
   }
