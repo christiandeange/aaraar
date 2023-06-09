@@ -63,7 +63,7 @@ you intend to publish.
 ```kotlin
 aaraar {
   isEnabledForVariant { variant ->
-    variant.name == "publish"
+    variant.name == "release"
   }
 }
 ```
@@ -75,7 +75,7 @@ need additional customization.
 ```kotlin
 android {
   publishing {
-    singleVariant("publish")
+    singleVariant("release")
   }
 }
 ```
