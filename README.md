@@ -57,7 +57,8 @@ Dependencies marked as `api` will be included as `compile` dependencies in the p
 `implementation` dependencies.
 
 By default, aaraar is enabled to run automatically as part of the assemble pipeline for all variants, unless you
-configure it otherwise via the provided extension:
+configure it otherwise via the provided `aaraar` extension. It is recommended that you only enable aaraar for variant(s)
+you intend to publish.
 
 ```kotlin
 aaraar {
@@ -67,7 +68,17 @@ aaraar {
 }
 ```
 
-It is recommended that you only enable aaraar for variant(s) you intend to publish.
+If using Android Gradle Plugin 8.0 or higher, make sure you've also set up variant publishing. Consult with the
+[variant publication documentation](https://developer.android.com/build/publish-library/configure-pub-variants) if you
+need additional customization.
+
+```kotlin
+android {
+  publishing {
+    singleVariant("publish")
+  }
+}
+```
 
 ### Shading
 
