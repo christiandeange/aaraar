@@ -1,6 +1,7 @@
 package sh.christian.aaraar.model
 
 import sh.christian.aaraar.Environment
+import sh.christian.aaraar.utils.aar_metadata
 import sh.christian.aaraar.utils.android_manifest
 import sh.christian.aaraar.utils.assets
 import sh.christian.aaraar.utils.classes_jar
@@ -8,6 +9,7 @@ import sh.christian.aaraar.utils.createJar
 import sh.christian.aaraar.utils.jni
 import sh.christian.aaraar.utils.libs
 import sh.christian.aaraar.utils.lint_jar
+import sh.christian.aaraar.utils.mkdirs
 import sh.christian.aaraar.utils.navigation_json
 import sh.christian.aaraar.utils.openJar
 import sh.christian.aaraar.utils.proguard_txt
@@ -50,6 +52,7 @@ class JarArchive(
 }
 
 class AarArchive(
+  val aarMetadata: AarMetadata,
   val androidManifest: AndroidManifest,
   override val classes: Classes,
   val resources: Resources,
@@ -70,6 +73,7 @@ class AarArchive(
 ) : ArtifactArchive() {
   override fun shaded(shadeConfiguration: ShadeConfiguration): ArtifactArchive {
     return AarArchive(
+      aarMetadata = aarMetadata,
       androidManifest = androidManifest,
       classes = classes.shaded(shadeConfiguration),
       resources = resources,
@@ -93,6 +97,7 @@ class AarArchive(
     val mergedClasses = classes + libs
 
     return AarArchive(
+      aarMetadata = aarMetadata,
       androidManifest = androidManifest + aars.map { it.androidManifest },
       classes = mergedClasses,
       resources = resources + aars.map { it.resources },
@@ -109,6 +114,7 @@ class AarArchive(
 
   override fun writeTo(path: Path) {
     path.createJar { outputAar ->
+      aarMetadata.writeTo(outputAar.aar_metadata.apply { mkdirs() })
       androidManifest.writeTo(outputAar.android_manifest)
       classes.writeTo(outputAar.classes_jar)
       resources.writeTo(outputAar.res)
@@ -128,6 +134,7 @@ class AarArchive(
       path: Path,
       environment: Environment,
     ): AarArchive = path.toAbsolutePath().openJar { aarRoot ->
+      val aarMetadata = AarMetadata.from(aarRoot.aar_metadata)
       val androidManifest = AndroidManifest.from(aarRoot.android_manifest)
       val classes = Classes.from(aarRoot.classes_jar, environment.keepClassesMetaFiles)
       val resources = Resources.from(
@@ -146,6 +153,7 @@ class AarArchive(
       val navigationJson = NavigationJson.from(aarRoot.navigation_json)
 
       AarArchive(
+        aarMetadata = aarMetadata,
         androidManifest = androidManifest,
         classes = classes,
         resources = resources,

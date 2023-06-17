@@ -5,6 +5,9 @@ import java.nio.file.Path
 
 // https://developer.android.com/studio/projects/android-library.html#aar-contents
 
+val FileSystem.aar_metadata: Path
+  get() = this / "META-INF" / "com" / "android" / "build" / "gradle" / "aar-metadata.properties"
+
 val FileSystem.android_manifest: Path get() = this / "AndroidManifest.xml"
 val FileSystem.classes_jar: Path get() = this / "classes.jar"
 val FileSystem.res: Path get() = this / "res"
