@@ -12,6 +12,7 @@ kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 agp-api7 = { module = "com.android.tools.build:gradle-api", version = "7.3.1" }
 agp-api8 = { module = "com.android.tools.build:gradle-api", version = "8.0.1" }
 agp-api-latest = { module = "com.android.tools.build:gradle-api", version.ref = "agp-latest" }
+agp-latest = { module = "com.android.tools.build:gradle", version.ref = "agp-latest" }
 agp-layoutlib = { module = "com.android.tools.layoutlib:layoutlib-api", version.ref = "agp-tools" }
 agp-tools-common = { module = "com.android.tools:common", version.ref = "agp-tools" }
 agp-tools-manifestmerger = { module = "com.android.tools.build:manifest-merger", version.ref = "agp-tools" }
@@ -22,6 +23,7 @@ jarjar = { module = "org.anarres.jarjar:jarjar-core", version = "1.0.1" }
 
 jimfs = { module = "com.google.jimfs:jimfs", version = "1.2" }
 
+gson = { module = "com.google.code.gson:gson", version = "2.10.1" }
 kotlinxml = { module = "org.redundent:kotlin-xml-builder", version = "1.8.0" }
 
 maven-publish = { module = "com.vanniktech:gradle-maven-publish-plugin", version.ref = "maven-publish" }

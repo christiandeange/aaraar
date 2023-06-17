@@ -12,14 +12,16 @@ class VirtualOutputContext : Closeable {
 
   val root: Path = fileSystem.rootDirectories.first()
 
-  fun withFile(block: VirtualOutputFileContext.() -> Unit) {
+  fun withFile(block: VirtualOutputFileContext.() -> Unit): Path {
     val tempFile = Files.createTempFile(root, "test-file", ".tmp")
     VirtualOutputFileContext(tempFile).apply(block)
+    return tempFile
   }
 
-  fun withDirectory(block: VirtualOutputDirectoryContext.() -> Unit) {
+  fun withDirectory(block: VirtualOutputDirectoryContext.() -> Unit): Path {
     val tempDirectory = Files.createTempDirectory(root, "test-dir")
     VirtualOutputDirectoryContext(tempDirectory).apply(block)
+    return tempDirectory
   }
 
   override fun close() {

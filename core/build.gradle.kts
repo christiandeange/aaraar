@@ -17,6 +17,7 @@ dependencies {
   implementation(libs.agp.tools.manifestmerger)
   implementation(libs.agp.tools.sdk)
   implementation(libs.asm)
+  implementation(libs.gson)
   implementation(libs.jarjar) {
     exclude(
       group = libs.asm.get().module.group,

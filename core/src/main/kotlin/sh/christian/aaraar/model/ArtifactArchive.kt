@@ -8,6 +8,7 @@ import sh.christian.aaraar.utils.createJar
 import sh.christian.aaraar.utils.jni
 import sh.christian.aaraar.utils.libs
 import sh.christian.aaraar.utils.lint_jar
+import sh.christian.aaraar.utils.navigation_json
 import sh.christian.aaraar.utils.openJar
 import sh.christian.aaraar.utils.proguard_txt
 import sh.christian.aaraar.utils.public_txt
@@ -59,6 +60,7 @@ class AarArchive(
   val jni: Jni,
   val proguard: Proguard,
   val lintRules: LintRules,
+  val navigationJson: NavigationJson,
   /**
    * TODO
    * no idea how /prefab folder works, add support for it later.
@@ -78,6 +80,7 @@ class AarArchive(
       jni = jni,
       proguard = proguard,
       lintRules = lintRules,
+      navigationJson = navigationJson,
     )
   }
 
@@ -100,6 +103,7 @@ class AarArchive(
       jni = jni + aars.map { it.jni },
       proguard = proguard + aars.map { it.proguard },
       lintRules = lintRules + aars.map { it.lintRules },
+      navigationJson = navigationJson + aars.map { it.navigationJson },
     )
   }
 
@@ -115,6 +119,7 @@ class AarArchive(
       jni.writeTo(outputAar.jni)
       proguard.writeTo(outputAar.proguard_txt)
       lintRules.writeTo(outputAar.lint_jar)
+      navigationJson.writeTo(outputAar.navigation_json)
     }
   }
 
@@ -138,6 +143,7 @@ class AarArchive(
       val jni = Jni.from(aarRoot.jni)
       val proguard = Proguard.from(aarRoot.proguard_txt)
       val lintRules = LintRules.from(aarRoot.lint_jar)
+      val navigationJson = NavigationJson.from(aarRoot.navigation_json)
 
       AarArchive(
         androidManifest = androidManifest,
@@ -150,6 +156,7 @@ class AarArchive(
         jni = jni,
         proguard = proguard,
         lintRules = lintRules,
+        navigationJson = navigationJson,
       )
     }
   }
