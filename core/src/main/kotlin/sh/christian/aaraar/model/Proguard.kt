@@ -2,7 +2,7 @@ package sh.christian.aaraar.model
 
 import java.nio.file.Files
 import java.nio.file.Path
-import kotlin.streams.toList
+import java.util.stream.Collectors.toList
 
 class Proguard
 internal constructor(
@@ -28,7 +28,7 @@ internal constructor(
     fun from(path: Path): Proguard {
       if (!Files.isRegularFile(path)) return Proguard(lines = emptyList())
 
-      val lines = Files.lines(path).toList()
+      val lines = Files.lines(path).collect(toList())
       return Proguard(lines)
     }
   }
