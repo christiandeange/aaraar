@@ -1,6 +1,6 @@
 [versions]
 agp-latest = "8.0.1"
-agp-tools = "31.0.1"
+agp-tools = "30.4.2"
 detekt = "1.22.0"
 kotlin = "1.8.0"
 maven-publish = "0.23.2"
