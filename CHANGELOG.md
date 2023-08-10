@@ -1,6 +1,14 @@
 Change Log
 ==========
 
+## Version 0.0.9
+
+_2023-08-10_
+
+* New: Support for merging navigation.json file.
+* New: Preserve aar-metadata.properties file.
+* Fix: Continue using APIs that are compatible with AGP7 and Java 11.
+
 ## Version 0.0.8
 
 _2023-06-01_
