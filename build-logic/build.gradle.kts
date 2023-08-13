@@ -10,6 +10,7 @@ dependencies {
   implementation(files(libs.javaClass.superclass.protectionDomain.codeSource.location))
 
   implementation(libs.detekt.plugin)
+  implementation(libs.dokka.plugin)
   implementation(libs.maven.publish)
 }
 

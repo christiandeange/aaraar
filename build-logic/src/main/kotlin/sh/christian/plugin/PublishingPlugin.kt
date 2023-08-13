@@ -7,6 +7,7 @@ import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.apply
 import org.gradle.kotlin.dsl.configure
+import org.jetbrains.dokka.gradle.DokkaPlugin
 
 @Suppress("UnstableApiUsage")
 class PublishingPlugin : Plugin<Project> {
@@ -19,6 +20,7 @@ class PublishingPlugin : Plugin<Project> {
     target.version = version
 
     target.plugins.apply(MavenPublishPlugin::class)
+    target.plugins.apply(DokkaPlugin::class)
 
     target.extensions.configure<MavenPublishBaseExtension> {
       coordinates(
