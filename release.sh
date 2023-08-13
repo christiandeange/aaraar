@@ -26,9 +26,11 @@ NEXT_RELEASE="$(awk -F= '/POM_VERSION/ { print $2 }' < gradle.properties)"
 CURRENT_RELEASE="$(awk -F\' '/sh.christian.aaraar/ { print $4 }' < sample-lib/library/build.gradle)"
 sed -i '' "s/$CURRENT_RELEASE/$NEXT_RELEASE/g" sample-lib/library/build.gradle
 sed -i '' "s/$CURRENT_RELEASE/$NEXT_RELEASE/g" README.md
+sed -i '' "s/$CURRENT_RELEASE/$NEXT_RELEASE/g" docs/index.md
 
 git add README.md
 git add gradle.properties
+git add docs
 git add sample-lib/library/build.gradle
 
 git commit -m "Releasing v$NEXT_RELEASE"

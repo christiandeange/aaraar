@@ -15,3 +15,7 @@
 
 # Steve Jobs
 .DS_Store
+
+# Generated Output
+/docs/kdoc/
+/site/
