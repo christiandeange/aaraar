@@ -5,11 +5,7 @@ import java.nio.file.Path
 class LintRules
 internal constructor(
   val archive: GenericJarArchive,
-) : Mergeable<LintRules> {
-  override fun plus(others: List<LintRules>): LintRules {
-    return LintRules(archive + others.map { it.archive })
-  }
-
+) {
   fun writeTo(path: Path) {
     archive.writeTo(path)
   }

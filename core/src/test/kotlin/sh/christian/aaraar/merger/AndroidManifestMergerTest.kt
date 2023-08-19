@@ -1,38 +1,19 @@
-package sh.christian.aaraar
+package sh.christian.aaraar.merger
 
 import io.kotest.matchers.shouldBe
 import sh.christian.aaraar.model.AndroidManifest
 import kotlin.test.Test
 
-class AndroidManifestTest {
+class AndroidManifestMergerTest {
 
-  @Test
-  fun `parses package name from manifest`() {
-    val manifest = AndroidManifest.from("""<manifest package="com.library.main" />""")
-    manifest.packageName shouldBe "com.library.main"
-  }
-
-  @Test
-  fun `parses minSdkVersion from manifest`() {
-    val manifest = AndroidManifest.from(
-      """
-      <manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.library.main">
-          <uses-sdk
-              android:minSdkVersion="21"
-              android:targetSdkVersion="30"/>
-      </manifest>
-      """
-    )
-
-    manifest.minSdk shouldBe 21
-  }
+  private val merger = AndroidManifestMerger()
 
   @Test
   fun `keeps package name from main manifest file`() {
     val mainLibManifest = AndroidManifest.from("""<manifest package="com.library.main" />""")
     val helperModuleManifest = AndroidManifest.from("""<manifest package="com.library.helper.core" />""")
 
-    val mergedManifest = mainLibManifest + helperModuleManifest
+    val mergedManifest = merger.merge(mainLibManifest, helperModuleManifest)
 
     mergedManifest shouldBe """
       <manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.library.main">
@@ -53,7 +34,7 @@ class AndroidManifestTest {
       """
     )
 
-    val mergedManifest = mainLibManifest + helperModuleManifest
+    val mergedManifest = merger.merge(mainLibManifest, helperModuleManifest)
 
     mergedManifest shouldBe """
       <manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.library.main">
@@ -85,7 +66,7 @@ class AndroidManifestTest {
       """
     )
 
-    val mergedManifest = mainLibManifest + helperModuleManifest
+    val mergedManifest = merger.merge(mainLibManifest, helperModuleManifest)
 
     mergedManifest shouldBe """
       <manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.library.main">
@@ -110,7 +91,7 @@ class AndroidManifestTest {
       """
     )
 
-    val mergedManifest = mainLibManifest + helperModuleManifest
+    val mergedManifest = merger.merge(mainLibManifest, helperModuleManifest)
 
     mergedManifest shouldBe """
       <manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.library.main">

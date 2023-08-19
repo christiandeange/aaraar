@@ -1,4 +1,4 @@
-package sh.christian.aaraar.model
+package sh.christian.aaraar.merger
 
 internal sealed class MergeResult {
   object Skip : MergeResult()

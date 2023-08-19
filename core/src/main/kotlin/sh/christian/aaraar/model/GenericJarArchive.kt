@@ -19,7 +19,7 @@ import kotlin.streams.asSequence
 class GenericJarArchive
 internal constructor(
   private val archiveEntries: Map<String, ByteArray>,
-) : Mergeable<GenericJarArchive>, Map<String, ByteArray> by archiveEntries {
+) : Map<String, ByteArray> by archiveEntries {
 
   fun shaded(shadeConfiguration: ShadeConfiguration): GenericJarArchive {
     val processor = JarProcessorChain().apply {
@@ -31,10 +31,6 @@ internal constructor(
     val newArchiveEntries = ClassFilesProcessor(processor).process(archiveEntries)
 
     return GenericJarArchive(newArchiveEntries)
-  }
-
-  override operator fun plus(others: List<GenericJarArchive>): GenericJarArchive {
-    return GenericJarArchive(mergeContents(this, others))
   }
 
   fun bytes(): ByteArray {

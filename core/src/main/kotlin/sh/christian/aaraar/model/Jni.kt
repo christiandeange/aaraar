@@ -5,11 +5,7 @@ import java.nio.file.Path
 class Jni
 internal constructor(
   val files: FileSet,
-) : Mergeable<Jni> {
-  override fun plus(others: List<Jni>): Jni {
-    return Jni(files + others.map { it.files })
-  }
-
+) {
   fun writeTo(path: Path) {
     files.writeTo(path)
   }

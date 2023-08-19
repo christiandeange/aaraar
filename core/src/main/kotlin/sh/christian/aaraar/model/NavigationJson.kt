@@ -9,11 +9,7 @@ import java.nio.file.Path
 class NavigationJson
 internal constructor(
   val navigationData: List<NavigationXmlDocumentData>,
-) : Mergeable<NavigationJson> {
-  override operator fun plus(others: List<NavigationJson>): NavigationJson {
-    return NavigationJson(navigationData + others.flatMap { it.navigationData })
-  }
-
+) {
   fun writeTo(path: Path) {
     if (navigationData.isEmpty()) {
       Files.deleteIfExists(path)

@@ -5,11 +5,7 @@ import java.nio.file.Path
 class Libs
 internal constructor(
   val files: FileSet,
-) : Mergeable<Libs> {
-  override fun plus(others: List<Libs>): Libs {
-    return Libs(files + others.map { it.files })
-  }
-
+) {
   fun shaded(shadeConfiguration: ShadeConfiguration): Libs {
     val shadedFiles = files.mapValues { (path, contents) ->
       if (path.substringAfterLast('.') == "jar") {

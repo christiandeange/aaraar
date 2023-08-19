@@ -1,4 +1,4 @@
-package sh.christian.aaraar
+package sh.christian.aaraar.merger
 
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.matchers.maps.shouldHaveKey
@@ -13,13 +13,15 @@ import sh.christian.aaraar.utils.fooJarPath
 import java.nio.file.Path
 import kotlin.test.Test
 
-class ClassesTest {
+class ClassesMergerTest {
+
+  private val merger = ClassesMerger(GenericJarArchiveMerger())
 
   @Test
   fun `simple merge with classes`() {
     val animalClasses = animalJarPath.loadClasses()
     val fooClasses = fooJarPath.loadClasses()
-    val classpath = animalClasses + fooClasses
+    val classpath = merger.merge(animalClasses, fooClasses)
 
     with(classpath.archive) {
       this shouldHaveSize 4
@@ -34,7 +36,7 @@ class ClassesTest {
   fun `simple merge with libs`() {
     val animalClasses = animalJarPath.loadClasses()
     val externalLibs = Libs.from(externalLibsPath)
-    val classpath = animalClasses + externalLibs
+    val classpath = merger.merge(animalClasses, externalLibs)
 
     with(classpath.archive) {
       this shouldHaveSize 5
@@ -52,7 +54,7 @@ class ClassesTest {
     val foo2Classes = foo2JarPath.loadClasses()
 
     shouldThrow<IllegalStateException> {
-      fooClasses + foo2Classes
+      merger.merge(fooClasses, foo2Classes)
     }
   }
 
@@ -62,7 +64,7 @@ class ClassesTest {
     val fooLibs = Libs.from(externalLibsPath)
 
     shouldThrow<IllegalStateException> {
-      foo2Classes + fooLibs
+      merger.merge(foo2Classes, fooLibs)
     }
   }
 

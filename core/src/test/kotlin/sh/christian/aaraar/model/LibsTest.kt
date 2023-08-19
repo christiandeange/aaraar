@@ -1,9 +1,8 @@
-package sh.christian.aaraar
+package sh.christian.aaraar.model
 
 import io.kotest.matchers.maps.shouldHaveKey
 import io.kotest.matchers.maps.shouldHaveSize
 import org.junit.jupiter.api.Test
-import sh.christian.aaraar.model.Libs
 import sh.christian.aaraar.utils.externalLibsPath
 
 class LibsTest {

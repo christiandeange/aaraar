@@ -1,12 +1,5 @@
 package sh.christian.aaraar.model
 
-import com.android.manifmerger.ManifestMerger2.Invoker.Feature
-import com.android.manifmerger.ManifestMerger2.MergeType.APPLICATION
-import com.android.manifmerger.ManifestMerger2.newMerger
-import com.android.manifmerger.MergingReport
-import com.android.manifmerger.MergingReport.MergedManifestKind
-import com.android.utils.StdLogger
-import com.android.utils.StdLogger.Level
 import org.redundent.kotlin.xml.Node
 import org.redundent.kotlin.xml.parse
 import java.io.File
@@ -18,35 +11,13 @@ import java.nio.file.Path
 class AndroidManifest
 internal constructor(
   private val manifestNode: Node,
-) : Mergeable<AndroidManifest> {
+) {
   val packageName: String by lazy {
     manifestNode.get<String>("package")!!
   }
 
   val minSdk: Int by lazy {
     manifestNode.first("uses-sdk").get<String>("android:minSdkVersion")!!.toInt()
-  }
-
-  override operator fun plus(others: List<AndroidManifest>): AndroidManifest {
-    val mergeReport = newMerger(asTempFile(), StdLogger(Level.WARNING), APPLICATION)
-      .withFeatures(Feature.NO_PLACEHOLDER_REPLACEMENT)
-      .withFeatures(Feature.REMOVE_TOOLS_DECLARATIONS)
-      .apply {
-        others.forEach { other ->
-          addLibraryManifest(other.asTempFile())
-        }
-      }
-      .merge()
-
-    check(mergeReport.result != MergingReport.Result.ERROR) {
-      """
-        Failed to merge manifest. ${mergeReport.reportString}
-
-        ${mergeReport.loggingRecords.joinToString("\n")}
-      """.trimIndent()
-    }
-
-    return from(mergeReport.getMergedDocument(MergedManifestKind.MERGED))
   }
 
   override fun toString(): String {
@@ -59,7 +30,7 @@ internal constructor(
     }
   }
 
-  private fun asTempFile(): File {
+  internal fun asTempFile(): File {
     val file = Files.createTempFile("AndroidManifest", ".xml").toFile()
     FileOutputStream(file).writer().use {
       manifestNode.writeTo(it)

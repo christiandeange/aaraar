@@ -14,8 +14,24 @@ import org.gradle.api.tasks.PathSensitive
 import org.gradle.api.tasks.PathSensitivity.RELATIVE
 import org.gradle.api.tasks.TaskAction
 import sh.christian.aaraar.Environment
+import sh.christian.aaraar.merger.AarArchiveMerger
+import sh.christian.aaraar.merger.AndroidManifestMerger
+import sh.christian.aaraar.merger.AssetsMerger
+import sh.christian.aaraar.merger.ClassesMerger
+import sh.christian.aaraar.merger.FileSetMerger
+import sh.christian.aaraar.merger.GenericJarArchiveMerger
+import sh.christian.aaraar.merger.JniMerger
+import sh.christian.aaraar.merger.LintRulesMerger
+import sh.christian.aaraar.merger.Merger
+import sh.christian.aaraar.merger.NavigationJsonMerger
+import sh.christian.aaraar.merger.ProguardMerger
+import sh.christian.aaraar.merger.PublicTxtMerger
+import sh.christian.aaraar.merger.RTxtMerger
+import sh.christian.aaraar.merger.ResourcesMerger
 import sh.christian.aaraar.model.AarArchive
 import sh.christian.aaraar.model.ArtifactArchive
+import sh.christian.aaraar.model.FileSet
+import sh.christian.aaraar.model.GenericJarArchive
 import sh.christian.aaraar.model.ShadeConfiguration
 import sh.christian.aaraar.utils.deleteIfExists
 import java.nio.file.Path
@@ -63,7 +79,7 @@ abstract class PackageAarTask : DefaultTask() {
           ArtifactArchive.from(it.toPath(), environment)
         }
 
-    val mergedArchive = inputAar.mergeWith(dependencyArchives)
+    val mergedArchive = mergeAarArchive(inputAar, dependencyArchives)
     val shadingConfiguration = shadeConfiguration.get()
 
     val finalArchive = if (shadingConfiguration.isEmpty()) {
@@ -87,6 +103,28 @@ abstract class PackageAarTask : DefaultTask() {
     val outputPath = outputAar.getPath().deleteIfExists()
     logger.info("Merge AAR into: $outputPath")
     finalArchive.writeTo(path = outputPath)
+  }
+
+  private fun mergeAarArchive(
+    aarArchive: AarArchive,
+    dependencyArchives: List<ArtifactArchive>,
+  ): AarArchive {
+    val jarMerger: Merger<GenericJarArchive> = GenericJarArchiveMerger()
+    val fileSetMerger: Merger<FileSet> = FileSetMerger(jarMerger)
+    val aarArchiveMerger = AarArchiveMerger(
+      androidManifestMerger = AndroidManifestMerger(),
+      classesAndLibsMerger = ClassesMerger(jarMerger),
+      resourcesMerger = ResourcesMerger(),
+      rTxtMerger = RTxtMerger(),
+      publicTxtMerger = PublicTxtMerger(),
+      assetsMerger = AssetsMerger(fileSetMerger),
+      jniMerger = JniMerger(fileSetMerger),
+      proguardMerger = ProguardMerger(),
+      lintRulesMerger = LintRulesMerger(jarMerger),
+      navigationJsonMerger = NavigationJsonMerger(),
+    )
+
+    return aarArchiveMerger.merge(aarArchive, dependencyArchives)
   }
 
   private fun RegularFileProperty.getPath(): Path {

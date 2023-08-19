@@ -1,10 +1,9 @@
-package sh.christian.aaraar
+package sh.christian.aaraar.model
 
 import io.kotest.assertions.withClue
 import io.kotest.matchers.maps.shouldBeEmpty
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.shouldNotBe
-import sh.christian.aaraar.model.FileSet
 import sh.christian.aaraar.utils.div
 import sh.christian.aaraar.utils.withFileSystem
 import kotlin.test.Test

@@ -1,4 +1,4 @@
-package sh.christian.aaraar
+package sh.christian.aaraar.merger
 
 import io.kotest.matchers.collections.shouldContainExactly
 import sh.christian.aaraar.model.NavigationJson
@@ -9,7 +9,9 @@ import sh.christian.aaraar.utils.withFileSystem
 import java.nio.file.Files
 import kotlin.test.Test
 
-class NavigationJsonTest {
+class NavigationJsonMergerTest {
+
+  private val merger = NavigationJsonMerger()
 
   @Test
   fun `parses navigation data json`() = withFile {
@@ -24,7 +26,7 @@ class NavigationJsonTest {
     val json1 = NavigationJson.from(withFile { Files.writeString(filePath, navigationJsonDataString("nav1", "/lib1")) })
     val json2 = NavigationJson.from(withFile { Files.writeString(filePath, navigationJsonDataString("nav2", "/lib2")) })
 
-    val merged = json1 + json2
+    val merged = merger.merge(json1, json2)
 
     merged.navigationData shouldContainExactly listOf(
       navigationJsonData("nav1", "/lib1"),
@@ -37,7 +39,7 @@ class NavigationJsonTest {
     val json1 = NavigationJson.from(withFile { Files.writeString(filePath, navigationJsonDataString("nav", "/lib1")) })
     val json2 = NavigationJson.from(withFile { Files.writeString(filePath, navigationJsonDataString("nav", "/lib2")) })
 
-    val merged = json1 + json2
+    val merged = merger.merge(json1, json2)
 
     merged.navigationData shouldContainExactly listOf(
       navigationJsonData("nav", "/lib1"),

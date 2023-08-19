@@ -8,11 +8,7 @@ import java.nio.file.Path
 class PublicTxt
 internal constructor(
   val symbolTable: SymbolTable,
-) : Mergeable<PublicTxt> {
-  override operator fun plus(others: List<PublicTxt>): PublicTxt {
-    return PublicTxt(SymbolTable.merge(listOf(symbolTable) + others.map { it.symbolTable }))
-  }
-
+) {
   fun writeTo(path: Path) {
     if (symbolTable.symbols.isEmpty) {
       Files.deleteIfExists(path)

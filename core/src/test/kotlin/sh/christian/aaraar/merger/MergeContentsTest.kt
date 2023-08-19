@@ -1,11 +1,12 @@
-package sh.christian.aaraar
+package sh.christian.aaraar.merger
 
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.matchers.maps.shouldContainExactly
-import sh.christian.aaraar.model.mergeContents
 import kotlin.test.Test
 
 class MergeContentsTest {
+
+  private val jarMerger = GenericJarArchiveMerger()
 
   @Test
   fun `simple flat merge`() {
@@ -64,6 +65,7 @@ class MergeContentsTest {
       dependencies = dependencies.map { dependency ->
         dependency.mapValues { it.value.encodeToByteArray() }
       },
+      jarMerger = jarMerger,
     )
   }
 

@@ -88,30 +88,6 @@ class AarArchive(
     )
   }
 
-  fun mergeWith(others: List<ArtifactArchive>): ArtifactArchive {
-    val aars = others.filterIsInstance<AarArchive>()
-
-    // At merging time, jars in the `libs` folder are merged into the `classes.jar` file.
-    val classes = classes + others.map { it.classes }
-    val libs = libs + aars.map { it.libs }
-    val mergedClasses = classes + libs
-
-    return AarArchive(
-      aarMetadata = aarMetadata,
-      androidManifest = androidManifest + aars.map { it.androidManifest },
-      classes = mergedClasses,
-      resources = resources + aars.map { it.resources },
-      rTxt = rTxt + aars.map { it.rTxt },
-      publicTxt = publicTxt + aars.map { it.publicTxt },
-      assets = assets + aars.map { it.assets },
-      libs = Libs.EMPTY,
-      jni = jni + aars.map { it.jni },
-      proguard = proguard + aars.map { it.proguard },
-      lintRules = lintRules + aars.map { it.lintRules },
-      navigationJson = navigationJson + aars.map { it.navigationJson },
-    )
-  }
-
   override fun writeTo(path: Path) {
     path.createJar { outputAar ->
       aarMetadata.writeTo(outputAar.aar_metadata.apply { mkdirs() })

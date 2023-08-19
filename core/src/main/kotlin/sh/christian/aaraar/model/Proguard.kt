@@ -6,12 +6,8 @@ import java.util.stream.Collectors.toList
 
 class Proguard
 internal constructor(
-  private val lines: List<String>,
-) : Mergeable<Proguard>, List<String> by lines {
-  override fun plus(others: List<Proguard>): Proguard {
-    return Proguard(lines + others.flatMap { it.lines })
-  }
-
+  val lines: List<String>,
+) : List<String> by lines {
   override fun toString(): String {
     return lines.joinToString(separator = "\n")
   }

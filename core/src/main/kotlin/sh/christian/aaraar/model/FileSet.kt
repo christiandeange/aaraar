@@ -9,11 +9,7 @@ import kotlin.streams.asSequence
 class FileSet
 internal constructor(
   private val indexedFiles: Map<String, ByteArray>,
-) : Mergeable<FileSet>, Map<String, ByteArray> by indexedFiles {
-  override operator fun plus(others: List<FileSet>): FileSet {
-    return FileSet(mergeContents(this, others))
-  }
-
+) : Map<String, ByteArray> by indexedFiles {
   fun writeTo(path: Path) {
     indexedFiles.forEach { (entry, bytes) ->
       val filePath = (path / entry).mkdirs()
