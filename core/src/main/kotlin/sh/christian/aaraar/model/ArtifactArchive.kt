@@ -31,7 +31,7 @@ sealed class ArtifactArchive {
       environment: Environment,
     ): ArtifactArchive {
       return when (path.toFile().extension) {
-        "jar" -> JarArchive(Classes.from(path, environment.keepClassesMetaFiles))
+        "jar" -> JarArchive.from(path, environment)
         "aar" -> AarArchive.from(path, environment)
         else -> error("Unknown dependency type: $path")
       }
@@ -48,6 +48,13 @@ class JarArchive(
 
   override fun writeTo(path: Path) {
     classes.writeTo(path)
+  }
+
+  companion object {
+    fun from(
+      path: Path,
+      environment: Environment,
+    ): JarArchive = JarArchive(Classes.from(path, environment.keepClassesMetaFiles))
   }
 }
 
