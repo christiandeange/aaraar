@@ -5,6 +5,9 @@ import com.android.ide.common.symbols.SymbolTable
 import java.nio.file.Files
 import java.nio.file.Path
 
+/**
+ * Represents the contents of the `R.txt` file.
+ */
 class RTxt
 internal constructor(
   val symbolTable: SymbolTable,

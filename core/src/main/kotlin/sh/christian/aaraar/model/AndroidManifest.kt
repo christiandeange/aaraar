@@ -8,6 +8,9 @@ import java.io.OutputStreamWriter
 import java.nio.file.Files
 import java.nio.file.Path
 
+/**
+ * Represents the contents of the `AndroidManifest.xml` file.
+ */
 class AndroidManifest
 internal constructor(
   private val manifestNode: Node,

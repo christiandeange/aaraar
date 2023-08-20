@@ -21,6 +21,11 @@ import java.nio.file.Files
 import javax.xml.parsers.DocumentBuilderFactory
 import com.android.ide.common.resources.ResourceMerger as AndroidResourceMerger
 
+/**
+ * Standard implementation for merging all resource values and resource files.
+ *
+ * The basis of this implementation uses the same resource merging logic that the Android Gradle Plugin uses.
+ */
 class ResourcesMerger : Merger<Resources> {
   override fun merge(first: Resources, others: List<Resources>): Resources {
     val consumer = ResourceMergerConsumer()

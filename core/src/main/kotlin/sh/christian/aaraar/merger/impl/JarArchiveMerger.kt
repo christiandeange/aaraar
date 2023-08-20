@@ -6,6 +6,9 @@ import sh.christian.aaraar.model.ArtifactArchive
 import sh.christian.aaraar.model.Classes
 import sh.christian.aaraar.model.JarArchive
 
+/**
+ * Standard implementation for merging multiple archive dependencies into an `.jar` file.
+ */
 class JarArchiveMerger(
   private val classesMerger: Merger<Classes>,
 ) : ArchiveMerger<JarArchive> {

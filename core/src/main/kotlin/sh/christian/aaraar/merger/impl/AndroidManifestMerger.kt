@@ -6,6 +6,11 @@ import com.android.utils.StdLogger
 import sh.christian.aaraar.merger.Merger
 import sh.christian.aaraar.model.AndroidManifest
 
+/**
+ * Standard implementation for merging multiple `AndroidManifest.xml` files.
+ *
+ * The basis of this implementation uses the same manifest merging logic that the Android Gradle Plugin uses.
+ */
 class AndroidManifestMerger : Merger<AndroidManifest> {
   override fun merge(first: AndroidManifest, others: List<AndroidManifest>): AndroidManifest {
     val mergeReport = ManifestMerger2.newMerger(

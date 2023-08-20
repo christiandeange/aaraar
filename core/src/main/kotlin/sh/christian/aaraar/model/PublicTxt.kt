@@ -5,6 +5,9 @@ import com.android.ide.common.symbols.SymbolTable
 import java.nio.file.Files
 import java.nio.file.Path
 
+/**
+ * Represents the contents of the `public.txt` file.
+ */
 class PublicTxt
 internal constructor(
   val symbolTable: SymbolTable,

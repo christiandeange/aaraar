@@ -2,6 +2,9 @@ package sh.christian.aaraar.model
 
 import java.nio.file.Path
 
+/**
+ * Represents the contents of the `res/` folder.
+ */
 class Resources
 internal constructor(
   val files: FileSet,

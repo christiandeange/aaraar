@@ -7,30 +7,30 @@ import java.nio.file.FileSystems
 import java.nio.file.Files
 import java.nio.file.Path
 
-operator fun File.div(path: String): File {
+internal operator fun File.div(path: String): File {
   return resolve(path)
 }
 
-operator fun Path.div(path: String): Path {
+internal operator fun Path.div(path: String): Path {
   return resolve(path)
 }
 
-operator fun FileSystem.div(path: String): Path {
+internal operator fun FileSystem.div(path: String): Path {
   return getPath(path)
 }
 
-fun Path.mkdirs(): Path {
+internal fun Path.mkdirs(): Path {
   return apply { parent?.let(Files::createDirectories) }
 }
 
-fun Path.deleteIfExists(): Path {
+internal fun Path.deleteIfExists(): Path {
   return apply { Files.deleteIfExists(this) }
 }
 
-fun <T> Path.createJar(block: (FileSystem) -> T): T =
+internal fun <T> Path.createJar(block: (FileSystem) -> T): T =
   asJarFileSystem(env = mapOf("create" to true), block)
 
-fun <T> Path.openJar(block: (FileSystem) -> T): T =
+internal fun <T> Path.openJar(block: (FileSystem) -> T): T =
   asJarFileSystem(env = emptyMap(), block)
 
 private fun <T> Path.asJarFileSystem(

@@ -7,7 +7,7 @@ import com.tonicsystems.jarjar.transform.jar.JarProcessor.Result.KEEP
 import sh.christian.aaraar.utils.div
 import java.nio.file.FileSystems
 
-class ResourceFilter(
+internal class ResourceFilter(
   private val resourceDeletes: Set<String>,
 ) : JarProcessor {
   private val fs = FileSystems.getDefault()

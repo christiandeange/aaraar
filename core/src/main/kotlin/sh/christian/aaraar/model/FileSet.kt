@@ -6,6 +6,9 @@ import java.nio.file.Files
 import java.nio.file.Path
 import kotlin.streams.asSequence
 
+/**
+ * Represents an arbitrary set of files, indexed by their relative file path to a specified root.
+ */
 class FileSet
 internal constructor(
   private val indexedFiles: Map<String, ByteArray>,

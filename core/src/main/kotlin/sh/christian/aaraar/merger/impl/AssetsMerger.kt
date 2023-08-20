@@ -4,6 +4,9 @@ import sh.christian.aaraar.merger.Merger
 import sh.christian.aaraar.model.Assets
 import sh.christian.aaraar.model.FileSet
 
+/**
+ * Standard file-wise implementation for merging multiple `assets/` folders.
+ */
 class AssetsMerger(
   private val fileSetMerger: Merger<FileSet>,
 ) : Merger<Assets> {

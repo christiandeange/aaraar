@@ -8,7 +8,7 @@ import com.tonicsystems.jarjar.transform.jar.JarProcessor.Result.KEEP
 import com.tonicsystems.jarjar.util.ClassNameUtils
 import com.tonicsystems.jarjar.util.ClassNameUtils.EXT_CLASS
 
-class ClassFilter(
+internal class ClassFilter(
   classDeletes: Set<String>,
 ) : JarProcessor {
   private val classDeletePatterns = classDeletes.map { ClassDelete(it) }

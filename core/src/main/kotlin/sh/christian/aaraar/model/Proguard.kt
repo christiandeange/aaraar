@@ -4,6 +4,9 @@ import java.nio.file.Files
 import java.nio.file.Path
 import java.util.stream.Collectors.toList
 
+/**
+ * Represents the set of consumer Proguard files.
+ */
 class Proguard
 internal constructor(
   val lines: List<String>,

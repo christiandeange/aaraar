@@ -34,7 +34,7 @@ import sh.christian.aaraar.model.ArtifactArchive
 import sh.christian.aaraar.model.FileSet
 import sh.christian.aaraar.model.GenericJarArchive
 import sh.christian.aaraar.model.ShadeConfiguration
-import sh.christian.aaraar.utils.deleteIfExists
+import java.nio.file.Files
 import java.nio.file.Path
 
 @CacheableTask
@@ -101,7 +101,7 @@ abstract class PackageArchiveTask : DefaultTask() {
       mergedArchive.shaded(shadingConfiguration)
     }
 
-    val outputPath = outputArchive.getPath().deleteIfExists()
+    val outputPath = outputArchive.getPath().apply { Files.deleteIfExists(this) }
     logger.info("Merged into: $outputPath")
     finalArchive.writeTo(path = outputPath)
   }

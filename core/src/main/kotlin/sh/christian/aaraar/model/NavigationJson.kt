@@ -6,6 +6,9 @@ import com.google.gson.reflect.TypeToken
 import java.nio.file.Files
 import java.nio.file.Path
 
+/**
+ * Represents the contents of the `navigation.json` file.
+ */
 class NavigationJson
 internal constructor(
   val navigationData: List<NavigationXmlDocumentData>,

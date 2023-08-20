@@ -2,6 +2,9 @@ package sh.christian.aaraar.model
 
 import java.nio.file.Path
 
+/**
+ * Represents the set of consumer Lint rules.
+ */
 class LintRules
 internal constructor(
   val archive: GenericJarArchive,

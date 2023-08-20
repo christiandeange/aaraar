@@ -4,6 +4,9 @@ import sh.christian.aaraar.merger.Merger
 import sh.christian.aaraar.model.FileSet
 import sh.christian.aaraar.model.Jni
 
+/**
+ * Standard file-wise implementation for merging multiple `jni/` folders.
+ */
 class JniMerger(
   private val fileSetMerger: Merger<FileSet>,
 ) : Merger<Jni> {

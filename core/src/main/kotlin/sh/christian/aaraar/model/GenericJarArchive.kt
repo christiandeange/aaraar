@@ -16,6 +16,9 @@ import java.nio.file.attribute.FileTime
 import java.util.jar.JarInputStream
 import kotlin.streams.asSequence
 
+/**
+ * Represents an arbitrary set of `.jar` entries, indexed by their relative file path to the root folder.
+ */
 class GenericJarArchive
 internal constructor(
   private val archiveEntries: Map<String, ByteArray>,

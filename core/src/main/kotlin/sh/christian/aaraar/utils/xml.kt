@@ -6,7 +6,7 @@ import org.redundent.kotlin.xml.Node
 import org.redundent.kotlin.xml.node
 import org.w3c.dom.Node as W3CNode
 
-fun W3CNode.toNode(): Node {
+internal fun W3CNode.toNode(): Node {
   return node(nodeName) {
     copyNode(this@toNode, this)
   }.first(nodeName)

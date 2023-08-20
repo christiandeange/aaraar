@@ -2,6 +2,9 @@ package sh.christian.aaraar.model
 
 import java.nio.file.Path
 
+/**
+ * Represents the contents of the `classes.jar` file, the main runtime sources for an [ArtifactArchive].
+ */
 class Classes
 internal constructor(
   val archive: GenericJarArchive,

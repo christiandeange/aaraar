@@ -4,6 +4,7 @@ import sh.christian.aaraar.merger.ArchiveMerger
 import sh.christian.aaraar.merger.ClassesAndLibsMerger
 import sh.christian.aaraar.merger.Merger
 import sh.christian.aaraar.model.AarArchive
+import sh.christian.aaraar.model.AarMetadata
 import sh.christian.aaraar.model.AndroidManifest
 import sh.christian.aaraar.model.ArtifactArchive
 import sh.christian.aaraar.model.Assets
@@ -18,6 +19,13 @@ import sh.christian.aaraar.model.PublicTxt
 import sh.christian.aaraar.model.RTxt
 import sh.christian.aaraar.model.Resources
 
+/**
+ * Standard implementation for merging multiple archive dependencies into an `.aar` file.
+ *
+ * Most entries are merged according to the respective [Merger] implementation that is passed in, with some exceptions.
+ * - [AarMetadata] is directly copied from the main source [AarArchive]. Metadata from other dependencies are ignored.
+ * - [Libs] are combined and merged with other [Classes] into a single [Classes].
+ */
 class AarArchiveMerger(
   private val androidManifestMerger: Merger<AndroidManifest>,
   private val classesAndLibsMerger: ClassesAndLibsMerger,

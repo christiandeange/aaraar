@@ -5,7 +5,7 @@ import com.tonicsystems.jarjar.transform.jar.JarProcessor
 import com.tonicsystems.jarjar.transform.jar.JarProcessor.Result.DISCARD
 import com.tonicsystems.jarjar.transform.jar.JarProcessor.Result.KEEP
 
-class ClassFilesProcessor(
+internal class ClassFilesProcessor(
   private val jarProcessor: JarProcessor,
 ) {
   fun process(entries: Map<String, ByteArray>): Map<String, ByteArray> = buildMap {

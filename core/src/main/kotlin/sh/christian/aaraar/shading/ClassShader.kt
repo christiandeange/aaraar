@@ -11,7 +11,7 @@ import org.objectweb.asm.ClassReader
 import org.objectweb.asm.ClassWriter
 import org.objectweb.asm.commons.ClassRemapper
 
-class ClassShader(
+internal class ClassShader(
   classRenames: Map<String, String>,
 ) : JarProcessor {
   private val packageRemapper = PackageRemapper(

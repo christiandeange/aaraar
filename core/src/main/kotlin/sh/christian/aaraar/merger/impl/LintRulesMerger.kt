@@ -4,6 +4,9 @@ import sh.christian.aaraar.merger.Merger
 import sh.christian.aaraar.model.GenericJarArchive
 import sh.christian.aaraar.model.LintRules
 
+/**
+ * Standard jar-wise implementation for merging multiple `lint.jar` files.
+ */
 class LintRulesMerger(
   private val jarMerger: Merger<GenericJarArchive>,
 ) : Merger<LintRules> {

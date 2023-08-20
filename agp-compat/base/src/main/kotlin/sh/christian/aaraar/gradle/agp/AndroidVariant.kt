@@ -41,6 +41,10 @@ interface AndroidVariant {
     outputAar: (T) -> RegularFileProperty,
   )
 
+  /**
+   * Returns a string using an optional prefix and suffix to surround the variant name, applying the default
+   * snake-casing formatting convention that Gradle naming often follows.
+   */
   fun name(
     prefix: String = "",
     suffix: String = "",

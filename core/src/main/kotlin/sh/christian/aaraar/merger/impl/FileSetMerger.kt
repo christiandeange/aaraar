@@ -5,6 +5,11 @@ import sh.christian.aaraar.merger.mergeContents
 import sh.christian.aaraar.model.FileSet
 import sh.christian.aaraar.model.GenericJarArchive
 
+/**
+ * Standard file-wise implementation for merging multiple sets of files.
+ *
+ * If there are any duplicate file paths with differing file contents, an exception will be thrown.
+ */
 class FileSetMerger(
   private val jarMerger: Merger<GenericJarArchive>,
 ) : Merger<FileSet> {

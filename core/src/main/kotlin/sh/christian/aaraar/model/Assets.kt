@@ -2,6 +2,9 @@ package sh.christian.aaraar.model
 
 import java.nio.file.Path
 
+/**
+ * Represents the contents of the `assets/` folder.
+ */
 class Assets
 internal constructor(
   val files: FileSet,

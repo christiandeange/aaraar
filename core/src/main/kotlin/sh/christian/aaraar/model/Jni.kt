@@ -2,6 +2,9 @@ package sh.christian.aaraar.model
 
 import java.nio.file.Path
 
+/**
+ * Represents the compiled native files in the `jni/` folder.
+ */
 class Jni
 internal constructor(
   val files: FileSet,

@@ -4,6 +4,9 @@ import java.nio.file.Files
 import java.nio.file.Path
 import java.util.stream.Collectors.toList
 
+/**
+ * Represents the contents of the `META-INF/com/android/build/gradle/aar-metadata.properties` file.
+ */
 data class AarMetadata(
   private val lines: List<String>,
 ) {

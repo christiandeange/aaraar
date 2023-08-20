@@ -2,6 +2,9 @@ package sh.christian.aaraar.model
 
 import java.nio.file.Path
 
+/**
+ * Represents the set of `.jar` files in the `libs/` folder.
+ */
 class Libs
 internal constructor(
   val files: FileSet,
