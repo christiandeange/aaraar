@@ -1,8 +1,9 @@
-package sh.christian.aaraar.merger
+package sh.christian.aaraar.merger.impl
 
 import com.android.manifmerger.ManifestMerger2
 import com.android.manifmerger.MergingReport
 import com.android.utils.StdLogger
+import sh.christian.aaraar.merger.Merger
 import sh.christian.aaraar.model.AndroidManifest
 
 class AndroidManifestMerger : Merger<AndroidManifest> {

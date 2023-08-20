@@ -1,5 +1,7 @@
-package sh.christian.aaraar.merger
+package sh.christian.aaraar.merger.impl
 
+import sh.christian.aaraar.merger.Merger
+import sh.christian.aaraar.merger.mergeContents
 import sh.christian.aaraar.model.GenericJarArchive
 
 class GenericJarArchiveMerger : Merger<GenericJarArchive> {

@@ -2,11 +2,14 @@ package sh.christian.aaraar.merger
 
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.matchers.maps.shouldContainExactly
+import sh.christian.aaraar.model.GenericJarArchive
 import kotlin.test.Test
 
 class MergeContentsTest {
 
-  private val jarMerger = GenericJarArchiveMerger()
+  private val jarMerger = object : Merger<GenericJarArchive> {
+    override fun merge(first: GenericJarArchive, others: List<GenericJarArchive>) = error("Not implemented")
+  }
 
   @Test
   fun `simple flat merge`() {

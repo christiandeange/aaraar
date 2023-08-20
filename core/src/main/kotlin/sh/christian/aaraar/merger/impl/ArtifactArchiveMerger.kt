@@ -1,5 +1,6 @@
-package sh.christian.aaraar.merger
+package sh.christian.aaraar.merger.impl
 
+import sh.christian.aaraar.merger.ArchiveMerger
 import sh.christian.aaraar.model.AarArchive
 import sh.christian.aaraar.model.ArtifactArchive
 import sh.christian.aaraar.model.JarArchive

@@ -1,5 +1,6 @@
-package sh.christian.aaraar.merger
+package sh.christian.aaraar.merger.impl
 
+import sh.christian.aaraar.merger.Merger
 import sh.christian.aaraar.model.FileSet
 import sh.christian.aaraar.model.Jni
 

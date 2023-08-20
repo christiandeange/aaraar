@@ -1,4 +1,4 @@
-package sh.christian.aaraar.merger
+package sh.christian.aaraar.merger.impl
 
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.matchers.maps.shouldHaveKey

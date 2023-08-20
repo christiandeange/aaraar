@@ -1,4 +1,4 @@
-package sh.christian.aaraar.merger
+package sh.christian.aaraar.merger.impl
 
 import com.android.ide.common.rendering.api.ResourceNamespace
 import com.android.ide.common.resources.DataFile
@@ -12,6 +12,7 @@ import org.redundent.kotlin.xml.Namespace
 import org.redundent.kotlin.xml.PrintOptions
 import org.redundent.kotlin.xml.parse
 import org.redundent.kotlin.xml.xml
+import sh.christian.aaraar.merger.Merger
 import sh.christian.aaraar.model.FileSet
 import sh.christian.aaraar.model.Resources
 import sh.christian.aaraar.utils.toNode

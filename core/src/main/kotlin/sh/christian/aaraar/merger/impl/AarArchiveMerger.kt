@@ -1,5 +1,8 @@
-package sh.christian.aaraar.merger
+package sh.christian.aaraar.merger.impl
 
+import sh.christian.aaraar.merger.ArchiveMerger
+import sh.christian.aaraar.merger.ClassesAndLibsMerger
+import sh.christian.aaraar.merger.Merger
 import sh.christian.aaraar.model.AarArchive
 import sh.christian.aaraar.model.AndroidManifest
 import sh.christian.aaraar.model.ArtifactArchive

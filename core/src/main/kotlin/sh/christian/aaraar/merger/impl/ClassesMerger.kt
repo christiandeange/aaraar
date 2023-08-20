@@ -1,5 +1,7 @@
-package sh.christian.aaraar.merger
+package sh.christian.aaraar.merger.impl
 
+import sh.christian.aaraar.merger.ClassesAndLibsMerger
+import sh.christian.aaraar.merger.Merger
 import sh.christian.aaraar.model.Classes
 import sh.christian.aaraar.model.GenericJarArchive
 import sh.christian.aaraar.model.Libs

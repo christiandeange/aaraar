@@ -1,6 +1,7 @@
-package sh.christian.aaraar.merger
+package sh.christian.aaraar.merger.impl
 
 import com.android.ide.common.symbols.SymbolTable
+import sh.christian.aaraar.merger.Merger
 import sh.christian.aaraar.model.PublicTxt
 
 class PublicTxtMerger : Merger<PublicTxt> {

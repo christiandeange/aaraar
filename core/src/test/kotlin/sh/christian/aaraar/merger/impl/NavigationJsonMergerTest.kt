@@ -1,4 +1,4 @@
-package sh.christian.aaraar.merger
+package sh.christian.aaraar.merger.impl
 
 import io.kotest.matchers.collections.shouldContainExactly
 import sh.christian.aaraar.model.NavigationJson
