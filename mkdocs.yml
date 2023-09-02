@@ -16,6 +16,7 @@ theme:
   features:
     - content.code.copy
     - content.tabs.link
+    - navigation.footer
     - navigation.instant
     - toc.integrate
   palette:
@@ -52,4 +53,12 @@ plugins:
 
 nav:
   - 'Overview': index.md
+  - 'Usage':
+    - 'Installation': installation.md
+    - 'Packaging': packaging.md
+    - 'Shading': shading.md
+    - 'Publishing an AAR': publishing-aar.md
+    - 'Publishing a JAR': publishing-jar.md
   - 'API Reference': kdoc/index.html
+  - 'Changelog': changelog.md
+  - 'License': license.md

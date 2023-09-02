@@ -1,0 +1,1 @@
+/Users/chr/Documents/aaraar-plugin/CHANGELOG.md
