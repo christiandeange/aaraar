@@ -5,20 +5,29 @@ package sh.christian.aaraar.gradle
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.artifacts.type.ArtifactTypeDefinition.ARTIFACT_TYPE_ATTRIBUTE
+import org.gradle.api.publish.maven.tasks.AbstractPublishToMaven
+import org.gradle.api.publish.tasks.GenerateModuleMetadata
+import org.gradle.api.tasks.bundling.Jar
 import org.gradle.kotlin.dsl.add
 import org.gradle.kotlin.dsl.getByType
+import org.gradle.kotlin.dsl.named
 import org.gradle.kotlin.dsl.register
+import org.gradle.kotlin.dsl.withType
 import sh.christian.aaraar.gradle.agp.AgpCompat
 import sh.christian.aaraar.gradle.agp.AndroidVariant
 import sh.christian.aaraar.model.ShadeConfiguration
 
 /**
- * A plugin for creating a merged aar file. Configurable via the `aaraar` extension.
+ * A plugin for creating a merged `aar` or `jar` file. Configurable via the `aaraar` extension.
  * @see AarAarExtension
  */
 class AarAarPlugin : Plugin<Project> {
   override fun apply(target: Project) = with(target) {
     val aaraar = extensions.create("aaraar", AarAarExtension::class.java)
+
+    pluginManager.withPlugin("java") {
+      applyPluginToJavaLibrary()
+    }
 
     pluginManager.withPlugin("com.android.library") {
       val agp = project.agp
@@ -47,7 +56,7 @@ class AarAarPlugin : Plugin<Project> {
       agp.onVariants { variant ->
         val isEnabledForVariant = aaraar.variantFilter.apply { disallowChanges() }.get()
         if (isEnabledForVariant(VariantDescriptor(variant.variantName, variant.buildType))) {
-          applyPluginToVariant(agp, variant)
+          applyPluginToAndroidVariant(agp, variant)
         } else {
           logger.info("aaraar packaging disabled for ${variant.variantName}, skipping...")
         }
@@ -55,7 +64,43 @@ class AarAarPlugin : Plugin<Project> {
     }
   }
 
-  private fun Project.applyPluginToVariant(
+  private fun Project.applyPluginToJavaLibrary() {
+    val aaraar = extensions.getByType<AarAarExtension>()
+
+    val embed = configurations.create("embed") {
+      isTransitive = false
+      isCanBeConsumed = true
+      isCanBeResolved = true
+    }
+
+    val jarTask = tasks.named<Jar>("jar")
+
+    val packageJar = tasks.register<PackageJarTask>("packageJar") {
+      embedClasspath.from(embed)
+
+      shadeConfiguration.set(
+        ShadeConfiguration(
+          classRenames = aaraar.classRenames.get(),
+          classDeletes = aaraar.classDeletes.get(),
+          resourceExclusions = emptySet(),
+        )
+      )
+      keepMetaFiles.set(aaraar.keepMetaFiles)
+
+      inputJar.set(jarTask.flatMap { it.archiveFile })
+      outputJar.set(jarTask.flatMap { it.archiveFile })
+    }
+
+    // These tasks are created by the `maven-publish` plugin.
+    tasks.withType<GenerateModuleMetadata>().configureEach {
+      dependsOn(packageJar)
+    }
+    tasks.withType<AbstractPublishToMaven>().configureEach {
+      dependsOn(packageJar)
+    }
+  }
+
+  private fun Project.applyPluginToAndroidVariant(
     agp: AgpCompat,
     variant: AndroidVariant,
   ) {

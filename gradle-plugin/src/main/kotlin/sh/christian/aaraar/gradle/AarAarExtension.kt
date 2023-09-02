@@ -24,7 +24,7 @@ abstract class AarAarExtension
   val classDeletes: SetProperty<String> = objects.setProperty<String>().convention(mutableSetOf())
 
   /**
-   * Dictates whether `META-INF/` files should be kept in the `classes.jar` contained in the final merged `aar` file.
+   * Dictates whether `META-INF/` files should be kept or discarded in the final merged artifact.
    *
    * Defaults to `false`.
    */
@@ -35,7 +35,8 @@ abstract class AarAarExtension
     objects.property<(VariantDescriptor) -> Boolean>().convention { true }
 
   /**
-   * Dictates whether aaraar packaging should be applied to the given variant.
+   * Dictates whether aaraar packaging should be applied to a given Android variant.
+   * This filter is ignored when applied to a non-Android module.
    *
    * Defaults to `true` for all variants.
    * Recommended to only be applied to variant(s) you intend to publish.

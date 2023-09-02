@@ -8,7 +8,6 @@ import org.gradle.api.tasks.CacheableTask
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.InputFile
 import org.gradle.api.tasks.InputFiles
-import org.gradle.api.tasks.Optional
 import org.gradle.api.tasks.OutputFile
 import org.gradle.api.tasks.PathSensitive
 import org.gradle.api.tasks.PathSensitivity.RELATIVE
@@ -54,19 +53,14 @@ abstract class PackageArchiveTask : DefaultTask() {
   @get:Input
   abstract val keepMetaFiles: Property<Boolean>
 
-  @get:Input
-  @get:Optional
-  abstract val androidAaptIgnore: Property<String>
-
   @get:OutputFile
   abstract val outputArchive: RegularFileProperty
 
+  internal abstract fun environment(): Environment
+
   @TaskAction
   fun packageArtifactArchive() {
-    val environment = Environment(
-      androidAaptIgnore = androidAaptIgnore.get(),
-      keepClassesMetaFiles = keepMetaFiles.get(),
-    )
+    val environment = environment()
     logger.info("Packaging environment: $environment")
 
     val inputPath = inputArchive.getPath()
