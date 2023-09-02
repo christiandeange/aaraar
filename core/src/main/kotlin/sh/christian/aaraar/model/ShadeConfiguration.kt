@@ -3,7 +3,7 @@ package sh.christian.aaraar.model
 import java.io.Serializable
 
 /**
- * Defines the rules for shading `.jar` files following a syntax for pattern matching classes and resources.
+ * Defines the rules for shading `jar` files following a syntax for pattern matching classes and resources.
  *
  * The pattern will be matched against class names, allowing for wildcards to be specified:
  * - `*` will match a single package component.

@@ -19,7 +19,7 @@ import sh.christian.aaraar.utils.res
 import java.nio.file.Path
 
 /**
- * The base class of a packaged archive output, typically either a `.jar` or `.aar` file.
+ * The base class of a packaged archive output, typically either a `jar` or `aar` file.
  */
 sealed class ArtifactArchive {
   abstract val classes: Classes
@@ -43,7 +43,7 @@ sealed class ArtifactArchive {
 }
 
 /**
- * Represents a packaged `.jar` archive output.
+ * Represents a packaged `jar` archive output.
  */
 class JarArchive(
   override val classes: Classes,
@@ -65,7 +65,7 @@ class JarArchive(
 }
 
 /**
- * Represents a packaged `.aar` archive output.
+ * Represents a packaged `aar` archive output.
  */
 class AarArchive(
   val aarMetadata: AarMetadata,

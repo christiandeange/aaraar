@@ -20,7 +20,7 @@ import sh.christian.aaraar.model.RTxt
 import sh.christian.aaraar.model.Resources
 
 /**
- * Standard implementation for merging multiple archive dependencies into an `.aar` file.
+ * Standard implementation for merging multiple archive dependencies into an `aar` file.
  *
  * Most entries are merged according to the respective [Merger] implementation that is passed in, with some exceptions.
  * - [AarMetadata] is directly copied from the main source [AarArchive]. Metadata from other dependencies are ignored.

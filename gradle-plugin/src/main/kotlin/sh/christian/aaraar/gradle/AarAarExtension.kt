@@ -24,7 +24,7 @@ abstract class AarAarExtension
   val classDeletes: SetProperty<String> = objects.setProperty<String>().convention(mutableSetOf())
 
   /**
-   * Dictates whether `META-INF/` files should be kept in the `classes.jar` contained in the final merged `.aar` file.
+   * Dictates whether `META-INF/` files should be kept in the `classes.jar` contained in the final merged `aar` file.
    *
    * Defaults to `false`.
    */

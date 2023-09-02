@@ -17,7 +17,7 @@ import java.util.jar.JarInputStream
 import kotlin.streams.asSequence
 
 /**
- * Represents an arbitrary set of `.jar` entries, indexed by their relative file path to the root folder.
+ * Represents an arbitrary set of `jar` entries, indexed by their relative file path to the root folder.
  */
 class GenericJarArchive
 internal constructor(
