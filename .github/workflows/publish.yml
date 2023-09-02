@@ -68,5 +68,11 @@ jobs:
       - name: Install MkDocs
         run: pip install mkdocs-material
 
+      - name: Build MkDocs
+        run: |
+          rm docs/changelog.md
+          cp CHANGELOG.md docs/changelog.md
+          mkdocs build
+
       - name: Deploy MkDocs to GitHub Pages
         run: mkdocs gh-deploy --force
