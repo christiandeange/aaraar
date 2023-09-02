@@ -1,6 +1,17 @@
 Change Log
 ==========
 
+## Version 0.0.10
+
+_2023-09-02_
+
+* New: Generate Dokka documentation.
+* New: Hosted setup guide at https://christiandeange.github.io/aaraar.
+* New: Support for Java projects!
+  * The same `sh.christian.aaraar` plugin can be applied to Java or Kotlin libraries that produce a `jar` file instead.
+  * Configuration is also done through the same `aaraar` Gradle extension.
+  * See the new [publishing docs](https://christiandeange.github.io/aaraar/publishing-jar) for details on how to publish embedded `jar` files.
+
 ## Version 0.0.9
 
 _2023-08-10_
