@@ -71,6 +71,8 @@ aaraar {
   isEnabledForVariant { variant ->
     variant.name == "publish"
   }
+
+  keepMetaFiles = false
 }
 
 afterEvaluate {

@@ -103,6 +103,6 @@ class AndroidManifestMergerTest {
   }
 
   private infix fun AndroidManifest.shouldBe(contents: String) {
-    toString().trim().replace("\t", "    ") shouldBe contents.trimIndent()
+    toString().trim().replace("\t", "    ").replace("\r\n", "\n") shouldBe contents.trimIndent()
   }
 }

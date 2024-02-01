@@ -18,6 +18,8 @@ val fooJarPath: Path = Paths.get(resourceLoader.getResource("foo.jar")!!.toURI()
 val foo2JarPath: Path = Paths.get(resourceLoader.getResource("foo2.jar")!!.toURI())
 val externalLibsPath: Path = Paths.get(resourceLoader.getResource("libs")!!.toURI())
 
+private val root = generateSequence(File(System.getProperty("user.dir"))) { it.parentFile }.last()
+
 fun navigationJsonData(
   name: String,
   path: String,
@@ -32,7 +34,7 @@ fun navigationJsonData(
       path = path,
       query = null,
       sourceFilePosition = SourceFilePosition(
-        SourceFile(File("/$name.xml"), name),
+        SourceFile(root.resolve("$name.xml"), name),
         SourcePosition(7, 4, 309, 9, 37, 440),
       ),
       isAutoVerify = false,
@@ -59,7 +61,7 @@ fun navigationJsonDataString(
         "path": "$path",
         "sourceFilePosition": {
           "mSourceFile": {
-            "mFilePath": "/$name.xml",
+            "mFilePath": "${root.resolve("$name.xml").toString().replace("\\", "\\\\")}",
             "mDescription": "$name"
           },
           "mSourcePosition": {

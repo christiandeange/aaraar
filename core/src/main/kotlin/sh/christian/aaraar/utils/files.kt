@@ -1,5 +1,6 @@
 package sh.christian.aaraar.utils
 
+import java.io.File
 import java.net.URI
 import java.nio.file.FileSystem
 import java.nio.file.FileSystems
@@ -38,7 +39,12 @@ private fun <T> Path.asArchiveFileSystem(
   env: Map<String, Any?> = emptyMap(),
   block: (FileSystem) -> T,
 ): T {
-  val fileSystemUri = URI.create("jar:file:${toAbsolutePath()}")
+  val fileSystemUri = if (File.separatorChar == '\\') {
+    URI.create("jar:file:/${toAbsolutePath().toString().replace("\\", "/")}")
+  } else {
+    URI.create("jar:file:${toAbsolutePath()}")
+  }
+
   return runCatching {
     FileSystems.newFileSystem(fileSystemUri, env)
   }.getOrElse { e ->

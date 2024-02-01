@@ -1,3 +1,4 @@
+import org.gradle.api.tasks.testing.logging.TestExceptionFormat
 import org.gradle.api.tasks.testing.logging.TestLogEvent
 
 plugins {
@@ -35,6 +36,7 @@ tasks.test {
   useJUnitPlatform()
 
   testLogging {
+    exceptionFormat = TestExceptionFormat.FULL
     events = TestLogEvent.values().toSet() - TestLogEvent.STARTED
   }
 }

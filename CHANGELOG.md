@@ -6,6 +6,7 @@ Change Log
 _(TBD)_
 
 * Update: The `kepeMetaFiles` configuration option now defaults to `true`.
+* Fix: Resolve issue opening/creating archive files in Windows.
 
 ## Version 0.0.10
 
