@@ -1,6 +1,12 @@
 Change Log
 ==========
 
+## Version 0.0.11
+
+_(TBD)_
+
+* Update: The `kepeMetaFiles` configuration option now defaults to `true`.
+
 ## Version 0.0.10
 
 _2023-09-02_

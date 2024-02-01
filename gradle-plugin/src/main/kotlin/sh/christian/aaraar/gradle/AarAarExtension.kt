@@ -26,9 +26,9 @@ abstract class AarAarExtension
   /**
    * Dictates whether `META-INF/` files should be kept or discarded in the final merged artifact.
    *
-   * Defaults to `false`.
+   * Defaults to `true`.
    */
-  val keepMetaFiles: Property<Boolean> = objects.property<Boolean>().convention(false)
+  val keepMetaFiles: Property<Boolean> = objects.property<Boolean>().convention(true)
 
   /** @see isEnabledForVariant */
   val variantFilter: Property<(VariantDescriptor) -> Boolean> =

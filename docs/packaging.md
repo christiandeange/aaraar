@@ -64,3 +64,24 @@ In Android modules, embed configurations can also be declared for individual bui
       publishEmbed project(":internal")
     }
     ```
+
+You can also let the plugin know whether to strip all `META-INF/` files from the packaged output file. By default it
+keeps them all, but this can be configured via the plugin extension:
+
+=== "Kotlin"
+
+    ```kotlin
+    aaraar {
+      // Strip all META-INF/ files from the merged file
+      keepMetaFiles.set(false)
+    }
+    ```
+
+=== "Groovy"
+
+    ```groovy
+    aaraar {
+      // Strip all META-INF/ files from the merged file
+      keepMetaFiles = false
+    }
+    ```
