@@ -5,7 +5,7 @@ Change Log
 
 _2024-02-01_
 
-* Update: The `keeeMetaFiles` configuration option now defaults to `true`.
+* Update: The `keepMetaFiles` configuration option now defaults to `true`.
 * Fix: Resolve issue opening/creating archive files in Windows.
 
 ## Version 0.0.10
