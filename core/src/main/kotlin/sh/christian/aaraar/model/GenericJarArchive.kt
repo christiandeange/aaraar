@@ -5,7 +5,7 @@ import sh.christian.aaraar.shading.ClassFilesProcessor
 import sh.christian.aaraar.shading.ClassFilter
 import sh.christian.aaraar.shading.ClassShader
 import sh.christian.aaraar.shading.ResourceFilter
-import sh.christian.aaraar.utils.createJar
+import sh.christian.aaraar.utils.createArchive
 import sh.christian.aaraar.utils.deleteIfExists
 import sh.christian.aaraar.utils.div
 import sh.christian.aaraar.utils.mkdirs
@@ -52,7 +52,7 @@ internal constructor(
 
     val tempClassesJar = Files.createTempFile("classes", ".jar").deleteIfExists()
 
-    tempClassesJar.createJar { classesJar ->
+    tempClassesJar.createArchive { classesJar ->
       entries.forEach { (entry, contents) ->
         val entryPath = (classesJar / entry).mkdirs()
         Files.write(entryPath, contents)

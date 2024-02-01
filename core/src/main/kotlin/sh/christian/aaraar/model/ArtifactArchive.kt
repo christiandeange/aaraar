@@ -1,20 +1,20 @@
 package sh.christian.aaraar.model
 
 import sh.christian.aaraar.Environment
-import sh.christian.aaraar.utils.aar_metadata
-import sh.christian.aaraar.utils.android_manifest
+import sh.christian.aaraar.utils.aarMetadataProperties
+import sh.christian.aaraar.utils.androidManifestXml
 import sh.christian.aaraar.utils.assets
-import sh.christian.aaraar.utils.classes_jar
-import sh.christian.aaraar.utils.createJar
+import sh.christian.aaraar.utils.clasesJar
+import sh.christian.aaraar.utils.createArchive
 import sh.christian.aaraar.utils.jni
 import sh.christian.aaraar.utils.libs
-import sh.christian.aaraar.utils.lint_jar
+import sh.christian.aaraar.utils.lintJar
 import sh.christian.aaraar.utils.mkdirs
-import sh.christian.aaraar.utils.navigation_json
-import sh.christian.aaraar.utils.openJar
-import sh.christian.aaraar.utils.proguard_txt
-import sh.christian.aaraar.utils.public_txt
-import sh.christian.aaraar.utils.r_txt
+import sh.christian.aaraar.utils.navigationJson
+import sh.christian.aaraar.utils.openArchive
+import sh.christian.aaraar.utils.proguardTxt
+import sh.christian.aaraar.utils.publicTxt
+import sh.christian.aaraar.utils.rTxt
 import sh.christian.aaraar.utils.res
 import java.nio.file.Path
 
@@ -105,19 +105,19 @@ class AarArchive(
   }
 
   override fun writeTo(path: Path) {
-    path.createJar { outputAar ->
-      aarMetadata.writeTo(outputAar.aar_metadata.apply { mkdirs() })
-      androidManifest.writeTo(outputAar.android_manifest)
-      classes.writeTo(outputAar.classes_jar)
+    path.createArchive { outputAar ->
+      aarMetadata.writeTo(outputAar.aarMetadataProperties.apply { mkdirs() })
+      androidManifest.writeTo(outputAar.androidManifestXml)
+      classes.writeTo(outputAar.clasesJar)
       resources.writeTo(outputAar.res)
-      rTxt.writeTo(outputAar.r_txt)
-      publicTxt.writeTo(outputAar.public_txt)
+      rTxt.writeTo(outputAar.rTxt)
+      publicTxt.writeTo(outputAar.publicTxt)
       assets.writeTo(outputAar.assets)
       libs.writeTo(outputAar.libs)
       jni.writeTo(outputAar.jni)
-      proguard.writeTo(outputAar.proguard_txt)
-      lintRules.writeTo(outputAar.lint_jar)
-      navigationJson.writeTo(outputAar.navigation_json)
+      proguard.writeTo(outputAar.proguardTxt)
+      lintRules.writeTo(outputAar.lintJar)
+      navigationJson.writeTo(outputAar.navigationJson)
     }
   }
 
@@ -125,24 +125,24 @@ class AarArchive(
     fun from(
       path: Path,
       environment: Environment,
-    ): AarArchive = path.toAbsolutePath().openJar { aarRoot ->
-      val aarMetadata = AarMetadata.from(aarRoot.aar_metadata)
-      val androidManifest = AndroidManifest.from(aarRoot.android_manifest)
-      val classes = Classes.from(aarRoot.classes_jar, environment.keepClassesMetaFiles)
+    ): AarArchive = path.toAbsolutePath().openArchive { aarRoot ->
+      val aarMetadata = AarMetadata.from(aarRoot.aarMetadataProperties)
+      val androidManifest = AndroidManifest.from(aarRoot.androidManifestXml)
+      val classes = Classes.from(aarRoot.clasesJar, environment.keepClassesMetaFiles)
       val resources = Resources.from(
-        aarRoot.res,
-        androidManifest.packageName,
-        androidManifest.minSdk,
-        environment.androidAaptIgnore,
+        path = aarRoot.res,
+        packageName = androidManifest.packageName,
+        minSdk = androidManifest.minSdk,
+        androidAaptIgnore = environment.androidAaptIgnore,
       )
-      val rTxt = RTxt.from(aarRoot.r_txt, androidManifest.packageName)
-      val publicTxt = PublicTxt.from(aarRoot.public_txt, androidManifest.packageName)
+      val rTxt = RTxt.from(aarRoot.rTxt, androidManifest.packageName)
+      val publicTxt = PublicTxt.from(aarRoot.publicTxt, androidManifest.packageName)
       val assets = Assets.from(aarRoot.assets)
       val libs = Libs.from(aarRoot.libs)
       val jni = Jni.from(aarRoot.jni)
-      val proguard = Proguard.from(aarRoot.proguard_txt)
-      val lintRules = LintRules.from(aarRoot.lint_jar)
-      val navigationJson = NavigationJson.from(aarRoot.navigation_json)
+      val proguard = Proguard.from(aarRoot.proguardTxt)
+      val lintRules = LintRules.from(aarRoot.lintJar)
+      val navigationJson = NavigationJson.from(aarRoot.navigationJson)
 
       AarArchive(
         aarMetadata = aarMetadata,
