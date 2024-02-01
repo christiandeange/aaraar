@@ -3,7 +3,7 @@ Change Log
 
 ## Version 0.0.11
 
-_(TBD)_
+_2024-02-01_
 
 * Update: The `kepeMetaFiles` configuration option now defaults to `true`.
 * Fix: Resolve issue opening/creating archive files in Windows.
