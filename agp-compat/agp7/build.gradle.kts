@@ -11,12 +11,3 @@ dependencies {
   api(project(":agp-compat:base"))
   compileOnly(libs.agp.api7)
 }
-
-kotlinDslPluginOptions {
-  jvmTarget.set("11")
-}
-
-tasks.withType<JavaCompile>().configureEach {
-  sourceCompatibility = "11"
-  targetCompatibility = "11"
-}

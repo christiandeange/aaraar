@@ -14,3 +14,9 @@ tasks.withType<DokkaMultiModuleTask>().configureEach {
 tasks.withType<DokkaCollectorTask>().configureEach {
   outputDirectory.set(file("$rootDir/docs/kdoc"))
 }
+
+java {
+  toolchain {
+    languageVersion = JavaLanguageVersion.of(11)
+  }
+}

@@ -14,15 +14,6 @@ dependencies {
   implementation(libs.maven.publish)
 }
 
-kotlinDslPluginOptions {
-  jvmTarget.set("11")
-}
-
-tasks.withType<JavaCompile>().configureEach {
-  sourceCompatibility = "11"
-  targetCompatibility = "11"
-}
-
 gradlePlugin {
   plugins {
     create("aaraar-publish") {

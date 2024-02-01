@@ -10,12 +10,3 @@ plugins {
 dependencies {
   api(platform(kotlin("bom")))
 }
-
-kotlinDslPluginOptions {
-  jvmTarget.set("11")
-}
-
-tasks.withType<JavaCompile>().configureEach {
-  sourceCompatibility = "11"
-  targetCompatibility = "11"
-}
