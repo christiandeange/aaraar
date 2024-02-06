@@ -9,7 +9,7 @@ import org.gradle.kotlin.dsl.setProperty
 /**
  * Configures the scopes and rules for shading class files.
  *
- * See the [rename] and [delete] methods for syntax and usage descriptions.
+ * See each individual shading method for syntax and usage descriptions.
  */
 class ScopedShadeConfiguration
 internal constructor(
@@ -35,6 +35,14 @@ internal constructor(
    */
   fun rename(pattern: String, replacement: String) {
     classRenames.put(pattern, replacement)
+  }
+
+  /**
+   * Adds the provided package [prefix] to all classes.
+   */
+  fun addPrefix(prefix: String) {
+    classRenames.put("**.**", "$prefix@0")
+    classRenames.put("*", "$prefix@0")
   }
 
   /**

@@ -77,7 +77,7 @@ Adding a prefix to internal sources to reinforce usage type:
     aaraar {
       shading {
         forProject(project(":internal")) {
-          rename("com.myapp.**", "internal.@1")
+          addPrefix("internal.")
         }
       }
     }
@@ -89,7 +89,7 @@ Adding a prefix to internal sources to reinforce usage type:
     aaraar {
       shading {
         forProject(project(":internal")) {
-          it.rename "com.myapp.**", "internal.@1"
+          it.addPrefix "internal."
         }
       }
     }
