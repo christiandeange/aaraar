@@ -1,10 +1,15 @@
 package sh.christian.aaraar.gradle
 
 import org.gradle.api.DefaultTask
-import org.gradle.api.file.ConfigurableFileCollection
+import org.gradle.api.artifacts.Configuration
+import org.gradle.api.artifacts.component.ComponentIdentifier
+import org.gradle.api.artifacts.component.LibraryBinaryIdentifier
+import org.gradle.api.artifacts.component.ModuleComponentIdentifier
+import org.gradle.api.artifacts.component.ProjectComponentIdentifier
 import org.gradle.api.file.RegularFileProperty
 import org.gradle.api.provider.Property
 import org.gradle.api.tasks.CacheableTask
+import org.gradle.api.tasks.Classpath
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.InputFile
 import org.gradle.api.tasks.InputFiles
@@ -13,6 +18,9 @@ import org.gradle.api.tasks.PathSensitive
 import org.gradle.api.tasks.PathSensitivity.RELATIVE
 import org.gradle.api.tasks.TaskAction
 import sh.christian.aaraar.Environment
+import sh.christian.aaraar.gradle.ShadeConfigurationScope.All
+import sh.christian.aaraar.gradle.ShadeConfigurationScope.DependencyScope
+import sh.christian.aaraar.gradle.ShadeConfigurationScope.ProjectScope
 import sh.christian.aaraar.merger.Merger
 import sh.christian.aaraar.merger.impl.AarArchiveMerger
 import sh.christian.aaraar.merger.impl.AndroidManifestMerger
@@ -43,12 +51,13 @@ abstract class PackageArchiveTask : DefaultTask() {
   @get:PathSensitive(RELATIVE)
   abstract val inputArchive: RegularFileProperty
 
+  @get:Classpath
   @get:InputFiles
   @get:PathSensitive(RELATIVE)
-  abstract val embedClasspath: ConfigurableFileCollection
+  abstract val embedClasspath: Property<Configuration>
 
   @get:Input
-  abstract val shadeConfiguration: Property<ShadeConfiguration>
+  abstract val shadeEnvironment: Property<ShadeEnvironment>
 
   @get:Input
   abstract val keepMetaFiles: Property<Boolean>
@@ -63,41 +72,39 @@ abstract class PackageArchiveTask : DefaultTask() {
     val environment = environment()
     logger.info("Packaging environment: $environment")
 
+    val componentMapping: Map<Path, ComponentIdentifier> = embedClasspath.get()
+      .incoming.artifacts.resolvedArtifacts.get()
+      .associate {
+        it.file.toPath() to it.id.componentIdentifier
+      }
+
     val inputPath = inputArchive.getPath()
-    val input = ArtifactArchive.from(inputPath, environment)
+    val shadeEnvironment = shadeEnvironment.get()
+
     logger.info("Merge base: $inputPath")
+    val input = ArtifactArchive.from(inputPath, environment).applyShading(
+      shadeEnvironment = shadeEnvironment,
+      identifier = ProjectScope(identityPath.parent!!.toString()),
+    )
 
     val dependencyArchives =
-      embedClasspath.asFileTree.files
-        .map {
-          logger.info("  From ${it.toPath()}")
-          ArtifactArchive.from(it.toPath(), environment)
+      componentMapping.keys
+        .minus(inputPath)
+        .map { archivePath ->
+          val dependencyId = componentMapping[archivePath]
+          logger.info("Processing $dependencyId")
+          logger.info("  Input file: $archivePath")
+          ArtifactArchive.from(archivePath, environment).applyShading(
+            shadeEnvironment = shadeEnvironment,
+            identifier = dependencyId?.toShadeConfigurationScope(),
+          )
         }
 
     val mergedArchive = mergeArchive(input, dependencyArchives)
-    val shadingConfiguration = shadeConfiguration.get()
-
-    val finalArchive = if (shadingConfiguration.isEmpty()) {
-      logger.info("Skipping shading input since no rules are defined.")
-      mergedArchive
-    } else {
-      logger.info("Shading input with rules:")
-      shadingConfiguration.classRenames.forEach { (pattern, result) ->
-        logger.info("    Rename class '$pattern' → '$result'")
-      }
-      shadingConfiguration.classDeletes.forEach { target ->
-        logger.info("     Delete class '$target'")
-      }
-      shadingConfiguration.resourceExclusions.forEach { target ->
-        logger.info("  Delete resource '$target'")
-      }
-
-      mergedArchive.shaded(shadingConfiguration)
-    }
 
     val outputPath = outputArchive.getPath().apply { Files.deleteIfExists(this) }
     logger.info("Merged into: $outputPath")
-    finalArchive.writeTo(path = outputPath)
+    mergedArchive.writeTo(path = outputPath)
   }
 
   private fun mergeArchive(
@@ -129,5 +136,67 @@ abstract class PackageArchiveTask : DefaultTask() {
 
   private fun RegularFileProperty.getPath(): Path {
     return get().asFile.toPath()
+  }
+
+  private fun ArtifactArchive.applyShading(
+    shadeEnvironment: ShadeEnvironment,
+    identifier: ShadeConfigurationScope?,
+  ): ArtifactArchive {
+    val emptyConfiguration = ShadeConfiguration(
+      classRenames = emptyMap(),
+      classDeletes = emptySet(),
+      resourceExclusions = emptySet(),
+    )
+
+    val shadeRules = shadeEnvironment.rules
+      .filter { rule ->
+        when (val applicableScope = rule.scope) {
+          is All -> true
+          is DependencyScope -> identifier is DependencyScope && applicableScope.matches(identifier)
+          is ProjectScope -> identifier is ProjectScope && applicableScope.matches(identifier)
+        }
+      }.fold(emptyConfiguration) { a, b ->
+        ShadeConfiguration(
+          classRenames = a.classRenames + b.configuration.classRenames,
+          classDeletes = a.classDeletes + b.configuration.classDeletes,
+          resourceExclusions = a.resourceExclusions + b.configuration.resourceExclusions,
+        )
+      }
+
+    return if (shadeRules.isEmpty()) {
+      this
+    } else {
+      logger.info("  Applying shading rules:")
+      shadeRules.classRenames.forEach { (pattern, result) ->
+        logger.info("    Rename class '$pattern' → '$result'")
+      }
+      shadeRules.classDeletes.forEach { target ->
+        logger.info("    Delete class '$target'")
+      }
+      shadeRules.resourceExclusions.forEach { target ->
+        logger.info("    Remove file  '$target'")
+      }
+
+      shaded(shadeRules)
+    }
+  }
+
+  private fun DependencyScope.matches(identifier: DependencyScope): Boolean {
+    val matchesGroup = group == identifier.group
+    val matchesName = name == null || name == identifier.name
+    val matchesVersion = version == null || version == identifier.version
+
+    return matchesGroup && matchesName && matchesVersion
+  }
+
+  private fun ProjectScope.matches(identifier: ProjectScope): Boolean {
+    return path == identifier.path
+  }
+
+  private fun ComponentIdentifier.toShadeConfigurationScope(): ShadeConfigurationScope? = when (this) {
+    is ModuleComponentIdentifier -> DependencyScope(group, module, version)
+    is ProjectComponentIdentifier -> ProjectScope(projectPath)
+    is LibraryBinaryIdentifier -> null
+    else -> null
   }
 }

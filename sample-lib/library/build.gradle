@@ -64,9 +64,15 @@ dependencies {
 }
 
 aaraar {
-  rename("io.reactivex.rxjava3.**", "shaded.io.reactivex.rxjava3.@1")
-  rename("sh.christian.samplelib.ContextsKt", "sh.christian.samplelib.MyAppPackage")
-  delete("sh.christian.helperlib.SecretsKt")
+  shading {
+    forGroup("io.reactivex.rxjava3") {
+      it.rename "**.**", "shaded.@0"
+    }
+    all {
+      it.rename "sh.christian.samplelib.ContextsKt", "sh.christian.samplelib.MyAppPackage"
+      it.delete "sh.christian.helperlib.SecretsKt"
+    }
+  }
 
   isEnabledForVariant { variant ->
     variant.name == "publish"

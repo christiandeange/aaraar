@@ -13,6 +13,9 @@ import org.gradle.kotlin.dsl.getByType
 import org.gradle.kotlin.dsl.named
 import org.gradle.kotlin.dsl.register
 import org.gradle.kotlin.dsl.withType
+import sh.christian.aaraar.gradle.ShadeConfigurationScope.All
+import sh.christian.aaraar.gradle.ShadeConfigurationScope.DependencyScope
+import sh.christian.aaraar.gradle.ShadeConfigurationScope.ProjectScope
 import sh.christian.aaraar.gradle.agp.AgpCompat
 import sh.christian.aaraar.gradle.agp.AndroidVariant
 import sh.christian.aaraar.model.ShadeConfiguration
@@ -76,15 +79,9 @@ class AarAarPlugin : Plugin<Project> {
     val jarTask = tasks.named<Jar>("jar")
 
     val packageJar = tasks.register<PackageJarTask>("packageJar") {
-      embedClasspath.from(embed)
+      embedClasspath.set(embed)
 
-      shadeConfiguration.set(
-        ShadeConfiguration(
-          classRenames = aaraar.classRenames.get(),
-          classDeletes = aaraar.classDeletes.get(),
-          resourceExclusions = emptySet(),
-        )
-      )
+      shadeEnvironment.set(parseShadeEnvironment(aaraar))
       keepMetaFiles.set(aaraar.keepMetaFiles)
 
       inputJar.set(jarTask.flatMap { it.archiveFile })
@@ -126,15 +123,9 @@ class AarAarPlugin : Plugin<Project> {
     val androidAaptIgnoreEnv = providers.environmentVariable("ANDROID_AAPT_IGNORE").orElse("")
 
     val packageVariantAar = tasks.register<PackageAarTask>(variant.name("package", "Aar")) {
-      embedClasspath.from(variantEmbedClasspath)
+      embedClasspath.set(variantEmbedClasspath)
 
-      shadeConfiguration.set(
-        ShadeConfiguration(
-          classRenames = aaraar.classRenames.get(),
-          classDeletes = aaraar.classDeletes.get(),
-          resourceExclusions = agp.android.packagingResourceExcludes(),
-        )
-      )
+      shadeEnvironment.set(parseShadeEnvironment(aaraar))
       keepMetaFiles.set(aaraar.keepMetaFiles)
       androidAaptIgnore.set(androidAaptIgnoreEnv)
     }
@@ -143,6 +134,52 @@ class AarAarPlugin : Plugin<Project> {
       packageVariantAar,
       PackageAarTask::inputAar,
       PackageAarTask::outputAar,
+    )
+  }
+
+  private fun Project.parseShadeEnvironment(aaraar: AarAarExtension): ShadeEnvironment {
+    val allConfigurations = buildList {
+      add(aaraar.shading.allConfiguration)
+      addAll(aaraar.shading.configurations.get())
+    }
+
+    val resourceExclusions = agp.android.packagingResourceExcludes()
+
+    return ShadeEnvironment(
+      rules = allConfigurations.map {
+        ShadeConfigurationRule(
+          scope = when (val selector = it.scopeSelector) {
+            is ScopeSelector.All -> {
+              All
+            }
+
+            is ScopeSelector.ForGroup -> {
+              DependencyScope(selector.group, null, null)
+            }
+
+            is ScopeSelector.ForModule -> {
+              dependencies.create(selector.dependency).let { dependency ->
+                DependencyScope(dependency.group.orEmpty(), dependency.name, null)
+              }
+            }
+
+            is ScopeSelector.ForDependency -> {
+              dependencies.create(selector.dependency).let { dependency ->
+                DependencyScope(dependency.group.orEmpty(), dependency.name, dependency.version)
+              }
+            }
+
+            is ScopeSelector.ForProject -> {
+              ProjectScope(selector.path)
+            }
+          },
+          configuration = ShadeConfiguration(
+            classRenames = it.classRenames.get(),
+            classDeletes = it.classDeletes.get(),
+            resourceExclusions = resourceExclusions,
+          ),
+        )
+      }
     )
   }
 }

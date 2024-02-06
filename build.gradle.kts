@@ -17,6 +17,6 @@ tasks.withType<DokkaCollectorTask>().configureEach {
 
 java {
   toolchain {
-    languageVersion = JavaLanguageVersion.of(17)
+    languageVersion.set(JavaLanguageVersion.of(17))
   }
 }

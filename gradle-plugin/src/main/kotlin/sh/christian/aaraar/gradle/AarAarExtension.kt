@@ -1,12 +1,10 @@
 package sh.christian.aaraar.gradle
 
+import org.gradle.api.Action
 import org.gradle.api.model.ObjectFactory
-import org.gradle.api.provider.MapProperty
 import org.gradle.api.provider.Property
-import org.gradle.api.provider.SetProperty
-import org.gradle.kotlin.dsl.mapProperty
+import org.gradle.kotlin.dsl.invoke
 import org.gradle.kotlin.dsl.property
-import org.gradle.kotlin.dsl.setProperty
 import javax.inject.Inject
 
 /**
@@ -17,11 +15,8 @@ abstract class AarAarExtension
 @Inject constructor(
   objects: ObjectFactory,
 ) {
-  /** @see rename */
-  val classRenames: MapProperty<String, String> = objects.mapProperty<String, String>().convention(mutableMapOf())
-
-  /** @see delete */
-  val classDeletes: SetProperty<String> = objects.setProperty<String>().convention(mutableSetOf())
+  /** @see shading */
+  val shading = AarAarShading(objects)
 
   /**
    * Dictates whether `META-INF/` files should be kept or discarded in the final merged artifact.
@@ -35,6 +30,13 @@ abstract class AarAarExtension
     objects.property<(VariantDescriptor) -> Boolean>().convention { true }
 
   /**
+   * Configure the rules for shading class files.
+   */
+  fun shading(configure: Action<in AarAarShading>) {
+    configure(shading)
+  }
+
+  /**
    * Dictates whether aaraar packaging should be applied to a given Android variant.
    * This filter is ignored when applied to a non-Android module.
    *
@@ -43,31 +45,5 @@ abstract class AarAarExtension
    */
   fun isEnabledForVariant(filter: (VariantDescriptor) -> Boolean) {
     variantFilter.set(filter)
-  }
-
-  /**
-   * Renames any classes that match the provided [pattern].
-   *
-   * The [pattern] will match class names, with optional wildcards:
-   * - `*` will match a single package component.
-   * - `**` will match against the remainder of any valid fully-qualified class name.
-   *
-   * [replacement] is a class name which can optionally reference the substrings matched by the wildcards.
-   * A numbered reference is available for every wildcard in the pattern, starting from left to right: `@1`, `@2`, etc.
-   * A special `@0` reference contains the entire matched class name.
-   */
-  fun rename(pattern: String, replacement: String) {
-    classRenames.put(pattern, replacement)
-  }
-
-  /**
-   * Deletes any classes that match the provided [pattern].
-   *
-   * The [pattern] will match class names, with optional wildcards:
-   * - `*` will match a single package component.
-   * - `**` will match against the remainder of any valid fully-qualified class name.
-   */
-  fun delete(pattern: String) {
-    classDeletes.add(pattern)
   }
 }
