@@ -15,6 +15,7 @@ import org.gradle.kotlin.dsl.register
 import org.gradle.kotlin.dsl.withType
 import sh.christian.aaraar.gradle.ShadeConfigurationScope.All
 import sh.christian.aaraar.gradle.ShadeConfigurationScope.DependencyScope
+import sh.christian.aaraar.gradle.ShadeConfigurationScope.FilesScope
 import sh.christian.aaraar.gradle.ShadeConfigurationScope.ProjectScope
 import sh.christian.aaraar.gradle.agp.AgpCompat
 import sh.christian.aaraar.gradle.agp.AndroidVariant
@@ -171,6 +172,10 @@ class AarAarPlugin : Plugin<Project> {
 
             is ScopeSelector.ForProject -> {
               ProjectScope(selector.path)
+            }
+
+            is ScopeSelector.ForFiles -> {
+              FilesScope(project.files(selector.files).files)
             }
           },
           configuration = ShadeConfiguration(

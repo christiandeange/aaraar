@@ -63,4 +63,5 @@ internal sealed interface ScopeSelector {
   class ForModule(val dependency: Any) : ScopeSelector
   class ForDependency(val dependency: Any) : ScopeSelector
   class ForProject(val path: String) : ScopeSelector
+  class ForFiles(val files: Any) : ScopeSelector
 }

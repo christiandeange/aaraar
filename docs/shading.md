@@ -40,6 +40,7 @@ There are multiple ways to specify a scope for shading rules:
 - **Group**: Applies to any artifact within a dependency group (eg: [`io.reactivex.rxjava3`](https://mvnrepository.com/artifact/io.reactivex.rxjava3))
 - **Module**: Applies to any version of a dependency (eg: [`io.reactivex.rxjava3:rxjava`](https://mvnrepository.com/artifact/io.reactivex.rxjava3/rxjava))
 - **Dependency**: Applies to a single version of a dependency (eg: [`io.reactivex.rxjava3:rxjava:3.1.8`](https://mvnrepository.com/artifact/io.reactivex.rxjava3/rxjava/3.1.8))
+- **Files**: Applies to a file, set of files, or an entire file tree (eg: `fileTree("libs")`)
 
 ## Examples
 
@@ -144,6 +145,32 @@ Removing an unused feature from an external dependency:
       shading {
         forDependency(libs.bouncycastle.prov) {
           it.delete "org.bouncycastle.x509.**"
+        }
+      }
+    }
+    ```
+
+Renaming classes from static jar files:
+
+=== "Kotlin"
+
+    ```kotlin
+    aaraar {
+      shading {
+        forFiles(fileTree("libs/debug/") { include("*.jar") }) {
+          rename("com.**", "com.debug.@1")
+        }
+      }
+    }
+    ```
+
+=== "Groovy"
+
+    ```groovy
+    aaraar {
+      shading {
+        forFiles(fileTree(dir: "libs/debug/", include: ["*.jar"])) {
+          it.rename "com.**", "com.debug.@1"
         }
       }
     }

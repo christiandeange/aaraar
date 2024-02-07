@@ -61,10 +61,15 @@ dependencies {
 
   compileOnly 'io.reactivex.rxjava3:rxjava:3.1.5'
   embed 'io.reactivex.rxjava3:rxjava:3.1.5'
+
+  embed fileTree(dir: "libs", include: ["*.jar"])
 }
 
 aaraar {
   shading {
+    forFiles(fileTree(dir: "libs")) {
+      it.addPrefix "shaded."
+    }
     forGroup("io.reactivex.rxjava3") {
       it.addPrefix "shaded."
     }

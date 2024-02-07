@@ -17,9 +17,11 @@ import org.gradle.api.tasks.OutputFile
 import org.gradle.api.tasks.PathSensitive
 import org.gradle.api.tasks.PathSensitivity.RELATIVE
 import org.gradle.api.tasks.TaskAction
+import org.gradle.internal.component.local.model.OpaqueComponentArtifactIdentifier
 import sh.christian.aaraar.Environment
 import sh.christian.aaraar.gradle.ShadeConfigurationScope.All
 import sh.christian.aaraar.gradle.ShadeConfigurationScope.DependencyScope
+import sh.christian.aaraar.gradle.ShadeConfigurationScope.FilesScope
 import sh.christian.aaraar.gradle.ShadeConfigurationScope.ProjectScope
 import sh.christian.aaraar.merger.Merger
 import sh.christian.aaraar.merger.impl.AarArchiveMerger
@@ -41,6 +43,7 @@ import sh.christian.aaraar.model.ArtifactArchive
 import sh.christian.aaraar.model.FileSet
 import sh.christian.aaraar.model.GenericJarArchive
 import sh.christian.aaraar.model.ShadeConfiguration
+import java.io.File
 import java.nio.file.Files
 import java.nio.file.Path
 
@@ -83,6 +86,7 @@ abstract class PackageArchiveTask : DefaultTask() {
 
     logger.info("Merge base: $inputPath")
     val input = ArtifactArchive.from(inputPath, environment).applyShading(
+      path = inputPath,
       shadeEnvironment = shadeEnvironment,
       identifier = ProjectScope(identityPath.parent!!.toString()),
     )
@@ -92,11 +96,14 @@ abstract class PackageArchiveTask : DefaultTask() {
         .minus(inputPath)
         .map { archivePath ->
           val dependencyId = componentMapping[archivePath]
-          logger.info("Processing $dependencyId")
+          val identifier = dependencyId?.toShadeConfigurationScope()
+
+          logger.info("Processing $dependencyId (id=$identifier)")
           logger.info("  Input file: $archivePath")
           ArtifactArchive.from(archivePath, environment).applyShading(
+            path = archivePath,
             shadeEnvironment = shadeEnvironment,
-            identifier = dependencyId?.toShadeConfigurationScope(),
+            identifier = identifier,
           )
         }
 
@@ -139,6 +146,7 @@ abstract class PackageArchiveTask : DefaultTask() {
   }
 
   private fun ArtifactArchive.applyShading(
+    path: Path,
     shadeEnvironment: ShadeEnvironment,
     identifier: ShadeConfigurationScope?,
   ): ArtifactArchive {
@@ -154,6 +162,7 @@ abstract class PackageArchiveTask : DefaultTask() {
           is All -> true
           is DependencyScope -> identifier is DependencyScope && applicableScope.matches(identifier)
           is ProjectScope -> identifier is ProjectScope && applicableScope.matches(identifier)
+          is FilesScope -> applicableScope.matches(path.toFile())
         }
       }.fold(emptyConfiguration) { a, b ->
         ShadeConfiguration(
@@ -193,9 +202,14 @@ abstract class PackageArchiveTask : DefaultTask() {
     return path == identifier.path
   }
 
+  private fun FilesScope.matches(path: File): Boolean {
+    return path in files
+  }
+
   private fun ComponentIdentifier.toShadeConfigurationScope(): ShadeConfigurationScope? = when (this) {
     is ModuleComponentIdentifier -> DependencyScope(group, module, version)
     is ProjectComponentIdentifier -> ProjectScope(projectPath)
+    is OpaqueComponentArtifactIdentifier -> FilesScope(setOf(file))
     is LibraryBinaryIdentifier -> null
     else -> null
   }

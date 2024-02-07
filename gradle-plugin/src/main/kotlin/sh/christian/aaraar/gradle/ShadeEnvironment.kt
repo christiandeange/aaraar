@@ -1,6 +1,7 @@
 package sh.christian.aaraar.gradle
 
 import sh.christian.aaraar.model.ShadeConfiguration
+import java.io.File
 import java.io.Serializable
 
 /**
@@ -56,6 +57,11 @@ sealed interface ShadeConfigurationScope : Serializable {
   /** Applies to a single internal project, identified by its canonical path. */
   data class ProjectScope(
     val path: String,
+  ) : ShadeConfigurationScope
+
+  /** Applies to one or more files, relative to the module's project folder. */
+  data class FilesScope(
+    val files: Set<File>,
   ) : ShadeConfigurationScope
 
   companion object {
