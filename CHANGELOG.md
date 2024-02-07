@@ -15,9 +15,9 @@ _2023-09-02_
 * New: Generate Dokka documentation.
 * New: Hosted setup guide at https://aaraar.christian.sh.
 * New: Support for Java projects!
-  * The same `sh.christian.aaraar` plugin can be applied to Java or Kotlin libraries that produce a `jar` file instead.
-  * Configuration is also done through the same `aaraar` Gradle extension.
-  * See the new [publishing docs](https://aaraar.christian.sh/publishing-jar) for details on how to publish embedded `jar` files.
+    * The same `sh.christian.aaraar` plugin can be applied to Java or Kotlin libraries that produce a `jar` file instead.
+    * Configuration is also done through the same `aaraar` Gradle extension.
+    * See the new [publishing docs](https://aaraar.christian.sh/publishing-jar) for details on how to publish embedded `jar` files.
 
 ## Version 0.0.9
 
@@ -32,7 +32,7 @@ _2023-08-10_
 _2023-06-01_
 
 * New: Run aaraar packaging during assemble pipeline.
-  * Developers can choose which variants enable aaraar packaging using the existing `aaraar` extension:
+    * Developers can choose which variants enable aaraar packaging using the existing `aaraar` extension:
     ```
     aaraar {
       isEnabledForVariant { it.name == "release" }
@@ -58,7 +58,7 @@ _2023-03-13_
 _2023-02-28_
 
 * New: Respect `packagingOptions.resources.excludes` rules configured for project.
-  * If any file globs are specified to be excluded, those files should always be deleted from the packaged aar.
+    * If any file globs are specified to be excluded, those files should always be deleted from the packaged aar.
 
 ## Version 0.0.4
 
