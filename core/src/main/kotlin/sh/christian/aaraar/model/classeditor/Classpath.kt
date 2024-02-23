@@ -104,11 +104,12 @@ internal constructor(
   }
 
   /**
-   * Modifies all class files to remove method body bytecode and strip private members.
+   * Modifies all class files to remove any information unrelated to a class's public API.
    */
   fun asApiJar() {
     removePrivateMembers()
     removeMethodBodies()
+    removeKotlinMetadata()
   }
 
   /**
@@ -125,6 +126,15 @@ internal constructor(
       clazz.fields.forEach {
         it.removeConstantInitializer()
       }
+    }
+  }
+
+  /**
+   * Removes all [@Metadata][kotlin.Metadata] annotations from Kotlin classes.
+   */
+  fun removeKotlinMetadata() {
+    inputClasses.forEach { clazz ->
+      clazz.annotations = clazz.annotations.filterNot { it.name == "kotlin.Metadata" }
     }
   }
 
