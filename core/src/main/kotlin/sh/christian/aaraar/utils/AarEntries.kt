@@ -65,3 +65,8 @@ val FileSystem.lintJar: Path get() = this / "lint.jar"
  * The full path to the `navigation.json` file within an AAR file.
  */
 val FileSystem.navigationJson: Path get() = this / "navigation.json"
+
+/**
+ * The full path to the `api.jar` file within an AAR file.
+ */
+val FileSystem.apiJar: Path get() = this / "api.jar"

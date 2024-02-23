@@ -29,6 +29,10 @@ abstract class AarAarExtension
   val variantFilter: Property<(VariantDescriptor) -> Boolean> =
     objects.property<(VariantDescriptor) -> Boolean>().convention { true }
 
+  /** @see setApiJarProcessorFactory */
+  val apiJarProcessorFactory: Property<ApiJarProcessor.Factory> =
+    objects.property<ApiJarProcessor.Factory>().convention(null)
+
   /**
    * Configure the rules for shading class files.
    */
@@ -45,5 +49,23 @@ abstract class AarAarExtension
    */
   fun isEnabledForVariant(filter: (VariantDescriptor) -> Boolean) {
     variantFilter.set(filter)
+  }
+
+  /**
+   * Establish a factory to create an [ApiJarProcessor], which will enable producing an `api.jar` file in an AAR.
+   * This property is ignored when applied to a non-Android module.
+   *
+   * If this is being set via a class name, the factory class must have a public no-arg constructor.
+   */
+  fun setApiJarProcessorFactory(classname: String) {
+    apiJarProcessorFactory.set(apiJarProcessorFromClassName(classname))
+  }
+
+  /**
+   * Establish a factory to create an [ApiJarProcessor], which will enable producing an `api.jar` file in an AAR.
+   * This property is ignored when applied to a non-Android module.
+   */
+  fun setApiJarProcessorFactory(factory: ApiJarProcessor.Factory) {
+    apiJarProcessorFactory.set(factory)
   }
 }

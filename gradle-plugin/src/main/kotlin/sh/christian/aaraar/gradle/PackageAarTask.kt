@@ -10,6 +10,11 @@ import org.gradle.api.tasks.OutputFile
 import org.gradle.api.tasks.PathSensitive
 import org.gradle.api.tasks.PathSensitivity
 import sh.christian.aaraar.Environment
+import sh.christian.aaraar.model.AarArchive
+import sh.christian.aaraar.model.ApiJar
+import sh.christian.aaraar.model.ArtifactArchive
+import sh.christian.aaraar.model.GenericJarArchive
+import sh.christian.aaraar.model.classeditor.Classpath
 
 @CacheableTask
 abstract class PackageAarTask : PackageArchiveTask() {
@@ -24,10 +29,45 @@ abstract class PackageAarTask : PackageArchiveTask() {
   @get:Optional
   abstract val androidAaptIgnore: Property<String>
 
+  @get:Input
+  @get:Optional
+  abstract val apiJarProcessorFactory: Property<ApiJarProcessor.Factory>
+
   final override fun environment(): Environment {
     return Environment(
       androidAaptIgnore = androidAaptIgnore.get(),
       keepClassesMetaFiles = keepMetaFiles.get(),
+    )
+  }
+
+  override fun postProcessing(archive: ArtifactArchive): ArtifactArchive {
+    val aar = archive as AarArchive
+    val apiJarProcessor = apiJarProcessorFactory.orNull?.create()
+
+    val outputApiJar = if (apiJarProcessor != null && apiJarProcessor.isEnabled()) {
+      val inputApiJar = aar.classes.archive
+
+      val classpath = Classpath.from(inputApiJar)
+      apiJarProcessor.processClasspath(aar, classpath)
+      classpath.apply { asApiJar() }.toGenericJarArchive()
+    } else {
+      GenericJarArchive.NONE
+    }
+
+    return AarArchive(
+      aarMetadata = aar.aarMetadata,
+      androidManifest = aar.androidManifest,
+      classes = aar.classes,
+      resources = aar.resources,
+      rTxt = aar.rTxt,
+      publicTxt = aar.publicTxt,
+      assets = aar.assets,
+      libs = aar.libs,
+      jni = aar.jni,
+      proguard = aar.proguard,
+      lintRules = aar.lintRules,
+      navigationJson = aar.navigationJson,
+      apiJar = ApiJar.from(outputApiJar),
     )
   }
 }

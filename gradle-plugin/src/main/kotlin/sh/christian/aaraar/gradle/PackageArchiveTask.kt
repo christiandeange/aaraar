@@ -26,6 +26,7 @@ import sh.christian.aaraar.gradle.ShadeConfigurationScope.ProjectScope
 import sh.christian.aaraar.merger.Merger
 import sh.christian.aaraar.merger.impl.AarArchiveMerger
 import sh.christian.aaraar.merger.impl.AndroidManifestMerger
+import sh.christian.aaraar.merger.impl.ApiJarMerger
 import sh.christian.aaraar.merger.impl.ArtifactArchiveMerger
 import sh.christian.aaraar.merger.impl.AssetsMerger
 import sh.christian.aaraar.merger.impl.ClassesMerger
@@ -108,10 +109,16 @@ abstract class PackageArchiveTask : DefaultTask() {
         }
 
     val mergedArchive = mergeArchive(input, dependencyArchives)
+    val finalizedArchive = postProcessing(mergedArchive)
 
     val outputPath = outputArchive.getPath().apply { Files.deleteIfExists(this) }
     logger.info("Merged into: $outputPath")
-    mergedArchive.writeTo(path = outputPath)
+    finalizedArchive.writeTo(path = outputPath)
+  }
+
+  open fun postProcessing(archive: ArtifactArchive): ArtifactArchive {
+    // No-op by default.
+    return archive
   }
 
   private fun mergeArchive(
@@ -135,6 +142,7 @@ abstract class PackageArchiveTask : DefaultTask() {
         proguardMerger = ProguardMerger(),
         lintRulesMerger = LintRulesMerger(jarMerger),
         navigationJsonMerger = NavigationJsonMerger(),
+        apiJarMerger = ApiJarMerger(jarMerger),
       ),
     )
 

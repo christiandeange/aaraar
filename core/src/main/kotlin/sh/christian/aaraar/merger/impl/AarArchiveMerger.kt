@@ -6,6 +6,7 @@ import sh.christian.aaraar.merger.Merger
 import sh.christian.aaraar.model.AarArchive
 import sh.christian.aaraar.model.AarMetadata
 import sh.christian.aaraar.model.AndroidManifest
+import sh.christian.aaraar.model.ApiJar
 import sh.christian.aaraar.model.ArtifactArchive
 import sh.christian.aaraar.model.Assets
 import sh.christian.aaraar.model.Classes
@@ -37,6 +38,7 @@ class AarArchiveMerger(
   private val proguardMerger: Merger<Proguard>,
   private val lintRulesMerger: Merger<LintRules>,
   private val navigationJsonMerger: Merger<NavigationJson>,
+  private val apiJarMerger: Merger<ApiJar>,
 ) : ArchiveMerger<AarArchive> {
   override fun merge(first: AarArchive, others: List<ArtifactArchive>): AarArchive {
     val aars = others.filterIsInstance<AarArchive>()
@@ -99,6 +101,10 @@ class AarArchiveMerger(
       first.navigationJson,
       aars.map { it.navigationJson },
     )
+    val mergedApiJar = apiJarMerger.merge(
+      first.apiJar,
+      aars.map { it.apiJar },
+    )
 
     return AarArchive(
       aarMetadata = first.aarMetadata,
@@ -113,6 +119,7 @@ class AarArchiveMerger(
       proguard = mergedProguard,
       lintRules = mergedLintRules,
       navigationJson = mergedNavigationJson,
+      apiJar = mergedApiJar,
     )
   }
 }

@@ -129,6 +129,7 @@ class AarAarPlugin : Plugin<Project> {
       shadeEnvironment.set(parseShadeEnvironment(aaraar))
       keepMetaFiles.set(aaraar.keepMetaFiles)
       androidAaptIgnore.set(androidAaptIgnoreEnv)
+      apiJarProcessorFactory.set(aaraar.apiJarProcessorFactory)
     }
 
     variant.registerAarTransform(

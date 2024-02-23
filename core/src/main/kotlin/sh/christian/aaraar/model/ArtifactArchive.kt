@@ -3,6 +3,7 @@ package sh.christian.aaraar.model
 import sh.christian.aaraar.Environment
 import sh.christian.aaraar.utils.aarMetadataProperties
 import sh.christian.aaraar.utils.androidManifestXml
+import sh.christian.aaraar.utils.apiJar
 import sh.christian.aaraar.utils.assets
 import sh.christian.aaraar.utils.clasesJar
 import sh.christian.aaraar.utils.createArchive
@@ -80,11 +81,9 @@ class AarArchive(
   val proguard: Proguard,
   val lintRules: LintRules,
   val navigationJson: NavigationJson,
+  val apiJar: ApiJar,
   /**
-   * TODO
-   * no idea how /prefab folder works, add support for it later.
-   * api.jar is read by tooling, but no easy way to create it using APIs or standard tooling:
-   * https://issuetracker.google.com/issues/64315897
+   * TODO no idea how /prefab folder works, add support for it later.
    */
 ) : ArtifactArchive() {
   override fun shaded(shadeConfiguration: ShadeConfiguration): ArtifactArchive {
@@ -101,6 +100,7 @@ class AarArchive(
       proguard = proguard,
       lintRules = lintRules,
       navigationJson = navigationJson,
+      apiJar = apiJar,
     )
   }
 
@@ -118,6 +118,7 @@ class AarArchive(
       proguard.writeTo(outputAar.proguardTxt)
       lintRules.writeTo(outputAar.lintJar)
       navigationJson.writeTo(outputAar.navigationJson)
+      apiJar.writeTo(outputAar.apiJar)
     }
   }
 
@@ -143,6 +144,7 @@ class AarArchive(
       val proguard = Proguard.from(aarRoot.proguardTxt)
       val lintRules = LintRules.from(aarRoot.lintJar)
       val navigationJson = NavigationJson.from(aarRoot.navigationJson)
+      val apiJar = ApiJar.from(aarRoot.apiJar, environment.keepClassesMetaFiles)
 
       AarArchive(
         aarMetadata = aarMetadata,
@@ -157,6 +159,7 @@ class AarArchive(
         proguard = proguard,
         lintRules = lintRules,
         navigationJson = navigationJson,
+        apiJar = apiJar,
       )
     }
   }
