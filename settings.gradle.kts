@@ -5,6 +5,7 @@ pluginManagement {
     google()
     mavenCentral()
     gradlePluginPortal()
+    maven("https://www.jetbrains.com/intellij-repository/releases/")
   }
 }
 
@@ -14,6 +15,7 @@ dependencyResolutionManagement {
     google()
     mavenCentral()
     gradlePluginPortal()
+    maven("https://www.jetbrains.com/intellij-repository/releases/")
   }
 }
 

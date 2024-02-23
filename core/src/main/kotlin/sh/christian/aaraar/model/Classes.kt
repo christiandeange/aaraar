@@ -18,13 +18,13 @@ internal constructor(
   }
 
   companion object {
+    fun from(jarArchive: GenericJarArchive): Classes = Classes(jarArchive)
+
     fun from(
       path: Path,
       keepMetaFiles: Boolean,
     ): Classes {
-      return GenericJarArchive.from(path, keepMetaFiles)
-        ?.let { archive -> Classes(archive) }
-        ?: Classes(GenericJarArchive.NONE)
+      return from(GenericJarArchive.from(path, keepMetaFiles) ?: GenericJarArchive.NONE)
     }
   }
 }

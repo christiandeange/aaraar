@@ -18,6 +18,7 @@ dependencies {
   implementation(libs.agp.tools.manifestmerger)
   implementation(libs.agp.tools.sdk)
   implementation(libs.asm)
+  implementation(libs.decompiler)
   implementation(libs.gson)
   implementation(libs.jarjar) {
     exclude(
@@ -25,6 +26,7 @@ dependencies {
       module = libs.asm.get().module.name,
     )
   }
+  implementation(libs.javassist)
   implementation(libs.kotlinxml)
 
   testImplementation(kotlin("test"))

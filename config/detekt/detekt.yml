@@ -3,6 +3,15 @@ complexity:
     constructorThreshold: 999
   LongMethod:
     threshold: 100
+  CyclomaticComplexMethod:
+    threshold: 20
+  TooManyFunctions:
+    thresholdInClasses: 20
+
+naming:
+  ConstructorParameterNaming:
+    parameterPattern: "[a-z_][A-Za-z0-9]*"
+    privateParameterPattern: "[a-z_][A-Za-z0-9]*"
 
 formatting:
   Filename:

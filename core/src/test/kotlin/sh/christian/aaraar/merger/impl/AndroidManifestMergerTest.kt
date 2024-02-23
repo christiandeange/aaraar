@@ -1,7 +1,7 @@
 package sh.christian.aaraar.merger.impl
 
-import io.kotest.matchers.shouldBe
 import sh.christian.aaraar.model.AndroidManifest
+import sh.christian.aaraar.utils.shouldBe
 import kotlin.test.Test
 
 class AndroidManifestMergerTest {
@@ -100,9 +100,5 @@ class AndroidManifestMergerTest {
           </application>
       </manifest>
       """
-  }
-
-  private infix fun AndroidManifest.shouldBe(contents: String) {
-    toString().trim().replace("\t", "    ").replace("\r\n", "\n") shouldBe contents.trimIndent()
   }
 }
