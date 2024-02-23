@@ -18,7 +18,6 @@ dependencies {
   implementation(libs.agp.tools.manifestmerger)
   implementation(libs.agp.tools.sdk)
   implementation(libs.asm)
-  implementation(libs.decompiler)
   implementation(libs.gson)
   implementation(libs.jarjar) {
     exclude(
@@ -30,6 +29,7 @@ dependencies {
   implementation(libs.kotlinxml)
 
   testImplementation(kotlin("test"))
+  testImplementation(libs.decompiler)
   testImplementation(libs.jimfs)
   testImplementation(libs.kotest)
 }
