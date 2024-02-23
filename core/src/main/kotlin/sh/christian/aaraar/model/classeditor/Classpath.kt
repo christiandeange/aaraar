@@ -51,6 +51,20 @@ internal constructor(
     inputClasses.removeIf { it.qualifiedName == classname }
   }
 
+  /**
+   * Adds an entire set of other classes from another classpath to this one.
+   * Any classes you have defined in this classpath will be overwritten if also present in the other one.
+   */
+  fun addClasspath(other: Classpath) {
+    inputClasses += other.inputClasses
+
+    classCache += other.classCache
+    constructorCache += other.constructorCache
+    fieldCache += other.fieldCache
+    methodCache += other.methodCache
+    annotationCache += other.annotationCache
+  }
+
   /** Returns the mutable class definition for the given class. */
   operator fun get(clazz: Class<*>): ClassReference = synchronized(this) {
     get(clazz.canonicalName)
