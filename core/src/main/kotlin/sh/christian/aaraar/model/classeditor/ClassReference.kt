@@ -64,24 +64,36 @@ internal constructor(
   var constructors: List<ConstructorReference>
     get() = _class.declaredConstructors.map { classpath[it] }
     set(value) {
-      _class.declaredConstructors.forEach { _class.removeConstructor(it) }
-      value.forEach { _class.addConstructor(it._constructor) }
+      resolveDeltas(
+        oldMembers = _class.declaredConstructors.toSet(),
+        newMembers = value.mapTo(mutableSetOf()) { it._constructor },
+        adder = _class::addConstructor,
+        remover = _class::removeConstructor,
+      )
     }
 
   /** The set of fields explicitly declared by this class. */
   var fields: List<FieldReference>
     get() = _class.declaredFields.map { classpath[it] }
     set(value) {
-      _class.declaredFields.forEach { _class.removeField(it) }
-      value.forEach { _class.addField(it._field) }
+      resolveDeltas(
+        oldMembers = _class.declaredFields.toSet(),
+        newMembers = value.mapTo(mutableSetOf()) { it._field },
+        adder = _class::addField,
+        remover = _class::removeField,
+      )
     }
 
   /** The set of methods explicitly declared by this class. */
   var methods: List<MethodReference>
     get() = _class.declaredMethods.map { classpath[it] }
     set(value) {
-      _class.declaredMethods.forEach { _class.removeMethod(it) }
-      value.forEach { _class.addMethod(it._method) }
+      resolveDeltas(
+        oldMembers = _class.declaredMethods.toSet(),
+        newMembers = value.mapTo(mutableSetOf()) { it._method },
+        adder = _class::addMethod,
+        remover = _class::removeMethod,
+      )
     }
 
   init {
@@ -156,7 +168,19 @@ internal constructor(
   }
 
   internal fun toBytecode(): ByteArray {
-    _class.classFile.compact()
+    if (!_class.isFrozen) {
+      _class.classFile.compact()
+    }
     return _class.toBytecode()
+  }
+
+  private inline fun <T : Any> resolveDeltas(
+    oldMembers: Set<T>,
+    newMembers: Set<T>,
+    crossinline adder: (T) -> Unit,
+    crossinline remover: (T) -> Unit,
+  ) {
+    (oldMembers - newMembers).forEach(remover)
+    (newMembers - oldMembers).forEach(adder)
   }
 }
