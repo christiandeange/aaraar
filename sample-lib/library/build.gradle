@@ -1,3 +1,8 @@
+import org.jetbrains.annotations.NotNull
+import sh.christian.aaraar.gradle.ApiJarProcessor
+import sh.christian.aaraar.model.AarArchive
+import sh.christian.aaraar.model.classeditor.Classpath
+
 plugins {
   id 'com.android.library'
   id 'org.jetbrains.kotlin.android'
@@ -84,6 +89,8 @@ aaraar {
   }
 
   keepMetaFiles = false
+
+  setApiJarProcessorFactory(new MyApiJarProcessor.MyFactory())
 }
 
 afterEvaluate {
@@ -92,6 +99,25 @@ afterEvaluate {
       maven(MavenPublication) {
         from components.publish
       }
+    }
+  }
+}
+
+class MyApiJarProcessor extends ApiJarProcessor {
+  @Override
+  void processClasspath(@NotNull AarArchive aarArchive, @NotNull Classpath classpath) {
+    // Remove internal class
+    classpath.removeClass("sh.christian.samplelib.FooInternal")
+
+    // Remove internal method on public class
+    def fooClass = classpath.get("sh.christian.samplelib.Foo")
+    fooClass.methods = fooClass.methods.findAll { !it.name.containsIgnoreCase("internal") }
+  }
+
+  static class MyFactory implements ApiJarProcessor.Factory {
+    @Override
+    ApiJarProcessor create() {
+      return new MyApiJarProcessor()
     }
   }
 }
