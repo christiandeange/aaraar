@@ -11,7 +11,7 @@ internal var ClassReference.classAnnotations: List<AnnotationInstance>
   get() = getAnnotations(classpath, _class.classFile.getAttribute(AnnotationsAttribute.visibleTag))
   set(value) {
     val newAttribute = AnnotationsAttribute(_class.classFile.constPool, AnnotationsAttribute.visibleTag)
-    newAttribute.annotations = value.map { it._annotation }.toTypedArray()
+    newAttribute.annotations = value.mapToArray { it._annotation }
     _class.classFile.addAttribute(newAttribute)
   }
 
@@ -19,7 +19,7 @@ internal var MethodReference.methodAnnotations: List<AnnotationInstance>
   get() = getAnnotations(classpath, _method.methodInfo.getAttribute(AnnotationsAttribute.visibleTag))
   set(value) {
     val newAttribute = AnnotationsAttribute(_method.methodInfo.constPool, AnnotationsAttribute.visibleTag)
-    newAttribute.annotations = value.map { it._annotation }.toTypedArray()
+    newAttribute.annotations = value.mapToArray { it._annotation }
     _method.methodInfo.addAttribute(newAttribute)
   }
 
@@ -27,7 +27,7 @@ internal var ConstructorReference.constructorAnnotations: List<AnnotationInstanc
   get() = getAnnotations(classpath, _constructor.methodInfo.getAttribute(AnnotationsAttribute.visibleTag))
   set(value) {
     val newAttribute = AnnotationsAttribute(_constructor.methodInfo.constPool, AnnotationsAttribute.visibleTag)
-    newAttribute.annotations = value.map { it._annotation }.toTypedArray()
+    newAttribute.annotations = value.mapToArray { it._annotation }
     _constructor.methodInfo.addAttribute(newAttribute)
   }
 
@@ -35,7 +35,7 @@ internal var FieldReference.fieldAnnotations: List<AnnotationInstance>
   get() = getAnnotations(classpath, _field.fieldInfo.getAttribute(AnnotationsAttribute.visibleTag))
   set(value) {
     val newAttribute = AnnotationsAttribute(_field.fieldInfo.constPool, AnnotationsAttribute.visibleTag)
-    newAttribute.annotations = value.map { it._annotation }.toTypedArray()
+    newAttribute.annotations = value.mapToArray { it._annotation }
     _field.fieldInfo.addAttribute(newAttribute)
   }
 
@@ -57,7 +57,7 @@ internal var Parameter.parameterAnnotations: List<AnnotationInstance>
       newAttribute to Array(Descriptor.numOfParameters(behavior.methodInfo.descriptor)) { emptyArray() }
     }
 
-    allAnnotations[index] = value.map { it._annotation }.toTypedArray()
+    allAnnotations[index] = value.mapToArray { it._annotation }
     attribute.annotations = allAnnotations
     behavior.methodInfo.addAttribute(attribute)
   }

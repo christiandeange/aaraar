@@ -7,6 +7,10 @@ import sh.christian.aaraar.model.classeditor.Classpath
 val Classpath.classType: ClassReference
   get() = this["java.lang.Class"]
 
+/** The platform [Object] type. */
+val Classpath.objectType: ClassReference
+  get() = this["java.lang.Object"]
+
 /** The platform [String] type. */
 val Classpath.stringType: ClassReference
   get() = this["java.lang.String"]

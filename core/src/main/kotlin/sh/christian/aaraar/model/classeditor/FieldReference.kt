@@ -2,7 +2,6 @@ package sh.christian.aaraar.model.classeditor
 
 import javassist.CtField
 import javassist.bytecode.ConstantAttribute
-import javassist.bytecode.Descriptor.changeReturnType
 
 /**
  * Represents a declared field for a particular class.
@@ -23,7 +22,7 @@ internal constructor(
   var type: ClassReference
     get() = classpath[_field.type]
     set(value) {
-      _field.fieldInfo.descriptor = changeReturnType(value.qualifiedName, _field.fieldInfo.descriptor)
+      _field.type = value._class
     }
 
   /** Removes bytecode stored to describe this field's constant value, if it is a `static final` field. */

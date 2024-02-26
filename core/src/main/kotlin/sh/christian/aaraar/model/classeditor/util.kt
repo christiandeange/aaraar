@@ -10,10 +10,9 @@ import javassist.bytecode.ParameterAnnotationsAttribute
 
 internal fun CtBehavior.setParameters(parameters: List<NewParameter>) {
   val constPool = methodInfo.constPool
-  val parameterTypes = parameters.map { it.type._class }.toTypedArray()
-  val parameterNames = parameters.map { it.name }.toTypedArray()
-  val parameterAnnotations =
-    parameters.map { it.annotations.map { a -> a._annotation }.toTypedArray() }.toTypedArray()
+  val parameterTypes = parameters.mapToArray { it.type._class }
+  val parameterNames = parameters.mapToArray { it.name }
+  val parameterAnnotations = parameters.mapToArray { it.annotations.mapToArray { a -> a._annotation } }
 
   setParameterTypes(parameterTypes)
 
@@ -39,4 +38,8 @@ internal fun CtBehavior.setParameterTypes(parameterTypes: Array<CtClass>) {
     is CtConstructor -> Descriptor.ofConstructor(parameterTypes)
     else -> error("Unknown behaviour: ${this::class}")
   }
+}
+
+internal inline fun <T, reified R> Iterable<T>.mapToArray(transform: (T) -> R): Array<R> {
+  return map(transform).toTypedArray()
 }

@@ -57,7 +57,7 @@ internal constructor(
   var interfaces: List<ClassReference>
     get() = _class.interfaces.map { classpath[it] }
     set(value) {
-      _class.interfaces = value.map { it._class }.toTypedArray()
+      _class.interfaces = value.mapToArray { it._class }
     }
 
   /** The set of constructors explicitly declared by this class. */
@@ -108,8 +108,8 @@ internal constructor(
   ): ConstructorReference {
     val newConstructor = CtConstructor(emptyArray(), _class)
     return classpath[newConstructor].also {
-      constructors += it
       configure(it)
+      constructors += it
     }
   }
 
@@ -121,8 +121,8 @@ internal constructor(
   ): FieldReference {
     val newField = CtField(type._class, name, _class)
     return classpath[newField].also {
-      fields += it
       configure(it)
+      fields += it
     }
   }
 
@@ -133,8 +133,8 @@ internal constructor(
   ): MethodReference {
     val newMethod = CtMethod(CtClass.voidType, name, emptyArray(), _class)
     return classpath[newMethod].also {
-      methods += it
       configure(it)
+      methods += it
     }
   }
 
@@ -146,11 +146,6 @@ internal constructor(
     return AnnotationInstance.Builder(type)
       .apply(configure)
       .forUseIn(this)
-  }
-
-  /** Returns the declared constructor identified by this name, or `null` if none exists. */
-  fun getConstructor(name: String): ConstructorReference? {
-    return constructors.singleOrNull { it.name == name }
   }
 
   /** Returns the declared field identified by this name, or `null` if none exists. */

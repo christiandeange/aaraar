@@ -41,8 +41,8 @@ internal constructor(
     configure: ClassReference.() -> Unit = { },
   ): ClassReference = synchronized(this) {
     return get(classname).also {
-      inputClasses += it
       configure(it)
+      inputClasses += it
     }
   }
 
@@ -134,7 +134,7 @@ internal constructor(
    */
   fun removeKotlinMetadata() {
     inputClasses.forEach { clazz ->
-      clazz.annotations = clazz.annotations.filterNot { it.name == "kotlin.Metadata" }
+      clazz.annotations = clazz.annotations.filterNot { it.qualifiedName == "kotlin.Metadata" }
     }
   }
 

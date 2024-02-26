@@ -1,14 +1,17 @@
 package sh.christian.aaraar.model.classeditor
 
-import sh.christian.aaraar.model.GenericJarArchive
+import io.kotest.matchers.collections.shouldContainExactly
+import io.kotest.matchers.collections.shouldHaveSize
+import io.kotest.matchers.maps.shouldContainExactly
+import io.kotest.matchers.nulls.shouldNotBeNull
+import io.kotest.matchers.should
+import io.kotest.matchers.shouldBe
 import sh.christian.aaraar.model.classeditor.AnnotationInstance.Value.StringValue
 import sh.christian.aaraar.model.classeditor.Modifier.ABSTRACT
 import sh.christian.aaraar.model.classeditor.Modifier.ANNOTATION
 import sh.christian.aaraar.model.classeditor.Modifier.INTERFACE
 import sh.christian.aaraar.model.classeditor.Modifier.PRIVATE
 import sh.christian.aaraar.model.classeditor.Modifier.PROTECTED
-import sh.christian.aaraar.model.classeditor.types.booleanType
-import sh.christian.aaraar.model.classeditor.types.intType
 import sh.christian.aaraar.model.classeditor.types.stringType
 import sh.christian.aaraar.utils.fooJarPath
 import sh.christian.aaraar.utils.loadJar
@@ -21,6 +24,10 @@ class ClassesTest {
   fun `default class`() = withClasspath { cp ->
     val person = cp.addClass("com.example.Person")
 
+    person.qualifiedName shouldBe "com.example.Person"
+    person.simpleName shouldBe "Person"
+    person.packageName shouldBe "com.example"
+
     person shouldBeDecompiledTo """
       package com.example;
 
@@ -30,10 +37,36 @@ class ClassesTest {
   }
 
   @Test
+  fun `class with new name`() = withClasspath { cp ->
+    val person = cp.addClass("com.example.Person")
+    person.qualifiedName shouldBe "com.example.Person"
+
+    person.qualifiedName = "com.example.Animal"
+    person.qualifiedName shouldBe "com.example.Animal"
+
+    person.simpleName = "Plant"
+    person.simpleName shouldBe "Plant"
+
+    person.packageName = "com.organism"
+    person.packageName shouldBe "com.organism"
+
+    person.qualifiedName shouldBe "com.organism.Plant"
+
+    person shouldBeDecompiledTo """
+      package com.organism;
+
+      public class Plant {
+      }
+    """
+  }
+
+  @Test
   fun `class with modifiers`() = withClasspath { cp ->
     val person = cp.addClass("com.example.Person") {
       modifiers = setOf(PROTECTED, ABSTRACT)
     }
+
+    person.modifiers shouldContainExactly setOf(PROTECTED, ABSTRACT)
 
     person shouldBeDecompiledTo """
       package com.example;
@@ -52,6 +85,13 @@ class ClassesTest {
       interfaces = listOf(cp["com.example.HasAge"], cp["com.example.HasName"])
 
       addConstructor()
+    }
+
+    person.superclass?.qualifiedName shouldBe "com.example.Animal"
+    person.interfaces.should { interfaces ->
+      interfaces shouldHaveSize 2
+      interfaces[0].qualifiedName shouldBe "com.example.HasAge"
+      interfaces[1].qualifiedName shouldBe "com.example.HasName"
     }
 
     person shouldBeDecompiledTo """
@@ -88,6 +128,14 @@ class ClassesTest {
       }
     }
 
+    person.annotations.should { annotations ->
+      annotations shouldHaveSize 1
+      annotations.single().should {
+        it.qualifiedName shouldBe "java.lang.Deprecated"
+        it.parameters shouldContainExactly mapOf("since" to StringValue("11"))
+      }
+    }
+
     person shouldBeDecompiledTo """
       package com.example;
 
@@ -100,71 +148,28 @@ class ClassesTest {
   }
 
   @Test
-  fun `class with fields`() = withClasspath { cp ->
-    val person = cp.addClass("com.example.Person")
-    person.addField("firstName", cp.stringType)
-    person.addField("lastName", cp.stringType)
-
-    person shouldBeDecompiledTo """
-      package com.example;
-
-      public class Person {
-          public String firstName;
-          public String lastName;
-      }
-    """.trimIndent()
-  }
-
-  @Test
-  fun `class with members with parameters`() = withClasspath { cp ->
+  fun `class with members`() = withClasspath { cp ->
     val person = cp.addClass("com.example.Person")
     person.addConstructor {
-      setParameters(NewParameter("age", cp.intType))
+      setParameters(
+        NewParameter(
+          name = "name",
+          type = cp.stringType,
+          annotations = listOf(person.annotationInstance(cp["javax.annotation.NonNull"])),
+        )
+      )
     }
-    person.addMethod("setAge") {
-      setParameters(NewParameter("age", cp.intType))
+    person.addField("name", cp.stringType)
+    person.addMethod("getName") {
+      returnType = cp.stringType
     }
-    person.addMethod("getAge") {
-      returnType = cp.intType
-    }
-    person.addMethod("printAge")
 
-    person shouldBeDecompiledTo """
-      package com.example;
+    person.constructors shouldHaveSize 1
+    person.fields shouldHaveSize 1
+    person.methods shouldHaveSize 1
 
-      public class Person {
-          public Person(int age) {
-          }
-
-          public void setAge(int age) {
-          }
-
-          public int getAge() {
-          }
-
-          public void printAge() {
-          }
-      }
-    """.trimIndent()
-  }
-
-  @Test
-  fun `class with members with annotations`() = withClasspath { cp ->
-    val person = cp.addClass("com.example.Person")
-    val deprecated = person.annotationInstance(cp["java.lang.Deprecated"])
-    val nonNull = person.annotationInstance(cp["javax.annotation.NonNull"])
-
-    person.addConstructor {
-      setParameters(NewParameter("gender", cp.stringType, listOf(nonNull)))
-    }
-    person.addConstructor {
-      annotations = listOf(deprecated)
-      setParameters(NewParameter("isMale", cp.booleanType))
-    }
-    person.addField("gender", cp.stringType)
-    person.addField("isMale", cp.booleanType) {
-      annotations = listOf(deprecated)
-    }
+    person.getField("name").shouldNotBeNull()
+    person.getMethod("getName").shouldNotBeNull()
 
     person shouldBeDecompiledTo """
       package com.example;
@@ -172,15 +177,12 @@ class ClassesTest {
       import javax.annotation.NonNull;
 
       public class Person {
-          public String gender;
-          @Deprecated
-          public boolean isMale;
+          public String name;
 
-          public Person(@NonNull String gender) {
+          public Person(@NonNull String name) {
           }
 
-          @Deprecated
-          public Person(boolean isMale) {
+          public String getName() {
           }
       }
     """
@@ -197,7 +199,7 @@ class ClassesTest {
                 System.out.println("Hello, world!");
             }
         }
-      """.trimIndent()
+      """
     }
 
     withClasspath(fooJarPath.loadJar()) { cp ->
@@ -212,7 +214,7 @@ class ClassesTest {
             public void printHello() {
             }
         }
-      """.trimIndent()
+      """
     }
   }
 
@@ -235,7 +237,7 @@ class ClassesTest {
           public void setName(String name) {
           }
       }
-    """.trimIndent()
+    """
   }
 
   @Test
@@ -256,11 +258,6 @@ class ClassesTest {
           public void setName(String name) {
           }
       }
-    """.trimIndent()
+    """
   }
-
-  private inline fun withClasspath(
-    jar: GenericJarArchive = GenericJarArchive.NONE,
-    crossinline block: (Classpath) -> Unit,
-  ) = block(Classpath.from(jar))
 }

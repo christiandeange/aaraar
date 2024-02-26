@@ -29,11 +29,17 @@ internal constructor(
   internal val classpath: Classpath,
   internal val _annotation: Annotation,
 ) {
-  /** The name of the annotation type. */
-  val name: String = _annotation.typeName
-
   /** The annotation type. */
-  val type: ClassReference = classpath[name]
+  val type: ClassReference = classpath[_annotation.typeName]
+
+  /** This annotation's fully-qualified classname, including its package name and simple class name. */
+  val qualifiedName: String by type::qualifiedName
+
+  /** The declared name of this specific annotation class. */
+  val simpleName: String by type::simpleName
+
+  /** The name of the package this annotation class is defined in. */
+  val packageName: String by type::packageName
 
   /** The set of constant annotation parameter values for this usage. */
   val parameters: Map<String, Value> =
@@ -41,7 +47,7 @@ internal constructor(
       .associateWith { name -> _annotation.getMemberValue(name).toValue(classpath) }
 
   /** Creates a new [Builder] based on this usage site. */
-  fun toBuilder(): Builder = Builder(name).apply {
+  fun toBuilder(): Builder = Builder(qualifiedName).apply {
     parameters.forEach { (name, value) ->
       addValue(name, value)
     }
@@ -66,63 +72,73 @@ internal constructor(
    * - [Array] wrapping any of the above types
    */
   sealed interface Value {
-    class AnnotationValue(
+    data class AnnotationValue(
       val value: AnnotationInstance,
-    ) : Value
+    ) : Value {
+      override fun equals(other: Any?): Boolean {
+        return (other as? AnnotationValue)?.let {
+          value.type == other.value.type && value.parameters == other.value.parameters
+        } ?: false
+      }
 
-    class ArrayValue(
+      override fun hashCode(): Int {
+        return value._annotation.hashCode()
+      }
+    }
+
+    data class ArrayValue(
       val values: List<Value>,
     ) : Value
 
-    class BooleanValue(
+    data class BooleanValue(
       val value: Boolean,
     ) : Value
 
-    class ByteValue(
+    data class ByteValue(
       val value: Byte,
     ) : Value
 
-    class CharValue(
+    data class CharValue(
       val value: Char,
     ) : Value
 
-    class ClassValue(
+    data class ClassValue(
       val value: ClassReference,
     ) : Value
 
-    class DoubleValue(
+    data class DoubleValue(
       val value: Double,
     ) : Value
 
-    class EnumValue(
+    data class EnumValue(
       val type: ClassReference,
       val name: String,
     ) : Value
 
-    class FloatValue(
+    data class FloatValue(
       val value: Float,
     ) : Value
 
-    class IntegerValue(
+    data class IntegerValue(
       val value: Int,
     ) : Value
 
-    class LongValue(
+    data class LongValue(
       val value: Long,
     ) : Value
 
-    class ShortValue(
+    data class ShortValue(
       val value: Short,
     ) : Value
 
-    class StringValue(
+    data class StringValue(
       val value: String,
     ) : Value
 
     fun toMemberValue(constPool: ConstPool): MemberValue = when (this) {
       is AnnotationValue -> AnnotationMemberValue(value._annotation, constPool)
       is ArrayValue -> ArrayMemberValue(constPool).apply {
-        value = values.map { it.toMemberValue(constPool) }.toTypedArray()
+        value = values.mapToArray { it.toMemberValue(constPool) }
       }
 
       is BooleanValue -> BooleanMemberValue(value, constPool)
@@ -136,7 +152,7 @@ internal constructor(
       }
 
       is FloatValue -> FloatMemberValue(value, constPool)
-      is IntegerValue -> IntegerMemberValue(value, constPool)
+      is IntegerValue -> IntegerMemberValue(constPool, value)
       is LongValue -> LongMemberValue(value, constPool)
       is ShortValue -> ShortMemberValue(value, constPool)
       is StringValue -> StringMemberValue(value, constPool)
