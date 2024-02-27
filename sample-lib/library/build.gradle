@@ -90,7 +90,7 @@ aaraar {
 
   keepMetaFiles = false
 
-  setApiJarProcessorFactory(new MyApiJarProcessor.MyFactory())
+  setApiJarProcessorFactory(new MyApiJarProcessorFactory())
 }
 
 afterEvaluate {
@@ -113,11 +113,11 @@ class MyApiJarProcessor extends ApiJarProcessor {
     def fooClass = classpath.get("sh.christian.samplelib.Foo")
     fooClass.methods = fooClass.methods.findAll { !it.name.containsIgnoreCase("internal") }
   }
+}
 
-  static class MyFactory implements ApiJarProcessor.Factory {
-    @Override
-    ApiJarProcessor create() {
-      return new MyApiJarProcessor()
-    }
+class MyApiJarProcessorFactory implements ApiJarProcessor.Factory {
+  @Override
+  ApiJarProcessor create() {
+    return new MyApiJarProcessor()
   }
 }

@@ -9,11 +9,11 @@ import java.io.Serializable
  *
  * The `api.jar` file is an optional element that contains information about the library's public API.
  * This file helps developers using the library understand its exposed classes, methods, and functionalities.
+ * When this file exists in an AAR package, it will be used it as the source of truth for which members are exposed
+ * externally by the AAR, and which members can be referenced at compile time.
  *
- * It primarily benefits tools like IDEs and static analysis tools to provide better developer experience and ensure
- * proper usage of the library. It can also be used to hide certain public members from IDE autocomplete, though they
- * can still be referenced and compiled against in a normal manner (despite a warning/error from the IDE that the
- * associated element cannot be found).
+ * Generating a custom `api.jar` file can be used to hide certain public members from IDE autocomplete, though they
+ * can still be referenced and invoked via reflection at runtime as per usual.
  */
 abstract class ApiJarProcessor {
 

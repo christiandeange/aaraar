@@ -65,6 +65,8 @@ In Android modules, embed configurations can also be declared for individual bui
     }
     ```
 
+### META-INF files
+
 You can also let the plugin know whether to strip all `META-INF/` files from the packaged output file. By default it
 keeps them all, but this can be configured via the plugin extension:
 
@@ -85,3 +87,124 @@ keeps them all, but this can be configured via the plugin extension:
       keepMetaFiles = false
     }
     ```
+
+### API Jar for Android Libraries
+
+The `api.jar` file is an optional element inside an aar archive that helps developers using the library understand its
+exposed classes, methods, and functionalities. When this file exists in an aar, it will be used it as the source of
+truth for which members can be referenced at compilation time.
+
+Generating a custom `api.jar` file can be used to hide certain public members from IDE autocomplete, though they
+can still be referenced and invoked via reflection at runtime as per usual.
+
+Generating this file begins with registering a factory to create an `ApiJarProcessor`. One way to do so is by passing
+in an instance of a class implementing `ApiJarProcessor.Factory`.
+
+=== "Kotlin"
+
+    ```kotlin
+    aaraar {
+      setApiJarProcessorFactory(MyApiJarProcessorFactory())
+    }
+    ```
+
+=== "Groovy"
+
+    ```groovy
+    aaraar {
+      setApiJarProcessorFactory(new MyApiJarProcessorFactory())
+    }
+    ```
+
+Note that your factory must be `Serializable`.
+
+The factory can also be registered by passing in only the class name, which will be used to reflective instantiate an
+instance at task execution. This is useful if your factory is not available on the Gradle buildscript classpath.
+In doing so, you must ensure that your factory has a public no-arg constructor so that it can be properly created:
+
+=== "Kotlin"
+
+    ```kotlin
+    aaraar {
+      setApiJarProcessorFactory("com.example.gradle.MyApiJarProcessorFactory")
+    }
+    ```
+
+=== "Groovy"
+
+    ```groovy
+    aaraar {
+      setApiJarProcessorFactory("com.example.gradle.MyApiJarProcessorFactory")
+    }
+    ```
+
+The factory interface is very straightforward and only defines a `create()` method for you to implement:
+
+=== "Kotlin"
+
+    ```kotlin
+    class MyApiJarProcessorFactory : ApiJarProcessor.Factory {
+      override fun create(): ApiJarProcessor {
+        return MyApiJarProcessor()
+      }
+    }
+    ```
+
+=== "Groovy"
+
+    ```groovy
+    class MyApiJarProcessorFactory implements ApiJarProcessor.Factory {
+      @Override
+      ApiJarProcessor create() {
+        return new MyApiJarProcessor()
+      }
+    }
+    ```
+
+The processor implementation is where the `api.jar` transformation occurs. When enabled, it is provided with a
+representation of the current set of classes defined in the merged aar archive, as well as a reference to the merged
+archive itself. While the archive is immutable, the classpath provided is mutable and supports a variety of
+transformations, including but not limited to:
+
+- Removing existing classes and class members (constructors, methods, and fields).
+- Defining entirely new classes with custom members.
+- Renaming classes and class members or modifying their access visibility.
+- Adding or removing annotations on classes and class members.
+
+An example implementation can be seen below, which is used to remove a public class and a public method that are both
+meant for internal use only:
+
+=== "Kotlin"
+
+    ```kotlin
+    class MyApiJarProcessor : ApiJarProcessor() {
+      override fun processClasspath(aarArchive: AarArchive, classpath: Classpath) {
+        // Remove internal class
+        classpath.removeClass("com.example.TerminalSdkInternal")
+
+        // Remove internal method on public class
+        val fooClass = classpath.get("com.example.TerminalSdk")
+        fooClass.methods = fooClass.methods.filter { !it.name.contains("internal", ignoreCase = true) }
+      }
+    }
+    ```
+
+=== "Groovy"
+
+    ```groovy
+    class MyApiJarProcessor extends ApiJarProcessor {
+      @Override
+      void processClasspath(@NotNull AarArchive aarArchive, @NotNull Classpath classpath) {
+        // Remove internal class
+        classpath.removeClass("com.example.TerminalSdkInternal")
+
+        // Remove internal method on public class
+        def fooClass = classpath.get("com.example.TerminalSdk")
+        fooClass.methods = fooClass.methods.findAll { !it.name.containsIgnoreCase("internal") }
+      }
+    }
+    ```
+
+Further documentation for the kind of transformations available can be found by referencing
+[API documentation](https://aaraar.christian.sh/kdoc/aaraar/sh.christian.aaraar.model.classeditor/index.html) for the
+`sh.christian.aaraar.model.classeditor` package.
