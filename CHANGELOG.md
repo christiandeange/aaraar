@@ -1,6 +1,16 @@
 Change Log
 ==========
 
+## Version 0.0.13
+
+_2024-02-27_
+
+* New: Support for creating a custom `api.jar` in an AAR file.
+    * This optional jar is used by the IDE as the autocomplete source, as well as what consumers compile against.
+    * Does not affect which classes and class members are executable at runtime.
+    * Provides an integration point for complete customization to add/remove classes, rename methods, and more.
+    * See [updated packaging guide](https://aaraar.christian.sh/packaging) for info on configuration.
+
 ## Version 0.0.12
 
 _2024-02-07_
