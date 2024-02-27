@@ -23,7 +23,7 @@ fi
 sed -i '' "s/-SNAPSHOT//g" gradle.properties
 
 NEXT_RELEASE="$(awk -F= '/POM_VERSION/ { print $2 }' < gradle.properties)"
-CURRENT_RELEASE="$(awk -F\' '/sh.christian.aaraar/ { print $4 }' < sample-lib/library/build.gradle)"
+CURRENT_RELEASE="$(awk -F\" '/id "sh.christian.aaraar"/ { print $4 }' < sample-lib/library/build.gradle)"
 sed -i '' "s/$CURRENT_RELEASE/$NEXT_RELEASE/g" sample-lib/library/build.gradle
 sed -i '' "s/$CURRENT_RELEASE/$NEXT_RELEASE/g" docs/installation.md
 

@@ -4,22 +4,22 @@ import sh.christian.aaraar.model.AarArchive
 import sh.christian.aaraar.model.classeditor.Classpath
 
 plugins {
-  id 'com.android.library'
-  id 'org.jetbrains.kotlin.android'
-  id 'sh.christian.aaraar' version '0.0.12'
-  id 'maven-publish'
+  id "com.android.library"
+  id "org.jetbrains.kotlin.android"
+  id "sh.christian.aaraar" version "0.0.12"
+  id "maven-publish"
 }
 
 group = "sh.christian.samplelib"
 version = "1.0.0"
 
 android {
-  namespace 'sh.christian.samplelib'
+  namespace "sh.christian.samplelib"
   compileSdk 33
 
   defaultConfig {
     minSdk 24
-    consumerProguardFiles 'consumer-rules.pro'
+    consumerProguardFiles "consumer-rules.pro"
   }
 
   buildTypes {
@@ -29,7 +29,7 @@ android {
 
     publish {
       initWith release
-      matchingFallbacks = ['release']
+      matchingFallbacks = ["release"]
     }
   }
 
@@ -44,7 +44,7 @@ android {
   }
 
   kotlinOptions {
-    jvmTarget = '11'
+    jvmTarget = "11"
   }
 
   publishing {
@@ -55,17 +55,17 @@ android {
 }
 
 dependencies {
-  api 'org.jetbrains.kotlin:kotlin-stdlib:1.8.0'
+  api "org.jetbrains.kotlin:kotlin-stdlib:1.8.0"
 
-  compileOnly project(':helper-library')
-  embed project(':helper-library')
+  compileOnly project(":helper-library")
+  embed project(":helper-library")
 
-  implementation 'androidx.core:core-ktx:1.9.0'
-  implementation 'androidx.appcompat:appcompat:1.6.0'
-  implementation 'com.google.android.material:material:1.7.0'
+  implementation "androidx.core:core-ktx:1.9.0"
+  implementation "androidx.appcompat:appcompat:1.6.0"
+  implementation "com.google.android.material:material:1.7.0"
 
-  compileOnly 'io.reactivex.rxjava3:rxjava:3.1.5'
-  embed 'io.reactivex.rxjava3:rxjava:3.1.5'
+  compileOnly "io.reactivex.rxjava3:rxjava:3.1.5"
+  embed "io.reactivex.rxjava3:rxjava:3.1.5"
 
   embed fileTree(dir: "libs", include: ["*.jar"])
 }

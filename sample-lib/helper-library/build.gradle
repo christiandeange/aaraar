@@ -1,14 +1,14 @@
 plugins {
-  id 'com.android.library'
-  id 'org.jetbrains.kotlin.android'
-  id 'maven-publish'
+  id "com.android.library"
+  id "org.jetbrains.kotlin.android"
+  id "maven-publish"
 }
 
 group = "sh.christian.samplelib"
 version = "1.0.0"
 
 android {
-  namespace 'sh.christian.samplelib.helper'
+  namespace "sh.christian.samplelib.helper"
   compileSdk 33
 
   defaultConfig {
@@ -35,7 +35,7 @@ android {
   }
 
   kotlinOptions {
-    jvmTarget = '11'
+    jvmTarget = "11"
   }
 
   publishing {
@@ -46,9 +46,9 @@ android {
 }
 
 dependencies {
-  api fileTree(dir: 'libs', include: ['*.jar'])
-  implementation 'androidx.core:core-ktx:1.9.0'
-  implementation 'org.jetbrains.kotlin:kotlin-stdlib:1.8.0'
+  api fileTree(dir: "libs", include: ["*.jar"])
+  implementation "androidx.core:core-ktx:1.9.0"
+  implementation "org.jetbrains.kotlin:kotlin-stdlib:1.8.0"
 }
 
 afterEvaluate {
