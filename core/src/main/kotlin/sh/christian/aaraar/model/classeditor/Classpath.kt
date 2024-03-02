@@ -99,8 +99,11 @@ internal constructor(
     methodCache.getOrPut(method) { MethodReference(this, method) }
   }
 
-  internal operator fun get(annotation: Annotation): AnnotationInstance = synchronized(this) {
-    annotationCache.getOrPut(annotation) { AnnotationInstance(this, annotation) }
+  internal operator fun get(
+    annotation: Annotation,
+    visible: Boolean,
+  ): AnnotationInstance = synchronized(this) {
+    annotationCache.getOrPut(annotation) { AnnotationInstance(this, annotation, visible) }
   }
 
   /**

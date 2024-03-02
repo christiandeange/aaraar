@@ -13,6 +13,7 @@ private object ResourceLoader
 
 private val resourceLoader = ResourceLoader::class.java.classLoader
 
+val jetbrainsAnnotationsJarPath: Path = Paths.get(resourceLoader.getResource("annotations-24.1.0.jar")!!.toURI())
 val animalJarPath: Path = Paths.get(resourceLoader.getResource("animal.jar")!!.toURI())
 val fooJarPath: Path = Paths.get(resourceLoader.getResource("foo.jar")!!.toURI())
 val foo2JarPath: Path = Paths.get(resourceLoader.getResource("foo2.jar")!!.toURI())

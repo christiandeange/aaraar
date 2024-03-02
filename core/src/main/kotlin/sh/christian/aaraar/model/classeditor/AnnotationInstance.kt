@@ -28,6 +28,7 @@ class AnnotationInstance
 internal constructor(
   internal val classpath: Classpath,
   internal val _annotation: Annotation,
+  visible: Boolean,
 ) {
   /** The annotation type. */
   val type: ClassReference = classpath[_annotation.typeName]
@@ -40,6 +41,9 @@ internal constructor(
 
   /** The name of the package this annotation class is defined in. */
   val packageName: String by type::packageName
+
+  /** Determines if the annotation is stored in binary output and visible for reflection. */
+  val isVisible: Boolean = visible
 
   /** The set of constant annotation parameter values for this usage. */
   val parameters: Map<String, Value> =
@@ -160,7 +164,7 @@ internal constructor(
 
     companion object {
       internal fun MemberValue.toValue(classpath: Classpath): Value = when (this) {
-        is AnnotationMemberValue -> AnnotationValue(classpath[value])
+        is AnnotationMemberValue -> AnnotationValue(classpath[value, true])
         is ArrayMemberValue -> ArrayValue(value.map { it.toValue(classpath) })
         is BooleanMemberValue -> BooleanValue(value)
         is ByteMemberValue -> ByteValue(value)
@@ -184,10 +188,15 @@ internal constructor(
   class Builder(private var name: String) {
     constructor(classReference: ClassReference) : this(classReference.qualifiedName)
 
+    private var isVisible = true
     private val values = mutableMapOf<String, Value>()
 
     fun name(name: String) = apply {
       this.name = name
+    }
+
+    fun setVisible(isVisible: Boolean) = apply {
+      this.isVisible = isVisible
     }
 
     fun addValue(
@@ -209,7 +218,7 @@ internal constructor(
           addMemberValue(name, value.toMemberValue(constPool))
         }
       }
-      return AnnotationInstance(classReference.classpath, annotation)
+      return AnnotationInstance(classReference.classpath, annotation, isVisible)
     }
   }
 }

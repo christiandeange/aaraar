@@ -12,6 +12,7 @@ import sh.christian.aaraar.model.classeditor.Modifier.ANNOTATION
 import sh.christian.aaraar.model.classeditor.Modifier.INTERFACE
 import sh.christian.aaraar.model.classeditor.Modifier.PRIVATE
 import sh.christian.aaraar.model.classeditor.Modifier.PROTECTED
+import sh.christian.aaraar.model.classeditor.Modifier.PUBLIC
 import sh.christian.aaraar.model.classeditor.types.stringType
 import sh.christian.aaraar.utils.fooJarPath
 import sh.christian.aaraar.utils.loadJar
@@ -107,15 +108,14 @@ class ClassesTest {
   @Test
   fun `annotation class`() = withClasspath { cp ->
     val person = cp.addClass("com.example.Person") {
-      modifiers = setOf(ANNOTATION, INTERFACE)
+      modifiers = setOf(PUBLIC, ABSTRACT, ANNOTATION, INTERFACE)
+      superclass = cp["java.lang.annotation.Annotation"]
     }
 
     person shouldBeDecompiledTo """
       package com.example;
 
-      @interface Person {
-          default Person() {
-          }
+      public @interface Person {
       }
     """
   }
