@@ -63,9 +63,7 @@ class MethodTest {
       }
     }
 
-    foo.getMethod("printAge")!!.annotations shouldHaveSingleElement {
-      it.qualifiedName == "java.lang.Deprecated"
-    }
+    foo.getMethod("printAge")!!.annotations shouldHaveSingleElement foo.annotationInstance(cp["java.lang.Deprecated"])
 
     foo shouldBeDecompiledTo """
       package com.example;
@@ -220,9 +218,7 @@ class MethodTest {
       parameters[1].should { param ->
         param.name shouldBe "birthYear"
         param.type shouldBe cp.longType
-        param.annotations shouldHaveSingleElement {
-          it.qualifiedName == "java.lang.Deprecated"
-        }
+        param.annotations shouldHaveSingleElement foo.annotationInstance(cp["java.lang.Deprecated"])
       }
     }
 

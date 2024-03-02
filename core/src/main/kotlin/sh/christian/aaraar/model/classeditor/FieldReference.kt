@@ -2,6 +2,7 @@ package sh.christian.aaraar.model.classeditor
 
 import javassist.CtField
 import javassist.bytecode.ConstantAttribute
+import sh.christian.aaraar.model.classeditor.Modifier.FINAL
 
 /**
  * Represents a declared field for a particular class.
@@ -30,7 +31,20 @@ internal constructor(
     _field.fieldInfo.removeAttribute(ConstantAttribute.tag)
   }
 
+  override fun equals(other: Any?): Boolean {
+    if (other !is FieldReference) return false
+    return _field == other._field
+  }
+
+  override fun hashCode(): Int {
+    var result = name.hashCode()
+    result = 31 * result + annotations.hashCode()
+    result = 31 * result + type.hashCode()
+    return result
+  }
+
   override fun toString(): String {
-    return "${_field.declaringClass.name}.$name"
+    val valOrVar = if (FINAL in modifiers) "val" else "var"
+    return "$valOrVar ${_field.declaringClass.name}.$name: $type"
   }
 }

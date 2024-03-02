@@ -57,6 +57,18 @@ internal constructor(
     }
   }
 
+  override fun equals(other: Any?): Boolean {
+    if (other !is AnnotationInstance) return false
+    return type == other.type && parameters == other.parameters && isVisible == other.isVisible
+  }
+
+  override fun hashCode(): Int {
+    var result = type.hashCode()
+    result = 31 * result + isVisible.hashCode()
+    result = 31 * result + parameters.hashCode()
+    return result
+  }
+
   override fun toString(): String {
     val count = parameters.count()
     return if (count == 0) {
@@ -78,17 +90,7 @@ internal constructor(
   sealed interface Value {
     data class AnnotationValue(
       val value: AnnotationInstance,
-    ) : Value {
-      override fun equals(other: Any?): Boolean {
-        return (other as? AnnotationValue)?.let {
-          value.type == other.value.type && value.parameters == other.value.parameters
-        } ?: false
-      }
-
-      override fun hashCode(): Int {
-        return value._annotation.hashCode()
-      }
-    }
+    ) : Value
 
     data class ArrayValue(
       val values: List<Value>,

@@ -1,6 +1,7 @@
 package sh.christian.aaraar.model.classeditor
 
 import io.kotest.matchers.collections.shouldContainExactly
+import io.kotest.matchers.collections.shouldHaveSingleElement
 import io.kotest.matchers.collections.shouldHaveSize
 import io.kotest.matchers.maps.shouldContainExactly
 import io.kotest.matchers.nulls.shouldNotBeNull
@@ -129,10 +130,8 @@ class ClassesTest {
     }
 
     person.annotations.should { annotations ->
-      annotations shouldHaveSize 1
-      annotations.single().should {
-        it.qualifiedName shouldBe "java.lang.Deprecated"
-        it.parameters shouldContainExactly mapOf("since" to StringValue("11"))
+      annotations shouldHaveSingleElement person.annotationInstance(cp["java.lang.Deprecated"]) {
+        addValue("since", StringValue("11"))
       }
     }
 

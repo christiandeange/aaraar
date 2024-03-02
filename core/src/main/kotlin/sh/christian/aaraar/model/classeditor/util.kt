@@ -36,7 +36,7 @@ internal fun CtBehavior.setParameterTypes(parameterTypes: Array<CtClass>) {
   methodInfo.descriptor = when (this) {
     is CtMethod -> Descriptor.ofMethod(this.returnType, parameterTypes)
     is CtConstructor -> Descriptor.ofConstructor(parameterTypes)
-    else -> error("Unknown behaviour: ${this::class}")
+    else -> error("Unknown behavior: ${this::class}")
   }
 }
 

@@ -68,12 +68,25 @@ internal constructor(
     _method.methodInfo.removeCodeAttribute()
   }
 
+  override fun equals(other: Any?): Boolean {
+    if (other !is MethodReference) return false
+    return _method == other._method
+  }
+
+  override fun hashCode(): Int {
+    var result = name.hashCode()
+    result = 31 * result + annotations.hashCode()
+    result = 31 * result + returnType.hashCode()
+    result = 31 * result + (defaultValue?.hashCode() ?: 0)
+    result = 31 * result + parameters.hashCode()
+    return result
+  }
+
   override fun toString(): String {
-    val count = parameters.count()
-    return if (count == 0) {
-      "${_method.declaringClass.name}()"
-    } else {
-      "${_method.declaringClass.name}([$count parameters])"
-    }
+    val returns = returnType.takeUnless { it == classpath.voidType }?.let { ": $it" }.orEmpty()
+
+    val classname = _method.declaringClass.name
+    val parameterStrings = parameters.joinToString(", ")
+    return "fun $classname.$name($parameterStrings)$returns"
   }
 }

@@ -7,4 +7,8 @@ data class NewParameter(
   val name: String,
   val type: ClassReference,
   val annotations: List<AnnotationInstance> = emptyList(),
-)
+) {
+  override fun toString(): String {
+    return "$name: $type"
+  }
+}

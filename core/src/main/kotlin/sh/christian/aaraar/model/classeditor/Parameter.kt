@@ -38,6 +38,23 @@ internal constructor(
       behavior.setParameterTypes(parameterTypes)
     }
 
+  override fun equals(other: Any?): Boolean {
+    if (other !is Parameter) return false
+    return behavior == other.behavior && index == other.index
+  }
+
+  override fun hashCode(): Int {
+    var result = index
+    result = 31 * result + annotations.hashCode()
+    result = 31 * result + name.hashCode()
+    result = 31 * result + type.hashCode()
+    return result
+  }
+
+  override fun toString(): String {
+    return "$name: $type"
+  }
+
   private companion object {
     const val INDEX_SIZE = 4
   }

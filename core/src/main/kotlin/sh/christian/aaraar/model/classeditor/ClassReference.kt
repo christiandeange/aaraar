@@ -158,6 +158,15 @@ internal constructor(
     return methods.singleOrNull { it.name == name }
   }
 
+  override fun equals(other: Any?): Boolean {
+    if (other !is ClassReference) return false
+    return _class == other._class
+  }
+
+  override fun hashCode(): Int {
+    return qualifiedName.hashCode()
+  }
+
   override fun toString(): String {
     return qualifiedName
   }

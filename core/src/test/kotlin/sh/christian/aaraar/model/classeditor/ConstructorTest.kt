@@ -58,9 +58,7 @@ class ConstructorTest {
     }
 
     foo.constructors shouldHaveSize 1
-    foo.constructors.single().annotations shouldHaveSingleElement {
-      it.qualifiedName == "java.lang.Deprecated"
-    }
+    foo.constructors.single().annotations shouldHaveSingleElement foo.annotationInstance(cp["java.lang.Deprecated"])
 
     foo shouldBeDecompiledTo """
       package com.example;
@@ -169,9 +167,7 @@ class ConstructorTest {
       parameters[1].should { param ->
         param.name shouldBe "birthYear"
         param.type shouldBe cp.longType
-        param.annotations shouldHaveSingleElement {
-          it.qualifiedName == "java.lang.Deprecated"
-        }
+        param.annotations shouldHaveSingleElement foo.annotationInstance(cp["java.lang.Deprecated"])
       }
     }
 

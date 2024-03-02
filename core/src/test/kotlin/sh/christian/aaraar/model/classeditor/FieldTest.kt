@@ -57,9 +57,7 @@ class FieldTest {
       }
     }
 
-    foo.getField("age")!!.annotations shouldHaveSingleElement {
-      it.qualifiedName == "java.lang.Deprecated"
-    }
+    foo.getField("age")!!.annotations shouldHaveSingleElement foo.annotationInstance(cp["java.lang.Deprecated"])
 
     foo shouldBeDecompiledTo """
       package com.example;
@@ -115,9 +113,7 @@ class FieldTest {
     }
 
     foo.getField("age")!!.annotations = listOf(foo.annotationInstance(cp["java.lang.Deprecated"]))
-    foo.getField("age")!!.annotations shouldHaveSingleElement {
-      it.qualifiedName == "java.lang.Deprecated"
-    }
+    foo.getField("age")!!.annotations shouldHaveSingleElement foo.annotationInstance(cp["java.lang.Deprecated"])
 
     foo shouldBeDecompiledTo """
       package com.example;

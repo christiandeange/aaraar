@@ -15,6 +15,9 @@ internal constructor(
 ) : MemberReference(_constructor) {
   override val name: String by _constructor::name
 
+  /** The type that is instantiated by this constructor. */
+  val type: ClassReference get() = classpath[_constructor.declaringClass]
+
   override var annotations: List<AnnotationInstance> by ::constructorAnnotations
 
   /**
@@ -56,12 +59,22 @@ internal constructor(
     _constructor.methodInfo.removeCodeAttribute()
   }
 
+  override fun equals(other: Any?): Boolean {
+    if (other !is ConstructorReference) return false
+    return _constructor == other._constructor
+  }
+
+  override fun hashCode(): Int {
+    var result = name.hashCode()
+    result = 31 * result + type.hashCode()
+    result = 31 * result + annotations.hashCode()
+    result = 31 * result + parameters.hashCode()
+    return result
+  }
+
   override fun toString(): String {
-    val count = parameters.count()
-    return if (count == 0) {
-      "${_constructor.declaringClass.name}()"
-    } else {
-      "${_constructor.declaringClass.name}([$count parameters])"
-    }
+    val classname = _constructor.declaringClass.name
+    val parameterStrings = parameters.joinToString(", ")
+    return "$classname($parameterStrings)"
   }
 }
