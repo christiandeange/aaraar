@@ -6,7 +6,7 @@ import sh.christian.aaraar.model.classeditor.Classpath
 plugins {
   id "com.android.library"
   id "org.jetbrains.kotlin.android"
-  id "sh.christian.aaraar" version "0.0.13"
+  id "sh.christian.aaraar" version "0.0.14"
   id "maven-publish"
 }
 
