@@ -64,6 +64,18 @@ sealed interface ShadeConfigurationScope : Serializable {
     val files: Set<File>,
   ) : ShadeConfigurationScope
 
+  /** Applies if any of the provided [scopes] apply. */
+  data class AnyScope(
+    val scopes: Set<ShadeConfigurationScope>,
+  ) : ShadeConfigurationScope
+
+  /** Applies to either of these scopes. */
+  infix fun and(other: ShadeConfigurationScope): ShadeConfigurationScope = when {
+    this is AnyScope -> AnyScope(scopes + other)
+    other is AnyScope -> AnyScope(setOf(this) + other.scopes)
+    else -> AnyScope(setOf(this, other))
+  }
+
   companion object {
     private const val serialVersionUID = 1L
   }

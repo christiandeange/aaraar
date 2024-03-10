@@ -13,10 +13,6 @@ import org.gradle.kotlin.dsl.getByType
 import org.gradle.kotlin.dsl.named
 import org.gradle.kotlin.dsl.register
 import org.gradle.kotlin.dsl.withType
-import sh.christian.aaraar.gradle.ShadeConfigurationScope.All
-import sh.christian.aaraar.gradle.ShadeConfigurationScope.DependencyScope
-import sh.christian.aaraar.gradle.ShadeConfigurationScope.FilesScope
-import sh.christian.aaraar.gradle.ShadeConfigurationScope.ProjectScope
 import sh.christian.aaraar.gradle.agp.AgpCompat
 import sh.christian.aaraar.gradle.agp.AndroidVariant
 import sh.christian.aaraar.model.ShadeConfiguration
@@ -140,45 +136,14 @@ class AarAarPlugin : Plugin<Project> {
   }
 
   private fun Project.parseShadeEnvironment(aaraar: AarAarExtension): ShadeEnvironment {
-    val allConfigurations = buildList {
-      add(aaraar.shading.allConfiguration)
-      addAll(aaraar.shading.configurations.get())
-    }
+    val allConfigurations = aaraar.shading.configurations.get()
 
     val resourceExclusions = agp.android.packagingResourceExcludes()
 
     return ShadeEnvironment(
       rules = allConfigurations.map {
         ShadeConfigurationRule(
-          scope = when (val selector = it.scopeSelector) {
-            is ScopeSelector.All -> {
-              All
-            }
-
-            is ScopeSelector.ForGroup -> {
-              DependencyScope(selector.group, null, null)
-            }
-
-            is ScopeSelector.ForModule -> {
-              dependencies.create(selector.dependency).let { dependency ->
-                DependencyScope(dependency.group.orEmpty(), dependency.name, null)
-              }
-            }
-
-            is ScopeSelector.ForDependency -> {
-              dependencies.create(selector.dependency).let { dependency ->
-                DependencyScope(dependency.group.orEmpty(), dependency.name, dependency.version)
-              }
-            }
-
-            is ScopeSelector.ForProject -> {
-              ProjectScope(selector.path)
-            }
-
-            is ScopeSelector.ForFiles -> {
-              FilesScope(project.files(selector.files).files)
-            }
-          },
+          scope = it.scopeSelector,
           configuration = ShadeConfiguration(
             classRenames = it.classRenames.get(),
             classDeletes = it.classDeletes.get(),

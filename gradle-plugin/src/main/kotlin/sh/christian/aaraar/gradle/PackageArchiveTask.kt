@@ -20,6 +20,7 @@ import org.gradle.api.tasks.TaskAction
 import org.gradle.internal.component.local.model.OpaqueComponentArtifactIdentifier
 import sh.christian.aaraar.Environment
 import sh.christian.aaraar.gradle.ShadeConfigurationScope.All
+import sh.christian.aaraar.gradle.ShadeConfigurationScope.AnyScope
 import sh.christian.aaraar.gradle.ShadeConfigurationScope.DependencyScope
 import sh.christian.aaraar.gradle.ShadeConfigurationScope.FilesScope
 import sh.christian.aaraar.gradle.ShadeConfigurationScope.ProjectScope
@@ -165,14 +166,8 @@ abstract class PackageArchiveTask : DefaultTask() {
     )
 
     val shadeRules = shadeEnvironment.rules
-      .filter { rule ->
-        when (val applicableScope = rule.scope) {
-          is All -> true
-          is DependencyScope -> identifier is DependencyScope && applicableScope.matches(identifier)
-          is ProjectScope -> identifier is ProjectScope && applicableScope.matches(identifier)
-          is FilesScope -> applicableScope.matches(path.toFile())
-        }
-      }.fold(emptyConfiguration) { a, b ->
+      .filter { rule -> rule.scope.matches(path, shadeEnvironment, identifier) }
+      .fold(emptyConfiguration) { a, b ->
         ShadeConfiguration(
           classRenames = a.classRenames + b.configuration.classRenames,
           classDeletes = a.classDeletes + b.configuration.classDeletes,
@@ -196,6 +191,18 @@ abstract class PackageArchiveTask : DefaultTask() {
 
       shaded(shadeRules)
     }
+  }
+
+  private fun ShadeConfigurationScope.matches(
+    path: Path,
+    shadeEnvironment: ShadeEnvironment,
+    identifier: ShadeConfigurationScope?,
+  ): Boolean = when (this) {
+    is All -> true
+    is DependencyScope -> identifier is DependencyScope && matches(identifier)
+    is ProjectScope -> identifier is ProjectScope && matches(identifier)
+    is FilesScope -> matches(path.toFile())
+    is AnyScope -> scopes.any { it.matches(path, shadeEnvironment, identifier) }
   }
 
   private fun DependencyScope.matches(identifier: DependencyScope): Boolean {

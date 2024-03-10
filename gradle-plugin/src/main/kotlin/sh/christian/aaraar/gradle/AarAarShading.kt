@@ -7,12 +7,6 @@ import org.gradle.api.model.ObjectFactory
 import org.gradle.api.provider.SetProperty
 import org.gradle.kotlin.dsl.invoke
 import org.gradle.kotlin.dsl.setProperty
-import sh.christian.aaraar.gradle.ScopeSelector.All
-import sh.christian.aaraar.gradle.ScopeSelector.ForDependency
-import sh.christian.aaraar.gradle.ScopeSelector.ForFiles
-import sh.christian.aaraar.gradle.ScopeSelector.ForGroup
-import sh.christian.aaraar.gradle.ScopeSelector.ForModule
-import sh.christian.aaraar.gradle.ScopeSelector.ForProject
 
 /**
  * Configures the scopes and rules for shading class files.
@@ -21,31 +15,51 @@ import sh.christian.aaraar.gradle.ScopeSelector.ForProject
  */
 class AarAarShading(
   private val objects: ObjectFactory,
+  private val dependencies: DependencyHandler,
 ) {
-  internal val allConfiguration = ScopedShadeConfiguration(All, objects)
-
   internal val configurations: SetProperty<ScopedShadeConfiguration> =
     objects.setProperty<ScopedShadeConfiguration>().convention(mutableSetOf())
+
+  fun createRule(configure: Action<in ScopedShadeConfiguration>) {
+    createRule(emptySet(), configure)
+  }
+
+  fun createRule(
+    vararg scopes: ShadeConfigurationScope,
+    configure: Action<in ScopedShadeConfiguration>,
+  ) {
+    createRule(scopes.toSet(), configure)
+  }
+
+  fun createRule(
+    scopes: Collection<ShadeConfigurationScope>,
+    configure: Action<in ScopedShadeConfiguration>,
+  ) {
+    val resolvedScope = when (scopes.size) {
+      0 -> ShadeConfigurationScope.All
+      1 -> scopes.single()
+      else -> ShadeConfigurationScope.AnyScope(scopes.toSet())
+    }
+
+    configurations.add(
+      ScopedShadeConfiguration(resolvedScope, objects)
+        .also { configure(it) }
+    )
+  }
 
   /**
    * Add shading rules that apply to all sources.
    */
-  fun all(configure: Action<in ScopedShadeConfiguration>) {
-    configure(allConfiguration)
+  fun all(): ShadeConfigurationScope {
+    return ShadeConfigurationScope.All
   }
 
   /**
    * Add shading rules that apply to dependencies from a particular group.
    * Any name and any version in this artifact group will inherit these rules.
    */
-  fun forGroup(
-    group: String,
-    configure: Action<in ScopedShadeConfiguration>,
-  ) {
-    configurations.add(
-      ScopedShadeConfiguration(ForGroup(group), objects)
-        .also { configure(it) }
-    )
+  fun forGroup(group: String): ShadeConfigurationScope {
+    return ShadeConfigurationScope.DependencyScope(group, null, null)
   }
 
   /**
@@ -54,14 +68,10 @@ class AarAarShading(
    *
    * Dependencies are evaluated as per [DependencyHandler.create].
    */
-  fun forModule(
-    dependency: Any,
-    configure: Action<in ScopedShadeConfiguration>,
-  ) {
-    configurations.add(
-      ScopedShadeConfiguration(ForModule(dependency), objects)
-        .also { configure(it) }
-    )
+  fun forModule(dependency: String): ShadeConfigurationScope {
+    return dependencies.create(dependency).let {
+      ShadeConfigurationScope.DependencyScope(it.group.orEmpty(), it.name, null)
+    }
   }
 
   /**
@@ -70,27 +80,17 @@ class AarAarShading(
    *
    * Dependencies are evaluated as per [DependencyHandler.create].
    */
-  fun forDependency(
-    dependency: Any,
-    configure: Action<in ScopedShadeConfiguration>,
-  ) {
-    configurations.add(
-      ScopedShadeConfiguration(ForDependency(dependency), objects)
-        .also { configure(it) }
-    )
+  fun forDependency(dependency: Any): ShadeConfigurationScope {
+    return dependencies.create(dependency).let {
+      ShadeConfigurationScope.DependencyScope(it.group.orEmpty(), it.name, it.version)
+    }
   }
 
   /**
    * Add shading rules that apply only to a particular project.
    */
-  fun forProject(
-    project: Project,
-    configure: Action<in ScopedShadeConfiguration>,
-  ) {
-    configurations.add(
-      ScopedShadeConfiguration(ForProject(project.path), objects)
-        .also { configure(it) }
-    )
+  fun forProject(path: String): ShadeConfigurationScope {
+    return ShadeConfigurationScope.ProjectScope(path)
   }
 
   /**
@@ -98,13 +98,7 @@ class AarAarShading(
    *
    * Paths are evaluated as per [Project.files].
    */
-  fun forFiles(
-    files: Any,
-    configure: Action<in ScopedShadeConfiguration>,
-  ) {
-    configurations.add(
-      ScopedShadeConfiguration(ForFiles(files), objects)
-        .also { configure(it) }
-    )
+  fun forFiles(files: Any): ShadeConfigurationScope {
+    return ShadeConfigurationScope.FilesScope(objects.fileCollection().from(files).files)
   }
 }

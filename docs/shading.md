@@ -42,6 +42,8 @@ There are multiple ways to specify a scope for shading rules:
 - **Dependency**: Applies to a single version of a dependency (eg: [`io.reactivex.rxjava3:rxjava:3.1.8`](https://mvnrepository.com/artifact/io.reactivex.rxjava3/rxjava/3.1.8))
 - **Files**: Applies to a file, set of files, or an entire file tree (eg: `fileTree("libs")`)
 
+Rules can be applied to one or more matching scope.
+
 ## Examples
 
 Shading an embedded external dependency to prevent conflicts:
@@ -51,7 +53,7 @@ Shading an embedded external dependency to prevent conflicts:
     ```kotlin
     aaraar {
       shading {
-        forGroup("io.reactivex.rxjava3") {
+        createRule(forProject(path) and forGroup("io.reactivex.rxjava3")) {
           rename("io.reactivex.**", "shaded.io.reactivex.@1")
         }
       }
@@ -63,7 +65,7 @@ Shading an embedded external dependency to prevent conflicts:
     ```groovy
     aaraar {
       shading {
-        forGroup("io.reactivex.rxjava3") {
+        createRule([forProject(path), forGroup("io.reactivex.rxjava3")]) {
           it.rename "io.reactivex.**", "shaded.io.reactivex.@1"
         }
       }
@@ -77,7 +79,7 @@ Adding a prefix to internal sources to reinforce usage type:
     ```kotlin
     aaraar {
       shading {
-        forProject(project(":internal")) {
+        createRule(forProject(path) and forProject(project(":internal"))) {
           addPrefix("internal.")
         }
       }
@@ -89,7 +91,7 @@ Adding a prefix to internal sources to reinforce usage type:
     ```groovy
     aaraar {
       shading {
-        forProject(project(":internal")) {
+        createRule([forProject(path), forProject(project(":internal"))]) {
           it.addPrefix "internal."
         }
       }
@@ -103,7 +105,7 @@ Removing all internal debug classes from production code:
     ```kotlin
     aaraar {
       shading {
-        all {
+        createRule {
           delete("com.myapp.debug.**")
           delete("com.myapp.LocalEnvironmentKeyProvider")
         }
@@ -116,7 +118,7 @@ Removing all internal debug classes from production code:
     ```groovy
     aaraar {
       shading {
-        all {
+        createRule {
           it.delete "com.myapp.debug.**"
           it.delete "com.myapp.LocalEnvironmentKeyProvider"
         }
@@ -131,7 +133,7 @@ Removing an unused feature from an external dependency:
     ```kotlin
     aaraar {
       shading {
-        forDependency(libs.bouncycastle.prov) {
+        createRule(forProject(path) and forDependency(libs.bouncycastle.prov)) {
           delete("org.bouncycastle.x509.**")
         }
       }
@@ -143,7 +145,7 @@ Removing an unused feature from an external dependency:
     ```groovy
     aaraar {
       shading {
-        forDependency(libs.bouncycastle.prov) {
+        createRule([forProject(path), forDependency(libs.bouncycastle.prov)]) {
           it.delete "org.bouncycastle.x509.**"
         }
       }
@@ -157,7 +159,7 @@ Renaming classes from static jar files:
     ```kotlin
     aaraar {
       shading {
-        forFiles(fileTree("libs/debug/") { include("*.jar") }) {
+        createRule(forProject(path) and forFiles(fileTree("libs/debug/") { include("*.jar") })) {
           rename("com.**", "com.debug.@1")
         }
       }
@@ -169,7 +171,7 @@ Renaming classes from static jar files:
     ```groovy
     aaraar {
       shading {
-        forFiles(fileTree(dir: "libs/debug/", include: ["*.jar"])) {
+        createRule([forProject(path), forFiles(fileTree(dir: "libs/debug/", include: ["*.jar"]))]) {
           it.rename "com.**", "com.debug.@1"
         }
       }

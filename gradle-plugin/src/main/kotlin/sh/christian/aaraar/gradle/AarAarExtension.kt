@@ -1,6 +1,7 @@
 package sh.christian.aaraar.gradle
 
 import org.gradle.api.Action
+import org.gradle.api.artifacts.dsl.DependencyHandler
 import org.gradle.api.model.ObjectFactory
 import org.gradle.api.provider.Property
 import org.gradle.kotlin.dsl.invoke
@@ -14,9 +15,10 @@ import javax.inject.Inject
 abstract class AarAarExtension
 @Inject constructor(
   objects: ObjectFactory,
+  dependencies: DependencyHandler,
 ) {
   /** @see shading */
-  val shading = AarAarShading(objects)
+  val shading = AarAarShading(objects, dependencies)
 
   /**
    * Dictates whether `META-INF/` files should be kept or discarded in the final merged artifact.

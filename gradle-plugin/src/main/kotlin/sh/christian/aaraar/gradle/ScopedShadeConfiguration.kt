@@ -13,7 +13,7 @@ import org.gradle.kotlin.dsl.setProperty
  */
 class ScopedShadeConfiguration
 internal constructor(
-  internal val scopeSelector: ScopeSelector,
+  internal val scopeSelector: ShadeConfigurationScope,
   objects: ObjectFactory,
 ) {
   /** @see rename */
@@ -55,13 +55,4 @@ internal constructor(
   fun delete(pattern: String) {
     classDeletes.add(pattern)
   }
-}
-
-internal sealed interface ScopeSelector {
-  object All : ScopeSelector
-  class ForGroup(val group: String) : ScopeSelector
-  class ForModule(val dependency: Any) : ScopeSelector
-  class ForDependency(val dependency: Any) : ScopeSelector
-  class ForProject(val path: String) : ScopeSelector
-  class ForFiles(val files: Any) : ScopeSelector
 }

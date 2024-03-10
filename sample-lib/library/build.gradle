@@ -72,13 +72,16 @@ dependencies {
 
 aaraar {
   shading {
-    forFiles(fileTree(dir: "libs")) {
-      it.addPrefix "shaded."
+    createRule([forProject(path), forFiles(fileTree(dir: "libs"))]) {
+      it.rename "org.intellij.lang.annotations.**", "shaded.@0"
+      it.rename "org.jetbrains.annotations.**", "shaded.@0"
     }
-    forGroup("io.reactivex.rxjava3") {
-      it.addPrefix "shaded."
+
+    createRule {
+      it.rename "io.reactivex.rxjava3.**", "shaded.@0"
     }
-    all {
+
+    createRule {
       it.rename "sh.christian.samplelib.ContextsKt", "sh.christian.samplelib.MyAppPackage"
       it.delete "sh.christian.helperlib.SecretsKt"
     }
