@@ -1,6 +1,14 @@
 Change Log
 ==========
 
+## Version 0.0.14
+
+_2024-03-10_
+
+* Update: Shading configuration syntax now supports applying one rule to multiple scopes.
+* Update: Allows disabling `api.jar` generation by providing an `ApiJarProcessor.Factory.None` by default.
+* Update: `api.jar` generation now allows reading and writing annotations that are not visible via reflection.
+
 ## Version 0.0.13
 
 _2024-02-27_
