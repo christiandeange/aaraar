@@ -31,36 +31,22 @@ abstract class ApiJarProcessor {
     classpath: Classpath,
   )
 
+  /** Factory for creating a new [ApiJarProcessor]. */
   interface Factory : Serializable {
     fun create(): ApiJarProcessor
-  }
-}
 
-fun apiJarProcessorFromClassName(apiJarProcessorFactoryClass: String): ApiJarProcessor.Factory {
-  return ClassNameApiJarProcessorFactory(apiJarProcessorFactoryClass)
-}
+    companion object {
+      /** Returns a disabled [ApiJarProcessor] instance, which does not produce an `api.jar` file. */
+      @JvmField
+      val None = object : Factory {
+        override fun create(): ApiJarProcessor {
+          return object : ApiJarProcessor() {
+            override fun isEnabled(): Boolean = false
 
-private class ClassNameApiJarProcessorFactory(
-  private val apiJarProcessorFactoryClass: String,
-) : ApiJarProcessor.Factory {
-  private val delegate: ApiJarProcessor.Factory by lazy {
-    val apiJarProcessorType = try {
-      Class.forName(apiJarProcessorFactoryClass)
-    } catch (e: ClassNotFoundException) {
-      throw IllegalArgumentException("Couldn't load '$apiJarProcessorFactoryClass' class.", e)
+            override fun processClasspath(aarArchive: AarArchive, classpath: Classpath) = Unit
+          }
+        }
+      }
     }
-
-    val constructor = try {
-      apiJarProcessorType.getConstructor()
-    } catch (e: NoSuchMethodException) {
-      throw IllegalArgumentException("No public no-arg constructor on '$apiJarProcessorFactoryClass'.", e)
-    }
-
-    constructor.newInstance() as? ApiJarProcessor.Factory
-      ?: throw IllegalArgumentException("$apiJarProcessorFactoryClass does not implement ApiJarProcessor.Factory")
-  }
-
-  override fun create(): ApiJarProcessor {
-    return delegate.create()
   }
 }

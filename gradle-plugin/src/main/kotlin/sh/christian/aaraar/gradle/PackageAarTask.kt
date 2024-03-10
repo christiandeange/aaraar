@@ -30,7 +30,6 @@ abstract class PackageAarTask : PackageArchiveTask() {
   abstract val androidAaptIgnore: Property<String>
 
   @get:Input
-  @get:Optional
   abstract val apiJarProcessorFactory: Property<ApiJarProcessor.Factory>
 
   final override fun environment(): Environment {
@@ -42,9 +41,9 @@ abstract class PackageAarTask : PackageArchiveTask() {
 
   override fun postProcessing(archive: ArtifactArchive): ArtifactArchive {
     val aar = archive as AarArchive
-    val apiJarProcessor = apiJarProcessorFactory.orNull?.create()
+    val apiJarProcessor = apiJarProcessorFactory.get().create()
 
-    val outputApiJar = if (apiJarProcessor != null && apiJarProcessor.isEnabled()) {
+    val outputApiJar = if (apiJarProcessor.isEnabled()) {
       val inputApiJar = aar.classes.archive
 
       val classpath = Classpath.from(inputApiJar)

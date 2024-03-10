@@ -33,7 +33,7 @@ abstract class AarAarExtension
 
   /** @see setApiJarProcessorFactory */
   val apiJarProcessorFactory: Property<ApiJarProcessor.Factory> =
-    objects.property<ApiJarProcessor.Factory>().convention(null)
+    objects.property<ApiJarProcessor.Factory>().convention(ApiJarProcessor.Factory.None)
 
   /**
    * Configure the rules for shading class files.
