@@ -259,4 +259,11 @@ class ClassesTest {
       }
     """
   }
+
+  @Test
+  fun `toString prints name`() {
+    withClasspath(fooJarPath.loadJar()) { cp ->
+      cp["com.example.Foo"].toString() shouldBe "com.example.Foo"
+    }
+  }
 }

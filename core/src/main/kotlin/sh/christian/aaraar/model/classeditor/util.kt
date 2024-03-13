@@ -2,6 +2,7 @@ package sh.christian.aaraar.model.classeditor
 
 import javassist.CtBehavior
 import javassist.CtClass
+import javassist.CtClass.voidType
 import javassist.CtConstructor
 import javassist.CtMethod
 import javassist.bytecode.Descriptor
@@ -40,6 +41,35 @@ internal fun CtBehavior.setParameterTypes(parameterTypes: Array<CtClass>) {
   }
 }
 
+internal fun CtBehavior.toKotlinLikeString(): String {
+  val classname = declaringClass.toKotlinLikeName()
+  val parametersAttribute by lazy {
+    methodInfo.getAttribute(MethodParametersAttribute.tag) as MethodParametersAttribute
+  }
+  val parameterTypes = parameterTypes
+  val parameterStrings = List(Descriptor.numOfParameters(methodInfo.descriptor)) { i ->
+    val name = parametersAttribute.parameterName(i)
+    val type = parameterTypes[i].toKotlinLikeName()
+    "$name: $type"
+  }.joinToString(", ")
+
+  return when (this) {
+    is CtMethod -> {
+      val returnType = returnType.takeIf { it != voidType }?.let { ": ${it.toKotlinLikeName()}" }.orEmpty()
+      "fun $classname.$name($parameterStrings)$returnType"
+    }
+    is CtConstructor -> {
+      "constructor $classname($parameterStrings)"
+    }
+    else -> {
+      error("Unknown behavior: ${this::class}")
+    }
+  }
+}
+
 internal inline fun <T, reified R> Iterable<T>.mapToArray(transform: (T) -> R): Array<R> {
   return map(transform).toTypedArray()
 }
+
+@Suppress("DEPRECATION")
+private fun CtClass.toKotlinLikeName(): String = if (isPrimitive) name.capitalize() else name

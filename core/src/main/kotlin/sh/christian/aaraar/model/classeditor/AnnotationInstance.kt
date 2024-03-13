@@ -70,11 +70,10 @@ internal constructor(
   }
 
   override fun toString(): String {
-    val count = parameters.count()
-    return if (count == 0) {
-      "@${type.simpleName}"
-    } else {
-      "@${type.simpleName}([$count parameters])"
+    return when (val count = parameters.count()) {
+      0 -> "@${type.qualifiedName}"
+      1 -> "@${type.qualifiedName}([1 parameter])"
+      else -> "@${type.qualifiedName}([$count parameters])"
     }
   }
 

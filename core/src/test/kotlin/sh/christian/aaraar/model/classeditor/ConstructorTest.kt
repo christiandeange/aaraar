@@ -180,4 +180,26 @@ class ConstructorTest {
       }
     """
   }
+
+  @Test
+  fun `toString with simple constructor`() = withClasspath { cp ->
+    cp.addClass("com.example.Person") {
+      val constructor = addConstructor()
+      constructor.toString() shouldBe "constructor com.example.Person()"
+    }
+  }
+
+  @Test
+  fun `toString with arguments`() = withClasspath { cp ->
+    cp.addClass("com.example.Person") {
+      val constructor = addConstructor {
+        setParameters(
+          NewParameter("age", cp.intType),
+          NewParameter("birthYear", cp.longType, listOf(annotationInstance(cp["java.lang.Deprecated"]))),
+        )
+      }
+
+      constructor.toString() shouldBe "constructor com.example.Person(age: Int, birthYear: Long)"
+    }
+  }
 }

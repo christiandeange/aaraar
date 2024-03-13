@@ -12,6 +12,7 @@ import sh.christian.aaraar.model.classeditor.Modifier.INTERFACE
 import sh.christian.aaraar.model.classeditor.Modifier.PROTECTED
 import sh.christian.aaraar.model.classeditor.types.intType
 import sh.christian.aaraar.model.classeditor.types.longType
+import sh.christian.aaraar.model.classeditor.types.stringType
 import sh.christian.aaraar.utils.shouldBeDecompiledTo
 import kotlin.test.Test
 
@@ -230,5 +231,28 @@ class MethodTest {
           }
       }
     """
+  }
+
+  @Test
+  fun `toString with simple method`() = withClasspath { cp ->
+    cp.addClass("com.example.Person") {
+      val constructor = addMethod("printDetails")
+      constructor.toString() shouldBe "fun com.example.Person.printDetails()"
+    }
+  }
+
+  @Test
+  fun `toString with arguments and return type`() = withClasspath { cp ->
+    cp.addClass("com.example.Person") {
+      val constructor = addMethod("printDetails") {
+        returnType = cp.stringType
+        setParameters(
+          NewParameter("age", cp.intType),
+          NewParameter("birthYear", cp.longType, listOf(annotationInstance(cp["java.lang.Deprecated"]))),
+        )
+      }
+
+      constructor.toString() shouldBe "fun com.example.Person.printDetails(age: Int, birthYear: Long): java.lang.String"
+    }
   }
 }

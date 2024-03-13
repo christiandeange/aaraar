@@ -83,4 +83,16 @@ class AnnotationTest {
       )
     }
   }
+
+  @Test
+  fun `toString with annotation instance`() {
+    withClasspath(jetbrainsAnnotationsJarPath.loadJar()) { cp ->
+      val annotations = cp["org.intellij.lang.annotations.RegExp"].annotations.associateBy { it.simpleName }
+
+      annotations["Documented"].toString() shouldBe "@java.lang.annotation.Documented"
+      annotations["Retention"].toString() shouldBe "@java.lang.annotation.Retention([1 parameter])"
+      annotations["Target"].toString() shouldBe "@java.lang.annotation.Target([1 parameter])"
+      annotations["Language"].toString() shouldBe "@org.intellij.lang.annotations.Language([1 parameter])"
+    }
+  }
 }

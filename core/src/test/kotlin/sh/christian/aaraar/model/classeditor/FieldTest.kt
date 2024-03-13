@@ -124,4 +124,24 @@ class FieldTest {
       }
     """
   }
+
+  @Test
+  fun `toString with mutable field`() = withClasspath { cp ->
+    cp.addClass("com.example.Person") {
+      val field = addField("age", cp.intType)
+
+      field.toString() shouldBe "var com.example.Person.age: int"
+    }
+  }
+
+  @Test
+  fun `toString with immutable field`() = withClasspath { cp ->
+    cp.addClass("com.example.Person") {
+      val field = addField("age", cp.intType) {
+        modifiers = setOf(FINAL)
+      }
+
+      field.toString() shouldBe "val com.example.Person.age: int"
+    }
+  }
 }

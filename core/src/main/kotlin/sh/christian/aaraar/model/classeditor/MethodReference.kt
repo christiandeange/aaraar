@@ -83,10 +83,6 @@ internal constructor(
   }
 
   override fun toString(): String {
-    val returns = returnType.takeUnless { it == classpath.voidType }?.let { ": $it" }.orEmpty()
-
-    val classname = _method.declaringClass.name
-    val parameterStrings = parameters.joinToString(", ")
-    return "fun $classname.$name($parameterStrings)$returns"
+    return _method.toKotlinLikeString()
   }
 }

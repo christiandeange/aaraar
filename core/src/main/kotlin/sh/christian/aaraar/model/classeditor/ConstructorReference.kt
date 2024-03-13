@@ -73,8 +73,6 @@ internal constructor(
   }
 
   override fun toString(): String {
-    val classname = _constructor.declaringClass.name
-    val parameterStrings = parameters.joinToString(", ")
-    return "$classname($parameterStrings)"
+    return _constructor.toKotlinLikeString()
   }
 }
