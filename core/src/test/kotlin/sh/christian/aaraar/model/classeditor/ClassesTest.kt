@@ -218,6 +218,27 @@ class ClassesTest {
   }
 
   @Test
+  fun `class version`() {
+    withClasspath(fooJarPath.loadJar()) { cp ->
+      val foo = cp["com.example.Foo"]
+      foo.classMajorVersion shouldBe 55
+      foo.classMinorVersion shouldBe 0
+    }
+  }
+
+  @Test
+  fun `class with new class version`() {
+    withClasspath(fooJarPath.loadJar()) { cp ->
+      val foo = cp["com.example.Foo"]
+      foo.classMajorVersion = 62
+      foo.classMinorVersion = 101
+
+      foo.classMajorVersion shouldBe 62
+      foo.classMinorVersion shouldBe 101
+    }
+  }
+
+  @Test
   fun `class with private members`() = withClasspath { cp ->
     val person = cp.addClass("com.example.Person")
     person.addField("name", cp.stringType) {

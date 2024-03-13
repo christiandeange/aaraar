@@ -16,6 +16,20 @@ internal constructor(
   internal val classpath: Classpath,
   internal val _class: CtClass,
 ) {
+  /** The major version of bytecode that this class definition targets. */
+  var classMajorVersion: Int
+    get() = _class.classFile.majorVersion
+    set(value) {
+      _class.classFile.majorVersion = value
+    }
+
+  /** The minor version of bytecode that this class definition targets, or `0` if not set. */
+  var classMinorVersion: Int
+    get() = _class.classFile.minorVersion
+    set(value) {
+      _class.classFile.minorVersion = value
+    }
+
   /** The set of modifiers applied to the class definition. */
   var modifiers: Set<Modifier>
     get() = Modifier.fromModifiers(_class.modifiers)
