@@ -1,6 +1,6 @@
 The merged jar is included in a Gradle `SoftwareComponent` that you can publish using your plugin of choice.
 
-Integrating publishing with common publishing plugins is very simple, but direct access to the generated `aar` file
+Integrating publishing with common publishing plugins is very simple, but direct access to the generated `jar` file
 is also available if a custom publishing solution is needed.
 
 ???+ note "maven-publish"

@@ -1,4 +1,4 @@
-`aaraar` is a Gradle plugin that assists in embedding other Gradle dependencies into your published artifact.
+`aaraar` is a Gradle plugin that assists in embedding other dependencies directly into your published artifact.
 The plugin can be applied to any module that is published as an `aar` or a `jar` file, and includes some handy features
 such as:
 
