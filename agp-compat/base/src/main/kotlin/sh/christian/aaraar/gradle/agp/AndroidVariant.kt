@@ -1,7 +1,6 @@
 package sh.christian.aaraar.gradle.agp
 
 import org.gradle.api.Task
-import org.gradle.api.artifacts.Configuration
 import org.gradle.api.file.RegularFileProperty
 import org.gradle.api.tasks.TaskProvider
 
@@ -18,18 +17,6 @@ interface AndroidVariant {
    * The name of the variant's build type, if present.
    */
   val buildType: String?
-
-  /**
-   * Access to the variant's compile [Configuration].
-   * The returned [Configuration] should not be resolved until execution time.
-   */
-  val compileConfiguration: Configuration
-
-  /**
-   * Access to the variant's runtime [Configuration].
-   * The returned [Configuration] should not be resolved until execution time.
-   */
-  val runtimeConfiguration: Configuration
 
   /**
    * Register a transformation of the AAR produced by this variant.
@@ -52,6 +39,7 @@ interface AndroidVariant {
     return if (prefix.isEmpty()) {
       variantName + suffix
     } else if (prefix.last().isLetterOrDigit()) {
+      @Suppress("DEPRECATION")
       prefix + variantName.capitalize() + suffix
     } else {
       prefix + variantName + suffix
