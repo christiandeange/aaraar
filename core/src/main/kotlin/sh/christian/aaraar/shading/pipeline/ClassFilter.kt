@@ -1,4 +1,4 @@
-package sh.christian.aaraar.shading
+package sh.christian.aaraar.shading.pipeline
 
 import com.tonicsystems.jarjar.transform.Transformable
 import com.tonicsystems.jarjar.transform.config.ClassDelete

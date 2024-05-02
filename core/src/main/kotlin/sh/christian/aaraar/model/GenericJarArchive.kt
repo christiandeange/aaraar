@@ -1,10 +1,10 @@
 package sh.christian.aaraar.model
 
 import com.tonicsystems.jarjar.transform.jar.JarProcessorChain
-import sh.christian.aaraar.shading.ClassFilesProcessor
-import sh.christian.aaraar.shading.ClassFilter
-import sh.christian.aaraar.shading.ClassShader
-import sh.christian.aaraar.shading.ResourceFilter
+import sh.christian.aaraar.shading.pipeline.ClassFilesProcessor
+import sh.christian.aaraar.shading.pipeline.ClassFilter
+import sh.christian.aaraar.shading.pipeline.ClassShader
+import sh.christian.aaraar.shading.pipeline.ResourceFilter
 import sh.christian.aaraar.utils.createArchive
 import sh.christian.aaraar.utils.deleteIfExists
 import sh.christian.aaraar.utils.div

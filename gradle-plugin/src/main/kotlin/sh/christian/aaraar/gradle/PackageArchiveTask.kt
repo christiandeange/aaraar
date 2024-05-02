@@ -41,10 +41,17 @@ import sh.christian.aaraar.merger.impl.ProguardMerger
 import sh.christian.aaraar.merger.impl.PublicTxtMerger
 import sh.christian.aaraar.merger.impl.RTxtMerger
 import sh.christian.aaraar.merger.impl.ResourcesMerger
+import sh.christian.aaraar.model.AarArchive
 import sh.christian.aaraar.model.ArtifactArchive
 import sh.christian.aaraar.model.FileSet
 import sh.christian.aaraar.model.GenericJarArchive
+import sh.christian.aaraar.model.JarArchive
 import sh.christian.aaraar.model.ShadeConfiguration
+import sh.christian.aaraar.shading.impl.AarArchiveShader
+import sh.christian.aaraar.shading.impl.ClassesShader
+import sh.christian.aaraar.shading.impl.GenericJarArchiveShader
+import sh.christian.aaraar.shading.impl.JarArchiveShader
+import sh.christian.aaraar.shading.impl.LibsShader
 import java.io.File
 import java.nio.file.Files
 import java.nio.file.Path
@@ -189,7 +196,13 @@ abstract class PackageArchiveTask : DefaultTask() {
         logger.info("    Remove file  '$target'")
       }
 
-      shaded(shadeRules)
+      val genericJarArchiveShader = GenericJarArchiveShader()
+      val classesShader = ClassesShader(genericJarArchiveShader)
+      val libsShader = LibsShader(genericJarArchiveShader)
+      when (this) {
+        is AarArchive -> AarArchiveShader(classesShader, libsShader).shade(this, shadeRules)
+        is JarArchive -> JarArchiveShader(classesShader).shade(this, shadeRules)
+      }
     }
   }
 

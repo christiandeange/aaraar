@@ -7,7 +7,6 @@ import sh.christian.aaraar.utils.animalJarPath
 import sh.christian.aaraar.utils.foo2JarPath
 import sh.christian.aaraar.utils.fooJarPath
 import sh.christian.aaraar.utils.loadJar
-import sh.christian.aaraar.utils.shaded
 import kotlin.test.Test
 
 class GenericJarArchiveMergerTest {
@@ -46,32 +45,6 @@ class GenericJarArchiveMergerTest {
 
     shouldThrow<IllegalStateException> {
       merger.merge(fooClasses, foo2Classes)
-    }
-  }
-
-  @Test
-  fun `delete some classes by package name`() {
-    val classpath = merger.merge(
-      animalJarPath.loadJar(),
-      fooJarPath.loadJar().shaded(
-        classRenames = mapOf("com.example.**" to "com.foo.@1"),
-      ),
-    )
-
-    with(classpath) {
-      this shouldHaveSize 4
-      this shouldHaveKey "com/example/Animal.class"
-      this shouldHaveKey "com/example/Cat.class"
-      this shouldHaveKey "com/example/Dog.class"
-      this shouldHaveKey "com/foo/Foo.class"
-    }
-
-    val shadedClasspath = classpath.shaded(
-      classDeletes = setOf("com.example.**"),
-    )
-    with(shadedClasspath) {
-      this shouldHaveSize 1
-      this shouldHaveKey "com/foo/Foo.class"
     }
   }
 }

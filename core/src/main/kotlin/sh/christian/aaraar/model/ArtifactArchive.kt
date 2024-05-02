@@ -25,8 +25,6 @@ import java.nio.file.Path
 sealed class ArtifactArchive {
   abstract val classes: Classes
 
-  abstract fun shaded(shadeConfiguration: ShadeConfiguration): ArtifactArchive
-
   abstract fun writeTo(path: Path)
 
   companion object {
@@ -49,10 +47,6 @@ sealed class ArtifactArchive {
 class JarArchive(
   override val classes: Classes,
 ) : ArtifactArchive() {
-  override fun shaded(shadeConfiguration: ShadeConfiguration): ArtifactArchive {
-    return JarArchive(classes.shaded(shadeConfiguration))
-  }
-
   override fun writeTo(path: Path) {
     classes.writeTo(path)
   }
@@ -86,24 +80,6 @@ class AarArchive(
    * TODO no idea how /prefab folder works, add support for it later.
    */
 ) : ArtifactArchive() {
-  override fun shaded(shadeConfiguration: ShadeConfiguration): ArtifactArchive {
-    return AarArchive(
-      aarMetadata = aarMetadata,
-      androidManifest = androidManifest,
-      classes = classes.shaded(shadeConfiguration),
-      resources = resources,
-      rTxt = rTxt,
-      publicTxt = publicTxt,
-      assets = assets,
-      libs = libs.shaded(shadeConfiguration),
-      jni = jni,
-      proguard = proguard,
-      lintRules = lintRules,
-      navigationJson = navigationJson,
-      apiJar = apiJar,
-    )
-  }
-
   override fun writeTo(path: Path) {
     path.createArchive { outputAar ->
       aarMetadata.writeTo(outputAar.aarMetadataProperties.apply { mkdirs() })
