@@ -19,6 +19,11 @@ interface AndroidVariant {
   val buildType: String?
 
   /**
+   * The packaging options for handling resource merge conflicts from dependencies.
+   */
+  val packaging: AndroidPackaging
+
+  /**
    * Register a transformation of the AAR produced by this variant.
    * [inputAar] is set to the input, and the transformed AAR should be written to [outputAar].
    */

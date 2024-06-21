@@ -8,9 +8,4 @@ internal class Agp7AndroidExtension(
   override fun onBuildTypes(callback: (String) -> Unit) {
     return android.buildTypes.configureEach { callback(name) }
   }
-
-  override fun packagingResourceExcludes(): Set<String> {
-    @Suppress("UnstableApiUsage")
-    return android.packagingOptions.resources.excludes.toSet()
-  }
 }

@@ -4,6 +4,7 @@ import io.kotest.matchers.maps.shouldBeEmpty
 import io.kotest.matchers.maps.shouldHaveKey
 import io.kotest.matchers.maps.shouldHaveSize
 import io.kotest.matchers.maps.shouldNotHaveKey
+import sh.christian.aaraar.merger.MergeRules
 import sh.christian.aaraar.merger.impl.GenericJarArchiveMerger
 import sh.christian.aaraar.model.GenericJarArchive
 import sh.christian.aaraar.model.ShadeConfiguration
@@ -91,7 +92,7 @@ class GenericJarArchiveShaderTest {
 
   @Test
   fun `delete some classes by package name`() {
-    val merger = GenericJarArchiveMerger()
+    val merger = GenericJarArchiveMerger(MergeRules.None)
     val classpath = merger.merge(
       animalJarPath.loadJar(),
       fooJarPath.loadJar().shaded(

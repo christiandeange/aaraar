@@ -1,5 +1,6 @@
 package sh.christian.aaraar.merger.impl
 
+import sh.christian.aaraar.merger.MergeRules
 import sh.christian.aaraar.merger.Merger
 import sh.christian.aaraar.merger.mergeContents
 import sh.christian.aaraar.model.FileSet
@@ -12,8 +13,9 @@ import sh.christian.aaraar.model.GenericJarArchive
  */
 class FileSetMerger(
   private val jarMerger: Merger<GenericJarArchive>,
+  private val mergeRules: MergeRules,
 ) : Merger<FileSet> {
   override fun merge(first: FileSet, others: List<FileSet>): FileSet {
-    return FileSet(mergeContents(first, others, jarMerger))
+    return FileSet(mergeContents(first, others, jarMerger, mergeRules))
   }
 }

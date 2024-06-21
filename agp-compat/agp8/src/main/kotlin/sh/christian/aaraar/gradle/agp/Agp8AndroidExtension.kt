@@ -8,8 +8,4 @@ internal class Agp8AndroidExtension(
   override fun onBuildTypes(callback: (String) -> Unit) {
     return android.buildTypes.configureEach { callback(name) }
   }
-
-  override fun packagingResourceExcludes(): Set<String> {
-    return android.packaging.resources.excludes.toSet()
-  }
 }

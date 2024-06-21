@@ -88,6 +88,13 @@ keeps them all, but this can be configured via the plugin extension:
     }
     ```
 
+### Packaging Options for Android Libraries
+
+The [`packaging`](https://developer.android.com/reference/tools/gradle-api/com/android/build/api/dsl/Packaging) block in
+an Android module's build script is used to handle the packaging of resources and JNI libraries. This plugin also uses
+those same rules to configure handling of resources and JNI libraries merge conflicts when merging multiple aar files
+together.
+
 ### API Jar for Android Libraries
 
 The `api.jar` file is an optional element inside an aar archive that helps developers using the library understand its

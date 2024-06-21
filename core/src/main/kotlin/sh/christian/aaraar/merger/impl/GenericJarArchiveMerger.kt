@@ -1,5 +1,6 @@
 package sh.christian.aaraar.merger.impl
 
+import sh.christian.aaraar.merger.MergeRules
 import sh.christian.aaraar.merger.Merger
 import sh.christian.aaraar.merger.mergeContents
 import sh.christian.aaraar.model.GenericJarArchive
@@ -13,8 +14,10 @@ import sh.christian.aaraar.model.GenericJarArchive
  * - If the files are also `jar` files, they will recursively be merged with this same logic applied.
  * - Otherwise, an exception will be thrown.
  */
-class GenericJarArchiveMerger : Merger<GenericJarArchive> {
+class GenericJarArchiveMerger(
+  private val mergeRules: MergeRules,
+) : Merger<GenericJarArchive> {
   override fun merge(first: GenericJarArchive, others: List<GenericJarArchive>): GenericJarArchive {
-    return GenericJarArchive(mergeContents(first, others, this))
+    return GenericJarArchive(mergeContents(first, others, this, mergeRules))
   }
 }

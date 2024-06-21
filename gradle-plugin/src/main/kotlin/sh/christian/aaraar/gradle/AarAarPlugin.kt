@@ -13,7 +13,10 @@ import org.gradle.kotlin.dsl.getByType
 import org.gradle.kotlin.dsl.named
 import org.gradle.kotlin.dsl.register
 import org.gradle.kotlin.dsl.withType
+import sh.christian.aaraar.gradle.PackagingEnvironment.JniLibs
+import sh.christian.aaraar.gradle.PackagingEnvironment.Resources
 import sh.christian.aaraar.gradle.agp.AgpCompat
+import sh.christian.aaraar.gradle.agp.AndroidPackaging
 import sh.christian.aaraar.gradle.agp.AndroidVariant
 import sh.christian.aaraar.model.ShadeConfiguration
 
@@ -78,7 +81,8 @@ class AarAarPlugin : Plugin<Project> {
     val packageJar = tasks.register<PackageJarTask>("packageJar") {
       embedClasspath.set(embed)
 
-      shadeEnvironment.set(parseShadeEnvironment(aaraar))
+      shadeEnvironment.set(parseShadeEnvironment(aaraar, variant = null))
+      packagingEnvironment.set(PackagingEnvironment.None)
       keepMetaFiles.set(aaraar.keepMetaFiles)
 
       inputJar.set(jarTask.flatMap { it.archiveFile })
@@ -122,7 +126,8 @@ class AarAarPlugin : Plugin<Project> {
     val packageVariantAar = tasks.register<PackageAarTask>(variant.name("package", "Aar")) {
       embedClasspath.set(variantEmbedClasspath)
 
-      shadeEnvironment.set(parseShadeEnvironment(aaraar))
+      shadeEnvironment.set(parseShadeEnvironment(aaraar, variant))
+      packagingEnvironment.set(parsePackagingEnvironment(variant))
       keepMetaFiles.set(aaraar.keepMetaFiles)
       androidAaptIgnore.set(androidAaptIgnoreEnv)
       apiJarProcessorFactory.set(aaraar.apiJarProcessorFactory)
@@ -135,10 +140,13 @@ class AarAarPlugin : Plugin<Project> {
     )
   }
 
-  private fun Project.parseShadeEnvironment(aaraar: AarAarExtension): ShadeEnvironment {
+  private fun parseShadeEnvironment(
+    aaraar: AarAarExtension,
+    variant: AndroidVariant?,
+  ): ShadeEnvironment {
     val allConfigurations = aaraar.shading.configurations.get()
 
-    val resourceExclusions = agp.android.packagingResourceExcludes()
+    val resourceExclusions = variant?.packaging?.resources?.excludes?.orNull.orEmpty()
 
     return ShadeEnvironment(
       rules = allConfigurations.map {
@@ -151,6 +159,24 @@ class AarAarPlugin : Plugin<Project> {
           ),
         )
       }
+    )
+  }
+
+  private fun parsePackagingEnvironment(variant: AndroidVariant): PackagingEnvironment {
+    val packaging: AndroidPackaging = variant.packaging
+    val jniLibs: AndroidPackaging.JniLibs = packaging.jniLibs
+    val resources: AndroidPackaging.Resources = packaging.resources
+
+    return PackagingEnvironment(
+      jniLibs = JniLibs(
+        pickFirsts = jniLibs.pickFirsts.get(),
+        excludes = jniLibs.excludes.get(),
+      ),
+      resources = Resources(
+        pickFirsts = resources.pickFirsts.get(),
+        merges = resources.merges.get(),
+        excludes = resources.excludes.get(),
+      ),
     )
   }
 }

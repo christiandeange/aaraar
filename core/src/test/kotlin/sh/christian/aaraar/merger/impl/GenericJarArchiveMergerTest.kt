@@ -3,6 +3,7 @@ package sh.christian.aaraar.merger.impl
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.matchers.maps.shouldHaveKey
 import io.kotest.matchers.maps.shouldHaveSize
+import sh.christian.aaraar.merger.MergeRules
 import sh.christian.aaraar.utils.animalJarPath
 import sh.christian.aaraar.utils.foo2JarPath
 import sh.christian.aaraar.utils.fooJarPath
@@ -11,7 +12,7 @@ import kotlin.test.Test
 
 class GenericJarArchiveMergerTest {
 
-  private val merger = GenericJarArchiveMerger()
+  private val merger = GenericJarArchiveMerger(MergeRules.None)
 
   @Test
   fun `simple merge with classes`() {

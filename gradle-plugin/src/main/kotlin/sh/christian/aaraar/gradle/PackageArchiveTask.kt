@@ -24,7 +24,8 @@ import sh.christian.aaraar.gradle.ShadeConfigurationScope.AnyScope
 import sh.christian.aaraar.gradle.ShadeConfigurationScope.DependencyScope
 import sh.christian.aaraar.gradle.ShadeConfigurationScope.FilesScope
 import sh.christian.aaraar.gradle.ShadeConfigurationScope.ProjectScope
-import sh.christian.aaraar.merger.Merger
+import sh.christian.aaraar.merger.Glob
+import sh.christian.aaraar.merger.MergeRules
 import sh.christian.aaraar.merger.impl.AarArchiveMerger
 import sh.christian.aaraar.merger.impl.AndroidManifestMerger
 import sh.christian.aaraar.merger.impl.ApiJarMerger
@@ -37,14 +38,13 @@ import sh.christian.aaraar.merger.impl.JarArchiveMerger
 import sh.christian.aaraar.merger.impl.JniMerger
 import sh.christian.aaraar.merger.impl.LintRulesMerger
 import sh.christian.aaraar.merger.impl.NavigationJsonMerger
+import sh.christian.aaraar.merger.impl.NoJarArchiveMerger
 import sh.christian.aaraar.merger.impl.ProguardMerger
 import sh.christian.aaraar.merger.impl.PublicTxtMerger
 import sh.christian.aaraar.merger.impl.RTxtMerger
 import sh.christian.aaraar.merger.impl.ResourcesMerger
 import sh.christian.aaraar.model.AarArchive
 import sh.christian.aaraar.model.ArtifactArchive
-import sh.christian.aaraar.model.FileSet
-import sh.christian.aaraar.model.GenericJarArchive
 import sh.christian.aaraar.model.JarArchive
 import sh.christian.aaraar.model.ShadeConfiguration
 import sh.christian.aaraar.shading.impl.AarArchiveShader
@@ -70,6 +70,9 @@ abstract class PackageArchiveTask : DefaultTask() {
 
   @get:Input
   abstract val shadeEnvironment: Property<ShadeEnvironment>
+
+  @get:Input
+  abstract val packagingEnvironment: Property<PackagingEnvironment>
 
   @get:Input
   abstract val keepMetaFiles: Property<Boolean>
@@ -116,7 +119,7 @@ abstract class PackageArchiveTask : DefaultTask() {
           )
         }
 
-    val mergedArchive = mergeArchive(input, dependencyArchives)
+    val mergedArchive = mergeArchive(input, dependencyArchives, packagingEnvironment.get())
     val finalizedArchive = postProcessing(mergedArchive)
 
     val outputPath = outputArchive.getPath().apply { Files.deleteIfExists(this) }
@@ -132,25 +135,42 @@ abstract class PackageArchiveTask : DefaultTask() {
   private fun mergeArchive(
     inputArchive: ArtifactArchive,
     dependencyArchives: List<ArtifactArchive>,
+    packagingEnvironment: PackagingEnvironment,
   ): ArtifactArchive {
-    val jarMerger: Merger<GenericJarArchive> = GenericJarArchiveMerger()
-    val fileSetMerger: Merger<FileSet> = FileSetMerger(jarMerger)
+    fun Collection<String>.toGlob(): Glob = map(Glob::fromString).reduce(Glob::plus)
+
+    val jniLibsMergeRules = MergeRules(
+      pickFirsts = packagingEnvironment.jniLibs.pickFirsts.toGlob(),
+      merges = Glob.None,
+      excludes = packagingEnvironment.jniLibs.excludes.toGlob(),
+    )
+
+    val resourceMergeRules = MergeRules(
+      pickFirsts = packagingEnvironment.resources.pickFirsts.toGlob(),
+      merges = packagingEnvironment.resources.merges.toGlob(),
+      excludes = packagingEnvironment.resources.excludes.toGlob(),
+    )
+
+    val resourcesJarMerger = GenericJarArchiveMerger(resourceMergeRules)
+    val resourcesFileSetMerger = FileSetMerger(resourcesJarMerger, resourceMergeRules)
+    val jniLibsFileSetMerger = FileSetMerger(NoJarArchiveMerger, jniLibsMergeRules)
+
     val artifactArchiveMerger = ArtifactArchiveMerger(
       jarArchiveMerger = JarArchiveMerger(
-        classesMerger = ClassesMerger(jarMerger),
+        classesMerger = ClassesMerger(resourcesJarMerger),
       ),
       aarArchiveMerger = AarArchiveMerger(
         androidManifestMerger = AndroidManifestMerger(),
-        classesAndLibsMerger = ClassesMerger(jarMerger),
+        classesAndLibsMerger = ClassesMerger(resourcesJarMerger),
         resourcesMerger = ResourcesMerger(),
         rTxtMerger = RTxtMerger(),
         publicTxtMerger = PublicTxtMerger(),
-        assetsMerger = AssetsMerger(fileSetMerger),
-        jniMerger = JniMerger(fileSetMerger),
+        assetsMerger = AssetsMerger(resourcesFileSetMerger),
+        jniMerger = JniMerger(jniLibsFileSetMerger),
         proguardMerger = ProguardMerger(),
-        lintRulesMerger = LintRulesMerger(jarMerger),
+        lintRulesMerger = LintRulesMerger(resourcesJarMerger),
         navigationJsonMerger = NavigationJsonMerger(),
-        apiJarMerger = ApiJarMerger(jarMerger),
+        apiJarMerger = ApiJarMerger(resourcesJarMerger),
       ),
     )
 

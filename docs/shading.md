@@ -18,7 +18,7 @@ A numbered reference is available for every wildcard in the pattern, starting fr
 A special `@0` reference contains the entire matched class name.
 
 Exclusions for Android modules configured via
-[`packagingOptions`](https://developer.android.com/reference/tools/gradle-api/com/android/build/api/dsl/PackagingOptions)
+[`packaging`](https://developer.android.com/reference/tools/gradle-api/com/android/build/api/dsl/Packaging)
 to delete resource files will also be respected:
 
 ```kotlin
