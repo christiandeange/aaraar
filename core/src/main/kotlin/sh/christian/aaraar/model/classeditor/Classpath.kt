@@ -7,6 +7,7 @@ import javassist.CtField
 import javassist.CtMethod
 import javassist.bytecode.annotation.Annotation
 import sh.christian.aaraar.model.GenericJarArchive
+import sh.christian.aaraar.model.classeditor.Modifier.ENUM
 
 /**
  * Represents a set of classes that are available at runtime.
@@ -163,9 +164,17 @@ internal constructor(
   fun toGenericJarArchive(): GenericJarArchive {
     val resources = originalJar.filterKeys { !it.endsWith(".class") }
 
-    val classes = inputClasses.associate { clazz ->
-      "${clazz.qualifiedName.replace('.', '/')}.class" to clazz.toBytecode()
-    }
+    val classes = inputClasses
+      .associate { clazz ->
+        val fileName = "${clazz.qualifiedName.replace('.', '/')}.class"
+        val bytecode = if (ENUM in clazz.modifiers || clazz.superclass?.qualifiedName == "java.lang.Enum") {
+          originalJar[fileName] ?: byteArrayOf()
+        } else {
+          clazz.toBytecode()
+        }
+        fileName to bytecode
+      }
+      .filterValues { it.isNotEmpty() }
 
     return GenericJarArchive(classes + resources)
   }

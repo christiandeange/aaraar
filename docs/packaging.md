@@ -178,6 +178,10 @@ transformations, including but not limited to:
 - Renaming classes and class members or modifying their access visibility.
 - Adding or removing annotations on classes and class members.
 
+!!! bug "Known Issue"
+
+    At this time, creating new enum classes or modifications to existing enum classes will be ignored.
+
 An example implementation can be seen below, which is used to remove a public class and a public method that are both
 meant for internal use only:
 
