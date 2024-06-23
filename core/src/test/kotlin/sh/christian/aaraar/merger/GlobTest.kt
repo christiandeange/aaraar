@@ -1,6 +1,5 @@
 package sh.christian.aaraar.merger
 
-import java.io.File
 import kotlin.test.Test
 import kotlin.test.assertFalse
 import kotlin.test.assertTrue
@@ -48,8 +47,8 @@ class GlobTest {
 
   @Test
   fun `backslash escapes a meta character`() {
-    glob("""release\?.md""").run {
-      shouldMatch("release?.md")
+    glob("""release\[1\].md""").run {
+      shouldMatch("release[1].md")
       shouldNotMatch("release1.md")
     }
   }
@@ -113,7 +112,7 @@ class GlobTest {
   }
 
   private fun glob(glob: String): Glob {
-    return Glob.fromString(glob.replace('/', File.separatorChar))
+    return Glob.fromString(glob)
   }
 
   private fun Glob.shouldMatch(target: String) {
