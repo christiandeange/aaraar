@@ -1,10 +1,5 @@
 package sh.christian.aaraar.model
 
-import com.tonicsystems.jarjar.transform.jar.JarProcessorChain
-import sh.christian.aaraar.shading.pipeline.ClassFilesProcessor
-import sh.christian.aaraar.shading.pipeline.ClassFilter
-import sh.christian.aaraar.shading.pipeline.ClassShader
-import sh.christian.aaraar.shading.pipeline.ResourceFilter
 import sh.christian.aaraar.utils.createArchive
 import sh.christian.aaraar.utils.deleteIfExists
 import sh.christian.aaraar.utils.div
@@ -24,22 +19,12 @@ internal constructor(
   private val archiveEntries: Map<String, ByteArray>,
 ) : Map<String, ByteArray> by archiveEntries {
 
-  fun shaded(shadeConfiguration: ShadeConfiguration): GenericJarArchive {
-    val processor = JarProcessorChain().apply {
-      add(ResourceFilter(shadeConfiguration.resourceExclusions))
-      add(ClassFilter(shadeConfiguration.classDeletes))
-      add(ClassShader(shadeConfiguration.classRenames))
-    }
-
-    val newArchiveEntries = ClassFilesProcessor(processor).process(archiveEntries)
-
-    return GenericJarArchive(newArchiveEntries)
-  }
-
   fun bytes(): ByteArray {
     val tempJarFile = Files.createTempFile("out", ".jar").deleteIfExists()
-    writeTo(tempJarFile)
-    return Files.readAllBytes(tempJarFile).also {
+    return try {
+      writeTo(tempJarFile)
+      Files.readAllBytes(tempJarFile)
+    } finally {
       tempJarFile.deleteIfExists()
     }
   }
