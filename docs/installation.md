@@ -6,7 +6,7 @@ The plugin only needs to be applied to modules you intend to publish as artifact
     // build.gradle.kts
 
     plugins {
-      id("sh.christian.aaraar") version "0.0.14"
+      id("sh.christian.aaraar") version "0.0.15"
     }
     ```
 
@@ -16,7 +16,7 @@ The plugin only needs to be applied to modules you intend to publish as artifact
     // build.gradle
 
     plugins {
-      id("sh.christian.aaraar") version "0.0.14"
+      id("sh.christian.aaraar") version "0.0.15"
     }
     ```
 
