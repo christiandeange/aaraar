@@ -36,7 +36,7 @@ class ResourcesMerger : Merger<Resources> {
         addDataSet(other.files.toResourceSet(other.packageName, other.androidAaptIgnore, isFromDependency = true))
       }
       addDataSet(first.files.toResourceSet(first.packageName, first.androidAaptIgnore, isFromDependency = false))
-      mergeData(consumer, /* doCleanUp */ false)
+      mergeData(consumer, false)
     }
 
     val resourcePaths: Map<String, ByteArray> = buildMap {

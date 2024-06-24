@@ -1,17 +1,17 @@
 [versions]
-agp-latest = "8.0.1"
-agp-tools = "30.4.2"
-detekt = "1.22.0"
-dokka = "1.9.10"
-kotlin = "1.9.10"
-maven-publish = "0.23.2"
+agp-latest = "8.5.0"
+agp-tools = "31.5.0"
+detekt = "1.23.6"
+dokka = "1.9.20"
+kotlin = "1.9.24"
+maven-publish = "0.29.0"
 
 [plugins]
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 
 [libraries]
 agp-api7 = { module = "com.android.tools.build:gradle-api", version = "7.3.1" }
-agp-api8 = { module = "com.android.tools.build:gradle-api", version = "8.0.1" }
+agp-api8 = { module = "com.android.tools.build:gradle-api", version = "8.5.0" }
 agp-api-latest = { module = "com.android.tools.build:gradle-api", version.ref = "agp-latest" }
 agp-latest = { module = "com.android.tools.build:gradle", version.ref = "agp-latest" }
 agp-layoutlib = { module = "com.android.tools.layoutlib:layoutlib-api", version.ref = "agp-tools" }

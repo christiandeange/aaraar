@@ -34,6 +34,7 @@ fun navigationJsonData(
       port = -1,
       path = path,
       query = null,
+      fragment = null,
       sourceFilePosition = SourceFilePosition(
         SourceFile(root.resolve("$name.xml"), name),
         SourcePosition(7, 4, 309, 9, 37, 440),
@@ -74,7 +75,8 @@ fun navigationJsonDataString(
             "mEndOffset": 440
           }
         },
-        "isAutoVerify": false
+        "isAutoVerify": false,
+        "action": "android.intent.action.VIEW"
       }
     ]
   }

@@ -23,10 +23,10 @@ private class OneTimeDecompiler(
   bytecode: ByteArray,
   writer: Writer,
 ) : BaseDecompiler(
-  /* provider */ ConstantBytecodeProvider(bytecode),
-  /* saver    */ PrintWriterSaver(PrintWriter(writer, /* autoFlush */ true)),
-  /* options  */ mapOf(INDENT_STRING to "    "),
-  /* logger   */ NoLogger,
+  ConstantBytecodeProvider(bytecode),
+  PrintWriterSaver(PrintWriter(writer, true)),
+  mapOf(INDENT_STRING to "    "),
+  NoLogger,
 ) {
   init {
     addSource(Files.createTempFile("out", ".class").toFile())

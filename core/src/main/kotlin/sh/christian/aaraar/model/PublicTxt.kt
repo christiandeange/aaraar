@@ -24,12 +24,7 @@ internal constructor(
     fun from(path: Path, packageName: String): PublicTxt {
       if (!Files.isRegularFile(path)) return PublicTxt(symbolTable = SymbolTable.builder().build())
 
-      val symbolTable = SymbolIo.readFromPublicTxtFile(
-        /* inputStream */ Files.newInputStream(path),
-        /* filename */ path.toString(),
-        /* tablePackage */ packageName,
-      )
-
+      val symbolTable = SymbolIo.readFromPublicTxtFile(Files.newInputStream(path), path.toString(), packageName)
       return PublicTxt(symbolTable)
     }
   }
