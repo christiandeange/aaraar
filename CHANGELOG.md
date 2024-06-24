@@ -1,6 +1,16 @@
 Change Log
 ==========
 
+## Version 0.0.15
+
+_2024-06-24_
+
+* New: Support custom shading strategies in core utilities module.
+* New: Support for the entire `packaging` configuration when merging and packaging Android projects.
+* Update: Changes to `api.jar` generation:
+  * New: Support for reading and writing the class file version.
+  * Note: Adding/modifying enum classes is not supported, and will be ignored.
+
 ## Version 0.0.14
 
 _2024-03-10_
