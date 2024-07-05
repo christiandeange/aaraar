@@ -137,7 +137,7 @@ abstract class PackageArchiveTask : DefaultTask() {
     dependencyArchives: List<ArtifactArchive>,
     packagingEnvironment: PackagingEnvironment,
   ): ArtifactArchive {
-    fun Collection<String>.toGlob(): Glob = map(Glob::fromString).reduce(Glob::plus)
+    fun Collection<String>.toGlob(): Glob = map(Glob::fromString).fold(Glob.None, Glob::plus)
 
     val jniLibsMergeRules = MergeRules(
       pickFirsts = packagingEnvironment.jniLibs.pickFirsts.toGlob(),
