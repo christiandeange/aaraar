@@ -28,9 +28,8 @@ dependencies {
   implementation(libs.javassist)
   implementation(libs.kotlinxml)
 
+  testImplementation(testFixtures(project(":fixtures")))
   testImplementation(kotlin("test"))
-  testImplementation(libs.decompiler)
-  testImplementation(libs.jimfs)
   testImplementation(libs.kotest)
 }
 

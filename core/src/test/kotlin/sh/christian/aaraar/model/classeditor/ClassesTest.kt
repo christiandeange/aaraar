@@ -3,7 +3,6 @@ package sh.christian.aaraar.model.classeditor
 import io.kotest.matchers.collections.shouldContainExactly
 import io.kotest.matchers.collections.shouldHaveSingleElement
 import io.kotest.matchers.collections.shouldHaveSize
-import io.kotest.matchers.maps.shouldContainExactly
 import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.should
 import io.kotest.matchers.shouldBe
@@ -18,6 +17,7 @@ import sh.christian.aaraar.model.classeditor.types.stringType
 import sh.christian.aaraar.utils.fooJarPath
 import sh.christian.aaraar.utils.loadJar
 import sh.christian.aaraar.utils.shouldBeDecompiledTo
+import sh.christian.aaraar.utils.withClasspath
 import kotlin.test.Test
 
 class ClassesTest {

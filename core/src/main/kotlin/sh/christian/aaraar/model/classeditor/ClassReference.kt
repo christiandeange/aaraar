@@ -172,6 +172,14 @@ internal constructor(
     return methods.singleOrNull { it.name == name }
   }
 
+  /** Returns the bytecode associated with this class definition. */
+  fun toBytecode(): ByteArray {
+    if (!_class.isFrozen) {
+      _class.classFile.compact()
+    }
+    return _class.toBytecode()
+  }
+
   override fun equals(other: Any?): Boolean {
     if (other !is ClassReference) return false
     return _class == other._class
@@ -183,13 +191,6 @@ internal constructor(
 
   override fun toString(): String {
     return qualifiedName
-  }
-
-  internal fun toBytecode(): ByteArray {
-    if (!_class.isFrozen) {
-      _class.classFile.compact()
-    }
-    return _class.toBytecode()
   }
 
   private inline fun <T : Any> resolveDeltas(

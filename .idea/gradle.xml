@@ -26,6 +26,7 @@
             <option value="$PROJECT_DIR$/agp-compat/base" />
             <option value="$PROJECT_DIR$/build-logic" />
             <option value="$PROJECT_DIR$/core" />
+            <option value="$PROJECT_DIR$/fixtures" />
             <option value="$PROJECT_DIR$/gradle-plugin" />
           </set>
         </option>

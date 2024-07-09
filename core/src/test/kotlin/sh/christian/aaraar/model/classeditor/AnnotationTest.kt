@@ -10,6 +10,7 @@ import sh.christian.aaraar.model.classeditor.AnnotationInstance.Value.EnumValue
 import sh.christian.aaraar.model.classeditor.AnnotationInstance.Value.StringValue
 import sh.christian.aaraar.utils.jetbrainsAnnotationsJarPath
 import sh.christian.aaraar.utils.loadJar
+import sh.christian.aaraar.utils.withClasspath
 import kotlin.test.Test
 
 class AnnotationTest {

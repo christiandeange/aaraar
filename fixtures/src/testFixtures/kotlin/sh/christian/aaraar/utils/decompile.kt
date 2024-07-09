@@ -14,7 +14,7 @@ import java.util.jar.Manifest
 
 fun decompile(classReference: ClassReference): String {
   val writer = StringWriter()
-  val decompiler = OneTimeDecompiler(classReference._class.toBytecode(), writer)
+  val decompiler = OneTimeDecompiler(classReference.toBytecode(), writer)
   decompiler.decompileContext()
   return writer.toString()
 }

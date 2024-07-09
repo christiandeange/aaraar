@@ -8,6 +8,7 @@ import io.kotest.matchers.shouldBe
 import sh.christian.aaraar.model.GenericJarArchive
 import sh.christian.aaraar.utils.jetbrainsAnnotationsJarPath
 import sh.christian.aaraar.utils.loadJar
+import sh.christian.aaraar.utils.withClasspath
 import kotlin.test.Test
 
 class ClasspathTest {

@@ -9,6 +9,7 @@ import sh.christian.aaraar.model.classeditor.Modifier.PROTECTED
 import sh.christian.aaraar.model.classeditor.types.intType
 import sh.christian.aaraar.model.classeditor.types.longType
 import sh.christian.aaraar.utils.shouldBeDecompiledTo
+import sh.christian.aaraar.utils.withClasspath
 import kotlin.test.Test
 
 class ConstructorTest {
