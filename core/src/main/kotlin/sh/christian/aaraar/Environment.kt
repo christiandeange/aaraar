@@ -1,5 +1,7 @@
 package sh.christian.aaraar
 
+import java.io.Serializable
+
 /**
  * General properties that influence the archive merging process.
  *
@@ -9,4 +11,8 @@ package sh.christian.aaraar
 data class Environment(
   val androidAaptIgnore: String,
   val keepClassesMetaFiles: Boolean,
-)
+) : Serializable {
+  companion object {
+    private const val serialVersionUID = 1L
+  }
+}

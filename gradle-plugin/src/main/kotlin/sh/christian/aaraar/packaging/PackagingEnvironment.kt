@@ -1,4 +1,4 @@
-package sh.christian.aaraar.gradle
+package sh.christian.aaraar.packaging
 
 import java.io.Serializable
 

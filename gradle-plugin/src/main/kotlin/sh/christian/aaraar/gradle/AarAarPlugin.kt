@@ -13,12 +13,15 @@ import org.gradle.kotlin.dsl.getByType
 import org.gradle.kotlin.dsl.named
 import org.gradle.kotlin.dsl.register
 import org.gradle.kotlin.dsl.withType
-import sh.christian.aaraar.gradle.PackagingEnvironment.JniLibs
-import sh.christian.aaraar.gradle.PackagingEnvironment.Resources
 import sh.christian.aaraar.gradle.agp.AgpCompat
 import sh.christian.aaraar.gradle.agp.AndroidPackaging
 import sh.christian.aaraar.gradle.agp.AndroidVariant
 import sh.christian.aaraar.model.ShadeConfiguration
+import sh.christian.aaraar.packaging.PackagingEnvironment
+import sh.christian.aaraar.packaging.PackagingEnvironment.JniLibs
+import sh.christian.aaraar.packaging.PackagingEnvironment.Resources
+import sh.christian.aaraar.packaging.ShadeConfigurationRule
+import sh.christian.aaraar.packaging.ShadeEnvironment
 
 /**
  * A plugin for creating a merged `aar` or `jar` file. Configurable via the `aaraar` extension.

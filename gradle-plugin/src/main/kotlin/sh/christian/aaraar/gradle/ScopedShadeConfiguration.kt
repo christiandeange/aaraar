@@ -5,6 +5,7 @@ import org.gradle.api.provider.MapProperty
 import org.gradle.api.provider.SetProperty
 import org.gradle.kotlin.dsl.mapProperty
 import org.gradle.kotlin.dsl.setProperty
+import sh.christian.aaraar.packaging.ShadeConfigurationScope
 
 /**
  * Configures the scopes and rules for shading class files.
