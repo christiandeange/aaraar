@@ -15,6 +15,10 @@ dependencies {
 
   implementation(platform(kotlin("bom")))
   compileOnly(libs.agp.api.latest)
+
+  testImplementation(testFixtures(project(":fixtures")))
+  testImplementation(kotlin("test"))
+  testImplementation(libs.kotest)
 }
 
 gradlePlugin {

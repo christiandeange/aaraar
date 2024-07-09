@@ -19,6 +19,19 @@ class ClassesMergerTest {
   private val merger = ClassesMerger(GenericJarArchiveMerger(MergeRules.None))
 
   @Test
+  fun `nothing to merge`() {
+    val animalClasses = animalJarPath.loadClasses()
+    val classpath = merger.merge(animalClasses, emptyList())
+
+    with(classpath.archive) {
+      this shouldHaveSize 3
+      this shouldHaveKey "com/example/Animal.class"
+      this shouldHaveKey "com/example/Cat.class"
+      this shouldHaveKey "com/example/Dog.class"
+    }
+  }
+
+  @Test
   fun `simple merge with classes`() {
     val animalClasses = animalJarPath.loadClasses()
     val fooClasses = fooJarPath.loadClasses()

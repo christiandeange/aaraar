@@ -13,6 +13,11 @@ data class ShadeEnvironment(
 
   companion object {
     private const val serialVersionUID = 1L
+
+    /**
+     * Sentinel value for no custom shading rules.
+     */
+    val None = ShadeEnvironment(emptyList())
   }
 }
 
@@ -50,8 +55,8 @@ sealed interface ShadeConfigurationScope : Serializable {
    */
   data class DependencyScope(
     val group: String,
-    val name: String?,
-    val version: String?,
+    val name: String? = null,
+    val version: String? = null,
   ) : ShadeConfigurationScope
 
   /** Applies to a single internal project, identified by its canonical path. */

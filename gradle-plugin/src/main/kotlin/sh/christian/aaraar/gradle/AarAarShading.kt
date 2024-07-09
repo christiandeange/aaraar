@@ -60,7 +60,7 @@ class AarAarShading(
    * Any name and any version in this artifact group will inherit these rules.
    */
   fun forGroup(group: String): ShadeConfigurationScope {
-    return ShadeConfigurationScope.DependencyScope(group, null, null)
+    return ShadeConfigurationScope.DependencyScope(group)
   }
 
   /**
@@ -71,7 +71,7 @@ class AarAarShading(
    */
   fun forModule(dependency: String): ShadeConfigurationScope {
     return dependencies.create(dependency).let {
-      ShadeConfigurationScope.DependencyScope(it.group.orEmpty(), it.name, null)
+      ShadeConfigurationScope.DependencyScope(it.group.orEmpty(), it.name)
     }
   }
 

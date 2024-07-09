@@ -13,13 +13,23 @@ private object ResourceLoader
 
 private val resourceLoader = ResourceLoader::class.java.classLoader
 
-val jetbrainsAnnotationsJarPath: Path = Paths.get(resourceLoader.getResource("annotations-24.1.0.jar")!!.toURI())
-val animalJarPath: Path = Paths.get(resourceLoader.getResource("animal.jar")!!.toURI())
-val fooJarPath: Path = Paths.get(resourceLoader.getResource("foo.jar")!!.toURI())
-val foo2JarPath: Path = Paths.get(resourceLoader.getResource("foo2.jar")!!.toURI())
-val externalLibsPath: Path = Paths.get(resourceLoader.getResource("libs")!!.toURI())
+val jetbrainsAnnotationsJarPath: Path
+  get() = Paths.get(resourceLoader.getResource("annotations-24.1.0.jar")!!.toURI())
 
-private val root = generateSequence(File(System.getProperty("user.dir"))) { it.parentFile }.last()
+val animalJarPath: Path
+  get() = Paths.get(resourceLoader.getResource("animal.jar")!!.toURI())
+
+val fooJarPath: Path
+  get() = Paths.get(resourceLoader.getResource("foo.jar")!!.toURI())
+
+val foo2JarPath: Path
+  get() = Paths.get(resourceLoader.getResource("foo2.jar")!!.toURI())
+
+val externalLibsPath: Path
+  get() = Paths.get(resourceLoader.getResource("libs")!!.toURI())
+
+private val root: File
+  get() = generateSequence(File(System.getProperty("user.dir"))) { it.parentFile }.last()
 
 fun navigationJsonData(
   name: String,

@@ -73,10 +73,8 @@ class Packager(
    */
   fun prepareDependencyArchive(
     archivePath: Path,
-    scopeMapping: Map<Path, ShadeConfigurationScope>,
+    identifier: ShadeConfigurationScope?,
   ): ArtifactArchive {
-    val identifier = scopeMapping[archivePath]
-
     logger.info("Processing scope id '$identifier'")
     logger.info("  Input file: $archivePath")
 

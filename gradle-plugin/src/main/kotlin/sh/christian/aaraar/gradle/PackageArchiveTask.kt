@@ -85,9 +85,9 @@ abstract class PackageArchiveTask : DefaultTask() {
     )
 
     val dependencyArchives: List<ArtifactArchive> =
-      scopeMapping.keys
-        .minus(inputPath)
-        .map { archivePath -> packager.prepareDependencyArchive(archivePath, scopeMapping) }
+      scopeMapping.entries
+        .filter { it.key != inputPath }
+        .map { (archivePath, identifier) -> packager.prepareDependencyArchive(archivePath, identifier) }
 
     val mergedArchive = packager.mergeArchives(input, dependencyArchives)
     val finalizedArchive = postProcessing(mergedArchive)
