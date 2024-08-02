@@ -1,6 +1,13 @@
 Change Log
 ==========
 
+## Version 0.0.16
+
+_2024-08-02_
+
+* Update: Modularize Gradle packaging code to allow for reuse in other projects.
+* Fix: Avoid exception when combining packaging option rules for Android projects.
+
 ## Version 0.0.15
 
 _2024-06-24_
