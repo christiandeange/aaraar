@@ -210,7 +210,7 @@ class ClassesTest {
             public Foo() {
             }
 
-            public void printHello() {
+            void printHello() {
             }
         }
       """

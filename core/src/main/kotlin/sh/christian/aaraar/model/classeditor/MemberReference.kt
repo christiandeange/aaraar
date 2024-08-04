@@ -24,10 +24,4 @@ internal constructor(
 
   /** The set of annotations applied to this member definition. */
   abstract val annotations: List<AnnotationInstance>
-
-  init {
-    if (!_member.declaringClass.isFrozen) {
-      modifiers = setOf(Modifier.PUBLIC)
-    }
-  }
 }

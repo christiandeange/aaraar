@@ -42,6 +42,7 @@ internal constructor(
     configure: ClassReference.() -> Unit = { },
   ): ClassReference = synchronized(this) {
     return get(classname).also {
+      it.modifiers = setOf(Modifier.PUBLIC)
       configure(it)
       inputClasses += it
     }

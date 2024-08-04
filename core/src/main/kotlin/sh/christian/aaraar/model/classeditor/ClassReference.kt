@@ -110,18 +110,13 @@ internal constructor(
       )
     }
 
-  init {
-    if (!_class.isFrozen) {
-      modifiers = setOf(Modifier.PUBLIC)
-    }
-  }
-
   /** Adds a new constructor explicitly declared by this class. */
   fun addConstructor(
     configure: ConstructorReference.() -> Unit = { },
   ): ConstructorReference {
     val newConstructor = CtConstructor(emptyArray(), _class)
     return classpath[newConstructor].also {
+      it.modifiers = setOf(Modifier.PUBLIC)
       configure(it)
       constructors += it
     }
@@ -135,6 +130,7 @@ internal constructor(
   ): FieldReference {
     val newField = CtField(type._class, name, _class)
     return classpath[newField].also {
+      it.modifiers = setOf(Modifier.PUBLIC)
       configure(it)
       fields += it
     }
@@ -147,6 +143,7 @@ internal constructor(
   ): MethodReference {
     val newMethod = CtMethod(CtClass.voidType, name, emptyArray(), _class)
     return classpath[newMethod].also {
+      it.modifiers = setOf(Modifier.PUBLIC)
       configure(it)
       methods += it
     }
