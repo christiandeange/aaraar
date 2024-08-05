@@ -1,5 +1,6 @@
 import org.jetbrains.annotations.NotNull
 import sh.christian.aaraar.gradle.ApiJarProcessor
+import sh.christian.aaraar.gradle.ArtifactArchiveProcessor
 import sh.christian.aaraar.model.AarArchive
 import sh.christian.aaraar.model.classeditor.Classpath
 
@@ -93,7 +94,7 @@ aaraar {
 
   keepMetaFiles = false
 
-  setApiJarProcessorFactory(new MyApiJarProcessorFactory())
+  addPostProcessorFactory(new MyApiJarProcessorFactory())
 }
 
 afterEvaluate {
@@ -106,7 +107,7 @@ afterEvaluate {
   }
 }
 
-class MyApiJarProcessor extends ApiJarProcessor {
+class MyApiJarProcessor implements ApiJarProcessor {
   @Override
   void processClasspath(@NotNull AarArchive aarArchive, @NotNull Classpath classpath) {
     // Remove internal class
@@ -118,9 +119,9 @@ class MyApiJarProcessor extends ApiJarProcessor {
   }
 }
 
-class MyApiJarProcessorFactory implements ApiJarProcessor.Factory {
+class MyApiJarProcessorFactory implements ArtifactArchiveProcessor.Factory {
   @Override
-  ApiJarProcessor create() {
+  ArtifactArchiveProcessor create() {
     return new MyApiJarProcessor()
   }
 }

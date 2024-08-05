@@ -1,11 +1,12 @@
 package sh.christian.aaraar.gradle
 
 import sh.christian.aaraar.model.AarArchive
+import sh.christian.aaraar.model.ApiJar
+import sh.christian.aaraar.model.ArtifactArchive
 import sh.christian.aaraar.model.classeditor.Classpath
-import java.io.Serializable
 
 /**
- * Receives an incoming, mutable [Classpath] that serves as the reference for an `api.jar` element inside the AAR file.
+ * Subclass of [ArtifactArchiveProcessor] to allow for producing an `api.jar` element inside an AAR file.
  *
  * The `api.jar` file is an optional element that contains information about the library's public API.
  * This file helps developers using the library understand its exposed classes, methods, and functionalities.
@@ -14,11 +15,13 @@ import java.io.Serializable
  *
  * Generating a custom `api.jar` file can be used to hide certain public members from IDE autocomplete, though they
  * can still be referenced and invoked via reflection at runtime as per usual.
+ *
+ * This has no effect if applied to a module that does not produce an Android AAR file.
  */
-abstract class ApiJarProcessor {
+interface ApiJarProcessor : ArtifactArchiveProcessor {
 
   /** Whether the processor is enabled or not. If `false`, no `api.jar` file will be produced. */
-  open fun isEnabled(): Boolean = true
+  fun isEnabled(): Boolean = true
 
   /**
    * Provides the processor with the merged AAR file and a [Classpath] from which an `api.jar` will be based on.
@@ -26,27 +29,27 @@ abstract class ApiJarProcessor {
    *
    * This method is only invoked if [isEnabled] is `true`.
    */
-  abstract fun processClasspath(
+  fun processClasspath(
     aarArchive: AarArchive,
     classpath: Classpath,
   )
 
-  /** Factory for creating a new [ApiJarProcessor]. */
-  interface Factory : Serializable {
-    fun create(): ApiJarProcessor
+  override fun process(archive: ArtifactArchive): ArtifactArchive {
+    return when (archive) {
+      is AarArchive -> {
+        if (isEnabled()) {
+          val inputApiJar = archive.classes.archive
+          val classpath = Classpath.from(inputApiJar)
 
-    companion object {
-      /** Returns a disabled [ApiJarProcessor] instance, which does not produce an `api.jar` file. */
-      @JvmField
-      val None = object : Factory {
-        override fun create(): ApiJarProcessor {
-          return object : ApiJarProcessor() {
-            override fun isEnabled(): Boolean = false
+          processClasspath(archive, classpath)
 
-            override fun processClasspath(aarArchive: AarArchive, classpath: Classpath) = Unit
-          }
+          val apiClasses = classpath.apply { asApiJar() }.toGenericJarArchive()
+          archive.with(apiJar = ApiJar.from(apiClasses))
+        } else {
+          archive
         }
       }
+      else -> archive
     }
   }
 }

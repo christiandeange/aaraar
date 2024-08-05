@@ -47,6 +47,10 @@ sealed class ArtifactArchive {
 class JarArchive(
   override val classes: Classes,
 ) : ArtifactArchive() {
+  fun with(classes: Classes): JarArchive {
+    return JarArchive(classes)
+  }
+
   override fun writeTo(path: Path) {
     classes.writeTo(path)
   }
@@ -76,10 +80,38 @@ class AarArchive(
   val lintRules: LintRules,
   val navigationJson: NavigationJson,
   val apiJar: ApiJar,
-  /**
-   * TODO no idea how /prefab folder works, add support for it later.
-   */
+  // TODO no idea how /prefab folder works, add support for it later.
 ) : ArtifactArchive() {
+  fun with(
+    aarMetadata: AarMetadata = this.aarMetadata,
+    androidManifest: AndroidManifest = this.androidManifest,
+    classes: Classes = this.classes,
+    resources: Resources = this.resources,
+    rTxt: RTxt = this.rTxt,
+    publicTxt: PublicTxt = this.publicTxt,
+    assets: Assets = this.assets,
+    libs: Libs = this.libs,
+    jni: Jni = this.jni,
+    proguard: Proguard = this.proguard,
+    lintRules: LintRules = this.lintRules,
+    navigationJson: NavigationJson = this.navigationJson,
+    apiJar: ApiJar = this.apiJar,
+  ): AarArchive = AarArchive(
+    aarMetadata = aarMetadata,
+    androidManifest = androidManifest,
+    classes = classes,
+    resources = resources,
+    rTxt = rTxt,
+    publicTxt = publicTxt,
+    assets = assets,
+    libs = libs,
+    jni = jni,
+    proguard = proguard,
+    lintRules = lintRules,
+    navigationJson = navigationJson,
+    apiJar = apiJar,
+  )
+
   override fun writeTo(path: Path) {
     path.createArchive { outputAar ->
       aarMetadata.writeTo(outputAar.aarMetadataProperties.apply { mkdirs() })

@@ -133,7 +133,7 @@ class AarAarPlugin : Plugin<Project> {
       packagingEnvironment.set(parsePackagingEnvironment(variant))
       keepMetaFiles.set(aaraar.keepMetaFiles)
       androidAaptIgnore.set(androidAaptIgnoreEnv)
-      apiJarProcessorFactory.set(aaraar.apiJarProcessorFactory)
+      postProcessorFactories.set(aaraar.postProcessorFactories)
     }
 
     variant.registerAarTransform(

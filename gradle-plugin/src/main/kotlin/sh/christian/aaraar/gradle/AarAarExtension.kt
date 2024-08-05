@@ -3,8 +3,10 @@ package sh.christian.aaraar.gradle
 import org.gradle.api.Action
 import org.gradle.api.artifacts.dsl.DependencyHandler
 import org.gradle.api.model.ObjectFactory
+import org.gradle.api.provider.ListProperty
 import org.gradle.api.provider.Property
 import org.gradle.kotlin.dsl.invoke
+import org.gradle.kotlin.dsl.listProperty
 import org.gradle.kotlin.dsl.property
 import javax.inject.Inject
 
@@ -31,9 +33,9 @@ abstract class AarAarExtension
   val variantFilter: Property<(VariantDescriptor) -> Boolean> =
     objects.property<(VariantDescriptor) -> Boolean>().convention { true }
 
-  /** @see setApiJarProcessorFactory */
-  val apiJarProcessorFactory: Property<ApiJarProcessor.Factory> =
-    objects.property<ApiJarProcessor.Factory>().convention(ApiJarProcessor.Factory.None)
+  /** @see addPostProcessorFactory */
+  val postProcessorFactories: ListProperty<ArtifactArchiveProcessor.Factory> =
+    objects.listProperty<ArtifactArchiveProcessor.Factory>().convention(emptyList())
 
   /**
    * Configure the rules for shading class files.
@@ -54,20 +56,20 @@ abstract class AarAarExtension
   }
 
   /**
-   * Establish a factory to create an [ApiJarProcessor], which will enable producing an `api.jar` file in an AAR.
-   * This property is ignored when applied to a non-Android module.
+   * Establish a factory to create an [ArtifactArchiveProcessor], which will allow for additional post-processing on the
+   * resulting archive file after it has been fully merged.
    *
    * If this is being set via a class name, the factory class must have a public no-arg constructor.
    */
-  fun setApiJarProcessorFactory(classname: String) {
-    apiJarProcessorFactory.set(apiJarProcessorFromClassName(classname))
+  fun addPostProcessorFactory(classname: String) {
+    postProcessorFactories.add(artifactArchiveProcessorFromClassName(classname))
   }
 
   /**
-   * Establish a factory to create an [ApiJarProcessor], which will enable producing an `api.jar` file in an AAR.
-   * This property is ignored when applied to a non-Android module.
+   * Establish a factory to create an [ArtifactArchiveProcessor], which will allow for additional post-processing on the
+   * resulting archive file after it has been fully merged.
    */
-  fun setApiJarProcessorFactory(factory: ApiJarProcessor.Factory) {
-    apiJarProcessorFactory.set(factory)
+  fun addPostProcessorFactory(factory: ArtifactArchiveProcessor.Factory) {
+    postProcessorFactories.add(factory)
   }
 }

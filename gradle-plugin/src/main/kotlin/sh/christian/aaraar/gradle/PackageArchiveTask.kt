@@ -8,6 +8,7 @@ import org.gradle.api.artifacts.component.LibraryBinaryIdentifier
 import org.gradle.api.artifacts.component.ModuleComponentIdentifier
 import org.gradle.api.artifacts.component.ProjectComponentIdentifier
 import org.gradle.api.file.RegularFileProperty
+import org.gradle.api.provider.ListProperty
 import org.gradle.api.provider.Property
 import org.gradle.api.tasks.CacheableTask
 import org.gradle.api.tasks.Classpath
@@ -51,6 +52,9 @@ abstract class PackageArchiveTask : DefaultTask() {
 
   @get:Input
   abstract val keepMetaFiles: Property<Boolean>
+
+  @get:Input
+  abstract val postProcessorFactories: ListProperty<ArtifactArchiveProcessor.Factory>
 
   @get:OutputFile
   abstract val outputArchive: RegularFileProperty
@@ -97,9 +101,14 @@ abstract class PackageArchiveTask : DefaultTask() {
     finalizedArchive.writeTo(path = outputPath)
   }
 
-  open fun postProcessing(archive: ArtifactArchive): ArtifactArchive {
-    // No-op by default.
-    return archive
+  private fun postProcessing(archive: ArtifactArchive): ArtifactArchive {
+    val postProcessors = postProcessorFactories.get().map { it.create() }
+
+    var processedArchive = archive
+    for (processor in postProcessors) {
+      processedArchive = processor.process(processedArchive)
+    }
+    return processedArchive
   }
 
   private fun RegularFileProperty.getPath(): Path {
