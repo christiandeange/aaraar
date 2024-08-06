@@ -22,10 +22,10 @@ Declaring an `embed` dependency only includes it in the packaged output, it does
 during compilation! If you wish to reference any classes in the embedded dependency in your Gradle module, you will also
 need to declare it as a `compileOnly` dependency as shown above.
 
-> **Note**
->
-> `compileOnly` and `embed` dependencies will not show up in the published pom file unless also declared as `api` or
-`implementation` dependencies.
+!!! note "Note"
+
+    `compileOnly` and `embed` dependencies will not show up in the published pom file unless also declared as `api` or
+    `implementation` dependencies.
 
 In Android modules, embed configurations can also be declared for individual build types, including custom ones:
 
@@ -95,23 +95,18 @@ an Android module's build script is used to handle the packaging of resources an
 those same rules to configure handling of resources and JNI libraries merge conflicts when merging multiple aar files
 together.
 
-### API Jar for Android Libraries
+### Post-Processing
 
-The `api.jar` file is an optional element inside an aar archive that helps developers using the library understand its
-exposed classes, methods, and functionalities. When this file exists in an aar, it will be used it as the source of
-truth for which members can be referenced at compilation time.
-
-Generating a custom `api.jar` file can be used to hide certain public members from IDE autocomplete, though they
-can still be referenced and invoked via reflection at runtime as per usual.
-
-Generating this file begins with registering a factory to create an `ApiJarProcessor`. One way to do so is by passing
-in an instance of a class implementing `ApiJarProcessor.Factory`.
+The plugin allows you to register custom processors that will be executed after the merged archive has been created.
+This can be useful for logging, validation, or applying other operations that you may want to perform on the merged
+archive. To register a processor, you must first create a factory that will be used to create instances of your custom
+processor via the plugin extension:
 
 === "Kotlin"
 
     ```kotlin
     aaraar {
-      setApiJarProcessorFactory(MyApiJarProcessorFactory())
+      addPostProcessorFactory(ClassLoggingProcessorFactory())
     }
     ```
 
@@ -119,7 +114,7 @@ in an instance of a class implementing `ApiJarProcessor.Factory`.
 
     ```groovy
     aaraar {
-      setApiJarProcessorFactory(new MyApiJarProcessorFactory())
+      addPostProcessorFactory(new ClassLoggingProcessorFactory())
     }
     ```
 
@@ -133,7 +128,7 @@ In doing so, you must ensure that your factory has a public no-arg constructor s
 
     ```kotlin
     aaraar {
-      setApiJarProcessorFactory("com.example.gradle.MyApiJarProcessorFactory")
+      addPostProcessorFactory("com.example.gradle.ClassLoggingProcessorFactory")
     }
     ```
 
@@ -141,37 +136,51 @@ In doing so, you must ensure that your factory has a public no-arg constructor s
 
     ```groovy
     aaraar {
-      setApiJarProcessorFactory("com.example.gradle.MyApiJarProcessorFactory")
+      addPostProcessorFactory("com.example.gradle.ClassLoggingProcessorFactory")
     }
     ```
 
-The factory interface is very straightforward and only defines a `create()` method for you to implement:
+Processors are executed in the order they are registered. The factory interface is very straightforward and only defines
+a `create()` method for you to implement. This method should return an instance of your custom
+`ArtifactArchiveProcessor` implementation that will be executed on the merged archive.
 
 === "Kotlin"
 
     ```kotlin
-    class MyApiJarProcessorFactory : ApiJarProcessor.Factory {
-      override fun create(): ApiJarProcessor {
-        return MyApiJarProcessor()
-      }
+    class ClassLoggingProcessor : ArtifactArchiveProcessor {
+        override fun process(archive: ArtifactArchive): ArtifactArchive {
+            println("Merged archive contains: ${archive.classes.archive.count()} classes.")
+            return archive
+        }
     }
     ```
 
 === "Groovy"
 
     ```groovy
-    class MyApiJarProcessorFactory implements ApiJarProcessor.Factory {
-      @Override
-      ApiJarProcessor create() {
-        return new MyApiJarProcessor()
-      }
+    class ClassLoggingProcessor implements ArtifactArchiveProcessor {
+        @Override
+        ArtifactArchive process(@NotNull ArtifactArchive archive) {
+            println "Merged archive contains: ${archive.classes.archive.size()} classes."
+            return archive
+        }
     }
     ```
 
-The processor implementation is where the `api.jar` transformation occurs. When enabled, it is provided with a
-representation of the current set of classes defined in the merged aar archive, as well as a reference to the merged
-archive itself. While the archive is immutable, the classpath provided is mutable and supports a variety of
-transformations, including but not limited to:
+### API Jar for Android Libraries
+
+The `api.jar` file is an optional element inside an aar archive that helps developers using the library understand its
+exposed classes, methods, and functionalities. When this file exists in an aar, it will be used it as the source of
+truth for which members can be referenced at compilation time.
+
+Generating a custom `api.jar` file can be used to hide certain public members from IDE autocomplete, though they
+can still be referenced and invoked via reflection at runtime as per usual.
+
+Generating this file begins with registering an `ArtifactArchiveProcessor.Factory` factory to create a subclass of
+`ApiJarProcessor`. The processor implementation is where the `api.jar` transformation occurs. When enabled, it is
+provided with a representation of the current set of classes defined in the merged aar archive, as well as a reference
+to the merged archive itself. While the archive is immutable, the classpath provided is mutable and supports a variety
+of transformations, including but not limited to:
 
 - Removing existing classes and class members (constructors, methods, and fields).
 - Defining entirely new classes with custom members.
