@@ -114,7 +114,6 @@ internal constructor(
   fun asApiJar() {
     removePrivateMembers()
     removeMethodBodies()
-    removeKotlinMetadata()
   }
 
   /**
@@ -131,15 +130,6 @@ internal constructor(
       clazz.fields.forEach {
         it.removeConstantInitializer()
       }
-    }
-  }
-
-  /**
-   * Removes all [@Metadata][kotlin.Metadata] annotations from Kotlin classes.
-   */
-  fun removeKotlinMetadata() {
-    inputClasses.forEach { clazz ->
-      clazz.annotations = clazz.annotations.filterNot { it.qualifiedName == "kotlin.Metadata" }
     }
   }
 
