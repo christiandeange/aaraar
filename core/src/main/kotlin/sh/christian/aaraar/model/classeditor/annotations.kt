@@ -9,7 +9,7 @@ import javassist.bytecode.Descriptor
 import javassist.bytecode.ParameterAnnotationsAttribute
 import sh.christian.aaraar.model.classeditor.AnnotationInstance.Value.Companion.toValue
 
-internal var ClassReference.classAnnotations: List<AnnotationInstance>
+internal var MutableClassReference.classAnnotations: List<AnnotationInstance>
   get() {
     val visible = _class.classFile.getAttribute(AnnotationsAttribute.visibleTag)
     val invisible = _class.classFile.getAttribute(AnnotationsAttribute.invisibleTag)
@@ -23,7 +23,7 @@ internal var ClassReference.classAnnotations: List<AnnotationInstance>
     classFile.addAttribute(newAnnotation(classFile.constPool, invisible, AnnotationsAttribute.invisibleTag))
   }
 
-internal var MethodReference.methodAnnotations: List<AnnotationInstance>
+internal var MutableMethodReference.methodAnnotations: List<AnnotationInstance>
   get() {
     val visible = _method.methodInfo.getAttribute(AnnotationsAttribute.visibleTag)
     val invisible = _method.methodInfo.getAttribute(AnnotationsAttribute.invisibleTag)
@@ -37,7 +37,7 @@ internal var MethodReference.methodAnnotations: List<AnnotationInstance>
     _method.methodInfo.addAttribute(newAnnotation(constPool, invisible, AnnotationsAttribute.invisibleTag))
   }
 
-internal var ConstructorReference.constructorAnnotations: List<AnnotationInstance>
+internal var MutableConstructorReference.constructorAnnotations: List<AnnotationInstance>
   get() {
     val visible = _constructor.methodInfo.getAttribute(AnnotationsAttribute.visibleTag)
     val invisible = _constructor.methodInfo.getAttribute(AnnotationsAttribute.invisibleTag)
@@ -51,7 +51,7 @@ internal var ConstructorReference.constructorAnnotations: List<AnnotationInstanc
     _constructor.methodInfo.addAttribute(newAnnotation(constPool, invisible, AnnotationsAttribute.invisibleTag))
   }
 
-internal var FieldReference.fieldAnnotations: List<AnnotationInstance>
+internal var MutableFieldReference.fieldAnnotations: List<AnnotationInstance>
   get() {
     val visible = _field.fieldInfo.getAttribute(AnnotationsAttribute.visibleTag)
     val invisible = _field.fieldInfo.getAttribute(AnnotationsAttribute.invisibleTag)
@@ -65,7 +65,7 @@ internal var FieldReference.fieldAnnotations: List<AnnotationInstance>
     _field.fieldInfo.addAttribute(newAnnotation(constPool, invisible, AnnotationsAttribute.invisibleTag))
   }
 
-internal var Parameter.parameterAnnotations: List<AnnotationInstance>
+internal var MutableParameter.parameterAnnotations: List<AnnotationInstance>
   get() {
     val visible = behavior.methodInfo.getAttribute(ParameterAnnotationsAttribute.visibleTag)
     val invisible = behavior.methodInfo.getAttribute(ParameterAnnotationsAttribute.invisibleTag)
@@ -82,7 +82,7 @@ internal var Parameter.parameterAnnotations: List<AnnotationInstance>
     )
   }
 
-internal var MethodReference.annotationDefaultValue: AnnotationInstance.Value?
+internal var MutableMethodReference.annotationDefaultValue: AnnotationInstance.Value?
   get() {
     return (_method.methodInfo.getAttribute(AnnotationDefaultAttribute.tag) as AnnotationDefaultAttribute?)
       ?.defaultValue?.toValue(classpath)
@@ -98,7 +98,7 @@ internal var MethodReference.annotationDefaultValue: AnnotationInstance.Value?
   }
 
 internal fun getAnnotations(
-  classpath: Classpath,
+  classpath: MutableClasspath,
   attributeInfo: AttributeInfo?,
   visible: Boolean,
 ): List<AnnotationInstance> {
@@ -108,7 +108,7 @@ internal fun getAnnotations(
 }
 
 internal fun getAnnotations(
-  classpath: Classpath,
+  classpath: MutableClasspath,
   attributeInfo: AttributeInfo?,
   visible: Boolean,
   index: Int,

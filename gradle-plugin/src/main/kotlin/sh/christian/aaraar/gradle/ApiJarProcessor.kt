@@ -3,7 +3,7 @@ package sh.christian.aaraar.gradle
 import sh.christian.aaraar.model.AarArchive
 import sh.christian.aaraar.model.ApiJar
 import sh.christian.aaraar.model.ArtifactArchive
-import sh.christian.aaraar.model.classeditor.Classpath
+import sh.christian.aaraar.model.classeditor.MutableClasspath
 
 /**
  * Subclass of [ArtifactArchiveProcessor] to allow for producing an `api.jar` element inside an AAR file.
@@ -24,14 +24,14 @@ interface ApiJarProcessor : ArtifactArchiveProcessor {
   fun isEnabled(): Boolean = true
 
   /**
-   * Provides the processor with the merged AAR file and a [Classpath] from which an `api.jar` will be based on.
+   * Provides the processor with the merged AAR file and a [MutableClasspath] from which an `api.jar` will be based on.
    * The classpath defaults to the public API of [AarArchive.classes], but supports adding/removing/altering classes.
    *
    * This method is only invoked if [isEnabled] is `true`.
    */
   fun processClasspath(
     aarArchive: AarArchive,
-    classpath: Classpath,
+    classpath: MutableClasspath,
   )
 
   override fun process(archive: ArtifactArchive): ArtifactArchive {
@@ -39,7 +39,7 @@ interface ApiJarProcessor : ArtifactArchiveProcessor {
       is AarArchive -> {
         if (isEnabled()) {
           val inputApiJar = archive.classes.archive
-          val classpath = Classpath.from(inputApiJar)
+          val classpath = MutableClasspath.from(inputApiJar)
 
           processClasspath(archive, classpath)
 

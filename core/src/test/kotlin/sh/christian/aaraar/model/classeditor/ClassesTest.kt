@@ -83,8 +83,12 @@ class ClassesTest {
   @Test
   fun `class with supertypes`() = withClasspath { cp ->
     val person = cp.addClass("com.example.Person") {
-      superclass = cp["com.example.Animal"]
-      interfaces = listOf(cp["com.example.HasAge"], cp["com.example.HasName"])
+      val animal = cp.getOrCreate("com.example.Animal")
+      val hasAge = cp.getOrCreate("com.example.HasAge")
+      val hasName = cp.getOrCreate("com.example.HasName")
+
+      superclass = animal
+      interfaces = listOf(hasAge, hasName)
 
       addConstructor()
     }
@@ -150,11 +154,13 @@ class ClassesTest {
   fun `class with members`() = withClasspath { cp ->
     val person = cp.addClass("com.example.Person")
     person.addConstructor {
+      val nonNull = cp.getOrCreate("javax.annotation.NonNull")
+
       setParameters(
         NewParameter(
           name = "name",
           type = cp.stringType,
-          annotations = listOf(person.annotationInstance(cp["javax.annotation.NonNull"])),
+          annotations = listOf(person.annotationInstance(nonNull)),
         )
       )
     }

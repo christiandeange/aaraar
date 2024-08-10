@@ -198,7 +198,7 @@ meant for internal use only:
 
     ```kotlin
     class MyApiJarProcessor : ApiJarProcessor() {
-      override fun processClasspath(aarArchive: AarArchive, classpath: Classpath) {
+      override fun processClasspath(aarArchive: AarArchive, classpath: MutableClasspath) {
         // Remove internal class
         classpath.removeClass("com.example.TerminalSdkInternal")
 
@@ -214,7 +214,7 @@ meant for internal use only:
     ```groovy
     class MyApiJarProcessor extends ApiJarProcessor {
       @Override
-      void processClasspath(@NotNull AarArchive aarArchive, @NotNull Classpath classpath) {
+      void processClasspath(@NotNull AarArchive aarArchive, @NotNull MutableClasspath classpath) {
         // Remove internal class
         classpath.removeClass("com.example.TerminalSdkInternal")
 

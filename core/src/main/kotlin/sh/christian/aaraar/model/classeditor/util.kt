@@ -42,7 +42,7 @@ internal fun CtBehavior.setParameterTypes(parameterTypes: Array<CtClass>) {
 }
 
 internal fun CtBehavior.toKotlinLikeString(): String {
-  val classname = declaringClass.toKotlinLikeName()
+  val className = declaringClass.toKotlinLikeName()
   val parametersAttribute by lazy {
     methodInfo.getAttribute(MethodParametersAttribute.tag) as MethodParametersAttribute
   }
@@ -56,10 +56,10 @@ internal fun CtBehavior.toKotlinLikeString(): String {
   return when (this) {
     is CtMethod -> {
       val returnType = returnType.takeIf { it != voidType }?.let { ": ${it.toKotlinLikeName()}" }.orEmpty()
-      "fun $classname.$name($parameterStrings)$returnType"
+      "fun $className.$name($parameterStrings)$returnType"
     }
     is CtConstructor -> {
-      "constructor $classname($parameterStrings)"
+      "constructor $className($parameterStrings)"
     }
     else -> {
       error("Unknown behavior: ${this::class}")

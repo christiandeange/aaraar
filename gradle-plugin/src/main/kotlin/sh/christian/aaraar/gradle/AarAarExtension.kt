@@ -61,8 +61,8 @@ abstract class AarAarExtension
    *
    * If this is being set via a class name, the factory class must have a public no-arg constructor.
    */
-  fun addPostProcessorFactory(classname: String) {
-    postProcessorFactories.add(artifactArchiveProcessorFromClassName(classname))
+  fun addPostProcessorFactory(className: String) {
+    postProcessorFactories.add(artifactArchiveProcessorFromClassName(className))
   }
 
   /**

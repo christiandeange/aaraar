@@ -1,61 +1,15 @@
 package sh.christian.aaraar.model.classeditor
 
-import javassist.CtBehavior
-import javassist.bytecode.ByteArray.write16bit
-import javassist.bytecode.MethodParametersAttribute
-
 /**
  * Represents an argument that is part of a method or constructor signature.
- *
- * This representation is mutable, to allow changing properties of the parameter.
  */
-class Parameter
-internal constructor(
-  internal val classpath: Classpath,
-  internal val behavior: CtBehavior,
-  internal val index: Int,
-) {
-  private val methodParameters: MethodParametersAttribute
-    get() = behavior.methodInfo.getAttribute(MethodParametersAttribute.tag) as MethodParametersAttribute
-
+interface Parameter {
   /** The set of annotations applied to this parameter definition. */
-  var annotations: List<AnnotationInstance> by ::parameterAnnotations
+  val annotations: List<AnnotationInstance>
 
   /** The parameter name. */
-  var name: String
-    get() = methodParameters.parameterName(index)
-    set(value) {
-      val newIndex = behavior.methodInfo.constPool.addUtf8Info(value)
-      write16bit(newIndex, methodParameters.get(), index * INDEX_SIZE + 1)
-    }
+  val name: String
 
   /** The type that this parameter stores. */
-  var type: ClassReference
-    get() = classpath[behavior.parameterTypes[index]]
-    set(value) {
-      val parameterTypes = behavior.parameterTypes
-      parameterTypes[index] = value._class
-      behavior.setParameterTypes(parameterTypes)
-    }
-
-  override fun equals(other: Any?): Boolean {
-    if (other !is Parameter) return false
-    return behavior == other.behavior && index == other.index
-  }
-
-  override fun hashCode(): Int {
-    var result = index
-    result = 31 * result + annotations.hashCode()
-    result = 31 * result + name.hashCode()
-    result = 31 * result + type.hashCode()
-    return result
-  }
-
-  override fun toString(): String {
-    return "$name: $type"
-  }
-
-  private companion object {
-    const val INDEX_SIZE = 4
-  }
+  val type: ClassReference
 }

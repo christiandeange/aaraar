@@ -21,19 +21,19 @@ import sh.christian.aaraar.model.classeditor.AnnotationInstance.Value.Companion.
 /**
  * Represents the usage of an annotation that is applied to a given usage site.
  *
- * Unlike most other models here, annotation usages themselves are not mutable. Each instance is immutable, so modifying
- * behaviour must be done by adding and removing individual [AnnotationInstance]s at the given usage site.
+ * Annotation usages themselves are not mutable. Each instance is immutable, so modifying behaviour must be done by
+ * adding and removing individual [AnnotationInstance]s at the given usage site.
  */
 class AnnotationInstance
 internal constructor(
-  internal val classpath: Classpath,
+  internal val classpath: MutableClasspath,
   internal val _annotation: Annotation,
   visible: Boolean,
 ) {
   /** The annotation type. */
   val type: ClassReference = classpath[_annotation.typeName]
 
-  /** This annotation's fully-qualified classname, including its package name and simple class name. */
+  /** This annotation's fully-qualified class name, including its package name and simple class name. */
   val qualifiedName: String by type::qualifiedName
 
   /** The declared name of this specific annotation class. */
@@ -164,8 +164,8 @@ internal constructor(
     }
 
     companion object {
-      internal fun MemberValue.toValue(classpath: Classpath): Value = when (this) {
-        is AnnotationMemberValue -> AnnotationValue(classpath[value, true])
+      internal fun MemberValue.toValue(classpath: MutableClasspath): Value = when (this) {
+        is AnnotationMemberValue -> AnnotationValue(classpath.get(value, visible = true))
         is ArrayMemberValue -> ArrayValue(value.map { it.toValue(classpath) })
         is BooleanMemberValue -> BooleanValue(value)
         is ByteMemberValue -> ByteValue(value)
@@ -212,7 +212,7 @@ internal constructor(
       this.values.putAll(values)
     }
 
-    fun forUseIn(classReference: ClassReference): AnnotationInstance {
+    fun forUseIn(classReference: MutableClassReference): AnnotationInstance {
       val constPool = classReference._class.classFile.constPool
       val annotation = Annotation(name, constPool).apply {
         values.forEach { (name, value) ->
