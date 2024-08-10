@@ -14,22 +14,22 @@ internal fun CtBehavior.setParameters(parameters: List<NewParameter>) {
   val parameterTypes = parameters.mapToArray { it.type._class }
   val parameterNames = parameters.mapToArray { it.name }
   val parameterAnnotations = parameters.mapToArray { it.annotations.mapToArray { a -> a._annotation } }
+  val flags = IntArray(parameters.size)
 
   setParameterTypes(parameterTypes)
 
-  if (parameters.isEmpty()) {
-    methodInfo.removeAttribute(MethodParametersAttribute.tag)
-  } else {
-    val namesAttribute = MethodParametersAttribute(constPool, parameterNames, IntArray(parameters.size) { 0 })
-    methodInfo.addAttribute(namesAttribute)
-  }
+  set(
+    Attribute.MethodParameters,
+    MethodParametersAttribute(constPool, parameterNames, flags)
+      .takeIf { parameters.isNotEmpty() },
+  )
 
   if (parameterAnnotations.flatten().isEmpty()) {
-    methodInfo.removeAttribute(ParameterAnnotationsAttribute.visibleTag)
+    set(Attribute.VisibleParameterAnnotations, null)
   } else {
     val annotationsAttribute = ParameterAnnotationsAttribute(constPool, ParameterAnnotationsAttribute.visibleTag)
     annotationsAttribute.annotations = parameterAnnotations
-    methodInfo.addAttribute(annotationsAttribute)
+    set(Attribute.VisibleParameterAnnotations, annotationsAttribute)
   }
 }
 
@@ -43,12 +43,10 @@ internal fun CtBehavior.setParameterTypes(parameterTypes: Array<CtClass>) {
 
 internal fun CtBehavior.toKotlinLikeString(): String {
   val className = declaringClass.toKotlinLikeName()
-  val parametersAttribute by lazy {
-    methodInfo.getAttribute(MethodParametersAttribute.tag) as MethodParametersAttribute
-  }
+  val parametersAttribute = get(Attribute.MethodParameters)
   val parameterTypes = parameterTypes
   val parameterStrings = List(Descriptor.numOfParameters(methodInfo.descriptor)) { i ->
-    val name = parametersAttribute.parameterName(i)
+    val name = parametersAttribute?.parameterName(i) ?: "p$i"
     val type = parameterTypes[i].toKotlinLikeName()
     "$name: $type"
   }.joinToString(", ")

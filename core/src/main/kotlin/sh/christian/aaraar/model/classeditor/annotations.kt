@@ -11,140 +11,166 @@ import sh.christian.aaraar.model.classeditor.AnnotationInstance.Value.Companion.
 
 internal var MutableClassReference.classAnnotations: List<AnnotationInstance>
   get() {
-    val visible = _class.classFile.getAttribute(AnnotationsAttribute.visibleTag)
-    val invisible = _class.classFile.getAttribute(AnnotationsAttribute.invisibleTag)
+    val visible = _class.get(Attribute.VisibleAnnotations)
+    val invisible = _class.get(Attribute.InvisibleAnnotations)
     return getAnnotations(classpath, visible, true) + getAnnotations(classpath, invisible, false)
   }
   set(value) {
     val (visible, invisible) = value.partition { it.isVisible }
 
-    val classFile = _class.classFile
-    classFile.addAttribute(newAnnotation(classFile.constPool, visible, AnnotationsAttribute.visibleTag))
-    classFile.addAttribute(newAnnotation(classFile.constPool, invisible, AnnotationsAttribute.invisibleTag))
+    val constPool = _class.classFile.constPool
+    _class.set(
+      Attribute.VisibleAnnotations,
+      newAnnotation(constPool, visible, Attribute.VisibleAnnotations)
+    )
+    _class.set(
+      Attribute.InvisibleAnnotations,
+      newAnnotation(constPool, invisible, Attribute.InvisibleAnnotations)
+    )
   }
 
 internal var MutableMethodReference.methodAnnotations: List<AnnotationInstance>
   get() {
-    val visible = _method.methodInfo.getAttribute(AnnotationsAttribute.visibleTag)
-    val invisible = _method.methodInfo.getAttribute(AnnotationsAttribute.invisibleTag)
+    val visible = _method.get(Attribute.VisibleAnnotations)
+    val invisible = _method.get(Attribute.InvisibleAnnotations)
     return getAnnotations(classpath, visible, true) + getAnnotations(classpath, invisible, false)
   }
   set(value) {
     val (visible, invisible) = value.partition { it.isVisible }
 
     val constPool = _method.methodInfo.constPool
-    _method.methodInfo.addAttribute(newAnnotation(constPool, visible, AnnotationsAttribute.visibleTag))
-    _method.methodInfo.addAttribute(newAnnotation(constPool, invisible, AnnotationsAttribute.invisibleTag))
+    _method.set(
+      Attribute.VisibleAnnotations,
+      newAnnotation(constPool, visible, Attribute.VisibleAnnotations),
+    )
+    _method.set(
+      Attribute.InvisibleAnnotations,
+      newAnnotation(constPool, invisible, Attribute.InvisibleAnnotations),
+    )
   }
 
 internal var MutableConstructorReference.constructorAnnotations: List<AnnotationInstance>
   get() {
-    val visible = _constructor.methodInfo.getAttribute(AnnotationsAttribute.visibleTag)
-    val invisible = _constructor.methodInfo.getAttribute(AnnotationsAttribute.invisibleTag)
+    val visible = _constructor.get(Attribute.VisibleAnnotations)
+    val invisible = _constructor.get(Attribute.InvisibleAnnotations)
     return getAnnotations(classpath, visible, true) + getAnnotations(classpath, invisible, false)
   }
   set(value) {
     val (visible, invisible) = value.partition { it.isVisible }
 
     val constPool = _constructor.methodInfo.constPool
-    _constructor.methodInfo.addAttribute(newAnnotation(constPool, visible, AnnotationsAttribute.visibleTag))
-    _constructor.methodInfo.addAttribute(newAnnotation(constPool, invisible, AnnotationsAttribute.invisibleTag))
+    _constructor.set(
+      Attribute.VisibleAnnotations,
+      newAnnotation(constPool, visible, Attribute.VisibleAnnotations),
+    )
+    _constructor.set(
+      Attribute.InvisibleAnnotations,
+      newAnnotation(constPool, invisible, Attribute.InvisibleAnnotations),
+    )
   }
 
 internal var MutableFieldReference.fieldAnnotations: List<AnnotationInstance>
   get() {
-    val visible = _field.fieldInfo.getAttribute(AnnotationsAttribute.visibleTag)
-    val invisible = _field.fieldInfo.getAttribute(AnnotationsAttribute.invisibleTag)
+    val visible = _field.get(Attribute.VisibleAnnotations)
+    val invisible = _field.get(Attribute.InvisibleAnnotations)
     return getAnnotations(classpath, visible, true) + getAnnotations(classpath, invisible, false)
   }
   set(value) {
     val (visible, invisible) = value.partition { it.isVisible }
 
     val constPool = _field.fieldInfo.constPool
-    _field.fieldInfo.addAttribute(newAnnotation(constPool, visible, AnnotationsAttribute.visibleTag))
-    _field.fieldInfo.addAttribute(newAnnotation(constPool, invisible, AnnotationsAttribute.invisibleTag))
+    _field.set(
+      Attribute.VisibleAnnotations,
+      newAnnotation(constPool, visible, Attribute.VisibleAnnotations),
+    )
+    _field.set(
+      Attribute.InvisibleAnnotations,
+      newAnnotation(constPool, invisible, Attribute.InvisibleAnnotations),
+    )
   }
 
 internal var MutableParameter.parameterAnnotations: List<AnnotationInstance>
   get() {
-    val visible = behavior.methodInfo.getAttribute(ParameterAnnotationsAttribute.visibleTag)
-    val invisible = behavior.methodInfo.getAttribute(ParameterAnnotationsAttribute.invisibleTag)
+    val visible = behavior.get(Attribute.VisibleParameterAnnotations)
+    val invisible = behavior.get(Attribute.InvisibleParameterAnnotations)
     return getAnnotations(classpath, visible, true, index) + getAnnotations(classpath, invisible, false, index)
   }
   set(value) {
     val (visible, invisible) = value.partition { it.isVisible }
-    behavior.methodInfo.addAttribute(
-      newParameterAnnotation(behavior, visible, ParameterAnnotationsAttribute.visibleTag, index)
+    behavior.set(
+      Attribute.VisibleParameterAnnotations,
+      newParameterAnnotation(behavior, visible, Attribute.VisibleParameterAnnotations, index),
     )
 
-    behavior.methodInfo.addAttribute(
-      newParameterAnnotation(behavior, invisible, ParameterAnnotationsAttribute.invisibleTag, index)
+    behavior.set(
+      Attribute.InvisibleParameterAnnotations,
+      newParameterAnnotation(behavior, invisible, Attribute.InvisibleParameterAnnotations, index),
     )
   }
 
 internal var MutableMethodReference.annotationDefaultValue: AnnotationInstance.Value?
   get() {
-    return (_method.methodInfo.getAttribute(AnnotationDefaultAttribute.tag) as AnnotationDefaultAttribute?)
-      ?.defaultValue?.toValue(classpath)
+    return _method.get(Attribute.AnnotationDefaultValue)?.defaultValue?.toValue(classpath)
   }
   set(value) {
-    if (value == null) {
-      _method.methodInfo.removeAttribute(AnnotationDefaultAttribute.tag)
-    } else {
-      val newAttribute = AnnotationDefaultAttribute(_method.methodInfo.constPool)
-      newAttribute.defaultValue = value.toMemberValue(_method.methodInfo.constPool)
-      _method.methodInfo.addAttribute(newAttribute)
-    }
+    _method.set(
+      Attribute.AnnotationDefaultValue,
+      value?.let {
+        val newAttribute = AnnotationDefaultAttribute(_method.methodInfo.constPool)
+        newAttribute.defaultValue = it.toMemberValue(_method.methodInfo.constPool)
+        newAttribute
+      },
+    )
   }
 
 internal fun getAnnotations(
   classpath: MutableClasspath,
-  attributeInfo: AttributeInfo?,
+  attributeInfo: AnnotationsAttribute?,
   visible: Boolean,
 ): List<AnnotationInstance> {
-  return (attributeInfo as AnnotationsAttribute?)?.annotations
+  return attributeInfo?.annotations
     ?.map { classpath[it, visible] }
     .orEmpty()
 }
 
 internal fun getAnnotations(
   classpath: MutableClasspath,
-  attributeInfo: AttributeInfo?,
+  attributeInfo: ParameterAnnotationsAttribute?,
   visible: Boolean,
   index: Int,
 ): List<AnnotationInstance> {
-  return (attributeInfo as ParameterAnnotationsAttribute?)?.annotations
+  return attributeInfo?.annotations
     ?.get(index)
     ?.map { classpath[it, visible] }
     .orEmpty()
 }
 
-internal fun newAnnotation(
+internal fun <T : AttributeInfo> newAnnotation(
   constPool: ConstPool,
   annotations: List<AnnotationInstance>,
-  tag: String,
+  attribute: Attribute<T>,
 ): AnnotationsAttribute {
-  val attribute = AnnotationsAttribute(constPool, tag)
-  attribute.annotations = annotations.mapToArray { it._annotation }
-  return attribute
+  val annotationsAttribute = AnnotationsAttribute(constPool, attribute.key)
+  annotationsAttribute.annotations = annotations.mapToArray { it._annotation }
+  return annotationsAttribute
 }
 
 internal fun newParameterAnnotation(
   behavior: CtBehavior,
   annotations: List<AnnotationInstance>,
-  tag: String,
+  attribute: Attribute<ParameterAnnotationsAttribute>,
   index: Int,
 ): ParameterAnnotationsAttribute {
-  val existingAttribute = behavior.methodInfo.getAttribute(tag) as ParameterAnnotationsAttribute?
+  val existingAttribute = behavior.get(attribute)
 
-  val (attribute, allAnnotations) = if (existingAttribute != null) {
+  val (parameterAnnotationsAttribute, allAnnotations) = if (existingAttribute != null) {
     existingAttribute to existingAttribute.annotations
   } else {
-    val newAttribute = ParameterAnnotationsAttribute(behavior.methodInfo.constPool, tag)
+    val newAttribute = ParameterAnnotationsAttribute(behavior.methodInfo.constPool, attribute.key)
     newAttribute to Array(Descriptor.numOfParameters(behavior.methodInfo.descriptor)) { emptyArray() }
   }
 
   allAnnotations[index] = annotations.mapToArray { it._annotation }
-  attribute.annotations = allAnnotations
-  return attribute
+  parameterAnnotationsAttribute.annotations = allAnnotations
+  return parameterAnnotationsAttribute
 }

@@ -187,10 +187,6 @@ of transformations, including but not limited to:
 - Renaming classes and class members or modifying their access visibility.
 - Adding or removing annotations on classes and class members.
 
-!!! bug "Known Issue"
-
-    At this time, creating new enum classes or modifications to existing enum classes will be ignored.
-
 An example implementation can be seen below, which is used to remove a public class and a public method that are both
 meant for internal use only:
 
@@ -228,3 +224,39 @@ meant for internal use only:
 Further documentation for the kind of transformations available can be found by referencing
 [API documentation](https://aaraar.christian.sh/kdoc/aaraar/sh.christian.aaraar.model.classeditor/index.html) for the
 `sh.christian.aaraar.model.classeditor` package.
+
+!!! bug "Modifying Enums"
+
+    At this time, creating new enum classes or modifications to existing enum classes will be ignored.
+
+!!! note "Modifying Parameter Names"
+
+    By default, parameter name metadata is not included in class files. If you wish to include parameter names in the
+    compiled `classes.jar` and `api.jar` files, you must compile your library with additional flags in order to embed
+    this data in your compiled class files:
+
+    === "Kotlin"
+
+        ```kotlin
+        // build.gradle.kts
+
+        tasks.withType<KotlinCompile>().configureEach {
+          compilerOptions.freeCompilerArgs.add("-java-parameters")
+        }
+        tasks.withType<JavaCompile>().configureEach {
+          options.compilerArgs.add("-parameters")
+        }
+        ```
+
+    === "Groovy"
+
+        ```groovy
+        // build.gradle
+
+        tasks.withType(KotlinCompile).configureEach {
+          compilerOptions.freeCompilerArgs += "-java-parameters"
+        }
+        tasks.withType(JavaCompile).configureEach {
+          options.compilerArgs += "-parameters"
+        }
+        ```

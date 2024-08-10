@@ -15,14 +15,24 @@ internal constructor(
   internal val behavior: CtBehavior,
   internal val index: Int,
 ) : Parameter {
-  private val methodParameters: MethodParametersAttribute
-    get() = behavior.methodInfo.getAttribute(MethodParametersAttribute.tag) as MethodParametersAttribute
-
   override var annotations: List<AnnotationInstance> by ::parameterAnnotations
 
   override var name: String
-    get() = methodParameters.parameterName(index)
+    get() = behavior.get(Attribute.MethodParameters)?.parameterName(index) ?: "p$index"
     set(value) {
+      val existingAttribute = behavior.get(Attribute.MethodParameters)
+      val methodParameters = if (existingAttribute != null) {
+        existingAttribute
+      } else {
+        val newAttribute = MethodParametersAttribute(
+          behavior.methodInfo.constPool,
+          Array(behavior.parameterTypes.size) { "p$it" },
+          IntArray(behavior.parameterTypes.size),
+        )
+        behavior.set(Attribute.MethodParameters, newAttribute)
+        newAttribute
+      }
+
       val newIndex = behavior.methodInfo.constPool.addUtf8Info(value)
       ByteArray.write16bit(newIndex, methodParameters.get(), index * INDEX_SIZE + 1)
     }
