@@ -1,6 +1,15 @@
 Change Log
 ==========
 
+## Version 0.0.17
+
+_2024-08-10_
+
+* New: Support for adding post-processors for custom operations on the merged archive.
+    * See [packaging guide](https://aaraar.christian.sh/packaging/#post-processing) for info on configuration.
+* Update: Extract interfaces for `Classpath` and related classes to expose only immutable methods.
+* Fix: Avoid overwriting modifiers from source classes when generating `api.jar` files.
+
 ## Version 0.0.16
 
 _2024-08-02_
@@ -34,14 +43,14 @@ _2024-02-27_
     * This optional jar is used by the IDE as the autocomplete source, as well as what consumers compile against.
     * Does not affect which classes and class members are executable at runtime.
     * Provides an integration point for complete customization to add/remove classes, rename methods, and more.
-    * See [updated packaging guide](https://aaraar.christian.sh/packaging) for info on configuration.
+    * See [packaging guide](https://aaraar.christian.sh/packaging/#api-jar-for-android-libraries) for info on configuration.
 
 ## Version 0.0.12
 
 _2024-02-07_
 
 * New: Support for limiting shading rules to a particular scope.
-    * See [updated shading guide](https://aaraar.christian.sh/shading) for info on configuration and syntax.
+    * See [shading guide](https://aaraar.christian.sh/shading) for info on configuration and syntax.
 * New: Added `addPrefix()` shorthand method for shading to add a prefix to each class package.
 
 ## Version 0.0.11
@@ -60,7 +69,7 @@ _2023-09-02_
 * New: Support for Java projects!
     * The same `sh.christian.aaraar` plugin can be applied to Java or Kotlin libraries that produce a `jar` file instead.
     * Configuration is also done through the same `aaraar` Gradle extension.
-    * See the new [publishing docs](https://aaraar.christian.sh/publishing-jar) for details on how to publish embedded `jar` files.
+    * See [publishing guide](https://aaraar.christian.sh/publishing-jar) for details on how to publish embedded `jar` files.
 
 ## Version 0.0.9
 
