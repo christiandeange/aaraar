@@ -2,7 +2,7 @@ import org.jetbrains.annotations.NotNull
 import sh.christian.aaraar.gradle.ApiJarProcessor
 import sh.christian.aaraar.gradle.ArtifactArchiveProcessor
 import sh.christian.aaraar.model.AarArchive
-import sh.christian.aaraar.model.classeditor.Classpath
+import sh.christian.aaraar.model.classeditor.MutableClasspath
 
 plugins {
   id "com.android.library"
@@ -109,7 +109,7 @@ afterEvaluate {
 
 class MyApiJarProcessor implements ApiJarProcessor {
   @Override
-  void processClasspath(@NotNull AarArchive aarArchive, @NotNull Classpath classpath) {
+  void processClasspath(@NotNull AarArchive aarArchive, @NotNull MutableClasspath classpath) {
     // Remove internal class
     classpath.removeClass("sh.christian.samplelib.FooInternal")
 

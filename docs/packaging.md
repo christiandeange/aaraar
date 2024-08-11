@@ -193,7 +193,7 @@ meant for internal use only:
 === "Kotlin"
 
     ```kotlin
-    class MyApiJarProcessor : ApiJarProcessor() {
+    class MyApiJarProcessor : ApiJarProcessor {
       override fun processClasspath(aarArchive: AarArchive, classpath: MutableClasspath) {
         // Remove internal class
         classpath.removeClass("com.example.TerminalSdkInternal")
@@ -208,7 +208,7 @@ meant for internal use only:
 === "Groovy"
 
     ```groovy
-    class MyApiJarProcessor extends ApiJarProcessor {
+    class MyApiJarProcessor implements ApiJarProcessor {
       @Override
       void processClasspath(@NotNull AarArchive aarArchive, @NotNull MutableClasspath classpath) {
         // Remove internal class
