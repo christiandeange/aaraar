@@ -79,9 +79,15 @@ internal constructor(
   /**
    * Adds an entire set of other classes from another classpath to this one.
    * Any classes you have defined in this classpath will be overwritten if also present in the other one.
+   * If [addAsInput] is `true`, the classes from the other classpath will also be included in the resulting JAR file.
    */
-  fun addClasspath(other: MutableClasspath) {
-    inputClasses += other.inputClasses
+  fun addClasspath(
+    other: MutableClasspath,
+    addAsInput: Boolean = true,
+  ) {
+    if (addAsInput) {
+      inputClasses += other.inputClasses
+    }
 
     classCache += other.classCache
     constructorCache += other.constructorCache
