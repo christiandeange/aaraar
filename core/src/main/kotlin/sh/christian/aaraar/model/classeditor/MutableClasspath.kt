@@ -12,12 +12,13 @@ import sh.christian.aaraar.model.GenericJarArchive
  * Represents a set of classes that are available at runtime.
  *
  * The full set of runtime classes is likely more than what is represented here, which is why calling [get] for any
- * unknown classes will return a virtual class definition that can still be modified and references as usual.
- * However, these virtual classes will be ignored when exporting the classpath via [toGenericJarArchive].
+ * unknown classes will return a virtual class definition that can still be referenced as usual.
+ * However, these virtual classes will be ignored when exporting the classpath via [toGenericJarArchive], and won't
+ * include all the information (like supertypes, declared functions, etc) that the real class would.
  */
 class MutableClasspath
 internal constructor(
-  internal val classPool: ClassPool,
+  private val classPool: ClassPool,
   private val originalJar: GenericJarArchive,
 ) : Classpath {
   private val classCache = mutableMapOf<String, MutableClassReference>()
@@ -36,9 +37,7 @@ internal constructor(
   }
 
   override operator fun get(className: String): MutableClassReference = synchronized(this) {
-    return requireNotNull(getOrNull(className)) {
-      "Class $className not found in classpath."
-    }
+    return getOrCreate(className)
   }
 
   override fun getOrNull(className: String): MutableClassReference? = synchronized(this) {
