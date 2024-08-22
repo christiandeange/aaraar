@@ -4,6 +4,10 @@ import javassist.CtClass
 import javassist.CtConstructor
 import javassist.CtField
 import javassist.CtMethod
+import kotlinx.metadata.jvm.KotlinClassMetadata
+import sh.christian.aaraar.model.classeditor.AnnotationInstance.Value.ArrayValue
+import sh.christian.aaraar.model.classeditor.AnnotationInstance.Value.IntegerValue
+import sh.christian.aaraar.model.classeditor.AnnotationInstance.Value.StringValue
 import sh.christian.aaraar.model.classeditor.Modifier.Companion.toModifiers
 
 /**
@@ -46,6 +50,11 @@ internal constructor(
     get() = _class.packageName
     set(value) {
       qualifiedName = "$value.$simpleName"
+    }
+
+  override val kotlinMetadata: KotlinClassMetadata.Class? =
+    (_class.getAnnotation(Metadata::class.java) as? Metadata)?.let { annotation ->
+      KotlinClassMetadata.readStrict(annotation) as? KotlinClassMetadata.Class
     }
 
   override var annotations: List<AnnotationInstance> by ::classAnnotations
@@ -153,6 +162,8 @@ internal constructor(
   }
 
   override fun toBytecode(): ByteArray {
+    updateKotlinMetadata()
+
     if (!_class.isFrozen) {
       _class.classFile.compact()
     }
@@ -170,6 +181,42 @@ internal constructor(
 
   override fun toString(): String {
     return qualifiedName
+  }
+
+  private fun updateKotlinMetadata() {
+    val annotationName = "kotlin.Metadata"
+    val existingMetadataAnnotations = annotations.filter { it.type.qualifiedName == annotationName }.toSet()
+
+    if (kotlinMetadata != null && existingMetadataAnnotations.isNotEmpty()) {
+      // Metadata existed on the class before, and the annotation hasn't been removed
+      val current = kotlinMetadata.write()
+      val default = Metadata()
+
+      @Suppress("KotlinConstantConditions")
+      annotations = annotations - existingMetadataAnnotations + annotationInstance(classpath[annotationName]) {
+        if (default.kind != current.kind) {
+          addValue("k", IntegerValue(current.kind))
+        }
+        if (!default.metadataVersion.contentEquals(current.metadataVersion)) {
+          addValue("mv", ArrayValue(current.metadataVersion.map(::IntegerValue)))
+        }
+        if (!default.data1.contentEquals(current.data1)) {
+          addValue("d1", ArrayValue(current.data1.map(::StringValue)))
+        }
+        if (!default.data2.contentEquals(current.data2)) {
+          addValue("d2", ArrayValue(current.data2.map(::StringValue)))
+        }
+        if (default.extraString != current.extraString) {
+          addValue("xs", StringValue(current.extraString))
+        }
+        if (default.packageName != current.packageName) {
+          addValue("pn", StringValue(current.packageName))
+        }
+        if (default.extraInt != current.extraInt) {
+          addValue("xi", IntegerValue(current.extraInt))
+        }
+      }
+    }
   }
 
   private inline fun <T : Any> resolveDeltas(

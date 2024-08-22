@@ -12,6 +12,7 @@ plugins {
 
 dependencies {
   api(libs.agp.tools.common)
+  api(libs.kotlin.metadata)
 
   implementation(platform(kotlin("bom")))
   implementation(libs.agp.layoutlib)

@@ -28,6 +28,9 @@ val foo2JarPath: Path
 val externalLibsPath: Path
   get() = Paths.get(resourceLoader.getResource("libs")!!.toURI())
 
+val ktLibraryPath: Path
+  get() = Paths.get(resourceLoader.getResource("kt-library.jar")!!.toURI())
+
 private val root: File
   get() = generateSequence(File(System.getProperty("user.dir"))) { it.parentFile }.last()
 

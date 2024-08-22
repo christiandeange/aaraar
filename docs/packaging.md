@@ -229,6 +229,13 @@ Further documentation for the kind of transformations available can be found by 
 
     At this time, creating new enum classes or modifications to existing enum classes will be ignored.
 
+!!! note "Modifying Kotlin Classes"
+
+    If you are inspecting and modifying Kotlin classes, at this time you will need to ensure that any modifications you
+    make to classes, constructors, methods, or fields are also reflected in the Kotlin metadata, accessible via the
+    [`ClassReference.kotlinMetadata`](https://aaraar.christian.sh/kdoc/aaraar/sh.christian.aaraar.model.classeditor/-class-reference/kotlin-metadata.html)
+    property.
+
 !!! note "Modifying Parameter Names"
 
     By default, parameter name metadata is not included in class files. If you wish to include parameter names in the
