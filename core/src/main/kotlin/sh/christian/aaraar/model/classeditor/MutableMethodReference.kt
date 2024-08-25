@@ -2,6 +2,13 @@ package sh.christian.aaraar.model.classeditor
 
 import javassist.CtMethod
 import javassist.bytecode.Descriptor
+import kotlinx.metadata.KmFunction
+import kotlinx.metadata.KmValueParameter
+import kotlinx.metadata.hasAnnotations
+import kotlinx.metadata.visibility
+import sh.christian.aaraar.model.classeditor.Modifier.Companion.toModifiers
+import sh.christian.aaraar.model.classeditor.metadata.signature
+import sh.christian.aaraar.model.classeditor.metadata.toVisibility
 
 /**
  * Represents a declared method for a particular class.
@@ -12,15 +19,35 @@ class MutableMethodReference
 internal constructor(
   internal val classpath: MutableClasspath,
   internal val _method: CtMethod,
-) : MutableMemberReference(_method), MethodReference {
-  override var name: String by _method::name
+) : MutableMemberReference(), MethodReference {
+  override val signature: Signature
+    get() = MethodSignature(_method.name, _method.methodInfo.descriptor)
+
+  val functionMetadata: KmFunction? =
+    classpath[_method.declaringClass].kotlinMetadata?.kmClass?.functions
+      ?.firstOrNull { it.signature() == signature }
+
+  override var modifiers: Set<Modifier>
+    get() = Modifier.fromModifiers(_method.modifiers)
+    set(value) {
+      _method.modifiers = value.toModifiers()
+      functionMetadata?.visibility = value.toVisibility()
+    }
+
+  override var name: String
+    get() = _method.name
+    set(value) {
+      _method.name = value
+      functionMetadata?.name = value
+    }
 
   override var annotations: List<AnnotationInstance> by ::methodAnnotations
 
-  override var returnType: ClassReference
+  override var returnType: MutableClassReference
     get() = classpath[_method.returnType]
     set(value) {
       _method.methodInfo.descriptor = Descriptor.changeReturnType(value.qualifiedName, _method.methodInfo.descriptor)
+      functionMetadata?.returnType?.classifier = classpath.kmClassifier(value.qualifiedName)
     }
 
   override var defaultValue: AnnotationInstance.Value? by ::annotationDefaultValue
@@ -35,7 +62,7 @@ internal constructor(
     get() {
       val parameterCount = Descriptor.numOfParameters(_method.methodInfo.descriptor)
       return List(parameterCount) { index ->
-        MutableParameter(classpath, _method, index)
+        MutableParameter(FromMethod(this), index)
       }
     }
 
@@ -45,6 +72,16 @@ internal constructor(
   /** Updates the list of all parameter arguments that this constructor must be invoked with. */
   fun setParameters(parameters: List<NewParameter>) {
     _method.setParameters(parameters)
+
+    functionMetadata?.valueParameters?.clear()
+    functionMetadata?.valueParameters?.addAll(
+      parameters.map {
+        KmValueParameter(it.name).apply {
+          type = classpath.kmType(it.type.qualifiedName)
+          hasAnnotations = it.annotations.isNotEmpty()
+        }
+      }
+    )
   }
 
   /** Replaces an individual parameter argument. */
@@ -52,7 +89,7 @@ internal constructor(
     index: Int,
     parameter: NewParameter,
   ) {
-    MutableParameter(classpath, _method, index).apply {
+    MutableParameter(FromMethod(this), index).apply {
       annotations = parameter.annotations
       name = parameter.name
       type = parameter.type

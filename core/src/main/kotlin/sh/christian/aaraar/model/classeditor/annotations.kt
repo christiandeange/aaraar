@@ -7,6 +7,7 @@ import javassist.bytecode.AttributeInfo
 import javassist.bytecode.ConstPool
 import javassist.bytecode.Descriptor
 import javassist.bytecode.ParameterAnnotationsAttribute
+import kotlinx.metadata.hasAnnotations
 import sh.christian.aaraar.model.classeditor.AnnotationInstance.Value.Companion.toValue
 
 internal var MutableClassReference.classAnnotations: List<AnnotationInstance>
@@ -27,6 +28,8 @@ internal var MutableClassReference.classAnnotations: List<AnnotationInstance>
       Attribute.InvisibleAnnotations,
       newAnnotation(constPool, invisible, Attribute.InvisibleAnnotations)
     )
+
+    kotlinMetadata?.kmClass?.hasAnnotations = value.isNotEmpty()
   }
 
 internal var MutableMethodReference.methodAnnotations: List<AnnotationInstance>
@@ -47,6 +50,8 @@ internal var MutableMethodReference.methodAnnotations: List<AnnotationInstance>
       Attribute.InvisibleAnnotations,
       newAnnotation(constPool, invisible, Attribute.InvisibleAnnotations),
     )
+
+    functionMetadata?.hasAnnotations = value.isNotEmpty()
   }
 
 internal var MutableConstructorReference.constructorAnnotations: List<AnnotationInstance>
@@ -67,6 +72,8 @@ internal var MutableConstructorReference.constructorAnnotations: List<Annotation
       Attribute.InvisibleAnnotations,
       newAnnotation(constPool, invisible, Attribute.InvisibleAnnotations),
     )
+
+    constructorMetadata?.hasAnnotations = value.isNotEmpty()
   }
 
 internal var MutableFieldReference.fieldAnnotations: List<AnnotationInstance>
@@ -87,6 +94,8 @@ internal var MutableFieldReference.fieldAnnotations: List<AnnotationInstance>
       Attribute.InvisibleAnnotations,
       newAnnotation(constPool, invisible, Attribute.InvisibleAnnotations),
     )
+
+    propertyMetadata?.hasAnnotations = value.isNotEmpty()
   }
 
 internal var MutableParameter.parameterAnnotations: List<AnnotationInstance>
@@ -106,6 +115,8 @@ internal var MutableParameter.parameterAnnotations: List<AnnotationInstance>
       Attribute.InvisibleParameterAnnotations,
       newParameterAnnotation(behavior, invisible, Attribute.InvisibleParameterAnnotations, index),
     )
+
+    parameterMetadata?.hasAnnotations = value.isNotEmpty()
   }
 
 internal var MutableMethodReference.annotationDefaultValue: AnnotationInstance.Value?

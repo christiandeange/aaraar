@@ -3,6 +3,7 @@ package sh.christian.aaraar.model.classeditor
 import javassist.CtBehavior
 import javassist.bytecode.ByteArray
 import javassist.bytecode.MethodParametersAttribute
+import kotlinx.metadata.KmValueParameter
 
 /**
  * Represents an argument that is part of a method or constructor signature.
@@ -11,10 +12,18 @@ import javassist.bytecode.MethodParametersAttribute
  */
 class MutableParameter
 internal constructor(
-  internal val classpath: MutableClasspath,
-  internal val behavior: CtBehavior,
+  private val owner: ParameterOwner,
   internal val index: Int,
 ) : Parameter {
+  internal val classpath: MutableClasspath = owner.classpath
+
+  internal val behavior: CtBehavior = owner.behavior
+
+  internal val parameterMetadata: KmValueParameter? = when (owner) {
+    is FromConstructor -> owner.constructor.constructorMetadata?.valueParameters?.getOrNull(index)
+    is FromMethod -> owner.method.functionMetadata?.valueParameters?.getOrNull(index)
+  }
+
   override var annotations: List<AnnotationInstance> by ::parameterAnnotations
 
   override var name: String
@@ -35,14 +44,18 @@ internal constructor(
 
       val newIndex = behavior.methodInfo.constPool.addUtf8Info(value)
       ByteArray.write16bit(newIndex, methodParameters.get(), index * INDEX_SIZE + 1)
+
+      parameterMetadata?.name = value
     }
 
   override var type: MutableClassReference
-    get() = classpath[behavior.parameterTypes[index]]
+    get() = owner.classpath[behavior.parameterTypes[index]]
     set(value) {
       val parameterTypes = behavior.parameterTypes
       parameterTypes[index] = value._class
       behavior.setParameterTypes(parameterTypes)
+
+      parameterMetadata?.type = classpath.kmType(value.qualifiedName)
     }
 
   override fun equals(other: Any?): Boolean {

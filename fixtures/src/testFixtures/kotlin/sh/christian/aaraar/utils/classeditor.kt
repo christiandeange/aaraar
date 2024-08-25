@@ -1,7 +1,6 @@
 package sh.christian.aaraar.utils
 
 import sh.christian.aaraar.model.GenericJarArchive
-import sh.christian.aaraar.model.classeditor.Classpath
 import sh.christian.aaraar.model.classeditor.MutableClasspath
 import kotlin.contracts.ExperimentalContracts
 import kotlin.contracts.InvocationKind.EXACTLY_ONCE

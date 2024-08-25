@@ -1,7 +1,5 @@
 package sh.christian.aaraar.model.classeditor
 
-import kotlinx.metadata.jvm.KotlinClassMetadata
-
 /**
  * Represents a class definition.
  */
@@ -23,9 +21,6 @@ interface ClassReference {
 
   /** The name of the package this class is defined in. */
   val packageName: String
-
-  /** The Kotlin metadata associated with this class, or `null` if none defined. */
-  val kotlinMetadata: KotlinClassMetadata.Class?
 
   /** The set of annotations applied to this class definition. */
   val annotations: List<AnnotationInstance>

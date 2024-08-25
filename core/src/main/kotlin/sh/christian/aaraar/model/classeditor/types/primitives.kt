@@ -1,5 +1,6 @@
 package sh.christian.aaraar.model.classeditor.types
 
+import javassist.CtClass
 import sh.christian.aaraar.model.classeditor.ClassReference
 import sh.christian.aaraar.model.classeditor.Classpath
 import sh.christian.aaraar.model.classeditor.MutableClassReference
@@ -75,4 +76,4 @@ val MutableClasspath.doubleType: MutableClassReference
 
 /** The primitive [Void] type. */
 val MutableClasspath.voidType: MutableClassReference
-  get() = get(Void::class.java)
+  get() = get(CtClass.voidType)

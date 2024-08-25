@@ -5,10 +5,15 @@ import javassist.CtConstructor
 import javassist.CtField
 import javassist.CtMethod
 import kotlinx.metadata.jvm.KotlinClassMetadata
+import kotlinx.metadata.visibility
 import sh.christian.aaraar.model.classeditor.AnnotationInstance.Value.ArrayValue
 import sh.christian.aaraar.model.classeditor.AnnotationInstance.Value.IntegerValue
 import sh.christian.aaraar.model.classeditor.AnnotationInstance.Value.StringValue
 import sh.christian.aaraar.model.classeditor.Modifier.Companion.toModifiers
+import sh.christian.aaraar.model.classeditor.metadata.signatures
+import sh.christian.aaraar.model.classeditor.metadata.toClassName
+import sh.christian.aaraar.model.classeditor.metadata.toVisibility
+import sh.christian.aaraar.model.classeditor.types.objectType
 
 /**
  * Represents a class definition.
@@ -20,6 +25,11 @@ internal constructor(
   internal val classpath: MutableClasspath,
   internal val _class: CtClass,
 ) : ClassReference {
+  internal val kotlinMetadata: KotlinClassMetadata.Class? =
+    (_class.getAnnotation(Metadata::class.java) as? Metadata)?.let { annotation ->
+      KotlinClassMetadata.readStrict(annotation) as? KotlinClassMetadata.Class
+    }
+
   override var classMajorVersion: Int
     get() = _class.classFile.majorVersion
     set(value) {
@@ -36,9 +46,15 @@ internal constructor(
     get() = Modifier.fromModifiers(_class.modifiers)
     set(value) {
       _class.modifiers = value.toModifiers()
+      kotlinMetadata?.kmClass?.visibility = value.toVisibility()
     }
 
-  override var qualifiedName: String by _class::name
+  override var qualifiedName: String
+    get() = _class.name
+    set(value) {
+      _class.name = value
+      kotlinMetadata?.kmClass?.name = value.toClassName()
+    }
 
   override var simpleName: String
     get() = _class.simpleName
@@ -52,23 +68,33 @@ internal constructor(
       qualifiedName = "$value.$simpleName"
     }
 
-  override val kotlinMetadata: KotlinClassMetadata.Class? =
-    (_class.getAnnotation(Metadata::class.java) as? Metadata)?.let { annotation ->
-      KotlinClassMetadata.readStrict(annotation) as? KotlinClassMetadata.Class
-    }
-
   override var annotations: List<AnnotationInstance> by ::classAnnotations
 
   override var superclass: MutableClassReference?
-    get() = _class.superclass?.let { classpath[it] }
+    get() = _class.superclass?.let { classpath[it] }.takeUnless { it == classpath.objectType }
     set(value) {
-      _class.superclass = value?._class
+      val supertype = value ?: classpath.objectType
+      val oldSuperType = classpath.kmClassifier(_class.superclass.name)
+      val newSuperType = classpath.kmType(supertype.qualifiedName)
+
+      _class.superclass = supertype._class
+      kotlinMetadata?.kmClass?.let { metadata ->
+        metadata.supertypes.removeIf { it.classifier == oldSuperType }
+        metadata.supertypes.add(newSuperType)
+      }
     }
 
   override var interfaces: List<MutableClassReference>
     get() = _class.interfaces.map { classpath[it] }
     set(value) {
+      val oldSuperTypes = _class.interfaces.map { classpath.kmType(it.name) }
+      val oldClassifiers = oldSuperTypes.map { it.classifier }
+
       _class.interfaces = value.mapToArray { it._class }
+      kotlinMetadata?.kmClass?.let { metadata ->
+        metadata.supertypes.removeIf { it.classifier in oldClassifiers }
+        metadata.supertypes.addAll(value.map { classpath.kmType(it.qualifiedName) })
+      }
     }
 
   override var constructors: List<MutableConstructorReference>
@@ -162,8 +188,6 @@ internal constructor(
   }
 
   override fun toBytecode(): ByteArray {
-    updateKotlinMetadata()
-
     if (!_class.isFrozen) {
       _class.classFile.compact()
     }
@@ -183,11 +207,21 @@ internal constructor(
     return qualifiedName
   }
 
-  private fun updateKotlinMetadata() {
+  internal fun finalizeClass() {
     val annotationName = "kotlin.Metadata"
     val existingMetadataAnnotations = annotations.filter { it.type.qualifiedName == annotationName }.toSet()
 
     if (kotlinMetadata != null && existingMetadataAnnotations.isNotEmpty()) {
+      val remainingSignatures: Set<Signature> =
+        (constructors.map { it.signature } + fields.map { it.signature } + methods.map { it.signature })
+          .toSet()
+
+      kotlinMetadata.kmClass.constructors.retainAll(constructors.mapNotNull { it.constructorMetadata })
+      kotlinMetadata.kmClass.functions.retainAll(methods.mapNotNull { it.functionMetadata })
+      kotlinMetadata.kmClass.properties.removeIf { property ->
+        (property.signatures() intersect remainingSignatures).isEmpty()
+      }
+
       // Metadata existed on the class before, and the annotation hasn't been removed
       val current = kotlinMetadata.write()
       val default = Metadata()

@@ -6,7 +6,10 @@ import javassist.CtConstructor
 import javassist.CtField
 import javassist.CtMethod
 import javassist.bytecode.annotation.Annotation
+import kotlinx.metadata.KmClassifier
+import kotlinx.metadata.KmType
 import sh.christian.aaraar.model.GenericJarArchive
+import sh.christian.aaraar.model.classeditor.metadata.toClassName
 
 /**
  * Represents a set of classes that are available at runtime.
@@ -21,6 +24,7 @@ internal constructor(
   private val classPool: ClassPool,
   private val originalJar: GenericJarArchive,
 ) : Classpath {
+  private val kmTypeCache = mutableMapOf<String, KmType>()
   private val classCache = mutableMapOf<String, MutableClassReference>()
   private val constructorCache = mutableMapOf<CtConstructor, MutableConstructorReference>()
   private val fieldCache = mutableMapOf<CtField, MutableFieldReference>()
@@ -49,6 +53,7 @@ internal constructor(
     if (knownClass != null) {
       return get(knownClass)
     } else {
+      cacheKmType(className)
       return classCache.getOrPut(className) {
         val newClass = classPool.makeClass(className)
         MutableClassReference(this, newClass)
@@ -94,9 +99,12 @@ internal constructor(
     fieldCache += other.fieldCache
     methodCache += other.methodCache
     annotationCache += other.annotationCache
+
+    other.classes.forEach { cacheKmType(it.qualifiedName) }
   }
 
   internal operator fun get(clazz: CtClass): MutableClassReference = synchronized(this) {
+    cacheKmType(clazz.name)
     classCache.getOrPut(clazz.name) { MutableClassReference(this, clazz) }
   }
 
@@ -117,6 +125,14 @@ internal constructor(
     visible: Boolean,
   ): AnnotationInstance = synchronized(this) {
     annotationCache.getOrPut(annotation) { AnnotationInstance(this, annotation, visible) }
+  }
+
+  internal fun kmType(className: String): KmType = synchronized(this) {
+    return cacheKmType(className)
+  }
+
+  internal fun kmClassifier(className: String): KmClassifier = synchronized(this) {
+    return kmType(className).classifier
   }
 
   /**
@@ -167,6 +183,8 @@ internal constructor(
   override fun toGenericJarArchive(): GenericJarArchive {
     val resources = originalJar.filterKeys { !it.endsWith(".class") }
 
+    inputClasses.forEach { it.finalizeClass() }
+
     val classes = inputClasses
       .associate { clazz ->
         val fileName = "${clazz.qualifiedName.replace('.', '/')}.class"
@@ -180,6 +198,27 @@ internal constructor(
       .filterValues { it.isNotEmpty() }
 
     return GenericJarArchive(classes + resources)
+  }
+
+  private fun cacheKmType(className: String): KmType {
+    val kotlinTypeName = when (className) {
+      "java.lang.Boolean", "boolean" -> "kotlin.Boolean"
+      "java.lang.Character", "char" -> "kotlin.Char"
+      "java.lang.Byte", "byte" -> "kotlin.Byte"
+      "java.lang.Short", "short" -> "kotlin.Short"
+      "java.lang.Integer", "int" -> "kotlin.Int"
+      "java.lang.Long", "long" -> "kotlin.Long"
+      "java.lang.Float", "float" -> "kotlin.Float"
+      "java.lang.Double", "double" -> "kotlin.Double"
+      "java.lang.Void", "void" -> "kotlin.Unit"
+      "java.lang.Object" -> "kotlin.Any"
+      "java.lang.String" -> "kotlin.String"
+      else -> className
+    }
+
+    return kmTypeCache.getOrPut(kotlinTypeName) {
+      KmType().apply { classifier = KmClassifier.Class(kotlinTypeName.toClassName()) }
+    }
   }
 
   companion object {

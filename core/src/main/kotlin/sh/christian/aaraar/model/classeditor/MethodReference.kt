@@ -6,6 +6,9 @@ import sh.christian.aaraar.model.classeditor.types.voidType
  * Represents a declared method for a particular class.
  */
 interface MethodReference : MemberReference {
+  /** The JVM method signature. */
+  val signature: Signature
+
   /** The [Parameter] arguments that this constructor must be invoked with. */
   val parameters: List<Parameter>
 

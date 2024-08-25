@@ -2,6 +2,11 @@ package sh.christian.aaraar.model.classeditor
 
 import javassist.CtField
 import javassist.bytecode.ConstantAttribute
+import kotlinx.metadata.KmProperty
+import kotlinx.metadata.visibility
+import sh.christian.aaraar.model.classeditor.Modifier.Companion.toModifiers
+import sh.christian.aaraar.model.classeditor.metadata.fieldSignature
+import sh.christian.aaraar.model.classeditor.metadata.toVisibility
 
 /**
  * Represents a declared field for a particular class.
@@ -12,9 +17,27 @@ class MutableFieldReference
 internal constructor(
   internal val classpath: MutableClasspath,
   internal val _field: CtField,
-) : MutableMemberReference(_field), FieldReference {
+) : MutableMemberReference(), FieldReference {
+  override val signature: Signature
+    get() = FieldSignature(_field.name, _field.fieldInfo.descriptor)
 
-  override var name: String by _field::name
+  val propertyMetadata: KmProperty? =
+    classpath[_field.declaringClass].kotlinMetadata?.kmClass?.properties
+      ?.firstOrNull { it.fieldSignature() == signature }
+
+  override var modifiers: Set<Modifier>
+    get() = Modifier.fromModifiers(_field.modifiers)
+    set(value) {
+      _field.modifiers = value.toModifiers()
+      propertyMetadata?.visibility = value.toVisibility()
+    }
+
+  override var name: String
+    get() = _field.name
+    set(value) {
+      _field.name = value
+      propertyMetadata?.name = value
+    }
 
   override var annotations: List<AnnotationInstance> by ::fieldAnnotations
 
@@ -22,6 +45,7 @@ internal constructor(
     get() = classpath[_field.type]
     set(value) {
       _field.type = value._class
+      propertyMetadata?.returnType?.classifier = classpath.kmClassifier(value.qualifiedName)
     }
 
   /** Removes bytecode stored to describe this field's constant value, if it is a `static final` field. */

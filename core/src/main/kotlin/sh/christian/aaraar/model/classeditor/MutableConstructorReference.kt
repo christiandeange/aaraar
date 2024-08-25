@@ -2,6 +2,13 @@ package sh.christian.aaraar.model.classeditor
 
 import javassist.CtConstructor
 import javassist.bytecode.Descriptor
+import kotlinx.metadata.KmConstructor
+import kotlinx.metadata.KmValueParameter
+import kotlinx.metadata.hasAnnotations
+import kotlinx.metadata.visibility
+import sh.christian.aaraar.model.classeditor.Modifier.Companion.toModifiers
+import sh.christian.aaraar.model.classeditor.metadata.signature
+import sh.christian.aaraar.model.classeditor.metadata.toVisibility
 
 /**
  * Represents a declared constructor for a particular class.
@@ -12,7 +19,21 @@ class MutableConstructorReference
 internal constructor(
   internal val classpath: MutableClasspath,
   internal val _constructor: CtConstructor,
-) : MutableMemberReference(_constructor), ConstructorReference {
+) : MutableMemberReference(), ConstructorReference {
+  override val signature: Signature
+    get() = ConstructorSignature(_constructor.methodInfo.descriptor)
+
+  val constructorMetadata: KmConstructor? =
+    classpath[_constructor.declaringClass].kotlinMetadata?.kmClass?.constructors
+      ?.firstOrNull { it.signature() == signature }
+
+  override var modifiers: Set<Modifier>
+    get() = Modifier.fromModifiers(_constructor.modifiers)
+    set(value) {
+      _constructor.modifiers = value.toModifiers()
+      constructorMetadata?.visibility = value.toVisibility()
+    }
+
   override val name: String by _constructor::name
 
   override val type: ClassReference get() = classpath[_constructor.declaringClass]
@@ -29,7 +50,7 @@ internal constructor(
     get() {
       val parameterCount = Descriptor.numOfParameters(_constructor.methodInfo.descriptor)
       return List(parameterCount) { index ->
-        MutableParameter(classpath, _constructor, index)
+        MutableParameter(FromConstructor(this), index)
       }
     }
 
@@ -39,6 +60,16 @@ internal constructor(
   /** Updates the list of all parameter arguments that this constructor must be invoked with. */
   fun setParameters(parameters: List<NewParameter>) {
     _constructor.setParameters(parameters)
+
+    constructorMetadata?.valueParameters?.clear()
+    constructorMetadata?.valueParameters?.addAll(
+      parameters.map {
+        KmValueParameter(it.name).apply {
+          type = classpath.kmType(it.type.qualifiedName)
+          hasAnnotations = it.annotations.isNotEmpty()
+        }
+      }
+    )
   }
 
   /** Replaces an individual parameter argument. */
@@ -46,7 +77,7 @@ internal constructor(
     index: Int,
     parameter: NewParameter,
   ) {
-    MutableParameter(classpath, _constructor, index).apply {
+    MutableParameter(FromConstructor(this), index).apply {
       annotations = parameter.annotations
       name = parameter.name
       type = parameter.type
