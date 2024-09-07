@@ -5,6 +5,8 @@ package sh.christian.aaraar.gradle
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.artifacts.type.ArtifactTypeDefinition.ARTIFACT_TYPE_ATTRIBUTE
+import org.gradle.api.attributes.java.TargetJvmEnvironment
+import org.gradle.api.attributes.java.TargetJvmEnvironment.TARGET_JVM_ENVIRONMENT_ATTRIBUTE
 import org.gradle.api.publish.maven.tasks.AbstractPublishToMaven
 import org.gradle.api.publish.tasks.GenerateModuleMetadata
 import org.gradle.api.tasks.bundling.Jar
@@ -77,6 +79,9 @@ class AarAarPlugin : Plugin<Project> {
       isTransitive = false
       isCanBeConsumed = true
       isCanBeResolved = true
+      attributes {
+        attribute(TARGET_JVM_ENVIRONMENT_ATTRIBUTE, objects.named(TargetJvmEnvironment.STANDARD_JVM))
+      }
     }
 
     val jarTask = tasks.named<Jar>("jar")
@@ -121,6 +126,7 @@ class AarAarPlugin : Plugin<Project> {
       isCanBeResolved = true
       attributes {
         attribute(ARTIFACT_TYPE_ATTRIBUTE, MERGEABLE_ARTIFACT_TYPE)
+        attribute(TARGET_JVM_ENVIRONMENT_ATTRIBUTE, objects.named(TargetJvmEnvironment.ANDROID))
       }
     }
 
