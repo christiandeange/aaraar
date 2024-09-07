@@ -5,6 +5,7 @@ package sh.christian.aaraar.gradle
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.artifacts.type.ArtifactTypeDefinition.ARTIFACT_TYPE_ATTRIBUTE
+import org.gradle.api.attributes.java.TargetJvmEnvironment.TARGET_JVM_ENVIRONMENT_ATTRIBUTE
 import org.gradle.api.publish.maven.tasks.AbstractPublishToMaven
 import org.gradle.api.publish.tasks.GenerateModuleMetadata
 import org.gradle.api.tasks.bundling.Jar
@@ -42,6 +43,11 @@ class AarAarPlugin : Plugin<Project> {
         attribute(ARTIFACT_TYPE_ATTRIBUTE) {
           compatibilityRules.add(ArtifactTypeCompatibilityDependencyRule::class)
           disambiguationRules.add(ArtifactTypeDisambiguationDependencyRule::class)
+        }
+
+        attribute(TARGET_JVM_ENVIRONMENT_ATTRIBUTE) {
+          compatibilityRules.add(TargetJvmEnvironmentCompatibilityDependencyRule::class)
+          disambiguationRules.add(TargetJvmEnvironmentDisambiguationDependencyRule::class)
         }
       }
 
@@ -121,6 +127,7 @@ class AarAarPlugin : Plugin<Project> {
       isCanBeResolved = true
       attributes {
         attribute(ARTIFACT_TYPE_ATTRIBUTE, MERGEABLE_ARTIFACT_TYPE)
+        attribute(TARGET_JVM_ENVIRONMENT_ATTRIBUTE, objects.named(MERGEABLE_ENVIRONMENT))
       }
     }
 
