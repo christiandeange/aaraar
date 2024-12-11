@@ -1,6 +1,17 @@
 Change Log
 ==========
 
+## Version 0.0.18
+
+_2024-12-11_
+
+* Update: Set the `org.gradle.jvm.environment` capability on embed configurations.
+* Update: Improvements to `api.jar` generation:
+    * Expose Kotlin `@Metadata` annotation property.
+    * Automatically update Kotlin metadata when member changes.
+    * [`Classpath.get()`](https://aaraar.christian.sh/kdoc/aaraar/sh.christian.aaraar.model.classeditor/-classpath/get.html) returns a virtual definition if not found.
+* Fix: Android resources from embedded dependencies could not be resolved.
+
 ## Version 0.0.17
 
 _2024-08-10_
