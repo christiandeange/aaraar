@@ -20,6 +20,8 @@ internal constructor(
 ) : Map<String, ByteArray> by archiveEntries {
 
   fun bytes(): ByteArray {
+    if (isEmpty()) return byteArrayOf()
+
     val tempJarFile = Files.createTempFile("out", ".jar").deleteIfExists()
     return try {
       writeTo(tempJarFile)

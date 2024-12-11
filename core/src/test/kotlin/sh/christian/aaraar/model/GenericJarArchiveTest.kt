@@ -29,4 +29,9 @@ class GenericJarArchiveTest {
       }
     }
   }
+
+  @Test
+  fun `empty jar has empty bytes`() {
+    GenericJarArchive.NONE.bytes() shouldBe byteArrayOf()
+  }
 }
