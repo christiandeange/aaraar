@@ -1,4 +1,4 @@
-![Maven Central](https://img.shields.io/maven-central/v/sh.christian.aaraar/gradle-plugin?versionPrefix=0.0.17) ![CI](https://github.com/christiandeange/aaraar/actions/workflows/ci.yml/badge.svg)
+![Maven Central](https://img.shields.io/maven-central/v/sh.christian.aaraar/gradle-plugin?versionPrefix=0.0.18) ![CI](https://github.com/christiandeange/aaraar/actions/workflows/ci.yml/badge.svg)
 
 # aaraar
 
