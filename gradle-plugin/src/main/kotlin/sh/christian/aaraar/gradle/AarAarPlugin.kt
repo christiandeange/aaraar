@@ -23,6 +23,7 @@ import sh.christian.aaraar.packaging.PackagingEnvironment
 import sh.christian.aaraar.packaging.PackagingEnvironment.JniLibs
 import sh.christian.aaraar.packaging.PackagingEnvironment.Resources
 import sh.christian.aaraar.packaging.ShadeConfigurationRule
+import sh.christian.aaraar.packaging.ShadeConfigurationScope
 import sh.christian.aaraar.packaging.ShadeEnvironment
 
 /**
@@ -153,21 +154,40 @@ class AarAarPlugin : Plugin<Project> {
     aaraar: AarAarExtension,
     variant: AndroidVariant?,
   ): ShadeEnvironment {
-    val allConfigurations = aaraar.shading.configurations.get()
-
-    val resourceExclusions = variant?.packaging?.resources?.excludes?.orNull.orEmpty()
-
     return ShadeEnvironment(
-      rules = allConfigurations.map {
-        ShadeConfigurationRule(
-          scope = it.scopeSelector,
-          configuration = ShadeConfiguration(
-            classRenames = it.classRenames.get(),
-            classDeletes = it.classDeletes.get(),
-            resourceExclusions = resourceExclusions,
-          ),
+      rules = buildList {
+        if (variant != null) {
+          val resourceExclusions = variant.packaging.resources.excludes.getOrElse(emptySet())
+
+          add(
+            ShadeConfigurationRule(
+              scope = ShadeConfigurationScope.All,
+              configuration = ShadeConfiguration(
+                // Rename all embedded R class references to use the namespace of the merged aar.
+                classRenames = mapOf("**.R\$*" to "${variant.namespace}.R\$@2"),
+                // Delete those embedded R classes from the merged aar.
+                classDeletes = setOf("**.R\$*", "**.R"),
+                resourceExclusions = resourceExclusions,
+              ),
+            )
+          )
+        }
+
+        val allConfigurations = aaraar.shading.configurations.get()
+
+        addAll(
+          allConfigurations.map {
+            ShadeConfigurationRule(
+              scope = it.scopeSelector,
+              configuration = ShadeConfiguration(
+                classRenames = it.classRenames.get(),
+                classDeletes = it.classDeletes.get(),
+                resourceExclusions = emptySet(),
+              ),
+            )
+          }
         )
-      }
+      },
     )
   }
 

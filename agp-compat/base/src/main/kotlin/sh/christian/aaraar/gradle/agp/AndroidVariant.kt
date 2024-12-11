@@ -19,6 +19,11 @@ interface AndroidVariant {
   val buildType: String?
 
   /**
+   * The namespace of the variant for generated R and BuildConfig classes.
+   */
+  val namespace: String
+
+  /**
    * The packaging options for handling resource merge conflicts from dependencies.
    */
   val packaging: AndroidPackaging

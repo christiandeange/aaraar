@@ -11,6 +11,7 @@ internal class Agp8AndroidVariant(
 ) : AndroidVariant {
   override val variantName: String = variant.name
   override val buildType: String? = variant.buildType
+  override val namespace: String get() = variant.namespace.get()
   override val packaging: AndroidPackaging = Agp8AndroidPackaging(variant.packaging)
 
   override fun <T : Task> registerAarTransform(
