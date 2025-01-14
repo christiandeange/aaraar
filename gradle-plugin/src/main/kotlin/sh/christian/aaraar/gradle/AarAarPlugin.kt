@@ -80,9 +80,9 @@ class AarAarPlugin : Plugin<Project> {
       isTransitive = false
       isCanBeConsumed = true
       isCanBeResolved = true
-      attributes {
-        attribute(TARGET_JVM_ENVIRONMENT_ATTRIBUTE, objects.named(TargetJvmEnvironment.STANDARD_JVM))
-      }
+
+      // Match incoming dependencies and tag outgoing artifacts as targeting the JVM.
+      attributes.attribute(TARGET_JVM_ENVIRONMENT_ATTRIBUTE, objects.named(TargetJvmEnvironment.STANDARD_JVM))
     }
 
     val jarTask = tasks.named<Jar>("jar")
@@ -96,6 +96,12 @@ class AarAarPlugin : Plugin<Project> {
 
       inputJar.set(jarTask.flatMap { it.archiveFile })
       outputJar.set(jarTask.flatMap { it.archiveFile })
+    }
+
+    embed.outgoing {
+      // Outgoing artifact is a merged jar (which is still considered mergeable!)
+      artifact(packageJar.flatMap { it.outputJar })
+      attributes.attribute(ARTIFACT_TYPE_ATTRIBUTE, MERGED_ARTIFACT_TYPE)
     }
 
     // These tasks are created by the `maven-publish` plugin.
@@ -117,18 +123,20 @@ class AarAarPlugin : Plugin<Project> {
       extendsFrom(configurations.getAt("embed"))
       variant.buildType?.let { buildType ->
         extendsFrom(configurations.getAt("${buildType}Embed"))
-        attributes {
-          with(agp) { buildTypeAttribute(buildType) }
-        }
+
+        // Add build type attribute to match incoming dependencies and tag outgoing artifacts.
+        with(agp) { attributes.buildTypeAttribute(buildType) }
       }
 
       isTransitive = false
-      isCanBeConsumed = false
+      isCanBeConsumed = true
       isCanBeResolved = true
-      attributes {
-        attribute(ARTIFACT_TYPE_ATTRIBUTE, MERGEABLE_ARTIFACT_TYPE)
-        attribute(TARGET_JVM_ENVIRONMENT_ATTRIBUTE, objects.named(TargetJvmEnvironment.ANDROID))
-      }
+
+      // Match incoming dependencies and tag outgoing artifacts as targeting Android.
+      attributes.attribute(TARGET_JVM_ENVIRONMENT_ATTRIBUTE, objects.named(TargetJvmEnvironment.ANDROID))
+
+      // Incoming dependencies should be mergeable artifacts as per ArtifactTypeCompatibilityDependencyRule.
+      incoming.attributes.attribute(ARTIFACT_TYPE_ATTRIBUTE, MERGEABLE_ARTIFACT_TYPE)
     }
 
     val androidAaptIgnoreEnv = providers.environmentVariable("ANDROID_AAPT_IGNORE").orElse("")
@@ -148,6 +156,12 @@ class AarAarPlugin : Plugin<Project> {
       PackageAarTask::inputAar,
       PackageAarTask::outputAar,
     )
+
+    variantEmbedClasspath.outgoing {
+      // Outgoing artifact is a merged aar (which is still considered mergeable!)
+      artifact(packageVariantAar.flatMap { it.outputAar })
+      attributes.attribute(ARTIFACT_TYPE_ATTRIBUTE, MERGED_ARTIFACT_TYPE)
+    }
   }
 
   private fun parseShadeEnvironment(
