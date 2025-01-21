@@ -4,7 +4,11 @@ package sh.christian.aaraar.gradle
 
 import org.gradle.api.Plugin
 import org.gradle.api.Project
+import org.gradle.api.artifacts.Configuration
+import org.gradle.api.artifacts.ModuleDependency
 import org.gradle.api.artifacts.type.ArtifactTypeDefinition.ARTIFACT_TYPE_ATTRIBUTE
+import org.gradle.api.attributes.Usage
+import org.gradle.api.attributes.Usage.USAGE_ATTRIBUTE
 import org.gradle.api.attributes.java.TargetJvmEnvironment
 import org.gradle.api.attributes.java.TargetJvmEnvironment.TARGET_JVM_ENVIRONMENT_ATTRIBUTE
 import org.gradle.api.publish.maven.tasks.AbstractPublishToMaven
@@ -49,14 +53,26 @@ class AarAarPlugin : Plugin<Project> {
       }
 
       configurations.create("embed") {
-        isTransitive = false
+        setTransitivity(false)
+        isCanBeConsumed = true
+        isCanBeResolved = false
+      }
+
+      configurations.create("embedTree") {
+        setTransitivity(true)
         isCanBeConsumed = true
         isCanBeResolved = false
       }
 
       agp.android.onBuildTypes { buildType ->
         configurations.create("${buildType}Embed") {
-          isTransitive = false
+          setTransitivity(false)
+          isCanBeConsumed = true
+          isCanBeResolved = false
+        }
+
+        configurations.create("${buildType}EmbedTree") {
+          setTransitivity(true)
           isCanBeConsumed = true
           isCanBeResolved = false
         }
@@ -77,18 +93,34 @@ class AarAarPlugin : Plugin<Project> {
     val aaraar = extensions.getByType<AarAarExtension>()
 
     val embed = configurations.create("embed") {
-      isTransitive = false
+      setTransitivity(false)
+      isCanBeConsumed = true
+      isCanBeResolved = false
+    }
+
+    val embedTree = configurations.create("embedTree") {
+      setTransitivity(true)
+      isCanBeConsumed = true
+      isCanBeResolved = false
+    }
+
+    val classpath = configurations.create("embedClasspath") {
+      extendsFrom(embed)
+      extendsFrom(embedTree)
+
+      setTransitivity(true)
       isCanBeConsumed = true
       isCanBeResolved = true
 
       // Match incoming dependencies and tag outgoing artifacts as targeting the JVM.
       attributes.attribute(TARGET_JVM_ENVIRONMENT_ATTRIBUTE, objects.named(TargetJvmEnvironment.STANDARD_JVM))
+      attributes.attribute(USAGE_ATTRIBUTE, objects.named(Usage.JAVA_RUNTIME))
     }
 
     val jarTask = tasks.named<Jar>("jar")
 
     val packageJar = tasks.register<PackageJarTask>("packageJar") {
-      embedClasspath.set(embed)
+      embedClasspath.set(classpath)
 
       shadeEnvironment.set(parseShadeEnvironment(aaraar, variant = null))
       packagingEnvironment.set(PackagingEnvironment.None)
@@ -98,7 +130,7 @@ class AarAarPlugin : Plugin<Project> {
       outputJar.set(jarTask.flatMap { it.archiveFile })
     }
 
-    embed.outgoing {
+    classpath.outgoing {
       // Outgoing artifact is a merged jar (which is still considered mergeable!)
       artifact(packageJar.flatMap { it.outputJar })
       attributes.attribute(ARTIFACT_TYPE_ATTRIBUTE, MERGED_ARTIFACT_TYPE)
@@ -121,19 +153,23 @@ class AarAarPlugin : Plugin<Project> {
 
     val variantEmbedClasspath = configurations.create(variant.name(suffix = "EmbedClasspath")) {
       extendsFrom(configurations.getAt("embed"))
+      extendsFrom(configurations.getAt("embedTree"))
+
       variant.buildType?.let { buildType ->
         extendsFrom(configurations.getAt("${buildType}Embed"))
+        extendsFrom(configurations.getAt("${buildType}EmbedTree"))
 
         // Add build type attribute to match incoming dependencies and tag outgoing artifacts.
         with(agp) { attributes.buildTypeAttribute(buildType) }
       }
 
-      isTransitive = false
+      setTransitivity(true)
       isCanBeConsumed = true
       isCanBeResolved = true
 
       // Match incoming dependencies and tag outgoing artifacts as targeting Android.
       attributes.attribute(TARGET_JVM_ENVIRONMENT_ATTRIBUTE, objects.named(TargetJvmEnvironment.ANDROID))
+      attributes.attribute(USAGE_ATTRIBUTE, objects.named(Usage.JAVA_RUNTIME))
 
       // Incoming dependencies should be mergeable artifacts as per ArtifactTypeCompatibilityDependencyRule.
       incoming.attributes.attribute(ARTIFACT_TYPE_ATTRIBUTE, MERGEABLE_ARTIFACT_TYPE)
@@ -221,5 +257,15 @@ class AarAarPlugin : Plugin<Project> {
         excludes = resources.excludes.get(),
       ),
     )
+  }
+
+  private fun Configuration.setTransitivity(transitive: Boolean) {
+    isTransitive = transitive
+
+    dependencies.whenObjectAdded {
+      if (this is ModuleDependency) {
+        isTransitive = transitive
+      }
+    }
   }
 }

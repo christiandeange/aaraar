@@ -1,4 +1,9 @@
-Use the `embed` configuration to include dependencies in a module's packaged output.
+The Gradle plugin exposes two configurations for you to include dependencies in a module's packaged output:
+
+| Configuration | Description                                                                             |
+|---------------|-----------------------------------------------------------------------------------------|
+| `embed`       | Include only this dependency in the packaged output.                                    |
+| `embedTree`   | Include this dependency and all of its own runtime dependencies in the packaged output. |
 
 === "Kotlin"
 
@@ -18,14 +23,40 @@ Use the `embed` configuration to include dependencies in a module's packaged out
     }
     ```
 
-Declaring an `embed` dependency only includes it in the packaged output, it does **not** make that dependency available
+Declaring an embedded dependency only includes it in the packaged output, it does **not** make that dependency available
 during compilation! If you wish to reference any classes in the embedded dependency in your Gradle module, you will also
-need to declare it as a `compileOnly` dependency as shown above.
+need to declare it as a `compileOnly` dependency as shown above. You can also configure this automatically by making
+embedded dependencies available during compilation:
 
-!!! note "Note"
+=== "Kotlin"
 
-    `compileOnly` and `embed` dependencies will not show up in the published pom file unless also declared as `api` or
-    `implementation` dependencies.
+    ```kotlin
+    dependencies {
+      embed(project(":internal"))
+    }
+
+    configurations.compileOnly.configure {
+      extendsFrom(configurations["embed"])
+      extendsFrom(configurations["embedTree"])
+    }
+    ```
+
+=== "Groovy"
+
+    ```groovy
+    dependencies {
+      embed project(":internal")
+    }
+
+    configurations.compileOnly {
+      extendsFrom configurations.embed
+      extendsFrom configurations.embedTree
+    }
+    ```
+
+Adding embedded dependencies to `compileOnly` is intentional; if they are also added as `implementation` or `api`
+dependencies, they will show up in the published POM file, causing duplicated class conflicts for downstream consumers
+of your merged artifact!
 
 In Android modules, embed configurations can also be declared for individual build types, including custom ones:
 
@@ -63,6 +94,69 @@ In Android modules, embed configurations can also be declared for individual bui
       compileOnly project(":internal")
       publishEmbed project(":internal")
     }
+    ```
+
+`embedTree` is necessary if you wish to embed a dependency that has its own transitive runtime dependencies, especially
+for third-party dependencies. If such a dependency was included in `embed` instead, projects that consume the merged
+artifact will be responsible for providing their own dependencies at runtime for the missing dependencies.
+The difference between `embed` and `embedTree` can be seen when running a Gradle task to visualize the dependency tree
+for a given configuration:
+
+=== "embed"
+
+    === "Kotlin"
+
+        ```kotlin
+        dependencies {
+          releaseEmbed("com.google.crypto.tink:tink-android:1.16.0")
+        }
+        ```
+
+    === "Groovy"
+
+        ```groovy
+        dependencies {
+          releaseEmbed 'com.google.crypto.tink:tink-android:1.16.0'
+        }
+        ```
+
+    ```
+    $ ./gradlew :app:dependencies --configuration releaseEmbedClasspath
+
+    releaseEmbedClasspath
+    \--- com.google.crypto.tink:tink-android:1.16.0
+    ```
+
+=== "embedTree"
+
+    === "Kotlin"
+
+        ```kotlin
+        dependencies {
+          releaseEmbedTree("com.google.crypto.tink:tink-android:1.16.0")
+        }
+        ```
+
+    === "Groovy"
+
+        ```groovy
+        dependencies {
+          releaseEmbedTree 'com.google.crypto.tink:tink-android:1.16.0'
+        }
+        ```
+
+    ```
+    $ ./gradlew :app:dependencies --configuration releaseEmbedClasspath
+
+    releaseEmbedClasspath
+    \--- com.google.crypto.tink:tink-android:1.16.0
+     +--- androidx.annotation:annotation-jvm:1.8.2
+     |    \--- org.jetbrains.kotlin:kotlin-stdlib:1.7.10
+     |         +--- org.jetbrains.kotlin:kotlin-stdlib-common:1.7.10
+     |         \--- org.jetbrains:annotations:13.0
+     +--- com.google.code.findbugs:jsr305:3.0.2
+     +--- com.google.code.gson:gson:2.10.1
+     \--- com.google.errorprone:error_prone_annotations:2.22.0
     ```
 
 ### META-INF files

@@ -20,7 +20,7 @@ The plugin only needs to be applied to modules you intend to publish as artifact
     }
     ```
 
-### Android modules
+### Android
 
 For Android modules, aaraar is configured to run automatically as part of the assemble pipeline for all variants, unless
 configured otherwise via the provided `aaraar` extension. It is recommended that you only enable aaraar for variant(s)
@@ -34,7 +34,7 @@ aaraar {
 }
 ```
 
-### JVM modules
+### JVM
 
 By default, the `packageJar` task will overwrite the output of the `jar` task with the merged jar file, but this can
 be customized to suit your needs by changing the `PackageJar.outputJar` task output file property.
