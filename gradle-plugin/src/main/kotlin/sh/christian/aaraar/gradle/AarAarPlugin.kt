@@ -15,6 +15,7 @@ import org.gradle.api.publish.maven.tasks.AbstractPublishToMaven
 import org.gradle.api.publish.tasks.GenerateModuleMetadata
 import org.gradle.api.tasks.bundling.Jar
 import org.gradle.kotlin.dsl.add
+import org.gradle.kotlin.dsl.create
 import org.gradle.kotlin.dsl.getByType
 import org.gradle.kotlin.dsl.named
 import org.gradle.kotlin.dsl.register
@@ -36,56 +37,13 @@ import sh.christian.aaraar.packaging.ShadeEnvironment
  */
 class AarAarPlugin : Plugin<Project> {
   override fun apply(target: Project) = with(target) {
-    val aaraar = extensions.create("aaraar", AarAarExtension::class.java)
+    extensions.create<AarAarExtension>("aaraar")
 
     pluginManager.withPlugin("java") {
       applyPluginToJavaLibrary()
     }
-
     pluginManager.withPlugin("com.android.library") {
-      val agp = project.agp
-
-      dependencies.attributesSchema {
-        attribute(ARTIFACT_TYPE_ATTRIBUTE) {
-          compatibilityRules.add(ArtifactTypeCompatibilityDependencyRule::class)
-          disambiguationRules.add(ArtifactTypeDisambiguationDependencyRule::class)
-        }
-      }
-
-      configurations.create("embed") {
-        setTransitivity(false)
-        isCanBeConsumed = true
-        isCanBeResolved = false
-      }
-
-      configurations.create("embedTree") {
-        setTransitivity(true)
-        isCanBeConsumed = true
-        isCanBeResolved = false
-      }
-
-      agp.android.onBuildTypes { buildType ->
-        configurations.create("${buildType}Embed") {
-          setTransitivity(false)
-          isCanBeConsumed = true
-          isCanBeResolved = false
-        }
-
-        configurations.create("${buildType}EmbedTree") {
-          setTransitivity(true)
-          isCanBeConsumed = true
-          isCanBeResolved = false
-        }
-      }
-
-      agp.onVariants { variant ->
-        val isEnabledForVariant = aaraar.variantFilter.apply { disallowChanges() }.get()
-        if (isEnabledForVariant(VariantDescriptor(variant.variantName, variant.buildType))) {
-          applyPluginToAndroidVariant(agp, variant)
-        } else {
-          logger.info("aaraar packaging disabled for ${variant.variantName}, skipping...")
-        }
-      }
+      applyPluginToAndroidLibrary()
     }
   }
 
@@ -142,6 +100,53 @@ class AarAarPlugin : Plugin<Project> {
     }
     tasks.withType<AbstractPublishToMaven>().configureEach {
       dependsOn(packageJar)
+    }
+  }
+
+  private fun Project.applyPluginToAndroidLibrary() {
+    val aaraar = extensions.getByType<AarAarExtension>()
+    val agp = project.agp
+
+    dependencies.attributesSchema {
+      attribute(ARTIFACT_TYPE_ATTRIBUTE) {
+        compatibilityRules.add(ArtifactTypeCompatibilityDependencyRule::class)
+        disambiguationRules.add(ArtifactTypeDisambiguationDependencyRule::class)
+      }
+    }
+
+    configurations.create("embed") {
+      setTransitivity(false)
+      isCanBeConsumed = true
+      isCanBeResolved = false
+    }
+
+    configurations.create("embedTree") {
+      setTransitivity(true)
+      isCanBeConsumed = true
+      isCanBeResolved = false
+    }
+
+    agp.android.onBuildTypes { buildType ->
+      configurations.create("${buildType}Embed") {
+        setTransitivity(false)
+        isCanBeConsumed = true
+        isCanBeResolved = false
+      }
+
+      configurations.create("${buildType}EmbedTree") {
+        setTransitivity(true)
+        isCanBeConsumed = true
+        isCanBeResolved = false
+      }
+    }
+
+    agp.onVariants { variant ->
+      val isEnabledForVariant = aaraar.variantFilter.apply { disallowChanges() }.get()
+      if (isEnabledForVariant(VariantDescriptor(variant.variantName, variant.buildType))) {
+        applyPluginToAndroidVariant(agp, variant)
+      } else {
+        logger.info("aaraar packaging disabled for ${variant.variantName}, skipping...")
+      }
     }
   }
 
