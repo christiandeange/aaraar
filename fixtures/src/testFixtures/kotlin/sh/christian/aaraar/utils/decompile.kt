@@ -13,8 +13,12 @@ import java.nio.file.Files
 import java.util.jar.Manifest
 
 fun decompile(classReference: ClassReference): String {
+  return decompile(classReference.toBytecode())
+}
+
+fun decompile(bytecode: ByteArray): String {
   val writer = StringWriter()
-  val decompiler = OneTimeDecompiler(classReference.toBytecode(), writer)
+  val decompiler = OneTimeDecompiler(bytecode, writer)
   decompiler.decompileContext()
   return writer.toString()
 }

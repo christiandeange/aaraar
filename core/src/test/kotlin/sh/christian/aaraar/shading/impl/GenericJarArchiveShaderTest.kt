@@ -4,6 +4,7 @@ import io.kotest.matchers.maps.shouldBeEmpty
 import io.kotest.matchers.maps.shouldHaveKey
 import io.kotest.matchers.maps.shouldHaveSize
 import io.kotest.matchers.maps.shouldNotHaveKey
+import io.kotest.matchers.nulls.shouldNotBeNull
 import sh.christian.aaraar.merger.MergeRules
 import sh.christian.aaraar.merger.impl.GenericJarArchiveMerger
 import sh.christian.aaraar.model.GenericJarArchive
@@ -12,6 +13,7 @@ import sh.christian.aaraar.utils.animalJarPath
 import sh.christian.aaraar.utils.fooJarPath
 import sh.christian.aaraar.utils.ktLibraryPath
 import sh.christian.aaraar.utils.loadJar
+import sh.christian.aaraar.utils.shouldBeDecompiledTo
 import kotlin.test.Test
 
 class GenericJarArchiveShaderTest {
@@ -120,6 +122,60 @@ class GenericJarArchiveShaderTest {
     with(shadedClasspath) {
       this shouldHaveSize 1
       this shouldHaveKey "com/foo/Foo.class"
+    }
+  }
+
+  @Test
+  fun `shading updates class name`() {
+    val originalClasses = animalJarPath.loadJar()
+    with(originalClasses["com/example/Animal.class"]) {
+      this.shouldNotBeNull()
+      this shouldBeDecompiledTo """
+          package com.example;
+
+          public interface Animal {
+          }
+        """
+    }
+
+    val shadedClasses = originalClasses.shaded(
+      classRenames = mapOf("com.example.Animal" to "com.example.Pet"),
+    )
+    with(shadedClasses["com/example/Pet.class"]) {
+      this.shouldNotBeNull()
+      this shouldBeDecompiledTo """
+          package com.example;
+
+          public interface Pet {
+          }
+        """
+    }
+  }
+
+  @Test
+  fun `shading updates class references`() {
+    val originalClasses = animalJarPath.loadJar()
+    with(originalClasses["com/example/Dog.class"]) {
+      this.shouldNotBeNull()
+      this shouldBeDecompiledTo """
+          package com.example;
+  
+          public class Dog implements Animal {
+          }
+        """
+    }
+
+    val shadedClasses = originalClasses.shaded(
+      classRenames = mapOf("com.example.Animal" to "com.example.Pet"),
+    )
+    with(shadedClasses["com/example/Dog.class"]) {
+      this.shouldNotBeNull()
+      this shouldBeDecompiledTo """
+          package com.example;
+  
+          public class Dog implements Pet {
+          }
+        """
     }
   }
 
