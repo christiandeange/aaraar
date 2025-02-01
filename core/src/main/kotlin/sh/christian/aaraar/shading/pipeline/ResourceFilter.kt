@@ -4,6 +4,7 @@ import com.tonicsystems.jarjar.transform.Transformable
 import com.tonicsystems.jarjar.transform.jar.JarProcessor
 import com.tonicsystems.jarjar.transform.jar.JarProcessor.Result.DISCARD
 import com.tonicsystems.jarjar.transform.jar.JarProcessor.Result.KEEP
+import com.tonicsystems.jarjar.util.ClassNameUtils
 import sh.christian.aaraar.utils.div
 import java.nio.file.FileSystems
 
@@ -16,6 +17,7 @@ internal class ResourceFilter(
 
   override fun process(struct: Transformable): JarProcessor.Result {
     return when {
+      ClassNameUtils.isClass(struct.name) -> KEEP
       resourceDeletes.isEmpty() -> KEEP
       resourceDeletes.none { fs.getPathMatcher("glob:$it").matches(fs / struct.name) } -> KEEP
       else -> DISCARD

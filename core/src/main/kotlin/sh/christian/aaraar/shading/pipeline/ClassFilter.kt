@@ -19,7 +19,7 @@ internal class ClassFilter(
     return when {
       !ClassNameUtils.isClass(struct.name) -> KEEP
       classDeletePatterns.isEmpty() -> KEEP
-      classDeletePatterns.none { it.matches(struct.name.replace(EXT_CLASS, "")) } -> KEEP
+      classDeletePatterns.none { it.matches(struct.name.removeSuffix(EXT_CLASS)) } -> KEEP
       else -> DISCARD
     }
   }
