@@ -1,3 +1,5 @@
+@file:Suppress("UnstableApiUsage")
+
 import org.gradle.api.tasks.testing.logging.TestExceptionFormat
 import org.gradle.api.tasks.testing.logging.TestLogEvent
 
@@ -9,6 +11,8 @@ plugins {
   id("aaraar-detekt")
   id("aaraar-publish")
 }
+
+val fixtureJars by configurations.registering
 
 dependencies {
   api(libs.agp.tools.common)
@@ -32,6 +36,8 @@ dependencies {
   testImplementation(testFixtures(project(":fixtures")))
   testImplementation(kotlin("test"))
   testImplementation(libs.kotest)
+
+  fixtureJars(project(":fixtures", configuration = "fixtureJars"))
 }
 
 tasks.test {
@@ -49,6 +55,10 @@ kotlin {
       languageSettings.apply {
         optIn("kotlin.ExperimentalStdlibApi")
       }
+    }
+
+    test {
+      resources.srcDirs(fixtureJars)
     }
   }
 }

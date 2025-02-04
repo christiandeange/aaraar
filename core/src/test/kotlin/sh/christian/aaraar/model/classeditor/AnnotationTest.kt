@@ -8,7 +8,7 @@ import io.kotest.matchers.shouldBe
 import sh.christian.aaraar.model.classeditor.AnnotationInstance.Value.ArrayValue
 import sh.christian.aaraar.model.classeditor.AnnotationInstance.Value.EnumValue
 import sh.christian.aaraar.model.classeditor.AnnotationInstance.Value.StringValue
-import sh.christian.aaraar.utils.jetbrainsAnnotationsJarPath
+import sh.christian.aaraar.utils.annotationsJarPath
 import sh.christian.aaraar.utils.loadJar
 import sh.christian.aaraar.utils.withClasspath
 import kotlin.test.Test
@@ -16,8 +16,8 @@ import kotlin.test.Test
 class AnnotationTest {
   @Test
   fun `annotation names`() {
-    withClasspath(jetbrainsAnnotationsJarPath.loadJar()) { cp ->
-      val annotations = cp["org.intellij.lang.annotations.RegExp"].annotations
+    withClasspath(annotationsJarPath.loadJar()) { cp ->
+      val annotations = cp["com.example.RegExp"].annotations
 
       annotations.map { it.qualifiedName } shouldContainExactly listOf(
         "java.lang.annotation.Documented",
@@ -44,8 +44,8 @@ class AnnotationTest {
 
   @Test
   fun `annotation visibility`() {
-    withClasspath(jetbrainsAnnotationsJarPath.loadJar()) { cp ->
-      val annotations = cp["org.intellij.lang.annotations.RegExp"]
+    withClasspath(annotationsJarPath.loadJar()) { cp ->
+      val annotations = cp["com.example.RegExp"]
         .annotations.associate { it.simpleName to it.isVisible }
 
       annotations shouldHaveSize 4
@@ -58,8 +58,8 @@ class AnnotationTest {
 
   @Test
   fun `annotation parameters`() {
-    withClasspath(jetbrainsAnnotationsJarPath.loadJar()) { cp ->
-      val annotations = cp["org.intellij.lang.annotations.RegExp"]
+    withClasspath(annotationsJarPath.loadJar()) { cp ->
+      val annotations = cp["com.example.RegExp"]
         .annotations
         .associate { it.simpleName to it.parameters }
 
@@ -87,8 +87,8 @@ class AnnotationTest {
 
   @Test
   fun `toString with annotation instance`() {
-    withClasspath(jetbrainsAnnotationsJarPath.loadJar()) { cp ->
-      val annotations = cp["org.intellij.lang.annotations.RegExp"].annotations.associateBy { it.simpleName }
+    withClasspath(annotationsJarPath.loadJar()) { cp ->
+      val annotations = cp["com.example.RegExp"].annotations.associateBy { it.simpleName }
 
       annotations["Documented"].toString() shouldBe "@java.lang.annotation.Documented"
       annotations["Retention"].toString() shouldBe "@java.lang.annotation.Retention([1 parameter])"

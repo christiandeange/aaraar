@@ -67,7 +67,7 @@ class MethodMetadataTest {
   @Test
   fun `change method parameter`() = withClasspath(ktLibraryPath.loadJar()) { cp ->
     cp.name.getMethod("updateName")!!.parameters.single().let { parameter ->
-      parameter.name shouldBe "p0"
+      parameter.name shouldBe "newName"
       parameter.type shouldBe cp.stringType
       cp.name.requireMetadata().updateNameFunction.valueParameters.single().let { parameterMetadata ->
         parameterMetadata.name shouldBe "newName"

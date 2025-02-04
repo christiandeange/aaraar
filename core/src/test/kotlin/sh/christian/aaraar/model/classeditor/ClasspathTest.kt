@@ -6,7 +6,7 @@ import io.kotest.matchers.maps.shouldHaveSize
 import io.kotest.matchers.maps.shouldNotHaveKey
 import io.kotest.matchers.shouldBe
 import sh.christian.aaraar.model.GenericJarArchive
-import sh.christian.aaraar.utils.jetbrainsAnnotationsJarPath
+import sh.christian.aaraar.utils.annotationsJarPath
 import sh.christian.aaraar.utils.loadJar
 import sh.christian.aaraar.utils.withClasspath
 import kotlin.test.Test
@@ -32,7 +32,7 @@ class ClasspathTest {
 
   @Test
   fun `ignores changes to existing enums`() {
-    val oldJar = jetbrainsAnnotationsJarPath.loadJar()
+    val oldJar = annotationsJarPath.loadJar()
     val newJar: GenericJarArchive
 
     withClasspath(oldJar) { cp ->

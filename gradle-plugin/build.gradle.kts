@@ -1,3 +1,6 @@
+import org.gradle.api.tasks.testing.logging.TestExceptionFormat
+import org.gradle.api.tasks.testing.logging.TestLogEvent
+
 plugins {
   @Suppress("DSL_SCOPE_VIOLATION") val plugins = libs.plugins
 
@@ -7,6 +10,8 @@ plugins {
   id("aaraar-detekt")
   id("aaraar-publish")
 }
+
+val fixtureJars by configurations.registering
 
 dependencies {
   implementation(project(":core"))
@@ -19,6 +24,25 @@ dependencies {
   testImplementation(testFixtures(project(":fixtures")))
   testImplementation(kotlin("test"))
   testImplementation(libs.kotest)
+
+  fixtureJars(project(":fixtures", configuration = "fixtureJars"))
+}
+
+tasks.test {
+  useJUnitPlatform()
+
+  testLogging {
+    exceptionFormat = TestExceptionFormat.FULL
+    events = TestLogEvent.values().toSet() - TestLogEvent.STARTED
+  }
+}
+
+kotlin {
+  sourceSets {
+    test {
+      resources.srcDirs(fixtureJars)
+    }
+  }
 }
 
 gradlePlugin {

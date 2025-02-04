@@ -15,3 +15,32 @@ dependencies {
   testFixturesImplementation(libs.decompiler)
   testFixturesImplementation(libs.jimfs)
 }
+
+val fixtureJarsDir = layout.buildDirectory.dir("fixture-jars")
+val fixtureJars by configurations.registering
+
+registerSourceSet("animal")
+registerSourceSet("annotations")
+registerSourceSet("foo")
+registerSourceSet("foo2")
+registerSourceSet("ktLibrary")
+
+fun registerSourceSet(name: String) {
+  val newSourceSet = sourceSets.create(name) {
+    java.srcDir("src/$name/java")
+    kotlin.srcDir("src/$name/kotlin")
+    resources.srcDir("src/$name/resources")
+  }
+
+  val newSourceSetJar = tasks.register<Jar>("${name}Jar") {
+    from(newSourceSet.output)
+    destinationDirectory.set(fixtureJarsDir)
+    archiveFileName.set("$name.jar")
+  }
+
+  artifacts {
+    add(fixtureJars.name, newSourceSetJar.flatMap { it.destinationDirectory }) {
+      builtBy(newSourceSetJar)
+    }
+  }
+}

@@ -13,8 +13,8 @@ private object ResourceLoader
 
 private val resourceLoader = ResourceLoader::class.java.classLoader
 
-val jetbrainsAnnotationsJarPath: Path
-  get() = Paths.get(resourceLoader.getResource("annotations-24.1.0.jar")!!.toURI())
+val annotationsJarPath: Path
+  get() = Paths.get(resourceLoader.getResource("annotations.jar")!!.toURI())
 
 val animalJarPath: Path
   get() = Paths.get(resourceLoader.getResource("animal.jar")!!.toURI())
@@ -29,7 +29,7 @@ val externalLibsPath: Path
   get() = Paths.get(resourceLoader.getResource("libs")!!.toURI())
 
 val ktLibraryPath: Path
-  get() = Paths.get(resourceLoader.getResource("kt-library.jar")!!.toURI())
+  get() = Paths.get(resourceLoader.getResource("ktLibrary.jar")!!.toURI())
 
 private val root: File
   get() = generateSequence(File(System.getProperty("user.dir"))) { it.parentFile }.last()

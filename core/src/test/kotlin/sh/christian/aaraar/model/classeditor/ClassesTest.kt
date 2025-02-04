@@ -227,7 +227,7 @@ class ClassesTest {
   fun `class version`() {
     withClasspath(fooJarPath.loadJar()) { cp ->
       val foo = cp["com.example.Foo"]
-      foo.classMajorVersion shouldBe 55
+      foo.classMajorVersion shouldBe 61
       foo.classMinorVersion shouldBe 0
     }
   }

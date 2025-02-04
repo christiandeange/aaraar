@@ -83,10 +83,10 @@ class GenericJarArchiveShaderTest {
   @Test
   fun `delete by resource name`() {
     val originalClasses = ktLibraryPath.loadJar()
-    originalClasses shouldHaveKey "META-INF/library_release.kotlin_module"
+    originalClasses shouldHaveKey "META-INF/fixtures_ktLibrary.kotlin_module"
 
     val shadedClasses = originalClasses.shaded(resourceDeletes = setOf("**/*.kotlin_module"))
-    shadedClasses shouldNotHaveKey "META-INF/library_release.kotlin_module"
+    shadedClasses shouldNotHaveKey "META-INF/fixtures_ktLibrary.kotlin_module"
   }
 
   @Test

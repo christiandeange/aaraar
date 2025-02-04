@@ -35,7 +35,7 @@ class ConstructorMetadataTest {
       parameterMetadata.type.classifier shouldBe cp.kmClassifier("kotlin.String")
     }
     cp.name.constructors.single().parameters.single().let { parameter ->
-      parameter.name shouldBe "p0"
+      parameter.name shouldBe "name"
       parameter.type shouldBe cp.stringType
 
       parameter.name = "myName"
