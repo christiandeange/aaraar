@@ -16,6 +16,10 @@ dependencies {
   testFixturesImplementation(libs.jimfs)
 }
 
+tasks.withType<Copy> {
+  duplicatesStrategy = DuplicatesStrategy.INCLUDE
+}
+
 val fixtureJarsDir = layout.buildDirectory.dir("fixture-jars")
 val fixtureJars by configurations.registering
 
@@ -24,6 +28,7 @@ registerSourceSet("annotations")
 registerSourceSet("foo")
 registerSourceSet("foo2")
 registerSourceSet("ktLibrary")
+registerSourceSet("service")
 
 fun registerSourceSet(name: String) {
   val newSourceSet = sourceSets.create(name) {

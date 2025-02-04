@@ -5,6 +5,7 @@ import io.kotest.matchers.maps.shouldHaveKey
 import io.kotest.matchers.maps.shouldHaveSize
 import io.kotest.matchers.maps.shouldNotHaveKey
 import io.kotest.matchers.nulls.shouldNotBeNull
+import io.kotest.matchers.shouldBe
 import sh.christian.aaraar.merger.MergeRules
 import sh.christian.aaraar.merger.impl.GenericJarArchiveMerger
 import sh.christian.aaraar.model.GenericJarArchive
@@ -13,6 +14,7 @@ import sh.christian.aaraar.utils.animalJarPath
 import sh.christian.aaraar.utils.fooJarPath
 import sh.christian.aaraar.utils.ktLibraryJarPath
 import sh.christian.aaraar.utils.loadJar
+import sh.christian.aaraar.utils.serviceJarPath
 import sh.christian.aaraar.utils.shouldBeDecompiledTo
 import kotlin.test.Test
 
@@ -153,7 +155,7 @@ class GenericJarArchiveShaderTest {
   }
 
   @Test
-  fun `shading updates class references`() {
+  fun `shading updates class references from other classes`() {
     val originalClasses = animalJarPath.loadJar()
     with(originalClasses["com/example/Dog.class"]) {
       this.shouldNotBeNull()
@@ -176,6 +178,29 @@ class GenericJarArchiveShaderTest {
           public class Dog implements Pet {
           }
         """
+    }
+  }
+
+  @Test
+  fun `shading updates class references from service loader files`() {
+    val originalClasses = serviceJarPath.loadJar()
+    with(originalClasses["META-INF/services/java.nio.file.spi.CustomService"]) {
+      this.shouldNotBeNull()
+      this.decodeToString() shouldBe """
+        com.example.MyCustomService
+        com.example.RealCustomService
+      """.trimIndent()
+    }
+
+    val shadedClasses = originalClasses.shaded(
+      classRenames = mapOf("com.example.MyCustomService" to "com.example.EmptyCustomService"),
+    )
+    with(shadedClasses["META-INF/services/java.nio.file.spi.CustomService"]) {
+      this.shouldNotBeNull()
+      this.decodeToString() shouldBe """
+        com.example.EmptyCustomService
+        com.example.RealCustomService
+      """.trimIndent()
     }
   }
 
