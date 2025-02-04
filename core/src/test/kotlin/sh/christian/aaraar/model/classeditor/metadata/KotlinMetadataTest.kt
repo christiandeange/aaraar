@@ -12,7 +12,7 @@ import sh.christian.aaraar.model.classeditor.foo
 import sh.christian.aaraar.model.classeditor.fooInternal
 import sh.christian.aaraar.model.classeditor.requireMetadata
 import sh.christian.aaraar.utils.fooJarPath
-import sh.christian.aaraar.utils.ktLibraryPath
+import sh.christian.aaraar.utils.ktLibraryJarPath
 import sh.christian.aaraar.utils.loadJar
 import sh.christian.aaraar.utils.withClasspath
 import kotlin.test.Test
@@ -27,7 +27,7 @@ class KotlinMetadataTest {
   }
 
   @Test
-  fun `read metadata on compiled kotlin class files`() = withClasspath(ktLibraryPath.loadJar()) { cp ->
+  fun `read metadata on compiled kotlin class files`() = withClasspath(ktLibraryJarPath.loadJar()) { cp ->
     val metadata = cp.foo.requireMetadata()
 
     metadata.name.toQualifiedName() shouldBe cp.foo.qualifiedName

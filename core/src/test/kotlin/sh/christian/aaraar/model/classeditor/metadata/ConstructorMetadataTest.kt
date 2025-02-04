@@ -9,7 +9,7 @@ import sh.christian.aaraar.model.classeditor.requireMetadata
 import sh.christian.aaraar.model.classeditor.types.intType
 import sh.christian.aaraar.model.classeditor.types.objectType
 import sh.christian.aaraar.model.classeditor.types.stringType
-import sh.christian.aaraar.utils.ktLibraryPath
+import sh.christian.aaraar.utils.ktLibraryJarPath
 import sh.christian.aaraar.utils.loadJar
 import sh.christian.aaraar.utils.withClasspath
 import kotlin.test.Test
@@ -17,7 +17,7 @@ import kotlin.test.Test
 class ConstructorMetadataTest {
 
   @Test
-  fun `remove constructor`() = withClasspath(ktLibraryPath.loadJar()) { cp ->
+  fun `remove constructor`() = withClasspath(ktLibraryJarPath.loadJar()) { cp ->
     cp.name.constructors shouldHaveSize 1
     cp.name.requireMetadata().constructors shouldHaveSize 1
 
@@ -29,7 +29,7 @@ class ConstructorMetadataTest {
   }
 
   @Test
-  fun `change constructor parameter`() = withClasspath(ktLibraryPath.loadJar()) { cp ->
+  fun `change constructor parameter`() = withClasspath(ktLibraryJarPath.loadJar()) { cp ->
     cp.name.requireMetadata().constructors.single().valueParameters.single().let { parameterMetadata ->
       parameterMetadata.name shouldBe "name"
       parameterMetadata.type.classifier shouldBe cp.kmClassifier("kotlin.String")
@@ -54,7 +54,7 @@ class ConstructorMetadataTest {
   }
 
   @Test
-  fun `set constructor parameters`() = withClasspath(ktLibraryPath.loadJar()) { cp ->
+  fun `set constructor parameters`() = withClasspath(ktLibraryJarPath.loadJar()) { cp ->
     cp.name.constructors.single().parameters shouldHaveSize 1
     cp.name.requireMetadata().constructors.single().valueParameters shouldHaveSize 1
 

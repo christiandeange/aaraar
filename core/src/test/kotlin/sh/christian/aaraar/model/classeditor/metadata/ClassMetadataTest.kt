@@ -9,7 +9,7 @@ import kotlinx.metadata.visibility
 import sh.christian.aaraar.model.classeditor.Modifier
 import sh.christian.aaraar.model.classeditor.foo
 import sh.christian.aaraar.model.classeditor.requireMetadata
-import sh.christian.aaraar.utils.ktLibraryPath
+import sh.christian.aaraar.utils.ktLibraryJarPath
 import sh.christian.aaraar.utils.loadJar
 import sh.christian.aaraar.utils.withClasspath
 import kotlin.test.Test
@@ -17,7 +17,7 @@ import kotlin.test.Test
 class ClassMetadataTest {
 
   @Test
-  fun `change class qualified name`() = withClasspath(ktLibraryPath.loadJar()) { cp ->
+  fun `change class qualified name`() = withClasspath(ktLibraryJarPath.loadJar()) { cp ->
     val foo = cp["sh.christian.mylibrary.Foo"]
 
     foo.qualifiedName shouldBe "sh.christian.mylibrary.Foo"
@@ -31,7 +31,7 @@ class ClassMetadataTest {
   }
 
   @Test
-  fun `change class simple name`() = withClasspath(ktLibraryPath.loadJar()) { cp ->
+  fun `change class simple name`() = withClasspath(ktLibraryJarPath.loadJar()) { cp ->
     val foo = cp["sh.christian.mylibrary.Foo"]
 
     foo.qualifiedName shouldBe "sh.christian.mylibrary.Foo"
@@ -45,7 +45,7 @@ class ClassMetadataTest {
   }
 
   @Test
-  fun `change class package name`() = withClasspath(ktLibraryPath.loadJar()) { cp ->
+  fun `change class package name`() = withClasspath(ktLibraryJarPath.loadJar()) { cp ->
     val foo = cp["sh.christian.mylibrary.Foo"]
 
     foo.qualifiedName shouldBe "sh.christian.mylibrary.Foo"
@@ -59,7 +59,7 @@ class ClassMetadataTest {
   }
 
   @Test
-  fun `change visibility`() = withClasspath(ktLibraryPath.loadJar()) { cp ->
+  fun `change visibility`() = withClasspath(ktLibraryJarPath.loadJar()) { cp ->
     cp.foo.modifiers shouldBe setOf(Modifier.PUBLIC, Modifier.FINAL)
     cp.foo.requireMetadata().visibility shouldBe Visibility.PUBLIC
 
@@ -71,7 +71,7 @@ class ClassMetadataTest {
   }
 
   @Test
-  fun `change superclass`() = withClasspath(ktLibraryPath.loadJar()) { cp ->
+  fun `change superclass`() = withClasspath(ktLibraryJarPath.loadJar()) { cp ->
     cp.foo.superclass.shouldBeNull()
     cp.foo.requireMetadata().supertypes.map { it.classifier }
       .shouldContainExactly(cp.kmClassifier("kotlin.Any"))
@@ -85,7 +85,7 @@ class ClassMetadataTest {
   }
 
   @Test
-  fun `add interface`() = withClasspath(ktLibraryPath.loadJar()) { cp ->
+  fun `add interface`() = withClasspath(ktLibraryJarPath.loadJar()) { cp ->
     cp.foo.interfaces.shouldBeEmpty()
     cp.foo.requireMetadata().supertypes.map { it.classifier }
       .shouldContainExactly(cp.kmClassifier("kotlin.Any"))

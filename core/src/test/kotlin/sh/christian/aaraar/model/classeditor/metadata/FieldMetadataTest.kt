@@ -9,7 +9,7 @@ import sh.christian.aaraar.model.classeditor.name
 import sh.christian.aaraar.model.classeditor.requireMetadata
 import sh.christian.aaraar.model.classeditor.types.objectType
 import sh.christian.aaraar.model.classeditor.types.stringType
-import sh.christian.aaraar.utils.ktLibraryPath
+import sh.christian.aaraar.utils.ktLibraryJarPath
 import sh.christian.aaraar.utils.loadJar
 import sh.christian.aaraar.utils.withClasspath
 import kotlin.test.Test
@@ -17,7 +17,7 @@ import kotlin.test.Test
 class FieldMetadataTest {
 
   @Test
-  fun `remove field`() = withClasspath(ktLibraryPath.loadJar()) { cp ->
+  fun `remove field`() = withClasspath(ktLibraryJarPath.loadJar()) { cp ->
     cp.name.fields.map { it.name }.shouldContainExactlyInAnyOrder("name")
     cp.name.requireMetadata().properties.map { it.name }.shouldContainExactlyInAnyOrder("name")
 
@@ -29,7 +29,7 @@ class FieldMetadataTest {
   }
 
   @Test
-  fun `set field name`() = withClasspath(ktLibraryPath.loadJar()) { cp ->
+  fun `set field name`() = withClasspath(ktLibraryJarPath.loadJar()) { cp ->
     cp.name.getField("name").shouldNotBeNull()
     cp.name.requireMetadata().properties.map { it.name }.shouldContainExactlyInAnyOrder("name")
 
@@ -42,7 +42,7 @@ class FieldMetadataTest {
   }
 
   @Test
-  fun `set field type`() = withClasspath(ktLibraryPath.loadJar()) { cp ->
+  fun `set field type`() = withClasspath(ktLibraryJarPath.loadJar()) { cp ->
     cp.name.fields.single().type shouldBe cp.stringType
     cp.name.requireMetadata().properties.single().returnType.classifier shouldBe cp.kmClassifier("kotlin.String")
 

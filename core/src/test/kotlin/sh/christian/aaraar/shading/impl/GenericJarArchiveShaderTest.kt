@@ -11,7 +11,7 @@ import sh.christian.aaraar.model.GenericJarArchive
 import sh.christian.aaraar.model.ShadeConfiguration
 import sh.christian.aaraar.utils.animalJarPath
 import sh.christian.aaraar.utils.fooJarPath
-import sh.christian.aaraar.utils.ktLibraryPath
+import sh.christian.aaraar.utils.ktLibraryJarPath
 import sh.christian.aaraar.utils.loadJar
 import sh.christian.aaraar.utils.shouldBeDecompiledTo
 import kotlin.test.Test
@@ -82,7 +82,7 @@ class GenericJarArchiveShaderTest {
 
   @Test
   fun `delete by resource name`() {
-    val originalClasses = ktLibraryPath.loadJar()
+    val originalClasses = ktLibraryJarPath.loadJar()
     originalClasses shouldHaveKey "META-INF/fixtures_ktLibrary.kotlin_module"
 
     val shadedClasses = originalClasses.shaded(resourceDeletes = setOf("**/*.kotlin_module"))
@@ -91,7 +91,7 @@ class GenericJarArchiveShaderTest {
 
   @Test
   fun `cannot delete classes by resource name`() {
-    val originalClasses = ktLibraryPath.loadJar()
+    val originalClasses = ktLibraryJarPath.loadJar()
     originalClasses shouldHaveKey "sh/christian/mylibrary/Foo.class"
 
     val shadedClasses = originalClasses.shaded(resourceDeletes = setOf("**/Foo.class"))

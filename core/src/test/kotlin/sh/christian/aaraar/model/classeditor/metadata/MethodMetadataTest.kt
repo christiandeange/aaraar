@@ -14,7 +14,7 @@ import sh.christian.aaraar.model.classeditor.types.intType
 import sh.christian.aaraar.model.classeditor.types.objectType
 import sh.christian.aaraar.model.classeditor.types.stringType
 import sh.christian.aaraar.model.classeditor.types.voidType
-import sh.christian.aaraar.utils.ktLibraryPath
+import sh.christian.aaraar.utils.ktLibraryJarPath
 import sh.christian.aaraar.utils.loadJar
 import sh.christian.aaraar.utils.withClasspath
 import kotlin.test.Test
@@ -22,7 +22,7 @@ import kotlin.test.Test
 class MethodMetadataTest {
 
   @Test
-  fun `remove method`() = withClasspath(ktLibraryPath.loadJar()) { cp ->
+  fun `remove method`() = withClasspath(ktLibraryJarPath.loadJar()) { cp ->
     cp.name.methods.map { it.name }
       .shouldContainExactlyInAnyOrder("printName", "updateName", "getName", "setName")
     cp.name.requireMetadata().functions.map { it.name }
@@ -38,7 +38,7 @@ class MethodMetadataTest {
   }
 
   @Test
-  fun `set method name`() = withClasspath(ktLibraryPath.loadJar()) { cp ->
+  fun `set method name`() = withClasspath(ktLibraryJarPath.loadJar()) { cp ->
     cp.name.getMethod("printName").shouldNotBeNull()
     cp.name.requireMetadata().functions.map { it.name }
       .shouldContainExactlyInAnyOrder("printName", "updateName")
@@ -53,7 +53,7 @@ class MethodMetadataTest {
   }
 
   @Test
-  fun `set method return type`() = withClasspath(ktLibraryPath.loadJar()) { cp ->
+  fun `set method return type`() = withClasspath(ktLibraryJarPath.loadJar()) { cp ->
     cp.name.getMethod("printName")!!.returnType shouldBe cp.voidType
     cp.name.requireMetadata().printNameFunction.returnType.classifier shouldBe cp.kmClassifier("kotlin.Unit")
 
@@ -65,7 +65,7 @@ class MethodMetadataTest {
   }
 
   @Test
-  fun `change method parameter`() = withClasspath(ktLibraryPath.loadJar()) { cp ->
+  fun `change method parameter`() = withClasspath(ktLibraryJarPath.loadJar()) { cp ->
     cp.name.getMethod("updateName")!!.parameters.single().let { parameter ->
       parameter.name shouldBe "newName"
       parameter.type shouldBe cp.stringType
@@ -91,7 +91,7 @@ class MethodMetadataTest {
   }
 
   @Test
-  fun `set method parameters`() = withClasspath(ktLibraryPath.loadJar()) { cp ->
+  fun `set method parameters`() = withClasspath(ktLibraryJarPath.loadJar()) { cp ->
     cp.name.getMethod("updateName")!!.parameters shouldHaveSize 1
     cp.name.requireMetadata().updateNameFunction.valueParameters shouldHaveSize 1
 

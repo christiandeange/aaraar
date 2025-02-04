@@ -8,28 +8,20 @@ import com.android.manifmerger.NavigationXmlDocumentData
 import java.io.File
 import java.nio.file.Path
 import java.nio.file.Paths
+import kotlin.properties.ReadOnlyProperty
 
 private object ResourceLoader
 
 private val resourceLoader = ResourceLoader::class.java.classLoader
 
-val annotationsJarPath: Path
-  get() = Paths.get(resourceLoader.getResource("annotations.jar")!!.toURI())
-
-val animalJarPath: Path
-  get() = Paths.get(resourceLoader.getResource("animal.jar")!!.toURI())
-
-val fooJarPath: Path
-  get() = Paths.get(resourceLoader.getResource("foo.jar")!!.toURI())
-
-val foo2JarPath: Path
-  get() = Paths.get(resourceLoader.getResource("foo2.jar")!!.toURI())
+val annotationsJarPath: Path by testFixtureJar()
+val animalJarPath: Path by testFixtureJar()
+val fooJarPath: Path by testFixtureJar()
+val foo2JarPath: Path by testFixtureJar()
+val ktLibraryJarPath: Path by testFixtureJar()
 
 val externalLibsPath: Path
   get() = Paths.get(resourceLoader.getResource("libs")!!.toURI())
-
-val ktLibraryPath: Path
-  get() = Paths.get(resourceLoader.getResource("ktLibrary.jar")!!.toURI())
 
 private val root: File
   get() = generateSequence(File(System.getProperty("user.dir"))) { it.parentFile }.last()
@@ -95,3 +87,9 @@ fun navigationJsonDataString(
   }
 ]
 """.trimIndent()
+
+private fun testFixtureJar(): ReadOnlyProperty<Any?, Path> {
+  return ReadOnlyProperty { _, property ->
+    Paths.get(resourceLoader.getResource("${property.name.removeSuffix("JarPath")}.jar")!!.toURI())
+  }
+}
