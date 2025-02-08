@@ -19,4 +19,4 @@ infix fun ByteArray.shouldBeDecompiledTo(contents: String) {
   output shouldBe contents.trimIndent()
 }
 
-private fun String.normalizeWhitespace() = trim().replace("\t", "    ").replace("\r\n", "\n")
+fun String.normalizeWhitespace() = trim().replace("\t", "    ").replace("\r\n", "\n")

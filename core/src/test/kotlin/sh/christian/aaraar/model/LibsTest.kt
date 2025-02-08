@@ -1,26 +1,24 @@
 package sh.christian.aaraar.model
 
-import io.kotest.matchers.maps.shouldHaveKey
-import io.kotest.matchers.maps.shouldHaveSize
+import io.kotest.matchers.maps.shouldContainKeys
 import org.junit.jupiter.api.Test
 import sh.christian.aaraar.utils.externalLibsPath
+import sh.christian.aaraar.utils.shouldContainExactly
 
 class LibsTest {
 
   @Test
   fun `identifies jar files`() {
     val libs = Libs.from(externalLibsPath)
-    with(libs.files) {
-      this shouldHaveSize 3
-      this shouldHaveKey "external.jar"
-      this shouldHaveKey "foo.jar"
-      this shouldHaveKey "license.txt"
-    }
+    libs.files.shouldContainExactly(
+      "external.jar",
+      "foo.jar",
+      "license.txt",
+    )
 
-    with(libs.jars()) {
-      this shouldHaveSize 2
-      this shouldHaveKey "external.jar"
-      this shouldHaveKey "foo.jar"
-    }
+    libs.jars().shouldContainKeys(
+      "external.jar",
+      "foo.jar",
+    )
   }
 }

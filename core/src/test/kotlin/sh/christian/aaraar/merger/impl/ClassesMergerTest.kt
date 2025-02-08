@@ -1,8 +1,6 @@
 package sh.christian.aaraar.merger.impl
 
 import io.kotest.assertions.throwables.shouldThrow
-import io.kotest.matchers.maps.shouldHaveKey
-import io.kotest.matchers.maps.shouldHaveSize
 import sh.christian.aaraar.merger.MergeRules
 import sh.christian.aaraar.model.Classes
 import sh.christian.aaraar.model.GenericJarArchive
@@ -11,6 +9,7 @@ import sh.christian.aaraar.utils.animalJarPath
 import sh.christian.aaraar.utils.externalLibsPath
 import sh.christian.aaraar.utils.foo2JarPath
 import sh.christian.aaraar.utils.fooJarPath
+import sh.christian.aaraar.utils.shouldContainExactly
 import java.nio.file.Path
 import kotlin.test.Test
 
@@ -23,12 +22,11 @@ class ClassesMergerTest {
     val animalClasses = animalJarPath.loadClasses()
     val classpath = merger.merge(animalClasses, emptyList())
 
-    with(classpath.archive) {
-      this shouldHaveSize 3
-      this shouldHaveKey "com/example/Animal.class"
-      this shouldHaveKey "com/example/Cat.class"
-      this shouldHaveKey "com/example/Dog.class"
-    }
+    classpath.archive.shouldContainExactly(
+      "com/example/Animal.class",
+      "com/example/Cat.class",
+      "com/example/Dog.class",
+    )
   }
 
   @Test
@@ -37,13 +35,12 @@ class ClassesMergerTest {
     val fooClasses = fooJarPath.loadClasses()
     val classpath = merger.merge(animalClasses, fooClasses)
 
-    with(classpath.archive) {
-      this shouldHaveSize 4
-      this shouldHaveKey "com/example/Animal.class"
-      this shouldHaveKey "com/example/Cat.class"
-      this shouldHaveKey "com/example/Dog.class"
-      this shouldHaveKey "com/example/Foo.class"
-    }
+    classpath.archive.shouldContainExactly(
+      "com/example/Animal.class",
+      "com/example/Cat.class",
+      "com/example/Dog.class",
+      "com/example/Foo.class",
+    )
   }
 
   @Test
@@ -52,14 +49,13 @@ class ClassesMergerTest {
     val externalLibs = Libs.from(externalLibsPath)
     val classpath = merger.merge(animalClasses, externalLibs)
 
-    with(classpath.archive) {
-      this shouldHaveSize 5
-      this shouldHaveKey "com/example/Animal.class"
-      this shouldHaveKey "com/example/Cat.class"
-      this shouldHaveKey "com/example/Dog.class"
-      this shouldHaveKey "com/example/Foo.class"
-      this shouldHaveKey "com/external/Library.class"
-    }
+    classpath.archive.shouldContainExactly(
+      "com/example/Animal.class",
+      "com/example/Cat.class",
+      "com/example/Dog.class",
+      "com/example/Foo.class",
+      "com/external/Library.class",
+    )
   }
 
   @Test

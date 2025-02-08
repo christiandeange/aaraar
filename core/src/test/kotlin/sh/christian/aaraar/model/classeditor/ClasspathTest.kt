@@ -1,13 +1,11 @@
 package sh.christian.aaraar.model.classeditor
 
 import io.kotest.matchers.collections.shouldBeEmpty
-import io.kotest.matchers.maps.shouldHaveKey
-import io.kotest.matchers.maps.shouldHaveSize
-import io.kotest.matchers.maps.shouldNotHaveKey
 import io.kotest.matchers.shouldBe
 import sh.christian.aaraar.model.GenericJarArchive
 import sh.christian.aaraar.utils.annotationsJarPath
 import sh.christian.aaraar.utils.loadJar
+import sh.christian.aaraar.utils.shouldContainExactly
 import sh.christian.aaraar.utils.withClasspath
 import kotlin.test.Test
 
@@ -25,9 +23,7 @@ class ClasspathTest {
       jar = cp.toGenericJarArchive()
     }
 
-    jar shouldHaveSize 1
-    jar shouldHaveKey "com/example/MyClass.class"
-    jar shouldNotHaveKey "com/example/MyEnum.class"
+    jar.shouldContainExactly("com/example/MyClass.class")
   }
 
   @Test

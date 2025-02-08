@@ -2,20 +2,18 @@ package sh.christian.aaraar.shading.impl
 
 import io.kotest.matchers.maps.shouldBeEmpty
 import io.kotest.matchers.maps.shouldHaveKey
-import io.kotest.matchers.maps.shouldHaveSize
 import io.kotest.matchers.maps.shouldNotHaveKey
-import io.kotest.matchers.nulls.shouldNotBeNull
-import io.kotest.matchers.shouldBe
 import sh.christian.aaraar.merger.MergeRules
 import sh.christian.aaraar.merger.impl.GenericJarArchiveMerger
 import sh.christian.aaraar.model.GenericJarArchive
 import sh.christian.aaraar.model.ShadeConfiguration
 import sh.christian.aaraar.utils.animalJarPath
 import sh.christian.aaraar.utils.fooJarPath
+import sh.christian.aaraar.utils.forEntry
 import sh.christian.aaraar.utils.ktLibraryJarPath
 import sh.christian.aaraar.utils.loadJar
 import sh.christian.aaraar.utils.serviceJarPath
-import sh.christian.aaraar.utils.shouldBeDecompiledTo
+import sh.christian.aaraar.utils.shouldContainExactly
 import kotlin.test.Test
 
 class GenericJarArchiveShaderTest {
@@ -25,12 +23,11 @@ class GenericJarArchiveShaderTest {
   @Test
   fun `shade with no rules does nothing`() {
     val shadedClasses = animalJarPath.loadJar().shaded()
-    with(shadedClasses) {
-      this shouldHaveSize 3
-      this shouldHaveKey "com/example/Animal.class"
-      this shouldHaveKey "com/example/Cat.class"
-      this shouldHaveKey "com/example/Dog.class"
-    }
+    shadedClasses.shouldContainExactly(
+      "com/example/Animal.class",
+      "com/example/Cat.class",
+      "com/example/Dog.class",
+    )
   }
 
   @Test
@@ -38,12 +35,11 @@ class GenericJarArchiveShaderTest {
     val shadedClasses = animalJarPath.loadJar().shaded(
       classRenames = mapOf("com.example.Animal" to "com.example.Pet"),
     )
-    with(shadedClasses) {
-      this shouldHaveSize 3
-      this shouldHaveKey "com/example/Pet.class"
-      this shouldHaveKey "com/example/Cat.class"
-      this shouldHaveKey "com/example/Dog.class"
-    }
+    shadedClasses.shouldContainExactly(
+      "com/example/Pet.class",
+      "com/example/Cat.class",
+      "com/example/Dog.class",
+    )
   }
 
   @Test
@@ -51,12 +47,11 @@ class GenericJarArchiveShaderTest {
     val shadedClasses = animalJarPath.loadJar().shaded(
       classRenames = mapOf("com.example.**" to "com.biganimalcorp.@1"),
     )
-    with(shadedClasses) {
-      this shouldHaveSize 3
-      this shouldHaveKey "com/biganimalcorp/Animal.class"
-      this shouldHaveKey "com/biganimalcorp/Cat.class"
-      this shouldHaveKey "com/biganimalcorp/Dog.class"
-    }
+    shadedClasses.shouldContainExactly(
+      "com/biganimalcorp/Animal.class",
+      "com/biganimalcorp/Cat.class",
+      "com/biganimalcorp/Dog.class",
+    )
   }
 
   @Test
@@ -64,12 +59,10 @@ class GenericJarArchiveShaderTest {
     val shadedClasses = animalJarPath.loadJar().shaded(
       classDeletes = setOf("com.example.Cat"),
     )
-    with(shadedClasses) {
-      this shouldHaveSize 2
-      this shouldHaveKey "com/example/Animal.class"
-      this shouldHaveKey "com/example/Dog.class"
-      this shouldNotHaveKey "com/example/Cat.class"
-    }
+    shadedClasses.shouldContainExactly(
+      "com/example/Animal.class",
+      "com/example/Dog.class",
+    )
   }
 
   @Test
@@ -77,9 +70,7 @@ class GenericJarArchiveShaderTest {
     val shadedClasses = animalJarPath.loadJar().shaded(
       classDeletes = setOf("com.example.**"),
     )
-    with(shadedClasses) {
-      shouldBeEmpty()
-    }
+    shadedClasses.shouldBeEmpty()
   }
 
   @Test
@@ -110,98 +101,79 @@ class GenericJarArchiveShaderTest {
       ),
     )
 
-    with(classpath) {
-      this shouldHaveSize 4
-      this shouldHaveKey "com/example/Animal.class"
-      this shouldHaveKey "com/example/Cat.class"
-      this shouldHaveKey "com/example/Dog.class"
-      this shouldHaveKey "com/foo/Foo.class"
-    }
+    classpath.shouldContainExactly(
+      "com/example/Animal.class",
+      "com/example/Cat.class",
+      "com/example/Dog.class",
+      "com/foo/Foo.class",
+    )
 
     val shadedClasspath = classpath.shaded(
       classDeletes = setOf("com.example.**"),
     )
-    with(shadedClasspath) {
-      this shouldHaveSize 1
-      this shouldHaveKey "com/foo/Foo.class"
-    }
+    shadedClasspath.shouldContainExactly(
+      "com/foo/Foo.class",
+    )
   }
 
   @Test
   fun `shading updates class name`() {
     val originalClasses = animalJarPath.loadJar()
-    with(originalClasses["com/example/Animal.class"]) {
-      this.shouldNotBeNull()
-      this shouldBeDecompiledTo """
-          package com.example;
+    originalClasses forEntry("com/example/Animal.class") shouldBeDecompiledTo """
+      package com.example;
 
-          public interface Animal {
-          }
-        """
-    }
+      public interface Animal {
+      }
+    """
 
     val shadedClasses = originalClasses.shaded(
       classRenames = mapOf("com.example.Animal" to "com.example.Pet"),
     )
-    with(shadedClasses["com/example/Pet.class"]) {
-      this.shouldNotBeNull()
-      this shouldBeDecompiledTo """
-          package com.example;
+    shadedClasses forEntry("com/example/Pet.class") shouldBeDecompiledTo """
+      package com.example;
 
-          public interface Pet {
-          }
-        """
-    }
+      public interface Pet {
+      }
+    """
   }
 
   @Test
   fun `shading updates class references from other classes`() {
     val originalClasses = animalJarPath.loadJar()
-    with(originalClasses["com/example/Dog.class"]) {
-      this.shouldNotBeNull()
-      this shouldBeDecompiledTo """
-          package com.example;
-  
-          public class Dog implements Animal {
-          }
-        """
-    }
+    originalClasses forEntry("com/example/Dog.class") shouldBeDecompiledTo """
+      package com.example;
+
+      public class Dog implements Animal {
+      }
+    """
 
     val shadedClasses = originalClasses.shaded(
       classRenames = mapOf("com.example.Animal" to "com.example.Pet"),
     )
-    with(shadedClasses["com/example/Dog.class"]) {
-      this.shouldNotBeNull()
-      this shouldBeDecompiledTo """
-          package com.example;
-  
-          public class Dog implements Pet {
-          }
-        """
-    }
+
+    shadedClasses forEntry("com/example/Dog.class") shouldBeDecompiledTo """
+      package com.example;
+
+      public class Dog implements Pet {
+      }
+    """
   }
 
   @Test
   fun `shading updates class references from service loader files`() {
     val originalClasses = serviceJarPath.loadJar()
-    with(originalClasses["META-INF/services/java.nio.file.spi.CustomService"]) {
-      this.shouldNotBeNull()
-      this.decodeToString() shouldBe """
-        com.example.MyCustomService
-        com.example.RealCustomService
-      """.trimIndent()
-    }
+    originalClasses forEntry("META-INF/services/java.nio.file.spi.CustomService") shouldHaveFileContents """
+      com.example.MyCustomService
+      com.example.RealCustomService
+    """
 
     val shadedClasses = originalClasses.shaded(
       classRenames = mapOf("com.example.MyCustomService" to "com.example.EmptyCustomService"),
     )
-    with(shadedClasses["META-INF/services/java.nio.file.spi.CustomService"]) {
-      this.shouldNotBeNull()
-      this.decodeToString() shouldBe """
-        com.example.EmptyCustomService
-        com.example.RealCustomService
-      """.trimIndent()
-    }
+    shadedClasses forEntry("META-INF/services/java.nio.file.spi.CustomService") shouldHaveFileContents """
+      com.example.EmptyCustomService
+      com.example.RealCustomService
+    """
   }
 
   private fun GenericJarArchive.shaded(

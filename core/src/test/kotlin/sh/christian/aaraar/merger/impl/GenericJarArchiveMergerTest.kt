@@ -1,13 +1,12 @@
 package sh.christian.aaraar.merger.impl
 
 import io.kotest.assertions.throwables.shouldThrow
-import io.kotest.matchers.maps.shouldHaveKey
-import io.kotest.matchers.maps.shouldHaveSize
 import sh.christian.aaraar.merger.MergeRules
 import sh.christian.aaraar.utils.animalJarPath
 import sh.christian.aaraar.utils.foo2JarPath
 import sh.christian.aaraar.utils.fooJarPath
 import sh.christian.aaraar.utils.loadJar
+import sh.christian.aaraar.utils.shouldContainExactly
 import kotlin.test.Test
 
 class GenericJarArchiveMergerTest {
@@ -18,12 +17,11 @@ class GenericJarArchiveMergerTest {
   fun `nothing to merge`() {
     val animalClasses = animalJarPath.loadJar()
 
-    with(merger.merge(animalClasses, emptyList())) {
-      this shouldHaveSize 3
-      this shouldHaveKey "com/example/Animal.class"
-      this shouldHaveKey "com/example/Cat.class"
-      this shouldHaveKey "com/example/Dog.class"
-    }
+    merger.merge(animalClasses, emptyList()).shouldContainExactly(
+      "com/example/Animal.class",
+      "com/example/Cat.class",
+      "com/example/Dog.class",
+    )
   }
 
   @Test
@@ -31,13 +29,12 @@ class GenericJarArchiveMergerTest {
     val animalClasses = animalJarPath.loadJar()
     val fooClasses = fooJarPath.loadJar()
 
-    with(merger.merge(animalClasses, fooClasses)) {
-      this shouldHaveSize 4
-      this shouldHaveKey "com/example/Animal.class"
-      this shouldHaveKey "com/example/Cat.class"
-      this shouldHaveKey "com/example/Dog.class"
-      this shouldHaveKey "com/example/Foo.class"
-    }
+    merger.merge(animalClasses, fooClasses).shouldContainExactly(
+      "com/example/Animal.class",
+      "com/example/Cat.class",
+      "com/example/Dog.class",
+      "com/example/Foo.class",
+    )
   }
 
   @Test
@@ -45,10 +42,9 @@ class GenericJarArchiveMergerTest {
     val fooClasses1 = fooJarPath.loadJar()
     val fooClasses2 = fooJarPath.loadJar()
 
-    with(merger.merge(fooClasses1, fooClasses2)) {
-      this shouldHaveSize 1
-      this shouldHaveKey "com/example/Foo.class"
-    }
+    merger.merge(fooClasses1, fooClasses2).shouldContainExactly(
+      "com/example/Foo.class",
+    )
   }
 
   @Test

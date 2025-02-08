@@ -2,8 +2,6 @@ package sh.christian.aaraar.packaging
 
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.assertions.withClue
-import io.kotest.matchers.maps.shouldHaveKey
-import io.kotest.matchers.maps.shouldHaveSize
 import sh.christian.aaraar.Environment
 import sh.christian.aaraar.model.ShadeConfiguration
 import sh.christian.aaraar.packaging.ShadeConfigurationScope.DependencyScope
@@ -11,6 +9,7 @@ import sh.christian.aaraar.packaging.ShadeConfigurationScope.ProjectScope
 import sh.christian.aaraar.utils.animalJarPath
 import sh.christian.aaraar.utils.foo2JarPath
 import sh.christian.aaraar.utils.fooJarPath
+import sh.christian.aaraar.utils.shouldContainExactly
 import kotlin.test.Test
 
 class PackagerTest {
@@ -31,12 +30,11 @@ class PackagerTest {
     val input = defaultPackager.prepareInputArchive(animalJarPath, animalScope)
     val output = defaultPackager.mergeArchives(input, emptyList())
 
-    with(output.classes.archive) {
-      this shouldHaveSize 3
-      this shouldHaveKey "com/example/Animal.class"
-      this shouldHaveKey "com/example/Cat.class"
-      this shouldHaveKey "com/example/Dog.class"
-    }
+    output.classes.archive.shouldContainExactly(
+      "com/example/Animal.class",
+      "com/example/Cat.class",
+      "com/example/Dog.class",
+    )
   }
 
   @Test
@@ -45,13 +43,12 @@ class PackagerTest {
     val dependency = defaultPackager.prepareDependencyArchive(animalJarPath, animalScope)
     val output = defaultPackager.mergeArchives(input, listOf(dependency))
 
-    with(output.classes.archive) {
-      this shouldHaveSize 4
-      this shouldHaveKey "com/example/Animal.class"
-      this shouldHaveKey "com/example/Cat.class"
-      this shouldHaveKey "com/example/Dog.class"
-      this shouldHaveKey "com/example/Foo.class"
-    }
+    output.classes.archive.shouldContainExactly(
+      "com/example/Animal.class",
+      "com/example/Cat.class",
+      "com/example/Dog.class",
+      "com/example/Foo.class",
+    )
   }
 
   @Test
@@ -59,10 +56,9 @@ class PackagerTest {
     val input = defaultPackager.prepareInputArchive(fooJarPath, fooScope)
     val output = defaultPackager.mergeArchives(input, listOf(input))
 
-    with(output.classes.archive) {
-      this shouldHaveSize 1
-      this shouldHaveKey "com/example/Foo.class"
-    }
+    output.classes.archive.shouldContainExactly(
+      "com/example/Foo.class",
+    )
   }
 
   @Test
@@ -86,13 +82,12 @@ class PackagerTest {
       dependencyArchives = listOf(packager.prepareDependencyArchive(animalJarPath, animalScope))
     )
 
-    with(output.classes.archive) {
-      this shouldHaveSize 4
-      this shouldHaveKey "com/example/Animal.class"
-      this shouldHaveKey "com/example/Cat.class"
-      this shouldHaveKey "com/example/Dog.class"
-      this shouldHaveKey "com/example/Foo.class"
-    }
+    output.classes.archive.shouldContainExactly(
+      "com/example/Animal.class",
+      "com/example/Cat.class",
+      "com/example/Dog.class",
+      "com/example/Foo.class",
+    )
   }
 
   @Test
@@ -115,13 +110,12 @@ class PackagerTest {
       dependencyArchives = listOf(packager.prepareDependencyArchive(animalJarPath, animalScope))
     )
 
-    with(output.classes.archive) {
-      this shouldHaveSize 4
-      this shouldHaveKey "com/biganimalcorp/Animal.class"
-      this shouldHaveKey "com/biganimalcorp/Cat.class"
-      this shouldHaveKey "com/biganimalcorp/Dog.class"
-      this shouldHaveKey "com/biganimalcorp/Foo.class"
-    }
+    output.classes.archive.shouldContainExactly(
+      "com/biganimalcorp/Animal.class",
+      "com/biganimalcorp/Cat.class",
+      "com/biganimalcorp/Dog.class",
+      "com/biganimalcorp/Foo.class",
+    )
   }
 
   @Test
@@ -144,13 +138,12 @@ class PackagerTest {
       dependencyArchives = listOf(packager.prepareDependencyArchive(animalJarPath, animalScope))
     )
 
-    with(output.classes.archive) {
-      this shouldHaveSize 4
-      this shouldHaveKey "com/biganimalcorp/Animal.class"
-      this shouldHaveKey "com/biganimalcorp/Cat.class"
-      this shouldHaveKey "com/biganimalcorp/Dog.class"
-      this shouldHaveKey "com/example/Foo.class"
-    }
+    output.classes.archive.shouldContainExactly(
+      "com/biganimalcorp/Animal.class",
+      "com/biganimalcorp/Cat.class",
+      "com/biganimalcorp/Dog.class",
+      "com/example/Foo.class",
+    )
   }
 
   @Test
@@ -173,13 +166,12 @@ class PackagerTest {
       dependencyArchives = listOf(packager.prepareDependencyArchive(animalJarPath, animalScope))
     )
 
-    with(output.classes.archive) {
-      this shouldHaveSize 4
-      this shouldHaveKey "com/fooanimals/Animal.class"
-      this shouldHaveKey "com/fooanimals/Cat.class"
-      this shouldHaveKey "com/fooanimals/Dog.class"
-      this shouldHaveKey "com/fooanimals/Foo.class"
-    }
+    output.classes.archive.shouldContainExactly(
+      "com/fooanimals/Animal.class",
+      "com/fooanimals/Cat.class",
+      "com/fooanimals/Dog.class",
+      "com/fooanimals/Foo.class",
+    )
   }
 
   @Test
@@ -210,10 +202,9 @@ class PackagerTest {
           dependencyArchives = listOf(packager.prepareDependencyArchive(animalJarPath, externalScope))
         )
 
-        with(output.classes.archive) {
-          this shouldHaveSize 1
-          this shouldHaveKey "com/example/Foo.class"
-        }
+        output.classes.archive.shouldContainExactly(
+          "com/example/Foo.class",
+        )
       }
     }
   }
