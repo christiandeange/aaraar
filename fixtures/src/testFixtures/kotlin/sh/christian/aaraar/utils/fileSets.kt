@@ -1,11 +1,12 @@
 package sh.christian.aaraar.utils
 
 import io.kotest.matchers.maps.shouldHaveSize
+import io.kotest.matchers.nulls.shouldBeNull
 import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.shouldBe
 import sh.christian.aaraar.model.FileSet
 
-infix fun FileSet.forEntry(entry: String) = FileSetEntry(this, entry)
+fun FileSet.forEntry(entry: String) = FileSetEntry(this, entry)
 
 fun FileSet.shouldContainExactly(vararg entries: String) {
   entries.forEach { entry ->
@@ -15,15 +16,19 @@ fun FileSet.shouldContainExactly(vararg entries: String) {
 }
 
 data class FileSetEntry(
-  private val jarArchive: FileSet,
+  private val fileSet: FileSet,
   private val name: String,
 ) {
   fun shouldExist() {
-    jarArchive[name].shouldNotBeNull()
+    fileSet[name].shouldNotBeNull()
+  }
+
+  fun shouldNotExist() {
+    fileSet[name].shouldBeNull()
   }
 
   infix fun shouldHaveFileContents(contents: String) {
-    val file = jarArchive[name]
+    val file = fileSet[name]
     file.shouldNotBeNull()
     file.decodeToString().normalizeWhitespace() shouldBe contents.trimIndent()
   }

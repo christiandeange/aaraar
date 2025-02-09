@@ -3,6 +3,9 @@ package sh.christian.aaraar.shading.impl
 import io.kotest.matchers.maps.shouldBeEmpty
 import io.kotest.matchers.maps.shouldHaveKey
 import io.kotest.matchers.maps.shouldNotHaveKey
+import kotlinx.metadata.jvm.JvmMetadataVersion
+import kotlinx.metadata.jvm.KmPackageParts
+import kotlinx.metadata.jvm.UnstableMetadataApi
 import sh.christian.aaraar.merger.MergeRules
 import sh.christian.aaraar.merger.impl.GenericJarArchiveMerger
 import sh.christian.aaraar.model.GenericJarArchive
@@ -119,7 +122,7 @@ class GenericJarArchiveShaderTest {
   @Test
   fun `shading updates class name`() {
     val originalClasses = animalJarPath.loadJar()
-    originalClasses forEntry("com/example/Animal.class") shouldBeDecompiledTo """
+    originalClasses.forEntry("com/example/Animal.class") shouldBeDecompiledTo """
       package com.example;
 
       public interface Animal {
@@ -129,7 +132,7 @@ class GenericJarArchiveShaderTest {
     val shadedClasses = originalClasses.shaded(
       classRenames = mapOf("com.example.Animal" to "com.example.Pet"),
     )
-    shadedClasses forEntry("com/example/Pet.class") shouldBeDecompiledTo """
+    shadedClasses.forEntry("com/example/Pet.class") shouldBeDecompiledTo """
       package com.example;
 
       public interface Pet {
@@ -140,7 +143,7 @@ class GenericJarArchiveShaderTest {
   @Test
   fun `shading updates class references from other classes`() {
     val originalClasses = animalJarPath.loadJar()
-    originalClasses forEntry("com/example/Dog.class") shouldBeDecompiledTo """
+    originalClasses.forEntry("com/example/Dog.class") shouldBeDecompiledTo """
       package com.example;
 
       public class Dog implements Animal {
@@ -151,7 +154,7 @@ class GenericJarArchiveShaderTest {
       classRenames = mapOf("com.example.Animal" to "com.example.Pet"),
     )
 
-    shadedClasses forEntry("com/example/Dog.class") shouldBeDecompiledTo """
+    shadedClasses.forEntry("com/example/Dog.class") shouldBeDecompiledTo """
       package com.example;
 
       public class Dog implements Pet {
@@ -162,7 +165,7 @@ class GenericJarArchiveShaderTest {
   @Test
   fun `shading updates class references from service loader files`() {
     val originalClasses = serviceJarPath.loadJar()
-    originalClasses forEntry("META-INF/services/java.nio.file.spi.CustomService") shouldHaveFileContents """
+    originalClasses.forEntry("META-INF/services/java.nio.file.spi.CustomService") shouldHaveFileContents """
       com.example.MyCustomService
       com.example.RealCustomService
     """
@@ -170,10 +173,118 @@ class GenericJarArchiveShaderTest {
     val shadedClasses = originalClasses.shaded(
       classRenames = mapOf("com.example.MyCustomService" to "com.example.EmptyCustomService"),
     )
-    shadedClasses forEntry("META-INF/services/java.nio.file.spi.CustomService") shouldHaveFileContents """
+    shadedClasses.forEntry("META-INF/services/java.nio.file.spi.CustomService") shouldHaveFileContents """
       com.example.EmptyCustomService
       com.example.RealCustomService
     """
+  }
+
+  @OptIn(UnstableMetadataApi::class)
+  @Test
+  fun `shading updates class references in kotlin_module file`() {
+    val originalClasses = ktLibraryJarPath.loadJar()
+    originalClasses.forEntry("META-INF/fixtures_ktLibrary.kotlin_module").let {
+      it.shouldExist()
+      it.shouldHaveKotlinMetadata(
+        version = JvmMetadataVersion(1, 8, 0),
+        packageParts = mapOf(
+          "sh.christian.mylibrary" to KmPackageParts(
+            fileFacades = mutableListOf(
+              "sh/christian/mylibrary/FooInternals",
+              "sh/christian/mylibrary/Foos",
+            ),
+            multiFileClassParts = mutableMapOf(),
+          ),
+        ),
+      )
+    }
+
+    val shadedClasses = originalClasses.shaded(
+      classRenames = mapOf("sh.christian.mylibrary.**" to "sh.christian.foolib.@1"),
+    )
+    shadedClasses.forEntry("META-INF/fixtures_ktLibrary.kotlin_module").let {
+      it.shouldExist()
+      it.shouldHaveKotlinMetadata(
+        version = JvmMetadataVersion(1, 8, 0),
+        packageParts = mapOf(
+          "sh.christian.foolib" to KmPackageParts(
+            fileFacades = mutableListOf(
+              "sh/christian/foolib/FooInternals",
+              "sh/christian/foolib/Foos",
+            ),
+            multiFileClassParts = mutableMapOf(),
+          ),
+        ),
+      )
+    }
+  }
+
+  @OptIn(UnstableMetadataApi::class)
+  @Test
+  fun `deleting some class references removes them in kotlin_module file`() {
+    val originalClasses = ktLibraryJarPath.loadJar()
+    originalClasses.forEntry("META-INF/fixtures_ktLibrary.kotlin_module").let {
+      it.shouldExist()
+      it.shouldHaveKotlinMetadata(
+        version = JvmMetadataVersion(1, 8, 0),
+        packageParts = mapOf(
+          "sh.christian.mylibrary" to KmPackageParts(
+            fileFacades = mutableListOf(
+              "sh/christian/mylibrary/FooInternals",
+              "sh/christian/mylibrary/Foos",
+            ),
+            multiFileClassParts = mutableMapOf(),
+          ),
+        ),
+      )
+    }
+
+    val shadedClasses = originalClasses.shaded(
+      classDeletes = setOf("sh.christian.mylibrary.Foos"),
+    )
+    shadedClasses.forEntry("META-INF/fixtures_ktLibrary.kotlin_module").let {
+      it.shouldExist()
+      it.shouldHaveKotlinMetadata(
+        version = JvmMetadataVersion(1, 8, 0),
+        packageParts = mapOf(
+          "sh.christian.mylibrary" to KmPackageParts(
+            fileFacades = mutableListOf(
+              "sh/christian/mylibrary/FooInternals",
+            ),
+            multiFileClassParts = mutableMapOf(),
+          ),
+        ),
+      )
+    }
+  }
+
+  @OptIn(UnstableMetadataApi::class)
+  @Test
+  fun `deleting all class references removes the kotlin_module file`() {
+    val originalClasses = ktLibraryJarPath.loadJar()
+    originalClasses.forEntry("META-INF/fixtures_ktLibrary.kotlin_module").let {
+      it.shouldExist()
+      it.shouldHaveKotlinMetadata(
+        version = JvmMetadataVersion(1, 8, 0),
+        packageParts = mapOf(
+          "sh.christian.mylibrary" to KmPackageParts(
+            fileFacades = mutableListOf(
+              "sh/christian/mylibrary/FooInternals",
+              "sh/christian/mylibrary/Foos",
+            ),
+            multiFileClassParts = mutableMapOf(),
+          ),
+        ),
+      )
+    }
+
+    val shadedClasses = originalClasses.shaded(
+      classDeletes = setOf(
+        "sh.christian.mylibrary.Foos",
+        "sh.christian.mylibrary.FooInternals",
+      ),
+    )
+    shadedClasses.forEntry("META-INF/fixtures_ktLibrary.kotlin_module").shouldNotExist()
   }
 
   private fun GenericJarArchive.shaded(

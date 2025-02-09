@@ -7,6 +7,8 @@ import sh.christian.aaraar.shading.Shader
 import sh.christian.aaraar.shading.pipeline.ClassFilesProcessor
 import sh.christian.aaraar.shading.pipeline.ClassFilter
 import sh.christian.aaraar.shading.pipeline.ClassShader
+import sh.christian.aaraar.shading.pipeline.KotlinModuleFilter
+import sh.christian.aaraar.shading.pipeline.KotlinModuleShader
 import sh.christian.aaraar.shading.pipeline.ResourceFilter
 
 /**
@@ -23,6 +25,8 @@ class GenericJarArchiveShader : Shader<GenericJarArchive> {
       add(ResourceFilter(shadeConfiguration.resourceExclusions))
       add(ClassFilter(shadeConfiguration.classDeletes))
       add(ClassShader(shadeConfiguration.classRenames))
+      add(KotlinModuleFilter(shadeConfiguration.classDeletes))
+      add(KotlinModuleShader(shadeConfiguration.classRenames))
     }
 
     val newArchiveEntries = ClassFilesProcessor(processor).process(source)
