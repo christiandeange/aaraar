@@ -16,11 +16,62 @@ internal class ClassFilter(
   override fun scan(struct: Transformable): JarProcessor.Result = process(struct)
 
   override fun process(struct: Transformable): JarProcessor.Result {
-    return when {
-      !ClassNameUtils.isClass(struct.name) -> KEEP
-      classDeletePatterns.isEmpty() -> KEEP
-      classDeletePatterns.none { it.matches(struct.name.removeSuffix(EXT_CLASS)) } -> KEEP
-      else -> DISCARD
+    return if (classDeletePatterns.isEmpty()) {
+      KEEP
+    } else if (ClassNameUtils.isClass(struct.name)) {
+      processClass(struct)
+    } else if (struct.name.startsWith("META-INF/services/")) {
+      processServiceLoader(struct)
+    } else {
+      KEEP
     }
+  }
+
+  private fun processClass(struct: Transformable): JarProcessor.Result {
+    return if (shouldDeletePath(struct.name.removeSuffix(EXT_CLASS))) {
+      DISCARD
+    } else {
+      KEEP
+    }
+  }
+
+  private fun processServiceLoader(struct: Transformable): JarProcessor.Result {
+    val originalFile = struct.data.decodeToString()
+
+    struct.data = buildString {
+      val line = StringBuilder()
+
+      originalFile.forEach { c ->
+        if (c == '\n' || c == '\r') {
+          val className = line.toString()
+          if (!shouldDeleteClass(className)) {
+            append(className)
+            append(c)
+          }
+          line.clear()
+        } else {
+          line.append(c)
+        }
+      }
+
+      val className = line.toString()
+      if (!shouldDeleteClass(className)) {
+        append(className)
+      }
+    }.encodeToByteArray()
+
+    return if (struct.data.isEmpty()) {
+      DISCARD
+    } else {
+      KEEP
+    }
+  }
+
+  private fun shouldDeleteClass(className: String): Boolean {
+    return shouldDeletePath(className.replace('.', '/'))
+  }
+
+  private fun shouldDeletePath(className: String): Boolean {
+    return classDeletePatterns.any { it.matches(className) }
   }
 }

@@ -163,7 +163,7 @@ class GenericJarArchiveShaderTest {
   }
 
   @Test
-  fun `shading updates class references from service loader files`() {
+  fun `shading updates class references from service loader file`() {
     val originalClasses = serviceJarPath.loadJar()
     originalClasses.forEntry("META-INF/services/java.nio.file.spi.CustomService") shouldHaveFileContents """
       com.example.MyCustomService
@@ -177,6 +177,36 @@ class GenericJarArchiveShaderTest {
       com.example.EmptyCustomService
       com.example.RealCustomService
     """
+  }
+
+  @Test
+  fun `deleting some class references from service loader file removes them`() {
+    val originalClasses = serviceJarPath.loadJar()
+    originalClasses.forEntry("META-INF/services/java.nio.file.spi.CustomService") shouldHaveFileContents """
+      com.example.MyCustomService
+      com.example.RealCustomService
+    """
+
+    val shadedClasses = originalClasses.shaded(
+      classDeletes = setOf("com.example.MyCustomService"),
+    )
+    shadedClasses.forEntry("META-INF/services/java.nio.file.spi.CustomService") shouldHaveFileContents """
+      com.example.RealCustomService
+    """
+  }
+
+  @Test
+  fun `deleting all class references from service loader file removes the service loader file`() {
+    val originalClasses = serviceJarPath.loadJar()
+    originalClasses.forEntry("META-INF/services/java.nio.file.spi.CustomService") shouldHaveFileContents """
+      com.example.MyCustomService
+      com.example.RealCustomService
+    """
+
+    val shadedClasses = originalClasses.shaded(
+      classDeletes = setOf("com.example.MyCustomService", "com.example.RealCustomService"),
+    )
+    shadedClasses.forEntry("META-INF/services/java.nio.file.spi.CustomService").shouldNotExist()
   }
 
   @OptIn(UnstableMetadataApi::class)
