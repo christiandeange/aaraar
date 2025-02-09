@@ -4,12 +4,14 @@ import com.tonicsystems.jarjar.transform.jar.JarProcessorChain
 import sh.christian.aaraar.model.GenericJarArchive
 import sh.christian.aaraar.model.ShadeConfiguration
 import sh.christian.aaraar.shading.Shader
+import sh.christian.aaraar.shading.pipeline.ClassFileFilter
+import sh.christian.aaraar.shading.pipeline.ClassFileShader
 import sh.christian.aaraar.shading.pipeline.ClassFilesProcessor
-import sh.christian.aaraar.shading.pipeline.ClassFilter
-import sh.christian.aaraar.shading.pipeline.ClassShader
 import sh.christian.aaraar.shading.pipeline.KotlinModuleFilter
 import sh.christian.aaraar.shading.pipeline.KotlinModuleShader
 import sh.christian.aaraar.shading.pipeline.ResourceFilter
+import sh.christian.aaraar.shading.pipeline.ServiceLoaderFilter
+import sh.christian.aaraar.shading.pipeline.ServiceLoaderShader
 
 /**
  * Standard implementation for shading a JAR file by applying rules from the [ShadeConfiguration] in this order:
@@ -23,8 +25,10 @@ class GenericJarArchiveShader : Shader<GenericJarArchive> {
   override fun shade(source: GenericJarArchive, shadeConfiguration: ShadeConfiguration): GenericJarArchive {
     val processor = JarProcessorChain().apply {
       add(ResourceFilter(shadeConfiguration.resourceExclusions))
-      add(ClassFilter(shadeConfiguration.classDeletes))
-      add(ClassShader(shadeConfiguration.classRenames))
+      add(ClassFileFilter(shadeConfiguration.classDeletes))
+      add(ClassFileShader(shadeConfiguration.classRenames))
+      add(ServiceLoaderFilter(shadeConfiguration.classDeletes))
+      add(ServiceLoaderShader(shadeConfiguration.classRenames))
       add(KotlinModuleFilter(shadeConfiguration.classDeletes))
       add(KotlinModuleShader(shadeConfiguration.classRenames))
     }
