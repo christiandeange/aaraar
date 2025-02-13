@@ -24,7 +24,7 @@ data class FileSetEntry(
   }
 
   fun shouldNotExist() {
-    fileSet[name].shouldBeNull()
+    fileSet[name]?.decodeToString().shouldBeNull()
   }
 
   infix fun shouldHaveFileContents(contents: String) {

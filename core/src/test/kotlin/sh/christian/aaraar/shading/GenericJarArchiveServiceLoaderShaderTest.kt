@@ -39,7 +39,10 @@ class GenericJarArchiveServiceLoaderShaderTest {
   @Test
   fun `deleting all class references from service loader file removes the service loader file`() {
     val shadedClasses = serviceJarPath.loadJar().shaded(
-      classDeletes = setOf("com.example.MyCustomService", "com.example.RealCustomService"),
+      classDeletes = setOf(
+        "com.example.MyCustomService",
+        "com.example.RealCustomService",
+      ),
     )
     shadedClasses.forEntry("META-INF/services/java.nio.file.spi.CustomService").shouldNotExist()
   }

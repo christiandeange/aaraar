@@ -38,7 +38,7 @@ data class JarEntry(
   }
 
   fun shouldNotExist() {
-    jarArchive[name].shouldBeNull()
+    jarArchive[name]?.decodeToString().shouldBeNull()
   }
 
   infix fun shouldHaveFileContents(contents: String) {

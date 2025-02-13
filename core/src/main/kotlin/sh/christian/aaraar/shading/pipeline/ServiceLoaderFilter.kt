@@ -17,7 +17,7 @@ internal class ServiceLoaderFilter(
     if (classDeletePatterns.isEmpty() || !struct.name.startsWith("META-INF/services/")) return KEEP
     val originalFile = struct.data.decodeToString()
 
-    struct.data = buildString {
+    val newContents = buildString {
       val line = StringBuilder()
 
       originalFile.forEach { c ->
@@ -37,11 +37,12 @@ internal class ServiceLoaderFilter(
       if (!shouldDeleteClass(className)) {
         append(className)
       }
-    }.encodeToByteArray()
+    }
 
-    return if (struct.data.isEmpty()) {
+    return if (newContents.isBlank()) {
       DISCARD
     } else {
+      struct.data = newContents.encodeToByteArray()
       KEEP
     }
   }
