@@ -67,12 +67,15 @@ class AarAarPlugin : Plugin<Project> {
       extendsFrom(embedTree)
 
       setTransitivity(true)
-      isCanBeConsumed = true
+      isCanBeConsumed = false
       isCanBeResolved = true
 
-      // Match incoming dependencies and tag outgoing artifacts as targeting the JVM.
+      // Match incoming dependencies as targeting the JVM.
       attributes.attribute(TARGET_JVM_ENVIRONMENT_ATTRIBUTE, objects.named(TargetJvmEnvironment.STANDARD_JVM))
       attributes.attribute(USAGE_ATTRIBUTE, objects.named(Usage.JAVA_RUNTIME))
+
+      // Incoming dependencies should be mergeable artifacts as per ArtifactTypeCompatibilityDependencyRule.
+      attributes.attribute(ARTIFACT_TYPE_ATTRIBUTE, MERGEABLE_ARTIFACT_TYPE)
     }
 
     val jarTask = tasks.named<Jar>("jar")
@@ -88,10 +91,18 @@ class AarAarPlugin : Plugin<Project> {
       outputJar.set(jarTask.flatMap { it.archiveFile })
     }
 
-    classpath.outgoing {
+    configurations.create("mergedJar") {
+      setTransitivity(false)
+      isCanBeConsumed = true
+      isCanBeResolved = true
+
+      // Tag outgoing artifacts as targeting the JVM.
+      attributes.attribute(TARGET_JVM_ENVIRONMENT_ATTRIBUTE, objects.named(TargetJvmEnvironment.STANDARD_JVM))
+      attributes.attribute(USAGE_ATTRIBUTE, objects.named(Usage.JAVA_RUNTIME))
+
       // Outgoing artifact is a merged jar (which is still considered mergeable!)
-      artifact(packageJar.flatMap { it.outputJar })
-      attributes.attribute(ARTIFACT_TYPE_ATTRIBUTE, MERGED_ARTIFACT_TYPE)
+      attributes.attribute(ARTIFACT_TYPE_ATTRIBUTE, MERGED_JAR_TYPE)
+      outgoing.artifact(packageJar.flatMap { it.outputJar })
     }
 
     // These tasks are created by the `maven-publish` plugin.
@@ -164,20 +175,20 @@ class AarAarPlugin : Plugin<Project> {
         extendsFrom(configurations.getAt("${buildType}Embed"))
         extendsFrom(configurations.getAt("${buildType}EmbedTree"))
 
-        // Add build type attribute to match incoming dependencies and tag outgoing artifacts.
+        // Add build type attribute to match incoming dependencies.
         with(agp) { attributes.buildTypeAttribute(buildType) }
       }
 
       setTransitivity(true)
-      isCanBeConsumed = true
+      isCanBeConsumed = false
       isCanBeResolved = true
 
-      // Match incoming dependencies and tag outgoing artifacts as targeting Android.
+      // Match incoming dependencies as targeting Android.
       attributes.attribute(TARGET_JVM_ENVIRONMENT_ATTRIBUTE, objects.named(TargetJvmEnvironment.ANDROID))
       attributes.attribute(USAGE_ATTRIBUTE, objects.named(Usage.JAVA_RUNTIME))
 
       // Incoming dependencies should be mergeable artifacts as per ArtifactTypeCompatibilityDependencyRule.
-      incoming.attributes.attribute(ARTIFACT_TYPE_ATTRIBUTE, MERGEABLE_ARTIFACT_TYPE)
+      attributes.attribute(ARTIFACT_TYPE_ATTRIBUTE, MERGEABLE_ARTIFACT_TYPE)
     }
 
     val androidAaptIgnoreEnv = providers.environmentVariable("ANDROID_AAPT_IGNORE").orElse("")
@@ -198,10 +209,23 @@ class AarAarPlugin : Plugin<Project> {
       PackageAarTask::outputAar,
     )
 
-    variantEmbedClasspath.outgoing {
+    configurations.create(variant.name("merged", "Aar")) {
+      setTransitivity(false)
+      isCanBeConsumed = true
+      isCanBeResolved = true
+
+      variant.buildType?.let { buildType ->
+        // Add build type attribute to tag outgoing artifacts.
+        with(agp) { attributes.buildTypeAttribute(buildType) }
+      }
+
+      // Tag outgoing artifacts as targeting Android.
+      attributes.attribute(TARGET_JVM_ENVIRONMENT_ATTRIBUTE, objects.named(TargetJvmEnvironment.ANDROID))
+      attributes.attribute(USAGE_ATTRIBUTE, objects.named(Usage.JAVA_RUNTIME))
+
       // Outgoing artifact is a merged aar (which is still considered mergeable!)
-      artifact(packageVariantAar.flatMap { it.outputAar })
-      attributes.attribute(ARTIFACT_TYPE_ATTRIBUTE, MERGED_ARTIFACT_TYPE)
+      attributes.attribute(ARTIFACT_TYPE_ATTRIBUTE, MERGED_AAR_TYPE)
+      outgoing.artifact(packageVariantAar.flatMap { it.outputAar })
     }
   }
 
