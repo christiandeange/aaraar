@@ -4,7 +4,7 @@ site_name: aaraar
 site_url: https://christiandeange.github.io/aaraar/
 site_author: Christian De Angelis
 site_description: 'A Gradle Plugin for creating a merged aar file'
-copyright: 'Copyright 2023 Christian De Angelis'
+copyright: 'Copyright 2025 Christian De Angelis'
 remote_branch: gh-pages
 
 theme:

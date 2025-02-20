@@ -1,6 +1,16 @@
 Change Log
 ==========
 
+## Version 0.1.0
+
+_2025-02-19_
+
+* New: Create embedTree configurations to allow consumers to embed an entire dependency tree into a merged artifact.
+* New: Apply shading rules to `ServiceLoader` provider configuration files.
+* New: Apply shading rules to `.kotlin_module` files.
+* Update: Allow aaraar artifact to be used as dependency of other projects.
+* Fix: Resource exclusions should not apply to class files.
+
 ## Version 0.0.18
 
 _2024-12-11_
