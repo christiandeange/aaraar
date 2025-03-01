@@ -71,11 +71,11 @@ class AarAarPlugin : Plugin<Project> {
       isCanBeResolved = true
 
       // Match incoming dependencies as targeting the JVM.
-      attributes.attribute(TARGET_JVM_ENVIRONMENT_ATTRIBUTE, objects.named(TargetJvmEnvironment.STANDARD_JVM))
-      attributes.attribute(USAGE_ATTRIBUTE, objects.named(Usage.JAVA_RUNTIME))
+      incoming.attributes.attribute(TARGET_JVM_ENVIRONMENT_ATTRIBUTE, objects.named(TargetJvmEnvironment.STANDARD_JVM))
+      incoming.attributes.attribute(USAGE_ATTRIBUTE, objects.named(Usage.JAVA_RUNTIME))
 
       // Incoming dependencies should be mergeable artifacts as per ArtifactTypeCompatibilityDependencyRule.
-      attributes.attribute(ARTIFACT_TYPE_ATTRIBUTE, MERGEABLE_ARTIFACT_TYPE)
+      incoming.attributes.attribute(ARTIFACT_TYPE_ATTRIBUTE, MERGEABLE_ARTIFACT_TYPE)
     }
 
     val jarTask = tasks.named<Jar>("jar")
@@ -96,13 +96,15 @@ class AarAarPlugin : Plugin<Project> {
       isCanBeConsumed = true
       isCanBeResolved = true
 
-      // Tag outgoing artifacts as targeting the JVM.
-      attributes.attribute(TARGET_JVM_ENVIRONMENT_ATTRIBUTE, objects.named(TargetJvmEnvironment.STANDARD_JVM))
-      attributes.attribute(USAGE_ATTRIBUTE, objects.named(Usage.JAVA_RUNTIME))
+      outgoing {
+        // Tag outgoing artifacts as targeting the JVM.
+        attributes.attribute(TARGET_JVM_ENVIRONMENT_ATTRIBUTE, objects.named(TargetJvmEnvironment.STANDARD_JVM))
+        attributes.attribute(USAGE_ATTRIBUTE, objects.named(Usage.JAVA_RUNTIME))
 
-      // Outgoing artifact is a merged jar (which is still considered mergeable!)
-      attributes.attribute(ARTIFACT_TYPE_ATTRIBUTE, MERGED_JAR_TYPE)
-      outgoing.artifact(packageJar.flatMap { it.outputJar })
+        // Outgoing artifact is a merged jar (which is still considered mergeable!)
+        attributes.attribute(ARTIFACT_TYPE_ATTRIBUTE, MERGED_JAR_TYPE)
+        artifact(packageJar.flatMap { it.outputJar })
+      }
     }
 
     // These tasks are created by the `maven-publish` plugin.
@@ -176,7 +178,7 @@ class AarAarPlugin : Plugin<Project> {
         extendsFrom(configurations.getAt("${buildType}EmbedTree"))
 
         // Add build type attribute to match incoming dependencies.
-        with(agp) { attributes.buildTypeAttribute(buildType) }
+        with(agp) { incoming.attributes.buildTypeAttribute(buildType) }
       }
 
       setTransitivity(true)
@@ -184,11 +186,11 @@ class AarAarPlugin : Plugin<Project> {
       isCanBeResolved = true
 
       // Match incoming dependencies as targeting Android.
-      attributes.attribute(TARGET_JVM_ENVIRONMENT_ATTRIBUTE, objects.named(TargetJvmEnvironment.ANDROID))
-      attributes.attribute(USAGE_ATTRIBUTE, objects.named(Usage.JAVA_RUNTIME))
+      incoming.attributes.attribute(TARGET_JVM_ENVIRONMENT_ATTRIBUTE, objects.named(TargetJvmEnvironment.ANDROID))
+      incoming.attributes.attribute(USAGE_ATTRIBUTE, objects.named(Usage.JAVA_RUNTIME))
 
       // Incoming dependencies should be mergeable artifacts as per ArtifactTypeCompatibilityDependencyRule.
-      attributes.attribute(ARTIFACT_TYPE_ATTRIBUTE, MERGEABLE_ARTIFACT_TYPE)
+      incoming.attributes.attribute(ARTIFACT_TYPE_ATTRIBUTE, MERGEABLE_ARTIFACT_TYPE)
     }
 
     val androidAaptIgnoreEnv = providers.environmentVariable("ANDROID_AAPT_IGNORE").orElse("")
@@ -214,18 +216,20 @@ class AarAarPlugin : Plugin<Project> {
       isCanBeConsumed = true
       isCanBeResolved = true
 
-      variant.buildType?.let { buildType ->
-        // Add build type attribute to tag outgoing artifacts.
-        with(agp) { attributes.buildTypeAttribute(buildType) }
+      outgoing {
+        variant.buildType?.let { buildType ->
+          // Add build type attribute to tag outgoing artifacts.
+          with(agp) { attributes.buildTypeAttribute(buildType) }
+        }
+
+        // Tag outgoing artifacts as targeting Android.
+        attributes.attribute(TARGET_JVM_ENVIRONMENT_ATTRIBUTE, objects.named(TargetJvmEnvironment.ANDROID))
+        attributes.attribute(USAGE_ATTRIBUTE, objects.named(Usage.JAVA_RUNTIME))
+
+        // Outgoing artifact is a merged aar (which is still considered mergeable!)
+        attributes.attribute(ARTIFACT_TYPE_ATTRIBUTE, MERGED_AAR_TYPE)
+        artifact(packageVariantAar.flatMap { it.outputAar })
       }
-
-      // Tag outgoing artifacts as targeting Android.
-      attributes.attribute(TARGET_JVM_ENVIRONMENT_ATTRIBUTE, objects.named(TargetJvmEnvironment.ANDROID))
-      attributes.attribute(USAGE_ATTRIBUTE, objects.named(Usage.JAVA_RUNTIME))
-
-      // Outgoing artifact is a merged aar (which is still considered mergeable!)
-      attributes.attribute(ARTIFACT_TYPE_ATTRIBUTE, MERGED_AAR_TYPE)
-      outgoing.artifact(packageVariantAar.flatMap { it.outputAar })
     }
   }
 

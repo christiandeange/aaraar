@@ -16,7 +16,7 @@ internal class ArtifactTypeCompatibilityDependencyRule : AttributeCompatibilityR
     if (t.consumerValue == MERGEABLE_ARTIFACT_TYPE || t.consumerValue == null) {
       if (t.producerValue in MERGEABLE_TYPES) {
         t.compatible()
-      } else {
+      } else if (t.consumerValue == MERGEABLE_ARTIFACT_TYPE) {
         t.incompatible()
       }
     }
