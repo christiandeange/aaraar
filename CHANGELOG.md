@@ -1,6 +1,12 @@
 Change Log
 ==========
 
+## Version 0.1.1
+
+_2025-03-27_
+
+* Fix: Update Gradle attributes on incoming/outgoing artifact configurations.
+
 ## Version 0.1.0
 
 _2025-02-19_
