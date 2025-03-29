@@ -19,6 +19,7 @@ val animalJarPath: Path by testFixtureJar()
 val fooJarPath: Path by testFixtureJar()
 val foo2JarPath: Path by testFixtureJar()
 val ktLibraryJarPath: Path by testFixtureJar()
+val nativelibJarPath: Path by testFixtureJar()
 val serviceJarPath: Path by testFixtureJar()
 
 val externalLibsPath: Path

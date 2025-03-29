@@ -32,6 +32,7 @@ dependencies {
   }
   implementation(libs.javassist)
   implementation(libs.kotlinxml)
+  implementation(libs.okio)
 
   testImplementation(testFixtures(project(":fixtures")))
   testImplementation(kotlin("test"))

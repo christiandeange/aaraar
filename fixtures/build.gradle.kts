@@ -28,6 +28,7 @@ registerSourceSet("annotations")
 registerSourceSet("foo")
 registerSourceSet("foo2")
 registerSourceSet("ktLibrary")
+registerSourceSet("nativelib")
 registerSourceSet("service")
 
 fun registerSourceSet(name: String) {
