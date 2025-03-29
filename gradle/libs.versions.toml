@@ -24,6 +24,7 @@ javassist = { module = "org.javassist:javassist", version = "3.30.2-GA" }
 decompiler = { module = "com.jetbrains.intellij.java:java-decompiler-engine", version = "233.14475.28" }
 kotlin-metadata = { module = "org.jetbrains.kotlin:kotlin-metadata-jvm", version.ref = "kotlin" }
 
+okio = { module = "com.squareup.okio:okio", version = "3.9.1" }
 jimfs = { module = "com.google.jimfs:jimfs", version = "1.2" }
 
 gson = { module = "com.google.code.gson:gson", version = "2.10.1" }

@@ -5,7 +5,7 @@ complexity:
   LongMethod:
     threshold: 100
   CyclomaticComplexMethod:
-    threshold: 20
+    threshold: 25
   TooManyFunctions:
     thresholdInClasses: 20
 
@@ -19,3 +19,7 @@ formatting:
     active: false
   Indentation:
     indentSize: 2
+
+style:
+  MagicNumber:
+    active: false

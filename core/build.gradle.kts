@@ -22,6 +22,7 @@ dependencies {
   implementation(libs.gson)
   implementation(libs.javassist)
   implementation(libs.kotlinxml)
+  implementation(libs.okio)
 
   compileOnly(libs.agp.layoutlib)
   compileOnly(libs.agp.tools.common)
