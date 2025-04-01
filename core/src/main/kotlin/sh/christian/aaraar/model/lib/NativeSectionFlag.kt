@@ -1,8 +1,6 @@
-package sh.christian.aaraar.model.lib.elf
+package sh.christian.aaraar.model.lib
 
-import sh.christian.aaraar.model.lib.Value
-
-enum class ElfSectionFlag(val value: Int) {
+enum class NativeSectionFlag(val value: Int) {
   Write(0x00000001),
   Alloc(0x00000002),
   Execinstr(0x00000004),
@@ -24,10 +22,10 @@ enum class ElfSectionFlag(val value: Int) {
   }
 
   companion object {
-    fun from(value: Value): Set<ElfSectionFlag> {
+    fun from(value: Value): Set<NativeSectionFlag> {
       return when (value) {
-        is Value.Value32 -> ElfSectionFlag.values().filter { value.value and it.value != 0 }.toSet()
-        is Value.Value64 -> ElfSectionFlag.values().filter { value.value.toInt() and it.value != 0 }.toSet()
+        is Value.Value32 -> NativeSectionFlag.values().filter { value.value and it.value != 0 }.toSet()
+        is Value.Value64 -> NativeSectionFlag.values().filter { value.value.toInt() and it.value != 0 }.toSet()
       }
     }
   }

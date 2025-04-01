@@ -3,21 +3,12 @@ package sh.christian.aaraar.model.lib
 import okio.Buffer
 import sh.christian.aaraar.model.lib.Address.Address32
 import sh.christian.aaraar.model.lib.Address.Address64
-import sh.christian.aaraar.model.lib.elf.ElfEndian
-import sh.christian.aaraar.model.lib.elf.ElfEndian.BIG
-import sh.christian.aaraar.model.lib.elf.ElfEndian.LITTLE
+import sh.christian.aaraar.model.lib.NativeFormat.BIT_32
+import sh.christian.aaraar.model.lib.NativeFormat.BIT_64
 import sh.christian.aaraar.model.lib.elf.ElfFileHeader
-import sh.christian.aaraar.model.lib.elf.ElfFileHeaderType
-import sh.christian.aaraar.model.lib.elf.ElfFormat
-import sh.christian.aaraar.model.lib.elf.ElfFormat.BIT_32
-import sh.christian.aaraar.model.lib.elf.ElfFormat.BIT_64
 import sh.christian.aaraar.model.lib.elf.ElfProgramHeader
-import sh.christian.aaraar.model.lib.elf.ElfProgramHeaderFlag
-import sh.christian.aaraar.model.lib.elf.ElfProgramHeaderType
 import sh.christian.aaraar.model.lib.elf.ElfSection
 import sh.christian.aaraar.model.lib.elf.ElfSectionData
-import sh.christian.aaraar.model.lib.elf.ElfSectionFlag
-import sh.christian.aaraar.model.lib.elf.ElfSectionType
 import sh.christian.aaraar.model.lib.elf.ElfSource
 
 class NativeLibraryParser(
@@ -29,15 +20,15 @@ class NativeLibraryParser(
   ): ElfSource {
     return newElfSource(
       offset = offset,
-      identifierClass = elfHeader.identifierClass,
-      identifierData = elfHeader.identifierData,
+      identifierClass = NativeFormat.from(elfHeader.ei_class),
+      identifierData = NativeEndian.from(elfHeader.ei_data),
     )
   }
 
   private fun newElfSource(
     offset: Address,
-    identifierClass: ElfFormat,
-    identifierData: ElfEndian,
+    identifierClass: NativeFormat,
+    identifierData: NativeEndian,
   ): ElfSource {
     val startPos = when (offset) {
       is Address32 -> offset.value
@@ -57,69 +48,61 @@ class NativeLibraryParser(
   fun parseElfHeader(): ElfFileHeader {
     val identifierBytes = Buffer().apply { write(sourceBytes, 0x00, 0x06) }
 
-    val identifierMagic = identifierBytes.readUtf8(4)
-    check(identifierMagic == "\u007fELF") { "Not an ELF file" }
+    val ei_mag = identifierBytes.readUtf8(4)
+    check(ei_mag == "\u007fELF") { "Not an ELF file" }
 
-    val identifierClass: ElfFormat = when (val cls = identifierBytes.readByte()) {
-      1.toByte() -> BIT_32
-      2.toByte() -> BIT_64
-      else -> throw IllegalArgumentException("Invalid address class: $cls")
-    }
-    val identifierData: ElfEndian = when (val data = identifierBytes.readByte()) {
-      1.toByte() -> LITTLE
-      2.toByte() -> BIG
-      else -> throw IllegalArgumentException("Invalid endianness: $data")
-    }
+    val ei_class = identifierBytes.readByte()
+    val ei_data = identifierBytes.readByte()
 
     val bytes = newElfSource(
       offset = Address32(0x06),
-      identifierClass = identifierClass,
-      identifierData = identifierData,
+      identifierClass = NativeFormat.from(ei_class),
+      identifierData = NativeEndian.from(ei_data),
     )
-    val identifierVersion = bytes.byte()
-    val identifierOsAbi = bytes.byte()
-    val identifierAbiVersion = bytes.byte()
+    val ei_version = bytes.byte()
+    val ei_osabi = bytes.byte()
+    val ei_abiversion = bytes.byte()
     bytes.skip(7)
-    val identifierType = ElfFileHeaderType.from(bytes.short())
-    val machine = bytes.short()
-    val version = bytes.int()
-    val entry = bytes.address()
-    val phOff = bytes.address()
-    val shOff = bytes.address()
-    val flags = bytes.int()
-    val ehSize = bytes.short()
-    val phEntSize = bytes.short()
-    val phNum = bytes.short()
-    val shEntSize = bytes.short()
-    val shNum = bytes.short()
-    val shStrNdx = bytes.short()
+    val e_type = bytes.short()
+    val e_machine = bytes.short()
+    val e_version = bytes.int()
+    val e_entry = bytes.address()
+    val e_phoff = bytes.address()
+    val e_shoff = bytes.address()
+    val e_flags = bytes.int()
+    val e_ehsize = bytes.short()
+    val e_phentsize = bytes.short()
+    val e_phnum = bytes.short()
+    val e_shentsize = bytes.short()
+    val e_shnum = bytes.short()
+    val e_shstrndx = bytes.short()
 
     return ElfFileHeader(
-      identifierMagic = identifierMagic,
-      identifierClass = identifierClass,
-      identifierData = identifierData,
-      identifierVersion = identifierVersion,
-      identifierOsAbi = identifierOsAbi,
-      identifierAbiVersion = identifierAbiVersion,
-      identifierType = identifierType,
-      machine = machine,
-      version = version,
-      entry = entry,
-      phOff = phOff,
-      shOff = shOff,
-      flags = flags,
-      ehSize = ehSize,
-      phEntSize = phEntSize,
-      phNum = phNum,
-      shEntSize = shEntSize,
-      shNum = shNum,
-      shStrNdx = shStrNdx,
+      ei_mag = ei_mag,
+      ei_class = ei_class,
+      ei_data = ei_data,
+      ei_version = ei_version,
+      ei_osabi = ei_osabi,
+      ei_abiversion = ei_abiversion,
+      e_type = e_type,
+      e_machine = e_machine,
+      e_version = e_version,
+      e_entry = e_entry,
+      e_phoff = e_phoff,
+      e_shoff = e_shoff,
+      e_flags = e_flags,
+      e_ehsize = e_ehsize,
+      e_phentsize = e_phentsize,
+      e_phnum = e_phnum,
+      e_shentsize = e_shentsize,
+      e_shnum = e_shnum,
+      e_shstrndx = e_shstrndx,
     )
   }
 
   fun parseProgramHeaders(elfHeader: ElfFileHeader): List<ElfProgramHeader> {
-    return List(elfHeader.phNum.toInt()) { i ->
-      val address = elfHeader.phOff + i * elfHeader.phEntSize
+    return List(elfHeader.e_phnum.toInt()) { i ->
+      val address = elfHeader.e_phoff + i * elfHeader.e_phentsize
       parseProgramHeader(address, elfHeader)
     }
   }
@@ -130,38 +113,32 @@ class NativeLibraryParser(
   ): ElfProgramHeader {
     val bytes = newElfSource(address, elfHeader)
 
-    val type = ElfProgramHeaderType.from(bytes.int())
-    val flags32 = when (elfHeader.identifierClass) {
-      BIT_32 -> null
-      BIT_64 -> bytes.int()
-    }
-    val offset = bytes.address()
-    val vAddr = bytes.address()
-    val pAddr = bytes.address()
-    val fileSize = bytes.value()
-    val memSize = bytes.value()
-    val flags64 = when (elfHeader.identifierClass) {
-      BIT_32 -> bytes.int()
-      BIT_64 -> null
-    }
-    val align = bytes.value()
-    val flags = ElfProgramHeaderFlag.from(requireNotNull(flags64 ?: flags32))
+    val p_type = bytes.int()
+    val flags64 = if (elfHeader.ei_class == BIT_64.value) bytes.int() else null
+    val p_offset = bytes.address()
+    val p_vaddr = bytes.address()
+    val p_paddr = bytes.address()
+    val p_filesz = bytes.value()
+    val p_memsz = bytes.value()
+    val flags32 = if (elfHeader.ei_class == BIT_32.value) bytes.int() else null
+    val p_align = bytes.value()
+    val p_flags = requireNotNull(flags64 ?: flags32)
 
     return ElfProgramHeader(
-      type = type,
-      flags = flags,
-      offset = offset,
-      vAddr = vAddr,
-      pAddr = pAddr,
-      fileSize = fileSize,
-      memSize = memSize,
-      align = align,
+      p_type = p_type,
+      p_flags = p_flags,
+      p_offset = p_offset,
+      p_vaddr = p_vaddr,
+      p_paddr = p_paddr,
+      p_filesz = p_filesz,
+      p_memsz = p_memsz,
+      p_align = p_align,
     )
   }
 
   fun parseSections(elfHeader: ElfFileHeader): List<ElfSection> {
-    return List(elfHeader.shNum.toInt()) { i ->
-      val address = elfHeader.shOff + i * elfHeader.shEntSize
+    return List(elfHeader.e_shnum.toInt()) { i ->
+      val address = elfHeader.e_shoff + i * elfHeader.e_shentsize
       parseSection(address, elfHeader)
     }
   }
@@ -172,32 +149,32 @@ class NativeLibraryParser(
   ): ElfSection {
     val bytes = newElfSource(address, elfHeader)
 
-    val name = bytes.int()
-    val type = ElfSectionType.from(bytes.int())
-    val flags = ElfSectionFlag.from(bytes.value())
-    val addr = bytes.address()
-    val offset = bytes.address()
-    val size = bytes.value()
-    val link = bytes.int()
-    val info = bytes.int()
-    val addrAlign = bytes.value()
-    val entrySize = bytes.value()
+    val sh_name = bytes.int()
+    val sh_type = bytes.int()
+    val sh_flags = bytes.value()
+    val sh_addr = bytes.address()
+    val sh_offset = bytes.address()
+    val sh_size = bytes.value()
+    val sh_link = bytes.int()
+    val sh_info = bytes.int()
+    val sh_addralign = bytes.value()
+    val sh_entsize = bytes.value()
 
-    val dataBytes = newElfSource(offset, elfHeader)
-    val dataByteArray = dataBytes.bytes(size)
+    val dataBytes = newElfSource(sh_offset, elfHeader)
+    val dataByteArray = dataBytes.bytes(sh_size)
     val data = ElfSectionData(data = dataByteArray)
 
     return ElfSection(
-      name = name,
-      type = type,
-      flags = flags,
-      addr = addr,
-      offset = offset,
-      size = size,
-      link = link,
-      info = info,
-      addrAlign = addrAlign,
-      entrySize = entrySize,
+      sh_name = sh_name,
+      sh_type = sh_type,
+      sh_flags = sh_flags,
+      sh_addr = sh_addr,
+      sh_offset = sh_offset,
+      sh_size = sh_size,
+      sh_link = sh_link,
+      sh_info = sh_info,
+      sh_addralign = sh_addralign,
+      sh_entsize = sh_entsize,
       data = data,
     )
   }
