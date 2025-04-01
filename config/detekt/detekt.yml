@@ -11,8 +11,11 @@ complexity:
 
 naming:
   ConstructorParameterNaming:
-    parameterPattern: "[a-z_][A-Za-z0-9]*"
-    privateParameterPattern: "[a-z_][A-Za-z0-9]*"
+    parameterPattern: "[a-z_][A-Za-z0-9_]*"
+    privateParameterPattern: "[a-z_][A-Za-z0-9_]*"
+  VariableNaming:
+    variablePattern: "[a-z_][A-Za-z0-9_]*"
+    privateVariablePattern: "[a-z_][A-Za-z0-9_]*"
 
 formatting:
   Filename:

@@ -4,14 +4,15 @@ import okio.BufferedSink
 import sh.christian.aaraar.model.lib.Address
 import sh.christian.aaraar.model.lib.Address.Address32
 import sh.christian.aaraar.model.lib.Address.Address64
+import sh.christian.aaraar.model.lib.NativeEndian
+import sh.christian.aaraar.model.lib.NativeEndian.BIG
+import sh.christian.aaraar.model.lib.NativeEndian.LITTLE
 import sh.christian.aaraar.model.lib.Value
 import sh.christian.aaraar.model.lib.Value.Value32
 import sh.christian.aaraar.model.lib.Value.Value64
-import sh.christian.aaraar.model.lib.elf.ElfEndian.BIG
-import sh.christian.aaraar.model.lib.elf.ElfEndian.LITTLE
 
 class ElfSink(
-  private val identifierData: ElfEndian,
+  private val identifierData: NativeEndian,
   private val bufferedSink: BufferedSink,
 ) {
   fun byte(byte: Byte) {
