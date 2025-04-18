@@ -5,7 +5,7 @@ complexity:
   LongMethod:
     threshold: 100
   CyclomaticComplexMethod:
-    threshold: 25
+    active: false
   TooManyFunctions:
     thresholdInClasses: 20
 

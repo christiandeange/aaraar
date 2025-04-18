@@ -35,13 +35,23 @@ internal constructor(
     fun from(bytes: ByteArray): NativeLibrary {
       val parser = NativeLibraryParser(bytes)
       val elfHeader = parser.parseElfHeader()
-      val programHeaders = parser.parseProgramHeaders(elfHeader)
-      val sections = parser.parseSections(elfHeader)
+      val elfProgramHeaders = parser.parseProgramHeaders(elfHeader)
+      val elfSections = parser.parseSections(elfHeader)
+
+      val fileHeader = elfHeader.toNativeFileHeader()
+      val parseContext = NativeLibraryParser.ParseContext(
+        fileHeader = fileHeader,
+        elfProgramHeaders = elfProgramHeaders,
+        elfSections = elfSections,
+      )
+
+      val programHeaders = elfProgramHeaders.map { it.toNativeProgramHeader() }
+      val sections = elfSections.map { it.toNativeSection(parseContext) }
 
       return NativeLibrary(
-        fileHeader = elfHeader.toNativeFileHeader(),
-        programHeaders = programHeaders.map { it.toNativeProgramHeader() },
-        sections = sections.map { it.toNativeSection() },
+        fileHeader = fileHeader,
+        programHeaders = programHeaders,
+        sections = sections,
       )
     }
   }

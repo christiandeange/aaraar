@@ -5,6 +5,7 @@ import sh.christian.aaraar.model.lib.Address.Address32
 import sh.christian.aaraar.model.lib.Address.Address64
 import sh.christian.aaraar.model.lib.NativeFormat.BIT_32
 import sh.christian.aaraar.model.lib.NativeFormat.BIT_64
+import sh.christian.aaraar.model.lib.data.StringTable
 import sh.christian.aaraar.model.lib.elf.ElfFileHeader
 import sh.christian.aaraar.model.lib.elf.ElfProgramHeader
 import sh.christian.aaraar.model.lib.elf.ElfSection
@@ -20,15 +21,15 @@ class NativeLibraryParser(
   ): ElfSource {
     return newElfSource(
       offset = offset,
-      identifierClass = NativeFormat.from(elfHeader.ei_class),
-      identifierData = NativeEndian.from(elfHeader.ei_data),
+      architecture = NativeFormat.from(elfHeader.ei_class),
+      endianness = NativeEndian.from(elfHeader.ei_data),
     )
   }
 
   private fun newElfSource(
     offset: Address,
-    identifierClass: NativeFormat,
-    identifierData: NativeEndian,
+    architecture: NativeFormat,
+    endianness: NativeEndian,
   ): ElfSource {
     val startPos = when (offset) {
       is Address32 -> offset.value
@@ -39,8 +40,8 @@ class NativeLibraryParser(
     }
 
     return ElfSource(
-      identifierClass = identifierClass,
-      identifierData = identifierData,
+      architecture = architecture,
+      endianness = endianness,
       source = buffer,
     )
   }
@@ -56,8 +57,8 @@ class NativeLibraryParser(
 
     val bytes = newElfSource(
       offset = Address32(0x06),
-      identifierClass = NativeFormat.from(ei_class),
-      identifierData = NativeEndian.from(ei_data),
+      architecture = NativeFormat.from(ei_class),
+      endianness = NativeEndian.from(ei_data),
     )
     val ei_version = bytes.byte()
     val ei_osabi = bytes.byte()
@@ -177,5 +178,16 @@ class NativeLibraryParser(
       sh_entsize = sh_entsize,
       data = data,
     )
+  }
+
+  data class ParseContext(
+    val fileHeader: NativeFileHeader,
+    val elfProgramHeaders: List<ElfProgramHeader>,
+    val elfSections: List<ElfSection>,
+  ) {
+    val architecture: NativeFormat = fileHeader.architecture
+    val endianness: NativeEndian = fileHeader.endianness
+
+    val sectionHeaderTable = StringTable.from(elfSections[fileHeader.sectionNamesHeaderIndex.toInt()])
   }
 }

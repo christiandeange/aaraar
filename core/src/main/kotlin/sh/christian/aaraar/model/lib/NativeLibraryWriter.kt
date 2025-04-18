@@ -9,6 +9,7 @@ import sh.christian.aaraar.model.lib.NativeFormat.BIT_64
 import sh.christian.aaraar.model.lib.NativeSectionFlag.Execinstr
 import sh.christian.aaraar.model.lib.Value.Value32
 import sh.christian.aaraar.model.lib.Value.Value64
+import sh.christian.aaraar.model.lib.data.StringTable
 import sh.christian.aaraar.model.lib.elf.ElfFileHeader
 import sh.christian.aaraar.model.lib.elf.ElfProgramHeader
 import sh.christian.aaraar.model.lib.elf.ElfSection
@@ -31,11 +32,15 @@ class NativeLibraryWriter {
       }
     }
 
+    val sectionData = lib.sections.map { section ->
+      section.data.bytes(lib, section)
+    }
+
     val sectionStarts: List<Address> = buildList {
-      lib.sections.forEach {
-        addr = addr.alignTo(it.alignment)
+      lib.sections.forEachIndexed { i, section ->
+        addr = addr.alignTo(section.alignment)
         add(addr)
-        addr = (addr + it.data.data.size)
+        addr = (addr + sectionData[i].size)
       }
     }
 
@@ -50,6 +55,7 @@ class NativeLibraryWriter {
       lib = lib,
       programHeaderStarts = programHeaderStarts,
       sectionStarts = sectionStarts,
+      sectionData = sectionData,
       sectionHeadersStarts = sectionHeadersStarts,
     )
   }
@@ -112,8 +118,8 @@ class NativeLibraryWriter {
   }
 
   fun WriteContext.writeSections() {
-    val elfSections = lib.sections.map { section ->
-      computeElfSection(lib.fileHeader.architecture, section)
+    val elfSections = lib.sections.zip(sectionData) { section, data ->
+      computeElfSection(lib, section, data)
     }
 
     elfSections.forEachIndexed { i, elfSection ->
@@ -192,24 +198,30 @@ class NativeLibraryWriter {
   }
 
   private fun computeElfSection(
-    identifierClass: NativeFormat,
+    lib: NativeLibrary,
     nativeSection: NativeSection,
+    data: ByteArray,
   ): ElfSection {
+    val sectionNames = lib.sections[lib.fileHeader.sectionNamesHeaderIndex.toInt()].data as StringTable
+
     return ElfSection(
-      sh_name = nativeSection.nameOffset,
+      sh_name = sectionNames.offsetOf(nativeSection.name),
       sh_type = nativeSection.type.value,
-      sh_flags = when (identifierClass) {
+      sh_flags = when (lib.fileHeader.architecture) {
         BIT_32 -> Value32(nativeSection.flags.fold(0) { acc, flag -> acc or flag.value })
         BIT_64 -> Value64(nativeSection.flags.fold(0L) { acc, flag -> acc or flag.value.toLong() })
       },
       sh_addr = nativeSection.virtualAddress,
       sh_offset = nativeSection.offset,
-      sh_size = nativeSection.size,
+      sh_size = when (lib.fileHeader.architecture) {
+        BIT_32 -> Value32(data.size)
+        BIT_64 -> Value64(data.size.toLong())
+      },
       sh_link = nativeSection.linkedSectionIndex,
       sh_info = nativeSection.extraInfo,
       sh_addralign = nativeSection.alignment,
       sh_entsize = nativeSection.entrySize,
-      data = ElfSectionData(nativeSection.data.data),
+      data = ElfSectionData(data),
     )
   }
 
@@ -217,6 +229,7 @@ class NativeLibraryWriter {
     val lib: NativeLibrary,
     val programHeaderStarts: List<Address>,
     val sectionStarts: List<Address>,
+    val sectionData: List<ByteArray>,
     val sectionHeadersStarts: List<Address>,
   ) {
     private val buffer = Buffer()

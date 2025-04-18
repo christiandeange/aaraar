@@ -15,8 +15,8 @@ import sh.christian.aaraar.model.lib.Value.Value32
 import sh.christian.aaraar.model.lib.Value.Value64
 
 class ElfSource(
-  private val identifierClass: NativeFormat,
-  private val identifierData: NativeEndian,
+  private val architecture: NativeFormat,
+  private val endianness: NativeEndian,
   private val source: BufferedSource,
 ) {
   fun byte(): Byte {
@@ -33,35 +33,35 @@ class ElfSource(
   }
 
   fun short(): Short {
-    return when (identifierData) {
+    return when (endianness) {
       BIG -> source.readShort()
       LITTLE -> source.readShortLe()
     }
   }
 
   fun int(): Int {
-    return when (identifierData) {
+    return when (endianness) {
       BIG -> source.readInt()
       LITTLE -> source.readIntLe()
     }
   }
 
   fun long(): Long {
-    return when (identifierData) {
+    return when (endianness) {
       BIG -> source.readLong()
       LITTLE -> source.readLongLe()
     }
   }
 
   fun address(): Address {
-    return when (identifierClass) {
+    return when (architecture) {
       BIT_32 -> Address32(int())
       BIT_64 -> Address64(long())
     }
   }
 
   fun value(): Value {
-    return when (identifierClass) {
+    return when (architecture) {
       BIT_32 -> Value32(int())
       BIT_64 -> Value64(long())
     }
