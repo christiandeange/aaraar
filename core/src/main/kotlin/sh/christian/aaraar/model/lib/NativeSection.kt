@@ -1,12 +1,13 @@
 package sh.christian.aaraar.model.lib
 
+import sh.christian.aaraar.model.lib.data.NativeSectionData
+
 data class NativeSection(
-  val nameOffset: Int,
+  val name: String,
   val type: NativeSectionType,
   val flags: Set<NativeSectionFlag>,
   val virtualAddress: Address,
   val offset: Address,
-  val size: Value,
   val linkedSectionIndex: Int,
   val extraInfo: Int,
   val alignment: Value,
