@@ -15,6 +15,8 @@ class ElfSink(
   private val identifierData: NativeEndian,
   private val bufferedSink: BufferedSink,
 ) {
+  val pos: Long get() = bufferedSink.buffer.size
+
   fun byte(byte: Byte) {
     bufferedSink.writeByte(byte.toInt())
   }

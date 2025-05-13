@@ -5,11 +5,11 @@ import sh.christian.aaraar.model.lib.Value.Value64
 
 sealed interface Address {
   data class Address32(val value: Int) : Address {
-    override fun toString(): String = "0x${value.toString(16).padStart(8, '0')}"
+    override fun toString(): String = "0x${value.toString(16).padStart(Int.SIZE_BYTES * 2, '0')}"
   }
 
   data class Address64(val value: Long) : Address {
-    override fun toString(): String = "0x${value.toString(16).padStart(16, '0')}"
+    override fun toString(): String = "0x${value.toString(16).padStart(Long.SIZE_BYTES * 2, '0')}"
   }
 
   operator fun plus(offset: Number): Address {
@@ -19,10 +19,24 @@ sealed interface Address {
     }
   }
 
+  operator fun plus(offset: Value): Address {
+    return when (this) {
+      is Address32 -> Address32(value + (offset as Value32).value)
+      is Address64 -> Address64(value + (offset as Value64).value)
+    }
+  }
+
   operator fun minus(offset: Number): Address {
     return when (this) {
       is Address32 -> Address32(value - offset.toInt())
       is Address64 -> Address64(value - offset.toLong())
+    }
+  }
+
+  operator fun minus(offset: Value): Address {
+    return when (this) {
+      is Address32 -> Address32(value - (offset as Value32).value)
+      is Address64 -> Address64(value - (offset as Value64).value)
     }
   }
 

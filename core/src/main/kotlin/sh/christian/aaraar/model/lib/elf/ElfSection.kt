@@ -56,7 +56,6 @@ data class ElfSection(
       type = type,
       flags = NativeSectionFlag.from(sh_flags),
       virtualAddress = sh_addr,
-      offset = sh_offset,
       linkedSectionIndex = sh_link,
       extraInfo = sh_info,
       alignment = sh_addralign,
