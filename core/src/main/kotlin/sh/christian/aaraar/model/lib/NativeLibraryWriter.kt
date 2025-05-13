@@ -184,20 +184,33 @@ class NativeLibraryWriter {
     )
   }
 
-  private fun computeElfProgramHeader(nativeProgramHeader: NativeProgramHeader): ElfProgramHeader {
+  private fun WriteContext.computeElfProgramHeader(nativeProgramHeader: NativeProgramHeader): ElfProgramHeader {
     return ElfProgramHeader(
       p_type = nativeProgramHeader.type.value,
       p_flags = nativeProgramHeader.flags.fold(0) { acc, flag -> acc or flag.value },
-      p_offset = nativeProgramHeader.offset,
+      p_offset = when (val offsetSource = nativeProgramHeader.offset) {
+        is AddressReference.Zero -> {
+          when (lib.fileHeader.architecture) {
+            BIT_32 -> Address32(0)
+            BIT_64 -> Address64(0)
+          }
+        }
+        is AddressReference.ProgramHeaderStart -> {
+          programHeaderStarts[offsetSource.index]
+        }
+        is AddressReference.SectionStart -> {
+          sectionStarts[offsetSource.index]
+        }
+      },
       p_vaddr = nativeProgramHeader.virtualAddress,
-      p_paddr = nativeProgramHeader.physicalAddress,
+      p_paddr = nativeProgramHeader.virtualAddress,
       p_filesz = nativeProgramHeader.segmentFileSize,
       p_memsz = nativeProgramHeader.segmentVirtualSize,
       p_align = nativeProgramHeader.alignment,
     )
   }
 
-  private fun computeElfSection(
+  private fun WriteContext.computeElfSection(
     lib: NativeLibrary,
     nativeSection: NativeSection,
     data: ByteArray,
@@ -212,7 +225,14 @@ class NativeLibraryWriter {
         BIT_64 -> Value64(nativeSection.flags.fold(0L) { acc, flag -> acc or flag.value.toLong() })
       },
       sh_addr = nativeSection.virtualAddress,
-      sh_offset = nativeSection.offset,
+      sh_offset = if (nativeSection.type == NativeSectionType.Null) {
+        when (lib.fileHeader.architecture) {
+          BIT_32 -> Address32(0)
+          BIT_64 -> Address64(0)
+        }
+      } else {
+        sectionStarts[lib.sections.indexOf(nativeSection)]
+      },
       sh_size = when (lib.fileHeader.architecture) {
         BIT_32 -> Value32(data.size)
         BIT_64 -> Value64(data.size.toLong())

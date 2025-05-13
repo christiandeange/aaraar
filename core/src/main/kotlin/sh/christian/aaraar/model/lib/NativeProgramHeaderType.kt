@@ -13,7 +13,7 @@ sealed class NativeProgramHeaderType(val value: Int) {
   class Other(value: Int) : NativeProgramHeaderType(value)
 
   override fun toString(): String {
-    return "0x${value.toString(16).padStart(8, '0')}"
+    return "0x${value.toString(16).padStart(Int.SIZE_BYTES * 2, '0')}"
   }
 
   override fun equals(other: Any?): Boolean {

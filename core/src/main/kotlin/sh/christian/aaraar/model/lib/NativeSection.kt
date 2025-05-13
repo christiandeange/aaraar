@@ -7,7 +7,6 @@ data class NativeSection(
   val type: NativeSectionType,
   val flags: Set<NativeSectionFlag>,
   val virtualAddress: Address,
-  val offset: Address,
   val linkedSectionIndex: Int,
   val extraInfo: Int,
   val alignment: Value,

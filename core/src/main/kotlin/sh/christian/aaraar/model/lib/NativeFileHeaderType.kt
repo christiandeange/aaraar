@@ -9,7 +9,7 @@ sealed class NativeFileHeaderType(val value: Short) {
   class Other(value: Short) : NativeFileHeaderType(value)
 
   override fun toString(): String {
-    return "0x${value.toString(16).padStart(4, '0')}"
+    return "0x${value.toString(16).padStart(Short.SIZE_BYTES * 2, '0')}"
   }
 
   override fun equals(other: Any?): Boolean {

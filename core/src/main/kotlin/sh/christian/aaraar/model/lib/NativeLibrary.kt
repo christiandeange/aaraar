@@ -45,7 +45,7 @@ internal constructor(
         elfSections = elfSections,
       )
 
-      val programHeaders = elfProgramHeaders.map { it.toNativeProgramHeader() }
+      val programHeaders = elfProgramHeaders.map { it.toNativeProgramHeader(elfSections) }
       val sections = elfSections.map { it.toNativeSection(parseContext) }
 
       return NativeLibrary(

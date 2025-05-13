@@ -7,7 +7,7 @@ enum class NativeProgramHeaderFlag(val value: Int) {
   ;
 
   override fun toString(): String {
-    return "0x${value.toString(16).padStart(8, '0')}"
+    return "0x${value.toString(16)}"
   }
 
   companion object {
