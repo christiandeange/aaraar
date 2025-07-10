@@ -16,47 +16,49 @@ data class Symbol(
   val info: Byte
     get() = (binding.value.toInt() shl 4).toByte() or (type.value and 0xF)
 
-  sealed class Binding(val value: Byte) {
-    object Local : Binding(0x00)
-    object Global : Binding(0x01)
-    object Weak : Binding(0x02)
-    class Other(value: Byte) : Binding(value)
+  data class Binding(val value: Byte) {
+    override fun toString(): String = when (this) {
+      Local -> "Local"
+      Global -> "Global"
+      Weak -> "Weak"
+      else -> "Other(0x${value.toString(16)})"
+    }
 
     companion object {
-      fun from(value: Byte): Binding {
-        return when (val binding = (value.toInt() ushr 4).toByte() and 0xF) {
-          Local.value -> Local
-          Global.value -> Global
-          Weak.value -> Weak
-          else -> Other(binding)
-        }
+      fun fromInfo(value: Byte): Binding {
+        return Binding((value.toInt() ushr 4).toByte() and 0xF)
       }
+
+      val Local = Binding(0x00)
+      val Global = Binding(0x01)
+      val Weak = Binding(0x02)
     }
   }
 
-  sealed class Type(val value: Byte) {
-    object NoType : Type(0x00)
-    object Object : Type(0x01)
-    object Function : Type(0x02)
-    object Section : Type(0x03)
-    object File : Type(0x04)
-    object Common : Type(0x05)
-    object SparcRegister : Type(0x0D)
-    class Other(value: Byte) : Type(value)
+  data class Type(val value: Byte) {
+    override fun toString(): String = when (this) {
+      NoType -> "NoType"
+      Object -> "Object"
+      Function -> "Function"
+      Section -> "Section"
+      File -> "File"
+      Common -> "Common"
+      SparcRegister -> "SparcRegister"
+      else -> "Other(0x${value.toString(16)})"
+    }
 
     companion object {
-      fun from(value: Byte): Type {
-        return when (val type = value and 0xF) {
-          NoType.value -> NoType
-          Object.value -> Object
-          Function.value -> Function
-          Section.value -> Section
-          File.value -> File
-          Common.value -> Common
-          SparcRegister.value -> SparcRegister
-          else -> Other(type)
-        }
+      fun fromInfo(value: Byte): Type {
+        return Type(value and 0xF)
       }
+
+      val NoType = Type(0x00)
+      val Object = Type(0x01)
+      val Function = Type(0x02)
+      val Section = Type(0x03)
+      val File = Type(0x04)
+      val Common = Type(0x05)
+      val SparcRegister = Type(0x0D)
     }
   }
 }

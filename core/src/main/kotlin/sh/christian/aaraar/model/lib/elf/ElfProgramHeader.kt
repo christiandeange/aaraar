@@ -20,24 +20,14 @@ data class ElfProgramHeader(
   val p_align: Value,
 ) {
   fun toNativeProgramHeader(elfSections: List<ElfSection>): NativeProgramHeader {
-    val type = NativeProgramHeaderType.from(p_type)
-    val offsetSource = when (type) {
-      is NativeProgramHeaderType.Phdr -> {
-        AddressReference.ProgramHeaderStart(0)
-      }
-      is NativeProgramHeaderType.Null,
-      is NativeProgramHeaderType.Load,
-      is NativeProgramHeaderType.Dynamic,
-      is NativeProgramHeaderType.Interp,
-      is NativeProgramHeaderType.Note,
-      is NativeProgramHeaderType.Shlib,
-      is NativeProgramHeaderType.Tls,
-      is NativeProgramHeaderType.Other -> {
-        when (p_offset) {
-          Address32(0),
-          Address64(0L) -> AddressReference.Zero
-          else -> AddressReference.SectionStart(elfSections.indexOfFirst { it.sh_offset == p_offset })
-        }
+    val type = NativeProgramHeaderType(p_type)
+    val offsetSource = if (type == NativeProgramHeaderType.Phdr) {
+      AddressReference.ProgramHeaderStart(0)
+    } else {
+      when (p_offset) {
+        Address32(0),
+        Address64(0L) -> AddressReference.Zero
+        else -> AddressReference.SectionStart(elfSections.indexOfFirst { it.sh_offset == p_offset })
       }
     }
 

@@ -81,8 +81,8 @@ data class SymbolTable(
 
             Symbol(
               name = stringTable.stringAt(st_name),
-              binding = Symbol.Binding.from(st_info),
-              type = Symbol.Type.from(st_info),
+              binding = Symbol.Binding.fromInfo(st_info),
+              type = Symbol.Type.fromInfo(st_info),
               other = st_other,
               sectionIndex = st_shndx,
               value = st_value,
@@ -99,8 +99,8 @@ data class SymbolTable(
 
             Symbol(
               name = stringTable.stringAt(st_name),
-              binding = Symbol.Binding.from(st_info),
-              type = Symbol.Type.from(st_info),
+              binding = Symbol.Binding.fromInfo(st_info),
+              type = Symbol.Type.fromInfo(st_info),
               other = st_other,
               sectionIndex = st_shndx,
               value = st_value,

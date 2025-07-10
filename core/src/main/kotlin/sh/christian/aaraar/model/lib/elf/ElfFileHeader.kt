@@ -33,7 +33,7 @@ data class ElfFileHeader(
       endianness = NativeEndian.from(ei_data),
       operatingSystemAbi = ei_osabi,
       operatingSystemAbiVersion = ei_abiversion,
-      fileType = NativeFileHeaderType.from(e_type),
+      fileType = NativeFileHeaderType(e_type),
       instructionSet = e_machine,
       flags = e_flags,
       fileHeaderSize = e_ehsize,

@@ -5,25 +5,24 @@ import sh.christian.aaraar.model.lib.NativeLibraryParser
 import sh.christian.aaraar.model.lib.NativeSection
 import sh.christian.aaraar.model.lib.NativeSectionFlag
 import sh.christian.aaraar.model.lib.NativeSectionType
-import sh.christian.aaraar.model.lib.NativeSectionType.Dynamic
-import sh.christian.aaraar.model.lib.NativeSectionType.Dynsym
-import sh.christian.aaraar.model.lib.NativeSectionType.FiniArray
-import sh.christian.aaraar.model.lib.NativeSectionType.Group
-import sh.christian.aaraar.model.lib.NativeSectionType.Hash
-import sh.christian.aaraar.model.lib.NativeSectionType.InitArray
-import sh.christian.aaraar.model.lib.NativeSectionType.Nobits
-import sh.christian.aaraar.model.lib.NativeSectionType.Note
-import sh.christian.aaraar.model.lib.NativeSectionType.Null
-import sh.christian.aaraar.model.lib.NativeSectionType.Num
-import sh.christian.aaraar.model.lib.NativeSectionType.Other
-import sh.christian.aaraar.model.lib.NativeSectionType.PreinitArray
-import sh.christian.aaraar.model.lib.NativeSectionType.Progbits
-import sh.christian.aaraar.model.lib.NativeSectionType.Rel
-import sh.christian.aaraar.model.lib.NativeSectionType.Rela
-import sh.christian.aaraar.model.lib.NativeSectionType.Shlib
-import sh.christian.aaraar.model.lib.NativeSectionType.Strtab
-import sh.christian.aaraar.model.lib.NativeSectionType.Symtab
-import sh.christian.aaraar.model.lib.NativeSectionType.SymtabShndx
+import sh.christian.aaraar.model.lib.NativeSectionType.Companion.Dynamic
+import sh.christian.aaraar.model.lib.NativeSectionType.Companion.Dynsym
+import sh.christian.aaraar.model.lib.NativeSectionType.Companion.FiniArray
+import sh.christian.aaraar.model.lib.NativeSectionType.Companion.Group
+import sh.christian.aaraar.model.lib.NativeSectionType.Companion.Hash
+import sh.christian.aaraar.model.lib.NativeSectionType.Companion.InitArray
+import sh.christian.aaraar.model.lib.NativeSectionType.Companion.Nobits
+import sh.christian.aaraar.model.lib.NativeSectionType.Companion.Note
+import sh.christian.aaraar.model.lib.NativeSectionType.Companion.Null
+import sh.christian.aaraar.model.lib.NativeSectionType.Companion.Num
+import sh.christian.aaraar.model.lib.NativeSectionType.Companion.PreinitArray
+import sh.christian.aaraar.model.lib.NativeSectionType.Companion.Progbits
+import sh.christian.aaraar.model.lib.NativeSectionType.Companion.Rel
+import sh.christian.aaraar.model.lib.NativeSectionType.Companion.Rela
+import sh.christian.aaraar.model.lib.NativeSectionType.Companion.Shlib
+import sh.christian.aaraar.model.lib.NativeSectionType.Companion.Strtab
+import sh.christian.aaraar.model.lib.NativeSectionType.Companion.Symtab
+import sh.christian.aaraar.model.lib.NativeSectionType.Companion.SymtabShndx
 import sh.christian.aaraar.model.lib.Value
 import sh.christian.aaraar.model.lib.data.Bytes
 import sh.christian.aaraar.model.lib.data.DynamicTable
@@ -49,7 +48,7 @@ data class ElfSection(
   fun toNativeSection(
     parseContext: NativeLibraryParser.ParseContext,
   ): NativeSection {
-    val type = NativeSectionType.from(sh_type)
+    val type = NativeSectionType(sh_type)
 
     return NativeSection(
       name = parseContext.sectionHeaderTable.stringAt(sh_name),
@@ -61,25 +60,27 @@ data class ElfSection(
       alignment = sh_addralign,
       entrySize = sh_entsize,
       data = when (type) {
-        is Strtab -> StringTable.from(this)
-        is Symtab -> SymbolTable.from(parseContext, this)
-        is Dynsym -> SymbolTable.from(parseContext, this)
-        is Dynamic -> DynamicTable.from(parseContext, this)
-        is Note -> Notes.from(parseContext, this)
-        is Rel -> RelocationTable.from(parseContext, this)
-        is Rela -> RelocationAddendTable.from(parseContext, this)
-        is FiniArray,
-        is Group,
-        is Hash,
-        is InitArray,
-        is Nobits,
-        is Null,
-        is Num,
-        is Other,
-        is PreinitArray,
-        is Progbits,
-        is Shlib,
-        is SymtabShndx -> {
+        Strtab -> StringTable.from(this)
+        Symtab -> SymbolTable.from(parseContext, this)
+        Dynsym -> SymbolTable.from(parseContext, this)
+        Dynamic -> DynamicTable.from(parseContext, this)
+        Note -> Notes.from(parseContext, this)
+        Rel -> RelocationTable.from(parseContext, this)
+        Rela -> RelocationAddendTable.from(parseContext, this)
+        FiniArray,
+        Group,
+        Hash,
+        InitArray,
+        Nobits,
+        Null,
+        Num,
+        PreinitArray,
+        Progbits,
+        Shlib,
+        SymtabShndx -> {
+          Bytes(data.data)
+        }
+        else -> {
           Bytes(data.data)
         }
       },
