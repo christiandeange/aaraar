@@ -56,7 +56,7 @@ data class DynamicTable(
 
       val dynamics = List(count) {
         DynamicValue(
-          tag = DynamicValue.Tag.from(
+          tag = DynamicValue.Tag(
             when (val tag = source.value()) {
               is Value32 -> tag.value
               is Value64 -> tag.value.toInt()

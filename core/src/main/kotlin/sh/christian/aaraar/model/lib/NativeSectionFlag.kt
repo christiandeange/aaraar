@@ -17,10 +17,6 @@ enum class NativeSectionFlag(val value: Int) {
   Exclude(0x8000000),
   ;
 
-  override fun toString(): String {
-    return "0x${value.toString(16).padStart(Int.SIZE_BYTES * 2, '0')}"
-  }
-
   companion object {
     fun from(value: Value): Set<NativeSectionFlag> {
       return when (value) {
