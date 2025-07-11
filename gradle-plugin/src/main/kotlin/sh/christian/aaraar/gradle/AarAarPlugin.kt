@@ -81,7 +81,7 @@ class AarAarPlugin : Plugin<Project> {
     val jarTask = tasks.named<Jar>("jar")
 
     val packageJar = tasks.register<PackageJarTask>("packageJar") {
-      embedClasspath.set(classpath)
+      embedArtifacts.set(classpath.incoming.artifacts)
 
       shadeEnvironment.set(parseShadeEnvironment(aaraar, variant = null))
       packagingEnvironment.set(PackagingEnvironment.None)
@@ -196,7 +196,7 @@ class AarAarPlugin : Plugin<Project> {
     val androidAaptIgnoreEnv = providers.environmentVariable("ANDROID_AAPT_IGNORE").orElse("")
 
     val packageVariantAar = tasks.register<PackageAarTask>(variant.name("package", "Aar")) {
-      embedClasspath.set(variantEmbedClasspath)
+      embedArtifacts.set(variantEmbedClasspath.incoming.artifacts)
 
       shadeEnvironment.set(parseShadeEnvironment(aaraar, variant))
       packagingEnvironment.set(parsePackagingEnvironment(variant))
@@ -270,7 +270,7 @@ class AarAarPlugin : Plugin<Project> {
             )
           }
         )
-      },
+      }.toList(),
     )
   }
 

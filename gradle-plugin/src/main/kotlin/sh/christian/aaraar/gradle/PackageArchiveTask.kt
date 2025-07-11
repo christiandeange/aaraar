@@ -2,19 +2,20 @@ package sh.christian.aaraar.gradle
 
 import com.android.utils.mapValuesNotNull
 import org.gradle.api.DefaultTask
-import org.gradle.api.artifacts.Configuration
+import org.gradle.api.artifacts.ArtifactCollection
 import org.gradle.api.artifacts.component.ComponentIdentifier
 import org.gradle.api.artifacts.component.LibraryBinaryIdentifier
 import org.gradle.api.artifacts.component.ModuleComponentIdentifier
 import org.gradle.api.artifacts.component.ProjectComponentIdentifier
+import org.gradle.api.file.FileCollection
 import org.gradle.api.file.RegularFileProperty
 import org.gradle.api.provider.ListProperty
 import org.gradle.api.provider.Property
 import org.gradle.api.tasks.CacheableTask
-import org.gradle.api.tasks.Classpath
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.InputFile
 import org.gradle.api.tasks.InputFiles
+import org.gradle.api.tasks.Internal
 import org.gradle.api.tasks.OutputFile
 import org.gradle.api.tasks.PathSensitive
 import org.gradle.api.tasks.PathSensitivity.RELATIVE
@@ -39,10 +40,8 @@ abstract class PackageArchiveTask : DefaultTask() {
   @get:PathSensitive(RELATIVE)
   abstract val inputArchive: RegularFileProperty
 
-  @get:Classpath
-  @get:InputFiles
-  @get:PathSensitive(RELATIVE)
-  abstract val embedClasspath: Property<Configuration>
+  @get:Internal
+  abstract val embedArtifacts: Property<ArtifactCollection>
 
   @get:Input
   abstract val shadeEnvironment: Property<ShadeEnvironment>
@@ -59,6 +58,12 @@ abstract class PackageArchiveTask : DefaultTask() {
   @get:OutputFile
   abstract val outputArchive: RegularFileProperty
 
+  /** Used to track the [ArtifactCollection] file inputs, only queried by Gradle for task/configuration caching. */
+  @Suppress("unused")
+  @get:InputFiles
+  @get:PathSensitive(RELATIVE)
+  val embedArtifactFiles: FileCollection get() = embedArtifacts.get().artifactFiles
+
   internal abstract fun environment(): Environment
 
   @TaskAction
@@ -69,8 +74,8 @@ abstract class PackageArchiveTask : DefaultTask() {
     val shadeEnvironment = shadeEnvironment.get()
     logger.info("Shading environment: $shadeEnvironment")
 
-    val scopeMapping: Map<Path, ShadeConfigurationScope> = embedClasspath.get()
-      .incoming.artifacts.resolvedArtifacts.get()
+    val scopeMapping: Map<Path, ShadeConfigurationScope> = embedArtifacts.get()
+      .resolvedArtifacts.get()
       .associate { it.file.toPath() to it.id.componentIdentifier.toShadeConfigurationScope() }
       .mapValuesNotNull { it.value }
 
