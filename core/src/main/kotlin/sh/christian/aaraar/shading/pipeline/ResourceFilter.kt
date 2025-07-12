@@ -1,11 +1,11 @@
 package sh.christian.aaraar.shading.pipeline
 
-import com.tonicsystems.jarjar.transform.Transformable
-import com.tonicsystems.jarjar.transform.jar.JarProcessor
-import com.tonicsystems.jarjar.transform.jar.JarProcessor.Result.DISCARD
-import com.tonicsystems.jarjar.transform.jar.JarProcessor.Result.KEEP
-import com.tonicsystems.jarjar.util.ClassNameUtils
-import com.tonicsystems.jarjar.util.ClassNameUtils.EXT_CLASS
+import sh.christian.aaraar.shading.impl.jarjar.transform.Transformable
+import sh.christian.aaraar.shading.impl.jarjar.transform.jar.JarProcessor
+import sh.christian.aaraar.shading.impl.jarjar.transform.jar.JarProcessor.Result.DISCARD
+import sh.christian.aaraar.shading.impl.jarjar.transform.jar.JarProcessor.Result.KEEP
+import sh.christian.aaraar.shading.impl.jarjar.util.ClassNameUtils
+import sh.christian.aaraar.shading.impl.jarjar.util.ClassNameUtils.EXT_CLASS
 import sh.christian.aaraar.utils.div
 import java.nio.file.FileSystems
 

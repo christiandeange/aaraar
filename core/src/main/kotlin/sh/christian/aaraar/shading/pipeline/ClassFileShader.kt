@@ -1,15 +1,15 @@
 package sh.christian.aaraar.shading.pipeline
 
-import com.tonicsystems.jarjar.transform.Transformable
-import com.tonicsystems.jarjar.transform.asm.PackageRemapper
-import com.tonicsystems.jarjar.transform.config.ClassRename
-import com.tonicsystems.jarjar.transform.jar.JarProcessor
-import com.tonicsystems.jarjar.transform.jar.JarProcessor.Result.KEEP
-import com.tonicsystems.jarjar.util.ClassNameUtils
-import com.tonicsystems.jarjar.util.ClassNameUtils.EXT_CLASS
 import org.objectweb.asm.ClassReader
 import org.objectweb.asm.ClassWriter
 import org.objectweb.asm.commons.ClassRemapper
+import sh.christian.aaraar.shading.impl.jarjar.transform.Transformable
+import sh.christian.aaraar.shading.impl.jarjar.transform.asm.PackageRemapper
+import sh.christian.aaraar.shading.impl.jarjar.transform.config.ClassRename
+import sh.christian.aaraar.shading.impl.jarjar.transform.jar.JarProcessor
+import sh.christian.aaraar.shading.impl.jarjar.transform.jar.JarProcessor.Result.KEEP
+import sh.christian.aaraar.shading.impl.jarjar.util.ClassNameUtils
+import sh.christian.aaraar.shading.impl.jarjar.util.ClassNameUtils.EXT_CLASS
 
 internal class ClassFileShader(
   classRenames: Map<String, String>,

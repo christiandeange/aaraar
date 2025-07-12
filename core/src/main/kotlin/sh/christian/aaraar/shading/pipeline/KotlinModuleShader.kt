@@ -1,12 +1,12 @@
 package sh.christian.aaraar.shading.pipeline
 
-import com.tonicsystems.jarjar.transform.Transformable
-import com.tonicsystems.jarjar.transform.asm.PackageRemapper
-import com.tonicsystems.jarjar.transform.config.ClassRename
-import com.tonicsystems.jarjar.transform.jar.JarProcessor
-import com.tonicsystems.jarjar.transform.jar.JarProcessor.Result.KEEP
 import kotlinx.metadata.jvm.KotlinModuleMetadata
 import kotlinx.metadata.jvm.UnstableMetadataApi
+import sh.christian.aaraar.shading.impl.jarjar.transform.Transformable
+import sh.christian.aaraar.shading.impl.jarjar.transform.asm.PackageRemapper
+import sh.christian.aaraar.shading.impl.jarjar.transform.config.ClassRename
+import sh.christian.aaraar.shading.impl.jarjar.transform.jar.JarProcessor
+import sh.christian.aaraar.shading.impl.jarjar.transform.jar.JarProcessor.Result.KEEP
 
 @OptIn(UnstableMetadataApi::class)
 internal class KotlinModuleShader(

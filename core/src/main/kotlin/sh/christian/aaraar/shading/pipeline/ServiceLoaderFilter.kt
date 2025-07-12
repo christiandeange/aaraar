@@ -1,10 +1,10 @@
 package sh.christian.aaraar.shading.pipeline
 
-import com.tonicsystems.jarjar.transform.Transformable
-import com.tonicsystems.jarjar.transform.config.ClassDelete
-import com.tonicsystems.jarjar.transform.jar.JarProcessor
-import com.tonicsystems.jarjar.transform.jar.JarProcessor.Result.DISCARD
-import com.tonicsystems.jarjar.transform.jar.JarProcessor.Result.KEEP
+import sh.christian.aaraar.shading.impl.jarjar.transform.Transformable
+import sh.christian.aaraar.shading.impl.jarjar.transform.config.ClassDelete
+import sh.christian.aaraar.shading.impl.jarjar.transform.jar.JarProcessor
+import sh.christian.aaraar.shading.impl.jarjar.transform.jar.JarProcessor.Result.DISCARD
+import sh.christian.aaraar.shading.impl.jarjar.transform.jar.JarProcessor.Result.KEEP
 
 internal class ServiceLoaderFilter(
   classDeletes: Set<String>,

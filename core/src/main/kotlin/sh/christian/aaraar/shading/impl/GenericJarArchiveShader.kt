@@ -1,9 +1,9 @@
 package sh.christian.aaraar.shading.impl
 
-import com.tonicsystems.jarjar.transform.jar.JarProcessorChain
 import sh.christian.aaraar.model.GenericJarArchive
 import sh.christian.aaraar.model.ShadeConfiguration
 import sh.christian.aaraar.shading.Shader
+import sh.christian.aaraar.shading.impl.jarjar.transform.jar.JarProcessorChain
 import sh.christian.aaraar.shading.pipeline.ClassFileFilter
 import sh.christian.aaraar.shading.pipeline.ClassFileShader
 import sh.christian.aaraar.shading.pipeline.ClassFilesProcessor
