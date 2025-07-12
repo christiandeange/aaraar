@@ -89,8 +89,12 @@ class ResourcesMerger : Merger<Resources> {
         DataFile.FileType.SINGLE_FILE -> files.add(item)
         DataFile.FileType.GENERATED_FILES -> generated.add(item)
         DataFile.FileType.XML_VALUES -> {
-          namespaces.computeIfAbsent(Pair(item.file, item.qualifiers)) { (file, _) ->
-            parse(file).namespaces.toSet()
+          namespaces.computeIfAbsent(Pair(item.file, item.qualifiers)) { _ ->
+            if (item.file != null) {
+              parse(item.file).namespaces.toSet()
+            } else {
+              emptySet()
+            }
           }
 
           values.getOrPut(item.qualifiers) { mutableListOf() }.add(item)
