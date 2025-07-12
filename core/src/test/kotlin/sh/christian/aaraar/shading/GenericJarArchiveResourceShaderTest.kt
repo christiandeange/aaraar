@@ -15,13 +15,4 @@ class GenericJarArchiveResourceShaderTest {
     val shadedClasses = originalClasses.shaded(resourceDeletes = setOf("**/*.kotlin_module"))
     shadedClasses shouldNotHaveKey "META-INF/fixtures_ktLibrary.kotlin_module"
   }
-
-  @Test
-  fun `cannot delete classes by resource name`() {
-    val originalClasses = ktLibraryJarPath.loadJar()
-    originalClasses shouldHaveKey "sh/christian/mylibrary/Foo.class"
-
-    val shadedClasses = originalClasses.shaded(resourceDeletes = setOf("**/Foo.class"))
-    shadedClasses shouldHaveKey "sh/christian/mylibrary/Foo.class"
-  }
 }

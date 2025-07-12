@@ -1,11 +1,14 @@
 package sh.christian.aaraar.shading
 
 import io.kotest.matchers.maps.shouldBeEmpty
+import io.kotest.matchers.maps.shouldHaveKey
+import io.kotest.matchers.maps.shouldNotHaveKey
 import sh.christian.aaraar.merger.MergeRules
 import sh.christian.aaraar.merger.impl.GenericJarArchiveMerger
 import sh.christian.aaraar.utils.animalJarPath
 import sh.christian.aaraar.utils.fooJarPath
 import sh.christian.aaraar.utils.forEntry
+import sh.christian.aaraar.utils.ktLibraryJarPath
 import sh.christian.aaraar.utils.loadJar
 import sh.christian.aaraar.utils.shouldContainExactly
 import kotlin.test.Test
@@ -130,5 +133,41 @@ class GenericJarArchiveClassShaderTest {
       public class Dog implements Pet {
       }
     """
+  }
+
+  @Test
+  fun `cannot delete classes by resource name with glob prefix`() {
+    val originalClasses = ktLibraryJarPath.loadJar()
+    originalClasses shouldHaveKey "sh/christian/mylibrary/Foo.class"
+
+    val shadedClasses = originalClasses.shaded(resourceDeletes = setOf("**/F*"))
+    shadedClasses shouldHaveKey "sh/christian/mylibrary/Foo.class"
+  }
+
+  @Test
+  fun `cannot delete classes by resource name with glob using classname`() {
+    val originalClasses = ktLibraryJarPath.loadJar()
+    originalClasses shouldHaveKey "sh/christian/mylibrary/Foo.class"
+
+    val shadedClasses = originalClasses.shaded(resourceDeletes = setOf("**/Foo*"))
+    shadedClasses shouldHaveKey "sh/christian/mylibrary/Foo.class"
+  }
+
+  @Test
+  fun `delete classes by resource name ending with class extension`() {
+    val originalClasses = ktLibraryJarPath.loadJar()
+    originalClasses shouldHaveKey "sh/christian/mylibrary/Foo.class"
+
+    val shadedClasses = originalClasses.shaded(resourceDeletes = setOf("**/Foo.class"))
+    shadedClasses shouldNotHaveKey "sh/christian/mylibrary/Foo.class"
+  }
+
+  @Test
+  fun `delete classes by glob ending with class extension`() {
+    val originalClasses = ktLibraryJarPath.loadJar()
+    originalClasses shouldHaveKey "sh/christian/mylibrary/Foo.class"
+
+    val shadedClasses = originalClasses.shaded(resourceDeletes = setOf("**/*.class"))
+    shadedClasses shouldNotHaveKey "sh/christian/mylibrary/Foo.class"
   }
 }
