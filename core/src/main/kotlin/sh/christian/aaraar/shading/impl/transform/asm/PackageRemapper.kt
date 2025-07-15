@@ -75,6 +75,6 @@ internal class PackageRemapper(
 
   private companion object {
     const val RESOURCE_SUFFIX = "RESOURCE"
-    val ARRAY_FOR_NAME_REGEX = Regex("""\[L[\p{javaJavaIdentifierPart}.]+?;""")
+    val ARRAY_FOR_NAME_REGEX = Regex("""\[L[^\[;/]+?;""")
   }
 }

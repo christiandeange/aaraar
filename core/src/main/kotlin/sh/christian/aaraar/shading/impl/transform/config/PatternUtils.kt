@@ -1,7 +1,8 @@
 package sh.christian.aaraar.shading.impl.transform.config
 
 internal object PatternUtils {
-  const val PACKAGE_INFO: String = "package-info"
+  // https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-4.html#jvms-4.2
+  private val disallowedJvmChars = setOf('.', ';', '[', '/')
 
   private val dstar: Regex = Regex("""\*\*""")
   private val star: Regex = Regex("""\*""")
@@ -76,12 +77,7 @@ internal object PatternUtils {
   }
 
   fun isPossibleQualifiedName(value: String, extraAllowedCharacters: String): Boolean {
-    // package-info violates the spec for Java Identifiers.
-    // Nevertheless, expressions that end with this string are still legal.
-    // See 7.4.1.1 of the Java language spec for discussion.
-    return value
-      .removeSuffix(PACKAGE_INFO)
-      .all { it.isJavaIdentifierPart() || it in extraAllowedCharacters }
+    return value.all { it !in disallowedJvmChars || it in extraAllowedCharacters }
   }
 
   private fun replaceAllLiteral(value: String, regex: Regex, replace: String): String {
