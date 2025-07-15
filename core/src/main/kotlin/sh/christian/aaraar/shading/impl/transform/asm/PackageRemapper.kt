@@ -23,7 +23,7 @@ internal class PackageRemapper(
   override fun mapValue(value: Any?): Any? {
     return if (value is String) {
       valueCache.getOrPut(value) {
-        if (ARRAY_FOR_NAME_REGEX.matches(value)) {
+        if (isClassArrayDescriptor(value)) {
           value.replace('.', '/').let(::mapDesc).replace('/', '.')
         } else {
           var s = mapPath(value)
@@ -73,8 +73,11 @@ internal class PackageRemapper(
     return patterns.firstNotNullOfOrNull { it.replace(value) } ?: value
   }
 
+  private fun isClassArrayDescriptor(desc: String): Boolean {
+    return desc.startsWith("[L") && desc.endsWith(";")
+  }
+
   private companion object {
     const val RESOURCE_SUFFIX = "RESOURCE"
-    val ARRAY_FOR_NAME_REGEX = Regex("""\[L[^\[;/]+?;""")
   }
 }
