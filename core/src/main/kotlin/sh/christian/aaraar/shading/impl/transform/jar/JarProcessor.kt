@@ -1,6 +1,6 @@
-package sh.christian.aaraar.shading.impl.jarjar.transform.jar
+package sh.christian.aaraar.shading.impl.transform.jar
 
-import sh.christian.aaraar.shading.impl.jarjar.transform.Transformable
+import sh.christian.aaraar.shading.impl.transform.Transformable
 import java.io.IOException
 
 internal interface JarProcessor {
@@ -25,4 +25,8 @@ internal interface JarProcessor {
    */
   @Throws(IOException::class)
   fun process(struct: Transformable): Result
+
+  companion object {
+    const val EXT_CLASS = ".class"
+  }
 }

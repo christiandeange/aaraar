@@ -1,4 +1,4 @@
-package sh.christian.aaraar.shading.impl.jarjar.transform
+package sh.christian.aaraar.shading.impl.transform
 
 internal data class Transformable(
   var data: ByteArray,

@@ -1,6 +1,6 @@
-package sh.christian.aaraar.shading.impl.jarjar.transform.config
+package sh.christian.aaraar.shading.impl.transform.config
 
-sealed interface ReplacePart {
+internal sealed interface ReplacePart {
   data class Literal(
     val value: String,
   ) : ReplacePart

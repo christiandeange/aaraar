@@ -1,12 +1,11 @@
 package sh.christian.aaraar.shading.pipeline
 
-import sh.christian.aaraar.shading.impl.jarjar.transform.Transformable
-import sh.christian.aaraar.shading.impl.jarjar.transform.config.ClassDelete
-import sh.christian.aaraar.shading.impl.jarjar.transform.jar.JarProcessor
-import sh.christian.aaraar.shading.impl.jarjar.transform.jar.JarProcessor.Result.DISCARD
-import sh.christian.aaraar.shading.impl.jarjar.transform.jar.JarProcessor.Result.KEEP
-import sh.christian.aaraar.shading.impl.jarjar.util.ClassNameUtils
-import sh.christian.aaraar.shading.impl.jarjar.util.ClassNameUtils.EXT_CLASS
+import sh.christian.aaraar.shading.impl.transform.Transformable
+import sh.christian.aaraar.shading.impl.transform.config.ClassDelete
+import sh.christian.aaraar.shading.impl.transform.jar.JarProcessor
+import sh.christian.aaraar.shading.impl.transform.jar.JarProcessor.Companion.EXT_CLASS
+import sh.christian.aaraar.shading.impl.transform.jar.JarProcessor.Result.DISCARD
+import sh.christian.aaraar.shading.impl.transform.jar.JarProcessor.Result.KEEP
 
 internal class ClassFileFilter(
   classDeletes: Set<String>,
@@ -16,7 +15,7 @@ internal class ClassFileFilter(
   override fun scan(struct: Transformable): JarProcessor.Result = process(struct)
 
   override fun process(struct: Transformable): JarProcessor.Result {
-    if (classDeletePatterns.isEmpty() || !ClassNameUtils.isClass(struct.name)) return KEEP
+    if (classDeletePatterns.isEmpty() || !struct.name.endsWith(EXT_CLASS)) return KEEP
 
     return if (shouldDeletePath(struct.name.removeSuffix(EXT_CLASS))) {
       DISCARD

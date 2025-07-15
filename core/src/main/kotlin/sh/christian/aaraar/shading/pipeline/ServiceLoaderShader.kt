@@ -1,10 +1,10 @@
 package sh.christian.aaraar.shading.pipeline
 
-import sh.christian.aaraar.shading.impl.jarjar.transform.Transformable
-import sh.christian.aaraar.shading.impl.jarjar.transform.asm.PackageRemapper
-import sh.christian.aaraar.shading.impl.jarjar.transform.config.ClassRename
-import sh.christian.aaraar.shading.impl.jarjar.transform.jar.JarProcessor
-import sh.christian.aaraar.shading.impl.jarjar.transform.jar.JarProcessor.Result.KEEP
+import sh.christian.aaraar.shading.impl.transform.Transformable
+import sh.christian.aaraar.shading.impl.transform.asm.PackageRemapper
+import sh.christian.aaraar.shading.impl.transform.config.ClassRename
+import sh.christian.aaraar.shading.impl.transform.jar.JarProcessor
+import sh.christian.aaraar.shading.impl.transform.jar.JarProcessor.Result.KEEP
 
 internal class ServiceLoaderShader(
   classRenames: Map<String, String>,

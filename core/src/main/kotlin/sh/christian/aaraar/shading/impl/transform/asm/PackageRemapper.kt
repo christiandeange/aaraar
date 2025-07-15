@@ -1,8 +1,7 @@
-package sh.christian.aaraar.shading.impl.jarjar.transform.asm
+package sh.christian.aaraar.shading.impl.transform.asm
 
 import org.objectweb.asm.commons.Remapper
-import sh.christian.aaraar.shading.impl.jarjar.transform.config.ClassRename
-import sh.christian.aaraar.shading.impl.jarjar.util.ClassNameUtils
+import sh.christian.aaraar.shading.impl.transform.config.ClassRename
 
 internal class PackageRemapper(
   val patterns: List<ClassRename>,
@@ -24,7 +23,7 @@ internal class PackageRemapper(
   override fun mapValue(value: Any?): Any? {
     return if (value is String) {
       valueCache.getOrPut(value) {
-        if (ClassNameUtils.isArrayForName(value)) {
+        if (ARRAY_FOR_NAME_REGEX.matches(value)) {
           value.replace('.', '/').let(::mapDesc).replace('/', '.')
         } else {
           var s = mapPath(value)
@@ -76,5 +75,6 @@ internal class PackageRemapper(
 
   private companion object {
     const val RESOURCE_SUFFIX = "RESOURCE"
+    val ARRAY_FOR_NAME_REGEX = Regex("""\[L[\p{javaJavaIdentifierPart}.]+?;""")
   }
 }
