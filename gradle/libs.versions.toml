@@ -4,7 +4,7 @@ agp-tools = "31.5.0"
 detekt = "1.23.6"
 dokka = "1.9.20"
 kotlin = "1.9.24"
-maven-publish = "0.29.0"
+maven-publish = "0.34.0"
 
 [plugins]
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
