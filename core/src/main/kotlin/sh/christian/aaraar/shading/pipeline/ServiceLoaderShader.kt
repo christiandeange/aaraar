@@ -13,8 +13,6 @@ internal class ServiceLoaderShader(
     classRenames.map { (pattern, result) -> ClassRename(pattern, result) }
   )
 
-  override fun scan(struct: Transformable): JarProcessor.Result = KEEP
-
   override fun process(struct: Transformable): JarProcessor.Result {
     if (!struct.name.startsWith("META-INF/services/")) return KEEP
 

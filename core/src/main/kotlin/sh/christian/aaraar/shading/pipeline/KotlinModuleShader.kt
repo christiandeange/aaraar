@@ -16,8 +16,6 @@ internal class KotlinModuleShader(
     classRenames.map { (pattern, result) -> ClassRename(pattern, result) }
   )
 
-  override fun scan(struct: Transformable): JarProcessor.Result = KEEP
-
   override fun process(struct: Transformable): JarProcessor.Result {
     if (!struct.name.endsWith(".kotlin_module")) return KEEP
 

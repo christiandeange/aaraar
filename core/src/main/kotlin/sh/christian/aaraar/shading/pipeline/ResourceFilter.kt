@@ -13,8 +13,6 @@ internal class ResourceFilter(
 ) : JarProcessor {
   private val fs = FileSystems.getDefault()
 
-  override fun scan(struct: Transformable): JarProcessor.Result = process(struct)
-
   override fun process(struct: Transformable): JarProcessor.Result {
     val matchingRules = resourceDeletes.filter { fs.getPathMatcher("glob:$it").matches(fs / struct.name) }
 

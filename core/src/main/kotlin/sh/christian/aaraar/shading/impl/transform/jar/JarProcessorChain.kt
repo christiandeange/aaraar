@@ -10,15 +10,6 @@ internal class JarProcessorChain(
   constructor(vararg processors: JarProcessor) : this(processors.toList())
 
   @Throws(IOException::class)
-  override fun scan(struct: Transformable): JarProcessor.Result {
-    return if (processors.any { it.scan(struct) == JarProcessor.Result.DISCARD }) {
-      JarProcessor.Result.DISCARD
-    } else {
-      JarProcessor.Result.KEEP
-    }
-  }
-
-  @Throws(IOException::class)
   override fun process(struct: Transformable): JarProcessor.Result {
     return if (processors.any { it.process(struct) == JarProcessor.Result.DISCARD }) {
       JarProcessor.Result.DISCARD

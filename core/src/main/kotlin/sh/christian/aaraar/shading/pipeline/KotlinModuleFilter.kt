@@ -14,8 +14,6 @@ internal class KotlinModuleFilter(
 ) : JarProcessor {
   private val classDeletePatterns = classDeletes.map { ClassDelete(it) }
 
-  override fun scan(struct: Transformable): JarProcessor.Result = process(struct)
-
   override fun process(struct: Transformable): JarProcessor.Result {
     if (!struct.name.endsWith(".kotlin_module") || classDeletePatterns.isEmpty()) return KEEP
 

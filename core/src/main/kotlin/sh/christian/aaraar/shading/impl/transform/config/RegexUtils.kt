@@ -1,6 +1,6 @@
 package sh.christian.aaraar.shading.impl.transform.config
 
-internal object PatternUtils {
+internal object RegexUtils {
   // https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-4.html#jvms-4.2
   private val disallowedJvmChars = setOf('.', ';', '[', '/')
 
@@ -66,7 +66,7 @@ internal object PatternUtils {
   }
 
   fun replace(pattern: AbstractPattern, replace: List<ReplacePart>, value: String): String? {
-    val matchResult = pattern.getMatchResult(value) ?: return null
+    val matchResult = pattern.matchOrNull(value) ?: return null
 
     return replace.joinToString("") { part ->
       when (part) {

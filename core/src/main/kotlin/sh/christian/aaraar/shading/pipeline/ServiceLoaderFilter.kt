@@ -11,8 +11,6 @@ internal class ServiceLoaderFilter(
 ) : JarProcessor {
   private val classDeletePatterns = classDeletes.map { ClassDelete(it) }
 
-  override fun scan(struct: Transformable): JarProcessor.Result = process(struct)
-
   override fun process(struct: Transformable): JarProcessor.Result {
     if (classDeletePatterns.isEmpty() || !struct.name.startsWith("META-INF/services/")) return KEEP
     val originalFile = struct.data.decodeToString()

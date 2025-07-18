@@ -4,9 +4,9 @@ internal class ClassRename(
   patternText: String,
   replaceText: String,
 ) : AbstractClassPattern(patternText) {
-  private val replace: List<ReplacePart> = PatternUtils.newReplace(replaceText)
+  private val replace: List<ReplacePart> = RegexUtils.newReplace(replaceText)
 
   fun replace(value: String): String? {
-    return PatternUtils.replace(this, replace, value)
+    return RegexUtils.replace(this, replace, value)
   }
 }
