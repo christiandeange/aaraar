@@ -1,11 +1,10 @@
 package sh.christian.aaraar.shading.pipeline
 
-import com.tonicsystems.jarjar.transform.Transformable
-import com.tonicsystems.jarjar.transform.jar.JarProcessor
-import com.tonicsystems.jarjar.transform.jar.JarProcessor.Result.DISCARD
-import com.tonicsystems.jarjar.transform.jar.JarProcessor.Result.KEEP
-import com.tonicsystems.jarjar.util.ClassNameUtils
-import com.tonicsystems.jarjar.util.ClassNameUtils.EXT_CLASS
+import sh.christian.aaraar.shading.impl.transform.JarProcessor
+import sh.christian.aaraar.shading.impl.transform.JarProcessor.Companion.EXT_CLASS
+import sh.christian.aaraar.shading.impl.transform.JarProcessor.Result.DISCARD
+import sh.christian.aaraar.shading.impl.transform.JarProcessor.Result.KEEP
+import sh.christian.aaraar.shading.impl.transform.Transformable
 import sh.christian.aaraar.utils.div
 import java.nio.file.FileSystems
 
@@ -13,8 +12,6 @@ internal class ResourceFilter(
   private val resourceDeletes: Set<String>,
 ) : JarProcessor {
   private val fs = FileSystems.getDefault()
-
-  override fun scan(struct: Transformable): JarProcessor.Result = process(struct)
 
   override fun process(struct: Transformable): JarProcessor.Result {
     val matchingRules = resourceDeletes.filter { fs.getPathMatcher("glob:$it").matches(fs / struct.name) }
@@ -30,7 +27,7 @@ internal class ResourceFilter(
       // This prevents accidental deletion of classes that match an overly aggressive glob pattern, especially one that
       // may have been configured by default from AGP.
       // https://cs.android.com/android-studio/platform/tools/base/+/mirror-goog-studio-main:build-system/gradle-core/src/main/java/com/android/build/gradle/internal/packaging/PackagingOptionsUtils.kt;l=1?q=PackagingOptionsUtils.kt%20%20&sq=
-      ClassNameUtils.isClass(struct.name) -> {
+      struct.name.endsWith(EXT_CLASS) -> {
         if (matchingRules.any { it.endsWith(EXT_CLASS) }) {
           DISCARD
         } else {

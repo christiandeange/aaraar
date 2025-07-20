@@ -1,12 +1,12 @@
 package sh.christian.aaraar.shading.pipeline
 
-import com.tonicsystems.jarjar.transform.Transformable
-import com.tonicsystems.jarjar.transform.asm.PackageRemapper
-import com.tonicsystems.jarjar.transform.config.ClassRename
-import com.tonicsystems.jarjar.transform.jar.JarProcessor
-import com.tonicsystems.jarjar.transform.jar.JarProcessor.Result.KEEP
 import kotlinx.metadata.jvm.KotlinModuleMetadata
 import kotlinx.metadata.jvm.UnstableMetadataApi
+import sh.christian.aaraar.shading.impl.transform.ClassRename
+import sh.christian.aaraar.shading.impl.transform.JarProcessor
+import sh.christian.aaraar.shading.impl.transform.JarProcessor.Result.KEEP
+import sh.christian.aaraar.shading.impl.transform.PackageRemapper
+import sh.christian.aaraar.shading.impl.transform.Transformable
 
 @OptIn(UnstableMetadataApi::class)
 internal class KotlinModuleShader(
@@ -15,8 +15,6 @@ internal class KotlinModuleShader(
   private val packageRemapper = PackageRemapper(
     classRenames.map { (pattern, result) -> ClassRename(pattern, result) }
   )
-
-  override fun scan(struct: Transformable): JarProcessor.Result = KEEP
 
   override fun process(struct: Transformable): JarProcessor.Result {
     if (!struct.name.endsWith(".kotlin_module")) return KEEP

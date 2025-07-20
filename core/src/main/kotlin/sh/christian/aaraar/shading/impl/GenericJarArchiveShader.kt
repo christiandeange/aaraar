@@ -1,9 +1,9 @@
 package sh.christian.aaraar.shading.impl
 
-import com.tonicsystems.jarjar.transform.jar.JarProcessorChain
 import sh.christian.aaraar.model.GenericJarArchive
 import sh.christian.aaraar.model.ShadeConfiguration
 import sh.christian.aaraar.shading.Shader
+import sh.christian.aaraar.shading.impl.transform.JarProcessorChain
 import sh.christian.aaraar.shading.pipeline.ClassFileFilter
 import sh.christian.aaraar.shading.pipeline.ClassFileShader
 import sh.christian.aaraar.shading.pipeline.ClassFilesProcessor
@@ -23,15 +23,15 @@ import sh.christian.aaraar.shading.pipeline.ServiceLoaderShader
  */
 class GenericJarArchiveShader : Shader<GenericJarArchive> {
   override fun shade(source: GenericJarArchive, shadeConfiguration: ShadeConfiguration): GenericJarArchive {
-    val processor = JarProcessorChain().apply {
-      add(ResourceFilter(shadeConfiguration.resourceExclusions))
-      add(ClassFileFilter(shadeConfiguration.classDeletes))
-      add(ClassFileShader(shadeConfiguration.classRenames))
-      add(ServiceLoaderFilter(shadeConfiguration.classDeletes))
-      add(ServiceLoaderShader(shadeConfiguration.classRenames))
-      add(KotlinModuleFilter(shadeConfiguration.classDeletes))
-      add(KotlinModuleShader(shadeConfiguration.classRenames))
-    }
+    val processor = JarProcessorChain(
+      ResourceFilter(shadeConfiguration.resourceExclusions),
+      ClassFileFilter(shadeConfiguration.classDeletes),
+      ClassFileShader(shadeConfiguration.classRenames),
+      ServiceLoaderFilter(shadeConfiguration.classDeletes),
+      ServiceLoaderShader(shadeConfiguration.classRenames),
+      KotlinModuleFilter(shadeConfiguration.classDeletes),
+      KotlinModuleShader(shadeConfiguration.classRenames),
+    )
 
     val newArchiveEntries = ClassFilesProcessor(processor).process(source)
 

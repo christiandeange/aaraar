@@ -33,21 +33,21 @@ data class JarEntry(
   private val jarArchive: GenericJarArchive,
   private val name: String,
 ) {
-  fun shouldExist() {
+  fun shouldExist() = withClue("Jar entry: $name") {
     jarArchive[name].shouldNotBeNull()
   }
 
-  fun shouldNotExist() {
+  fun shouldNotExist() = withClue("Jar entry: $name") {
     jarArchive[name]?.decodeToString().shouldBeNull()
   }
 
-  infix fun shouldHaveFileContents(contents: String) {
+  infix fun shouldHaveFileContents(contents: String) = withClue("Jar entry: $name") {
     val file = jarArchive[name]
     file.shouldNotBeNull()
     file.decodeToString().normalizeWhitespace() shouldBe contents.trimIndent()
   }
 
-  infix fun shouldBeDecompiledTo(contents: String) {
+  infix fun shouldBeDecompiledTo(contents: String) = withClue("Jar entry: $name") {
     val file = jarArchive[name]
     file.shouldNotBeNull()
     file shouldBeDecompiledTo contents
@@ -69,7 +69,7 @@ data class JarEntry(
   }
 
   @UnstableMetadataApi
-  infix fun shouldHaveKotlinMetadata(metadata: KotlinModuleMetadata) {
+  infix fun shouldHaveKotlinMetadata(metadata: KotlinModuleMetadata) = withClue("Jar entry: $name") {
     val file = jarArchive[name]
     file.shouldNotBeNull()
     KotlinModuleMetadata.read(file) should { fileMetadata ->

@@ -1,20 +1,18 @@
 package sh.christian.aaraar.shading.pipeline
 
-import com.tonicsystems.jarjar.transform.Transformable
-import com.tonicsystems.jarjar.transform.config.ClassDelete
-import com.tonicsystems.jarjar.transform.jar.JarProcessor
-import com.tonicsystems.jarjar.transform.jar.JarProcessor.Result.DISCARD
-import com.tonicsystems.jarjar.transform.jar.JarProcessor.Result.KEEP
 import kotlinx.metadata.jvm.KotlinModuleMetadata
 import kotlinx.metadata.jvm.UnstableMetadataApi
+import sh.christian.aaraar.shading.impl.transform.ClassDelete
+import sh.christian.aaraar.shading.impl.transform.JarProcessor
+import sh.christian.aaraar.shading.impl.transform.JarProcessor.Result.DISCARD
+import sh.christian.aaraar.shading.impl.transform.JarProcessor.Result.KEEP
+import sh.christian.aaraar.shading.impl.transform.Transformable
 
 @OptIn(UnstableMetadataApi::class)
 internal class KotlinModuleFilter(
   classDeletes: Set<String>,
 ) : JarProcessor {
   private val classDeletePatterns = classDeletes.map { ClassDelete(it) }
-
-  override fun scan(struct: Transformable): JarProcessor.Result = process(struct)
 
   override fun process(struct: Transformable): JarProcessor.Result {
     if (!struct.name.endsWith(".kotlin_module") || classDeletePatterns.isEmpty()) return KEEP
