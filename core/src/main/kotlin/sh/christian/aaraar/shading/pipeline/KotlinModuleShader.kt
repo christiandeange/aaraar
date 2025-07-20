@@ -2,11 +2,11 @@ package sh.christian.aaraar.shading.pipeline
 
 import kotlinx.metadata.jvm.KotlinModuleMetadata
 import kotlinx.metadata.jvm.UnstableMetadataApi
+import sh.christian.aaraar.shading.impl.transform.ClassRename
+import sh.christian.aaraar.shading.impl.transform.JarProcessor
+import sh.christian.aaraar.shading.impl.transform.JarProcessor.Result.KEEP
+import sh.christian.aaraar.shading.impl.transform.PackageRemapper
 import sh.christian.aaraar.shading.impl.transform.Transformable
-import sh.christian.aaraar.shading.impl.transform.asm.PackageRemapper
-import sh.christian.aaraar.shading.impl.transform.config.ClassRename
-import sh.christian.aaraar.shading.impl.transform.jar.JarProcessor
-import sh.christian.aaraar.shading.impl.transform.jar.JarProcessor.Result.KEEP
 
 @OptIn(UnstableMetadataApi::class)
 internal class KotlinModuleShader(

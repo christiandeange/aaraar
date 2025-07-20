@@ -1,6 +1,4 @@
-package sh.christian.aaraar.shading.impl.transform.jar
-
-import sh.christian.aaraar.shading.impl.transform.Transformable
+package sh.christian.aaraar.shading.impl.transform
 
 internal interface JarProcessor {
   enum class Result {

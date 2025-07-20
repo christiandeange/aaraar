@@ -1,4 +1,4 @@
-package sh.christian.aaraar.shading.impl.transform.config
+package sh.christian.aaraar.shading.impl.transform
 
 internal object RegexUtils {
   // https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-4.html#jvms-4.2

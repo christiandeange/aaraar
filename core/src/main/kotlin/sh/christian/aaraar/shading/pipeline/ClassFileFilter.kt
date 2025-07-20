@@ -1,11 +1,11 @@
 package sh.christian.aaraar.shading.pipeline
 
+import sh.christian.aaraar.shading.impl.transform.ClassDelete
+import sh.christian.aaraar.shading.impl.transform.JarProcessor
+import sh.christian.aaraar.shading.impl.transform.JarProcessor.Companion.EXT_CLASS
+import sh.christian.aaraar.shading.impl.transform.JarProcessor.Result.DISCARD
+import sh.christian.aaraar.shading.impl.transform.JarProcessor.Result.KEEP
 import sh.christian.aaraar.shading.impl.transform.Transformable
-import sh.christian.aaraar.shading.impl.transform.config.ClassDelete
-import sh.christian.aaraar.shading.impl.transform.jar.JarProcessor
-import sh.christian.aaraar.shading.impl.transform.jar.JarProcessor.Companion.EXT_CLASS
-import sh.christian.aaraar.shading.impl.transform.jar.JarProcessor.Result.DISCARD
-import sh.christian.aaraar.shading.impl.transform.jar.JarProcessor.Result.KEEP
 
 internal class ClassFileFilter(
   classDeletes: Set<String>,

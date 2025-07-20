@@ -1,7 +1,6 @@
-package sh.christian.aaraar.shading.impl.transform.asm
+package sh.christian.aaraar.shading.impl.transform
 
 import org.objectweb.asm.commons.Remapper
-import sh.christian.aaraar.shading.impl.transform.config.ClassRename
 
 internal class PackageRemapper(
   val patterns: List<ClassRename>,

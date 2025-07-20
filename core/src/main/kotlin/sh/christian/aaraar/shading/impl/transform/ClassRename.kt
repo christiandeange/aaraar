@@ -1,9 +1,9 @@
-package sh.christian.aaraar.shading.impl.transform.config
+package sh.christian.aaraar.shading.impl.transform
 
-internal class ResourceRename(
+internal class ClassRename(
   patternText: String,
-  replaceText: String
-) : AbstractResourcePattern(patternText) {
+  replaceText: String,
+) : AbstractClassPattern(patternText) {
   private val replace: List<ReplacePart> = RegexUtils.newReplace(replaceText)
 
   fun replace(value: String): String? {

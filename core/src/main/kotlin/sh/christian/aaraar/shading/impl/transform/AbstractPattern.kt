@@ -1,4 +1,4 @@
-package sh.christian.aaraar.shading.impl.transform.config
+package sh.christian.aaraar.shading.impl.transform
 
 internal abstract class AbstractPattern(patternText: String) {
   private val regex: Regex = RegexUtils.newPattern(patternText)

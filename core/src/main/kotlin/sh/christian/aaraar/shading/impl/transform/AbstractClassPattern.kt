@@ -1,4 +1,4 @@
-package sh.christian.aaraar.shading.impl.transform.config
+package sh.christian.aaraar.shading.impl.transform
 
 internal abstract class AbstractClassPattern(patternText: String) : AbstractPattern(check(patternText)) {
   private companion object {

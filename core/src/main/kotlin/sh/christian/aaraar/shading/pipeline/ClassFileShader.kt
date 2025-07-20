@@ -3,12 +3,12 @@ package sh.christian.aaraar.shading.pipeline
 import org.objectweb.asm.ClassReader
 import org.objectweb.asm.ClassWriter
 import org.objectweb.asm.commons.ClassRemapper
+import sh.christian.aaraar.shading.impl.transform.ClassRename
+import sh.christian.aaraar.shading.impl.transform.JarProcessor
+import sh.christian.aaraar.shading.impl.transform.JarProcessor.Companion.EXT_CLASS
+import sh.christian.aaraar.shading.impl.transform.JarProcessor.Result.KEEP
+import sh.christian.aaraar.shading.impl.transform.PackageRemapper
 import sh.christian.aaraar.shading.impl.transform.Transformable
-import sh.christian.aaraar.shading.impl.transform.asm.PackageRemapper
-import sh.christian.aaraar.shading.impl.transform.config.ClassRename
-import sh.christian.aaraar.shading.impl.transform.jar.JarProcessor
-import sh.christian.aaraar.shading.impl.transform.jar.JarProcessor.Companion.EXT_CLASS
-import sh.christian.aaraar.shading.impl.transform.jar.JarProcessor.Result.KEEP
 
 internal class ClassFileShader(
   classRenames: Map<String, String>,

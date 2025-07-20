@@ -3,7 +3,7 @@ package sh.christian.aaraar.shading.impl
 import sh.christian.aaraar.model.GenericJarArchive
 import sh.christian.aaraar.model.ShadeConfiguration
 import sh.christian.aaraar.shading.Shader
-import sh.christian.aaraar.shading.impl.transform.jar.JarProcessorChain
+import sh.christian.aaraar.shading.impl.transform.JarProcessorChain
 import sh.christian.aaraar.shading.pipeline.ClassFileFilter
 import sh.christian.aaraar.shading.pipeline.ClassFileShader
 import sh.christian.aaraar.shading.pipeline.ClassFilesProcessor

@@ -1,4 +1,4 @@
-package sh.christian.aaraar.shading.impl.transform.config
+package sh.christian.aaraar.shading.impl.transform
 
 internal sealed interface ReplacePart {
   data class Literal(

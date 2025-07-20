@@ -1,6 +1,5 @@
-package sh.christian.aaraar.shading.impl.transform.jar
+package sh.christian.aaraar.shading.impl.transform
 
-import sh.christian.aaraar.shading.impl.transform.Transformable
 import java.io.IOException
 
 internal class JarProcessorChain(
