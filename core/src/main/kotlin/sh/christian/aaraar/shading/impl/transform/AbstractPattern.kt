@@ -1,14 +1,10 @@
 package sh.christian.aaraar.shading.impl.transform
 
-internal abstract class AbstractPattern(patternText: String) {
-  private val regex: Regex = RegexUtils.newPattern(patternText)
+internal abstract class AbstractPattern {
+  protected abstract val regex: Regex
 
-  fun matchOrNull(value: String): MatchResult? {
-    return if (RegexUtils.isPossibleQualifiedName(value, "/")) {
-      regex.matchEntire(value)
-    } else {
-      null
-    }
+  open fun matchOrNull(value: String): MatchResult? {
+    return regex.matchEntire(value)
   }
 
   fun matches(value: String): Boolean {

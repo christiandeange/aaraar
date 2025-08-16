@@ -9,19 +9,20 @@ internal object RegexUtils {
   private val estar: Regex = Regex("""\+\??\)\Z""")
   private val nested: Regex = Regex("""\$""")
 
-  fun newPattern(regex: String): Regex {
+  fun newPattern(regex: String, forClass: Boolean): Regex {
     require(regex != "**") {
       "'**' is not a valid pattern"
     }
-    require(isPossibleQualifiedName(regex, "/*")) {
+    require(!forClass || isPossibleQualifiedName(regex, "/*")) {
       "Not a valid package pattern: $regex"
     }
     require("***" !in regex) {
       "The sequence '***' is invalid in a package pattern"
     }
 
+    val delimiter = if (forClass) "." else "/"
     return Regex(
-      escapeComponents(regex)
+      escapeComponents(regex, delimiter)
         // One wildcard test requires the argument to be allowably empty.
         .let { replaceAllLiteral(it, dstar, """(.+?)""") }
         .let { replaceAllLiteral(it, star, """([^/]+)""") }
@@ -33,7 +34,7 @@ internal object RegexUtils {
     )
   }
 
-  fun newReplace(result: String): List<ReplacePart> {
+  fun newReplace(result: String, forClass: Boolean): List<ReplacePart> {
     var isEscape = false
     var i = 0
     var mark = 0
@@ -44,7 +45,9 @@ internal object RegexUtils {
         val ch = if (i > result.lastIndex) '@' else result[i]
         if (!isEscape) {
           if (ch == '@') {
-            val text = result.substring(mark, i).replace('.', '/')
+            val text = result.substring(mark, i).let {
+              if (forClass) it.replace('.', '/') else it
+            }
             add(ReplacePart.Literal(text))
 
             mark = i + 1
@@ -84,7 +87,7 @@ internal object RegexUtils {
     return regex.replace(value, Regex.escapeReplacement(replace))
   }
 
-  private fun escapeComponents(s: String): String {
-    return s.split(".").joinToString(".") { if ('*' in it) it else Regex.escape(it) }
+  private fun escapeComponents(s: String, delimiter: String): String {
+    return s.split(delimiter).joinToString(delimiter) { if ('*' in it) it else Regex.escape(it) }
   }
 }

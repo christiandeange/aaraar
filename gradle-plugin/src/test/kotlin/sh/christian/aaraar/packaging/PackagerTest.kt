@@ -226,8 +226,9 @@ class PackagerTest {
   private fun shadeConfiguration(
     classRenames: Map<String, String> = emptyMap(),
     classDeletes: Set<String> = emptySet(),
+    resourceRenames: Map<String, String> = emptyMap(),
     resourceDeletes: Set<String> = emptySet(),
   ): ShadeConfiguration {
-    return ShadeConfiguration(classRenames, classDeletes, resourceDeletes)
+    return ShadeConfiguration(classRenames, classDeletes, resourceRenames, resourceDeletes)
   }
 }

@@ -142,7 +142,8 @@ class Packager(
     val emptyConfiguration = ShadeConfiguration(
       classRenames = emptyMap(),
       classDeletes = emptySet(),
-      resourceExclusions = emptySet(),
+      resourceRenames = emptyMap(),
+      resourceDeletes = emptySet(),
     )
 
     val shadeRules = shadeEnvironment.rules
@@ -151,7 +152,8 @@ class Packager(
         ShadeConfiguration(
           classRenames = a.classRenames + b.configuration.classRenames,
           classDeletes = a.classDeletes + b.configuration.classDeletes,
-          resourceExclusions = a.resourceExclusions + b.configuration.resourceExclusions,
+          resourceRenames = a.resourceRenames + b.configuration.resourceRenames,
+          resourceDeletes = a.resourceDeletes + b.configuration.resourceDeletes,
         )
       }
 
@@ -160,13 +162,16 @@ class Packager(
     } else {
       logger.info("  Applying shading rules:")
       shadeRules.classRenames.forEach { (pattern, result) ->
-        logger.info("    Rename class '$pattern' → '$result'")
+        logger.info("    Rename class    '$pattern' → '$result'")
       }
       shadeRules.classDeletes.forEach { target ->
-        logger.info("    Delete class '$target'")
+        logger.info("    Delete class    '$target'")
       }
-      shadeRules.resourceExclusions.forEach { target ->
-        logger.info("    Remove file  '$target'")
+      shadeRules.resourceRenames.forEach { (pattern, result) ->
+        logger.info("    Rename resource '$pattern' → '$result'")
+      }
+      shadeRules.resourceDeletes.forEach { target ->
+        logger.info("    Delete resource '$target'")
       }
 
       val genericJarArchiveShader = GenericJarArchiveShader()

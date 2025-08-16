@@ -5,6 +5,9 @@ internal data class Transformable(
   var name: String,
   var time: Long,
 ) {
+  override fun toString(): String {
+    return "Transformable(name='$name', time=$time, data=ByteArray[${data.size}])"
+  }
 
   override fun equals(other: Any?): Boolean {
     if (this === other) return true

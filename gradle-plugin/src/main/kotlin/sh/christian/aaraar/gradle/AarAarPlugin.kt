@@ -250,7 +250,8 @@ class AarAarPlugin : Plugin<Project> {
                 classRenames = mapOf("**.R\$*" to "${variant.namespace}.R\$@2"),
                 // Delete those embedded R classes from the merged aar.
                 classDeletes = setOf("**.R\$*", "**.R"),
-                resourceExclusions = resourceExclusions,
+                resourceRenames = emptyMap(),
+                resourceDeletes = resourceExclusions,
               ),
             )
           )
@@ -265,7 +266,8 @@ class AarAarPlugin : Plugin<Project> {
               configuration = ShadeConfiguration(
                 classRenames = it.classRenames.get(),
                 classDeletes = it.classDeletes.get(),
-                resourceExclusions = emptySet(),
+                resourceRenames = it.resourceRenames.get(),
+                resourceDeletes = it.resourceDeletes.get(),
               ),
             )
           }

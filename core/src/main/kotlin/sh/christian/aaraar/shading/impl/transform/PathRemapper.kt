@@ -2,7 +2,7 @@ package sh.christian.aaraar.shading.impl.transform
 
 import org.objectweb.asm.commons.Remapper
 
-internal class PackageRemapper<T>(
+internal class PathRemapper<T>(
   private val patterns: List<T>,
 ) : Remapper() where T : AbstractPattern, T : ReplacePattern {
   private val typeCache: MutableMap<String, String> = mutableMapOf()
@@ -22,23 +22,7 @@ internal class PackageRemapper<T>(
   override fun mapValue(value: Any?): Any? {
     return if (value is String) {
       valueCache.getOrPut(value) {
-        if (isClassArrayDescriptor(value)) {
-          value.replace('.', '/').let(::mapDesc).replace('/', '.')
-        } else {
-          var s = mapPath(value)
-          if (s == value) {
-            val hasDot = '.' in s
-            val hasSlash = '/' in s
-            if (!hasDot || !hasSlash) {
-              s = if (hasDot) {
-                s.replace('.', '/').let(::replaceHelper).replace('/', '.')
-              } else {
-                replaceHelper(s)
-              }
-            }
-          }
-          s
-        }
+        value.let(::mapPath).let(::replaceHelper)
       }
     } else {
       super.mapValue(value)
@@ -70,10 +54,6 @@ internal class PackageRemapper<T>(
 
   private fun replaceHelper(value: String): String {
     return patterns.firstNotNullOfOrNull { it.replace(value) } ?: value
-  }
-
-  private fun isClassArrayDescriptor(desc: String): Boolean {
-    return desc.startsWith("[L") && desc.endsWith(";")
   }
 
   private companion object {

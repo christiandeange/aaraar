@@ -7,7 +7,16 @@ import sh.christian.aaraar.shading.impl.GenericJarArchiveShader
 internal fun GenericJarArchive.shaded(
   classRenames: Map<String, String> = emptyMap(),
   classDeletes: Set<String> = emptySet(),
+  resourceRenames: Map<String, String> = emptyMap(),
   resourceDeletes: Set<String> = emptySet(),
 ): GenericJarArchive {
-  return GenericJarArchiveShader().shade(this, ShadeConfiguration(classRenames, classDeletes, resourceDeletes))
+  return GenericJarArchiveShader().shade(
+    source = this,
+    shadeConfiguration = ShadeConfiguration(
+      classRenames = classRenames,
+      classDeletes = classDeletes,
+      resourceRenames = resourceRenames,
+      resourceDeletes = resourceDeletes,
+    ),
+  )
 }

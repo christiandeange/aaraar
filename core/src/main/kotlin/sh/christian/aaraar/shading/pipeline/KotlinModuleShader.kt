@@ -40,7 +40,7 @@ internal class KotlinModuleShader(
     return KEEP
   }
 
-  private fun PackageRemapper.mapPackage(packageName: String): String {
+  private fun PackageRemapper<ClassRename>.mapPackage(packageName: String): String {
     val classSuffix = ".Dummy"
     return mapValue(packageName + classSuffix).toString().removeSuffix(classSuffix)
   }

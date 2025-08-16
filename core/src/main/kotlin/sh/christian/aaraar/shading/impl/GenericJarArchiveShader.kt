@@ -9,24 +9,27 @@ import sh.christian.aaraar.shading.pipeline.ClassFileShader
 import sh.christian.aaraar.shading.pipeline.ClassFilesProcessor
 import sh.christian.aaraar.shading.pipeline.KotlinModuleFilter
 import sh.christian.aaraar.shading.pipeline.KotlinModuleShader
+import sh.christian.aaraar.shading.pipeline.ResourceFileShader
 import sh.christian.aaraar.shading.pipeline.ResourceFilter
 import sh.christian.aaraar.shading.pipeline.ServiceLoaderFilter
 import sh.christian.aaraar.shading.pipeline.ServiceLoaderShader
 
 /**
  * Standard implementation for shading a JAR file by applying rules from the [ShadeConfiguration] in this order:
- * - Remove resources matching [`resourceExclusions`][ShadeConfiguration.resourceExclusions].
  * - Remove class files matching [`classDeletes`][ShadeConfiguration.classDeletes].
+ * - Remove resource files matching [`resourceExclusions`][ShadeConfiguration.resourceDeletes].
  * - Rename class files and class references matching [`classRenames`][ShadeConfiguration.classRenames].
+ * - Rename resource files matching [`resourceRenames`][ShadeConfiguration.resourceRenames].
  *
  * This ordering is important since class files are removed based on their _original_ name, not their shaded name.
  */
 class GenericJarArchiveShader : Shader<GenericJarArchive> {
   override fun shade(source: GenericJarArchive, shadeConfiguration: ShadeConfiguration): GenericJarArchive {
     val processor = JarProcessorChain(
-      ResourceFilter(shadeConfiguration.resourceExclusions),
+      ResourceFilter(shadeConfiguration.resourceDeletes),
       ClassFileFilter(shadeConfiguration.classDeletes),
       ClassFileShader(shadeConfiguration.classRenames),
+      ResourceFileShader(shadeConfiguration.resourceRenames),
       ServiceLoaderFilter(shadeConfiguration.classDeletes),
       ServiceLoaderShader(shadeConfiguration.classRenames),
       KotlinModuleFilter(shadeConfiguration.classDeletes),
