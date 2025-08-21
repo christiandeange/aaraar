@@ -1,6 +1,16 @@
 Change Log
 ==========
 
+## Version 0.1.2
+
+_2025-08-21_
+
+* New: Allow resource files to be relocated using shading rules.
+* Update: Make packaging tasks compatible with Gradle configuration caching.
+* Update: Allow class files to be deleted via packaging option rules only when it ends with `.class`.
+* Fix: Ensure that internal/inline classes are properly relocated by shading rules.
+* Fix: Correct the format of `public.txt` files written to AAR files.
+
 ## Version 0.1.1
 
 _2025-03-27_
