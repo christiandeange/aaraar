@@ -5,8 +5,7 @@ import java.nio.file.Path
 /**
  * Represents the set of `jar` files in the `libs/` folder.
  */
-class Libs
-internal constructor(
+class Libs(
   val files: FileSet,
 ) {
   fun jars(): Map<String, GenericJarArchive> {

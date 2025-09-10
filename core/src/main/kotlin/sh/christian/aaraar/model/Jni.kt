@@ -5,8 +5,7 @@ import java.nio.file.Path
 /**
  * Represents the compiled native files in the `jni/` folder.
  */
-class Jni
-internal constructor(
+class Jni(
   val files: FileSet,
 ) {
   fun writeTo(path: Path) {

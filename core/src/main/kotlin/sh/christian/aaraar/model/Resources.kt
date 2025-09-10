@@ -5,8 +5,7 @@ import java.nio.file.Path
 /**
  * Represents the contents of the `res/` folder.
  */
-class Resources
-internal constructor(
+class Resources(
   val files: FileSet,
   val packageName: String,
   val minSdk: Int,

@@ -9,9 +9,8 @@ import kotlin.streams.asSequence
 /**
  * Represents an arbitrary set of files, indexed by their relative file path to a specified root.
  */
-class FileSet
-internal constructor(
-  private val indexedFiles: Map<String, ByteArray>,
+class FileSet(
+  val indexedFiles: Map<String, ByteArray>,
 ) : Map<String, ByteArray> by indexedFiles {
   fun writeTo(path: Path) {
     indexedFiles.forEach { (entry, bytes) ->
@@ -22,10 +21,6 @@ internal constructor(
 
   companion object {
     val EMPTY = FileSet(indexedFiles = emptyMap())
-
-    fun from(fileSet: Map<String, ByteArray>): FileSet {
-      return FileSet(fileSet)
-    }
 
     fun fromFileTree(path: Path): FileSet? {
       if (!Files.exists(path)) return null

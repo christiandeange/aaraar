@@ -11,15 +11,17 @@ import java.nio.file.Path
  */
 class PublicTxt
 internal constructor(
-  val symbolTable: SymbolTable,
+  internal val symbolTable: SymbolTable,
 ) {
-  fun writeTo(path: Path) {
-    if (symbolTable.symbols.isEmpty) {
-      Files.deleteIfExists(path)
-    } else {
-      Files.writeString(path, toString())
-    }
-  }
+  constructor(
+    lines: List<String>,
+    packageName: String,
+  ) : this(lines.joinToString(separator = "\n"), packageName)
+
+  constructor(
+    lines: String,
+    packageName: String,
+  ) : this(SymbolIo.readFromPublicTxtFile(lines.byteInputStream(), "public.txt", packageName))
 
   override fun toString(): String {
     return ResourceType.values()
@@ -30,6 +32,14 @@ internal constructor(
         @Suppress("UsePropertyAccessSyntax")
         "${symbol.resourceType.getName()} ${symbol.canonicalName}"
       }
+  }
+
+  fun writeTo(path: Path) {
+    if (symbolTable.symbols.isEmpty) {
+      Files.deleteIfExists(path)
+    } else {
+      Files.writeString(path, toString())
+    }
   }
 
   companion object {

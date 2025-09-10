@@ -11,16 +11,19 @@ import java.nio.file.Path
  */
 class NavigationJson
 internal constructor(
-  val navigationData: List<NavigationXmlDocumentData>,
+  internal val navigationData: List<NavigationXmlDocumentData>,
 ) {
+  constructor(jsonSource: String) : this(parseJson(jsonSource))
+
+  override fun toString(): String {
+    return GSON.toJson(navigationData)
+  }
+
   fun writeTo(path: Path) {
     if (navigationData.isEmpty()) {
       Files.deleteIfExists(path)
     } else {
-      Files.writeString(
-        path,
-        GSON.toJson(navigationData),
-      )
+      Files.writeString(path, toString())
     }
   }
 
@@ -34,6 +37,11 @@ internal constructor(
       val navigationData = GSON.fromJson(Files.newBufferedReader(path), typeToken) as List<NavigationXmlDocumentData>
 
       return NavigationJson(navigationData)
+    }
+
+    private fun parseJson(json: String): List<NavigationXmlDocumentData> {
+      val typeToken = object : TypeToken<List<NavigationXmlDocumentData>>() {}.type
+      return GSON.fromJson(json, typeToken) as List<NavigationXmlDocumentData>
     }
   }
 }

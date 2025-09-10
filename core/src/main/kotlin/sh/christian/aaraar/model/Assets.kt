@@ -5,8 +5,7 @@ import java.nio.file.Path
 /**
  * Represents the contents of the `assets/` folder.
  */
-class Assets
-internal constructor(
+class Assets(
   val files: FileSet,
 ) {
   fun writeTo(path: Path) {

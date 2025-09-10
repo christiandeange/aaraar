@@ -10,8 +10,8 @@ class AndroidManifestMergerTest {
 
   @Test
   fun `keeps package name from main manifest file`() {
-    val mainLibManifest = AndroidManifest.from("""<manifest package="com.library.main" />""")
-    val helperModuleManifest = AndroidManifest.from("""<manifest package="com.library.helper.core" />""")
+    val mainLibManifest = AndroidManifest("""<manifest package="com.library.main" />""")
+    val helperModuleManifest = AndroidManifest("""<manifest package="com.library.helper.core" />""")
 
     val mergedManifest = merger.merge(mainLibManifest, helperModuleManifest)
 
@@ -24,9 +24,9 @@ class AndroidManifestMergerTest {
 
   @Test
   fun `adds new nodes from dependencies`() {
-    val mainLibManifest = AndroidManifest.from("""<manifest package="com.library.main" />""")
+    val mainLibManifest = AndroidManifest("""<manifest package="com.library.main" />""")
 
-    val helperModuleManifest = AndroidManifest.from(
+    val helperModuleManifest = AndroidManifest(
       """
       <manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.library.helper.core">
           <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
@@ -46,7 +46,7 @@ class AndroidManifestMergerTest {
 
   @Test
   fun `applies tool rules to manifests from dependencies`() {
-    val mainLibManifest = AndroidManifest.from(
+    val mainLibManifest = AndroidManifest(
       """
       <manifest
               xmlns:android="http://schemas.android.com/apk/res/android"
@@ -58,7 +58,7 @@ class AndroidManifestMergerTest {
       """
     )
 
-    val helperModuleManifest = AndroidManifest.from(
+    val helperModuleManifest = AndroidManifest(
       """
       <manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.library.helper.core">
           <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
@@ -77,9 +77,9 @@ class AndroidManifestMergerTest {
 
   @Test
   fun `keeps placeholders`() {
-    val mainLibManifest = AndroidManifest.from("""<manifest package="com.library.main" />""")
+    val mainLibManifest = AndroidManifest("""<manifest package="com.library.main" />""")
 
-    val helperModuleManifest = AndroidManifest.from(
+    val helperModuleManifest = AndroidManifest(
       """
       <manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.library.helper.core">
           <application>

@@ -5,12 +5,11 @@ import java.nio.file.Path
 import java.util.stream.Collectors.toList
 
 /**
- * Represents the set of consumer Proguard files.
+ * Represents the set of consumer Proguard rules.
  */
-class Proguard
-internal constructor(
+class Proguard(
   val lines: List<String>,
-) : List<String> by lines {
+) {
   override fun toString(): String {
     return lines.joinToString(separator = "\n")
   }

@@ -15,6 +15,8 @@ class AndroidManifest
 internal constructor(
   private val manifestNode: Node,
 ) {
+  constructor(xmlSource: String) : this(parse(xmlSource.byteInputStream()))
+
   val packageName: String by lazy {
     manifestNode.get<String>("package")!!
   }
@@ -44,10 +46,6 @@ internal constructor(
   companion object {
     fun from(path: Path): AndroidManifest {
       return AndroidManifest(parse(Files.newInputStream(path)))
-    }
-
-    fun from(xmlSource: String): AndroidManifest {
-      return AndroidManifest(parse(xmlSource.byteInputStream()))
     }
   }
 }

@@ -35,6 +35,6 @@ class AndroidManifestMerger : Merger<AndroidManifest> {
       """.trimIndent()
     }
 
-    return AndroidManifest.from(mergeReport.getMergedDocument(MergingReport.MergedManifestKind.MERGED))
+    return AndroidManifest(mergeReport.getMergedDocument(MergingReport.MergedManifestKind.MERGED))
   }
 }

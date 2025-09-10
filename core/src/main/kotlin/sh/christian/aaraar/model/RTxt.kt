@@ -2,6 +2,7 @@ package sh.christian.aaraar.model
 
 import com.android.ide.common.symbols.SymbolIo
 import com.android.ide.common.symbols.SymbolTable
+import java.io.StringWriter
 import java.nio.file.Files
 import java.nio.file.Path
 
@@ -12,6 +13,22 @@ class RTxt
 internal constructor(
   val symbolTable: SymbolTable,
 ) {
+  constructor(
+    lines: List<String>,
+    packageName: String,
+  ) : this(lines.joinToString(separator = "\n"), packageName)
+
+  constructor(
+    lines: String,
+    packageName: String,
+  ) : this(SymbolIo.readFromAaptNoValues(lines.byteInputStream().bufferedReader(), "R.txt", packageName))
+
+  override fun toString(): String {
+    val writer = StringWriter()
+    writer.use { SymbolIo.writeForAar(symbolTable, it) }
+    return writer.toString()
+  }
+
   fun writeTo(path: Path) {
     if (symbolTable.symbols.isEmpty) {
       Files.deleteIfExists(path)

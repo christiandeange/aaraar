@@ -24,6 +24,6 @@ class LibsShader(
       }
     }
 
-    return Libs(FileSet.from(shadedFiles))
+    return Libs(FileSet(shadedFiles))
   }
 }

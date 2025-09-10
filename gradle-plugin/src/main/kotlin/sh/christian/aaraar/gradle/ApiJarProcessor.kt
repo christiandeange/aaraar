@@ -44,7 +44,7 @@ interface ApiJarProcessor : ArtifactArchiveProcessor {
           processClasspath(archive, classpath)
 
           val apiClasses = classpath.apply { asApiJar() }.toGenericJarArchive()
-          archive.with(apiJar = ApiJar.from(apiClasses))
+          archive.with(apiJar = ApiJar(apiClasses))
         } else {
           archive
         }

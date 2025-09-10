@@ -14,9 +14,8 @@ import kotlin.streams.asSequence
 /**
  * Represents an arbitrary set of `jar` entries, indexed by their relative file path to the root folder.
  */
-class GenericJarArchive
-internal constructor(
-  private val archiveEntries: Map<String, ByteArray>,
+class GenericJarArchive(
+  val archiveEntries: Map<String, ByteArray>,
 ) : Map<String, ByteArray> by archiveEntries {
 
   fun bytes(): ByteArray {

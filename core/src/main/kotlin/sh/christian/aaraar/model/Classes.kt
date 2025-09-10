@@ -5,8 +5,7 @@ import java.nio.file.Path
 /**
  * Represents the contents of the `classes.jar` file, the main runtime sources for an [ArtifactArchive].
  */
-class Classes
-internal constructor(
+class Classes(
   val archive: GenericJarArchive,
 ) {
   fun writeTo(path: Path) {
@@ -14,13 +13,11 @@ internal constructor(
   }
 
   companion object {
-    fun from(jarArchive: GenericJarArchive): Classes = Classes(jarArchive)
-
     fun from(
       path: Path,
       keepMetaFiles: Boolean,
     ): Classes {
-      return from(GenericJarArchive.from(path, keepMetaFiles) ?: GenericJarArchive.NONE)
+      return Classes(GenericJarArchive.from(path, keepMetaFiles) ?: GenericJarArchive.NONE)
     }
   }
 }

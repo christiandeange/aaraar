@@ -69,7 +69,7 @@ class ResourcesMerger : Merger<Resources> {
       }
     }
 
-    return Resources(FileSet.from(resourcePaths), first.packageName, first.minSdk, first.androidAaptIgnore)
+    return Resources(FileSet(resourcePaths), first.packageName, first.minSdk, first.androidAaptIgnore)
   }
 
   private class ResourceMergerConsumer : MergeConsumer<ResourceMergerItem> {

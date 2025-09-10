@@ -7,13 +7,13 @@ class AndroidManifestTest {
 
   @Test
   fun `parses package name from manifest`() {
-    val manifest = AndroidManifest.from("""<manifest package="com.library.main" />""")
+    val manifest = AndroidManifest("""<manifest package="com.library.main" />""")
     manifest.packageName shouldBe "com.library.main"
   }
 
   @Test
   fun `parses minSdkVersion from manifest`() {
-    val manifest = AndroidManifest.from(
+    val manifest = AndroidManifest(
       """
       <manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.library.main">
           <uses-sdk

@@ -7,9 +7,13 @@ import java.util.stream.Collectors.toList
 /**
  * Represents the contents of the `META-INF/com/android/build/gradle/aar-metadata.properties` file.
  */
-data class AarMetadata(
-  private val lines: List<String>,
+class AarMetadata(
+  val lines: List<String>,
 ) {
+  override fun toString(): String {
+    return lines.joinToString(separator = "\n")
+  }
+
   fun writeTo(path: Path) {
     if (lines.isEmpty()) {
       Files.deleteIfExists(path)

@@ -12,6 +12,6 @@ class ClassesShader(
   private val genericJarArchiveShader: Shader<GenericJarArchive>,
 ) : Shader<Classes> {
   override fun shade(source: Classes, shadeConfiguration: ShadeConfiguration): Classes {
-    return Classes.from(genericJarArchiveShader.shade(source.archive, shadeConfiguration))
+    return Classes(genericJarArchiveShader.shade(source.archive, shadeConfiguration))
   }
 }

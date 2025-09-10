@@ -5,8 +5,7 @@ import java.nio.file.Path
 /**
  * Represents the set of consumer Lint rules.
  */
-class LintRules
-internal constructor(
+class LintRules(
   val archive: GenericJarArchive,
 ) {
   fun writeTo(path: Path) {
