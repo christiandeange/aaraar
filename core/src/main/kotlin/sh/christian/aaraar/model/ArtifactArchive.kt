@@ -80,7 +80,6 @@ data class AarArchive(
   val lintRules: LintRules,
   val navigationJson: NavigationJson,
   val apiJar: ApiJar,
-  // TODO no idea how /prefab folder works, add support for it later.
 ) : ArtifactArchive() {
   fun with(
     aarMetadata: AarMetadata = this.aarMetadata,
