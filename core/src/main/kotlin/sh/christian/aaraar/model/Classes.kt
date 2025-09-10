@@ -5,7 +5,7 @@ import java.nio.file.Path
 /**
  * Represents the contents of the `classes.jar` file, the main runtime sources for an [ArtifactArchive].
  */
-class Classes(
+data class Classes(
   val archive: GenericJarArchive,
 ) {
   fun writeTo(path: Path) {

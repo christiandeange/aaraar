@@ -5,7 +5,7 @@ import java.nio.file.Path
 /**
  * Represents the contents of the `api.jar` file, the IDE sources for an [ArtifactArchive].
  */
-class ApiJar(
+data class ApiJar(
   val archive: GenericJarArchive,
 ) {
   fun writeTo(path: Path) {

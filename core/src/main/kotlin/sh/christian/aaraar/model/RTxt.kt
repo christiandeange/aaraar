@@ -29,6 +29,19 @@ internal constructor(
     return writer.toString()
   }
 
+  override fun equals(other: Any?): Boolean {
+    if (other !is RTxt) return false
+    return symbolTable.symbols == other.symbolTable.symbols &&
+      symbolTable.tablePackage == other.symbolTable.tablePackage
+  }
+
+  override fun hashCode(): Int {
+    var result = 1
+    result = 31 * result + symbolTable.symbols.hashCode()
+    result = 31 * result + symbolTable.tablePackage.hashCode()
+    return result
+  }
+
   fun writeTo(path: Path) {
     if (symbolTable.symbols.isEmpty) {
       Files.deleteIfExists(path)

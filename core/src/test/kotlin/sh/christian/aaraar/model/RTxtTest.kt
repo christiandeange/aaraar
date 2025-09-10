@@ -10,7 +10,7 @@ import sh.christian.aaraar.utils.shouldHaveContents
 import sh.christian.aaraar.utils.withFile
 import kotlin.test.Test
 
-class PublicTxtTest {
+class RTxtTest {
 
   private val emptySymbolTable = SymbolTable.builder().build()
 
@@ -28,41 +28,42 @@ class PublicTxtTest {
     .build()
 
   @Test
-  fun `empty symbol table does not write public txt file`() = withFile {
-    val publicTxt = PublicTxt(symbolTable = emptySymbolTable)
+  fun `empty symbol table does not write R txt file`() = withFile {
+    val rTxt = RTxt(symbolTable = emptySymbolTable)
 
-    publicTxt.writeTo(filePath)
+    rTxt.writeTo(filePath)
     filePath.shouldNotExist()
   }
 
   @Test
-  fun `symbol table with at least one symbol writes public txt file`() = withFile {
-    val publicTxt = PublicTxt(symbolTable = smallSymbolTable)
+  fun `symbol table with at least one symbol writes R txt file`() = withFile {
+    val rTxt = RTxt(symbolTable = smallSymbolTable)
 
-    publicTxt.writeTo(filePath)
+    rTxt.writeTo(filePath)
     filePath.shouldExist()
     filePath shouldHaveContents """
-      string app_name
+      int string app_name 0x64
     """
   }
 
   @Test
   fun `test toString`() {
-    val publicTxt = PublicTxt(symbolTable = largeSymbolTable)
-    publicTxt.toString() shouldBe """
-      bool is_tablet
-      font inter
-      font proxima_nova
-      integer anim_duration
-      string activity_name
-      string app_name
+    val rTxt = RTxt(symbolTable = largeSymbolTable)
+    rTxt.toString() shouldBe """
+      int bool is_tablet 0x69
+      int font inter 0x67
+      int font proxima_nova 0x68
+      int integer anim_duration 0x66
+      int string activity_name 0x65
+      int string app_name 0x64
+
     """.trimIndent()
   }
 
   @Test
   fun `test equality`() {
-    val publicTxt1 = PublicTxt(symbolTable = largeSymbolTable)
-    val publicTxt2 = PublicTxt(symbolTable = largeSymbolTable)
-    publicTxt1 shouldBe publicTxt2
+    val rTxt1 = RTxt(symbolTable = largeSymbolTable)
+    val rTxt2 = RTxt(symbolTable = largeSymbolTable)
+    rTxt1 shouldBe rTxt2
   }
 }

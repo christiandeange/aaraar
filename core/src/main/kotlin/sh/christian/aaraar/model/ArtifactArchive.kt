@@ -44,7 +44,7 @@ sealed class ArtifactArchive {
 /**
  * Represents a packaged `jar` archive output.
  */
-class JarArchive(
+data class JarArchive(
   override val classes: Classes,
 ) : ArtifactArchive() {
   fun with(classes: Classes): JarArchive {
@@ -66,7 +66,7 @@ class JarArchive(
 /**
  * Represents a packaged `aar` archive output.
  */
-class AarArchive(
+data class AarArchive(
   val aarMetadata: AarMetadata,
   val androidManifest: AndroidManifest,
   override val classes: Classes,

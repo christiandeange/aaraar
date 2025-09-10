@@ -17,7 +17,6 @@ import kotlin.streams.asSequence
 class GenericJarArchive(
   val archiveEntries: Map<String, ByteArray>,
 ) : Map<String, ByteArray> by archiveEntries {
-
   fun bytes(): ByteArray {
     if (isEmpty()) return byteArrayOf()
 
@@ -28,6 +27,15 @@ class GenericJarArchive(
     } finally {
       tempJarFile.deleteIfExists()
     }
+  }
+
+  override fun equals(other: Any?): Boolean {
+    if (other !is GenericJarArchive) return false
+    return contentEquals(archiveEntries, other.archiveEntries)
+  }
+
+  override fun hashCode(): Int {
+    return contentHashCode(archiveEntries)
   }
 
   fun writeTo(path: Path) {

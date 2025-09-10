@@ -12,6 +12,15 @@ import kotlin.streams.asSequence
 class FileSet(
   val indexedFiles: Map<String, ByteArray>,
 ) : Map<String, ByteArray> by indexedFiles {
+  override fun equals(other: Any?): Boolean {
+    if (other !is FileSet) return false
+    return contentEquals(indexedFiles, other.indexedFiles)
+  }
+
+  override fun hashCode(): Int {
+    return contentHashCode(indexedFiles)
+  }
+
   fun writeTo(path: Path) {
     indexedFiles.forEach { (entry, bytes) ->
       val filePath = (path / entry).mkdirs()

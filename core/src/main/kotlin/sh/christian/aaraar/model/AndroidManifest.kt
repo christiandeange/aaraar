@@ -29,6 +29,15 @@ internal constructor(
     return manifestNode.toString()
   }
 
+  override fun equals(other: Any?): Boolean {
+    if (other !is AndroidManifest) return false
+    return manifestNode == other.manifestNode
+  }
+
+  override fun hashCode(): Int {
+    return manifestNode.hashCode()
+  }
+
   fun writeTo(path: Path) {
     OutputStreamWriter(Files.newOutputStream(path)).use {
       manifestNode.writeTo(it)

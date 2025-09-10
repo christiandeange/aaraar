@@ -7,7 +7,7 @@ import java.util.stream.Collectors.toList
 /**
  * Represents the set of consumer Proguard rules.
  */
-class Proguard(
+data class Proguard(
   val lines: List<String>,
 ) {
   override fun toString(): String {

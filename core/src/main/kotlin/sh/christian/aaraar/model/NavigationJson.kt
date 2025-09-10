@@ -19,6 +19,15 @@ internal constructor(
     return GSON.toJson(navigationData)
   }
 
+  override fun equals(other: Any?): Boolean {
+    if (other !is NavigationJson) return false
+    return navigationData == other.navigationData
+  }
+
+  override fun hashCode(): Int {
+    return navigationData.hashCode()
+  }
+
   fun writeTo(path: Path) {
     if (navigationData.isEmpty()) {
       Files.deleteIfExists(path)

@@ -7,7 +7,7 @@ import java.util.stream.Collectors.toList
 /**
  * Represents the contents of the `META-INF/com/android/build/gradle/aar-metadata.properties` file.
  */
-class AarMetadata(
+data class AarMetadata(
   val lines: List<String>,
 ) {
   override fun toString(): String {
