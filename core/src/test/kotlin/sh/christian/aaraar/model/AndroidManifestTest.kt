@@ -1,6 +1,7 @@
 package sh.christian.aaraar.model
 
 import io.kotest.matchers.shouldBe
+import sh.christian.aaraar.utils.normalizeWhitespace
 import kotlin.test.Test
 
 class AndroidManifestTest {
@@ -36,7 +37,7 @@ class AndroidManifestTest {
       """.trimIndent()
 
     val manifest = AndroidManifest(manifestString)
-    manifest.toString() shouldBe manifestString
+    manifest.toString().normalizeWhitespace() shouldBe manifestString.normalizeWhitespace()
   }
 
   @Test

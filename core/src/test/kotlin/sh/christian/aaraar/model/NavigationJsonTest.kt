@@ -2,6 +2,7 @@ package sh.christian.aaraar.model
 
 import io.kotest.matchers.shouldBe
 import sh.christian.aaraar.utils.navigationJsonDataString
+import java.io.File
 import kotlin.test.Test
 
 class NavigationJsonTest {
@@ -9,6 +10,12 @@ class NavigationJsonTest {
   fun `test toString`() {
     val json = navigationJsonDataString("nav1", "/lib1")
     val navigationJson = NavigationJson(json)
+
+    val filePath = if (File.separatorChar == '\\') {
+      """D:\\nav1.xml"""
+    } else {
+      "/nav1.xml"
+    }
 
     navigationJson.toString() shouldBe """
       [
@@ -26,7 +33,7 @@ class NavigationJsonTest {
               "path": "/lib1",
               "sourceFilePosition": {
                 "mSourceFile": {
-                  "mFilePath": "/nav1.xml",
+                  "mFilePath": "$filePath",
                   "mDescription": "nav1"
                 },
                 "mSourcePosition": {
