@@ -5,6 +5,7 @@ import kotlinx.metadata.KmClass
 
 internal val MutableClasspath.foo get() = this["sh.christian.mylibrary.Foo"]
 internal val MutableClasspath.fooInternal get() = this["sh.christian.mylibrary.FooInternal"]
+internal val MutableClasspath.immutable get() = this["sh.christian.mylibrary.Immutable"]
 internal val MutableClasspath.name get() = this["sh.christian.mylibrary.Name"]
 
 internal fun MutableClassReference.requireMetadata(): KmClass {
