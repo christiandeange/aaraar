@@ -41,6 +41,9 @@ abstract class PackageArchiveTask : DefaultTask() {
   abstract val inputArchive: RegularFileProperty
 
   @get:Internal
+  abstract val compileArtifacts: Property<ArtifactCollection>
+
+  @get:Internal
   abstract val embedArtifacts: Property<ArtifactCollection>
 
   @get:Input
@@ -62,6 +65,12 @@ abstract class PackageArchiveTask : DefaultTask() {
   @Suppress("unused")
   @get:InputFiles
   @get:PathSensitive(RELATIVE)
+  val compileArtifactFiles: FileCollection get() = compileArtifacts.get().artifactFiles
+
+  /** Used to track the [ArtifactCollection] file inputs, only queried by Gradle for task/configuration caching. */
+  @Suppress("unused")
+  @get:InputFiles
+  @get:PathSensitive(RELATIVE)
   val embedArtifactFiles: FileCollection get() = embedArtifacts.get().artifactFiles
 
   internal abstract fun environment(): Environment
@@ -74,7 +83,19 @@ abstract class PackageArchiveTask : DefaultTask() {
     val shadeEnvironment = shadeEnvironment.get()
     logger.info("Shading environment: $shadeEnvironment")
 
-    val scopeMapping: Map<Path, ShadeConfigurationScope> = embedArtifacts.get()
+    val inputPath = inputArchive.getPath()
+
+    val compileClasspath: List<Path> = compileArtifacts.get()
+      .resolvedArtifacts.get()
+      .map { it.file.toPath() }
+      .minus(inputPath)
+
+    val embedClasspath: List<Path> = embedArtifacts.get()
+      .resolvedArtifacts.get()
+      .map { it.file.toPath() }
+      .minus(inputPath)
+
+    val embedScopeMapping: Map<Path, ShadeConfigurationScope> = embedArtifacts.get()
       .resolvedArtifacts.get()
       .associate { it.file.toPath() to it.id.componentIdentifier.toShadeConfigurationScope() }
       .mapValuesNotNull { it.value }
@@ -86,32 +107,40 @@ abstract class PackageArchiveTask : DefaultTask() {
       logger = { msg -> logger.info(msg) },
     )
 
-    val inputPath = inputArchive.getPath()
-
     val input: ArtifactArchive = packager.prepareInputArchive(
       inputPath = inputPath,
       identifier = ProjectScope(identityPath.parent!!.toString()),
     )
 
-    val dependencyArchives: List<ArtifactArchive> =
-      scopeMapping.entries
+    val embedArchives: List<ArtifactArchive> =
+      embedScopeMapping.entries
         .filter { it.key != inputPath }
         .map { (archivePath, identifier) -> packager.prepareDependencyArchive(archivePath, identifier) }
 
-    val mergedArchive = packager.mergeArchives(input, dependencyArchives)
-    val finalizedArchive = postProcessing(mergedArchive)
+    val mergedArchive = packager.mergeArchives(input, embedArchives)
+
+    val processorEnvironment = ProcessorEnvironment(
+      environment = environment,
+      inputArchive = input,
+      compileClasspath = compileClasspath,
+      embedClasspath = embedClasspath,
+    )
+    val finalizedArchive = postProcessing(processorEnvironment, mergedArchive)
 
     val outputPath = outputArchive.getPath().apply { Files.deleteIfExists(this) }
     logger.info("Merged into: $outputPath")
     finalizedArchive.writeTo(path = outputPath)
   }
 
-  private fun postProcessing(archive: ArtifactArchive): ArtifactArchive {
+  private fun postProcessing(
+    processorEnvironment: ProcessorEnvironment,
+    archive: ArtifactArchive,
+  ): ArtifactArchive {
     val postProcessors = postProcessorFactories.get().map { it.create() }
 
     var processedArchive = archive
     for (processor in postProcessors) {
-      processedArchive = processor.process(processedArchive)
+      processedArchive = processor.process(processorEnvironment, processedArchive)
     }
     return processedArchive
   }

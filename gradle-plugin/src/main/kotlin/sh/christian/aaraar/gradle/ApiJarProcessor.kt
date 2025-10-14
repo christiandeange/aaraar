@@ -3,6 +3,8 @@ package sh.christian.aaraar.gradle
 import sh.christian.aaraar.model.AarArchive
 import sh.christian.aaraar.model.ApiJar
 import sh.christian.aaraar.model.ArtifactArchive
+import sh.christian.aaraar.model.GenericJarArchive
+import sh.christian.aaraar.model.JarArchive
 import sh.christian.aaraar.model.classeditor.MutableClasspath
 
 /**
@@ -34,22 +36,32 @@ interface ApiJarProcessor : ArtifactArchiveProcessor {
     classpath: MutableClasspath,
   )
 
-  override fun process(archive: ArtifactArchive): ArtifactArchive {
-    return when (archive) {
-      is AarArchive -> {
-        if (isEnabled()) {
-          val inputApiJar = archive.classes.archive
-          val classpath = MutableClasspath.from(inputApiJar)
+  override fun process(
+    environment: ProcessorEnvironment,
+    archive: ArtifactArchive,
+  ): ArtifactArchive {
+    // No-op if not enabled or not an AAR archive.
+    if (!isEnabled() || archive !is AarArchive) return archive
 
-          processClasspath(archive, classpath)
+    val inputApiJar: GenericJarArchive = archive.classes.archive
+    val classpath: MutableClasspath = MutableClasspath.from(inputApiJar)
 
-          val apiClasses = classpath.apply { asApiJar() }.toGenericJarArchive()
-          archive.copy(apiJar = ApiJar(apiClasses))
-        } else {
-          archive
+    environment.compileClasspath.forEach { compileDependency ->
+      val dependencyArchive = ArtifactArchive.from(compileDependency, environment.environment)
+      val dependencyClasspath = when (dependencyArchive) {
+        is AarArchive -> {
+          MutableClasspath.from(dependencyArchive.apiJar.archive.ifEmpty { dependencyArchive.classes.archive })
+        }
+        is JarArchive -> {
+          MutableClasspath.from(dependencyArchive.classes.archive)
         }
       }
-      else -> archive
+      classpath.addClasspath(dependencyClasspath, addAsInput = false)
     }
+
+    processClasspath(archive, classpath)
+
+    val apiClasses = classpath.apply { asApiJar() }.toGenericJarArchive()
+    return archive.copy(apiJar = ApiJar(apiClasses))
   }
 }

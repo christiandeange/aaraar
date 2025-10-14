@@ -242,7 +242,10 @@ a `create()` method for you to implement. This method should return an instance 
 
     ```kotlin
     class ClassLoggingProcessor : ArtifactArchiveProcessor {
-        override fun process(archive: ArtifactArchive): ArtifactArchive {
+        override fun process(
+            environment: ProcessorEnvironment,
+            archive: ArtifactArchive,
+        ): ArtifactArchive {
             println("Merged archive contains: ${archive.classes.archive.count()} classes.")
             return archive
         }
@@ -254,7 +257,10 @@ a `create()` method for you to implement. This method should return an instance 
     ```groovy
     class ClassLoggingProcessor implements ArtifactArchiveProcessor {
         @Override
-        ArtifactArchive process(@NotNull ArtifactArchive archive) {
+        ArtifactArchive process(
+            @NotNull ProcessorEnvironment environment,
+            @NotNull ArtifactArchive archive,
+        ) {
             println "Merged archive contains: ${archive.classes.archive.size()} classes."
             return archive
         }

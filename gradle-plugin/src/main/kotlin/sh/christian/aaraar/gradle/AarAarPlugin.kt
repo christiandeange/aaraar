@@ -16,6 +16,7 @@ import org.gradle.api.publish.tasks.GenerateModuleMetadata
 import org.gradle.api.tasks.bundling.Jar
 import org.gradle.kotlin.dsl.add
 import org.gradle.kotlin.dsl.create
+import org.gradle.kotlin.dsl.get
 import org.gradle.kotlin.dsl.getByType
 import org.gradle.kotlin.dsl.named
 import org.gradle.kotlin.dsl.register
@@ -62,7 +63,8 @@ class AarAarPlugin : Plugin<Project> {
       isCanBeResolved = false
     }
 
-    val classpath = configurations.create("embedClasspath") {
+    val compileClasspath = configurations["compileClasspath"]
+    val embedClasspath = configurations.create("embedClasspath") {
       extendsFrom(embed)
       extendsFrom(embedTree)
 
@@ -81,7 +83,8 @@ class AarAarPlugin : Plugin<Project> {
     val jarTask = tasks.named<Jar>("jar")
 
     val packageJar = tasks.register<PackageJarTask>("packageJar") {
-      embedArtifacts.set(classpath.incoming.artifacts)
+      compileArtifacts.set(compileClasspath.incoming.artifacts)
+      embedArtifacts.set(embedClasspath.incoming.artifacts)
 
       shadeEnvironment.set(parseShadeEnvironment(aaraar, variant = null))
       packagingEnvironment.set(PackagingEnvironment.None)
@@ -169,6 +172,7 @@ class AarAarPlugin : Plugin<Project> {
   ) {
     val aaraar = extensions.getByType<AarAarExtension>()
 
+    val variantCompileClasspath = configurations["${variant.variantName}CompileClasspath"]
     val variantEmbedClasspath = configurations.create(variant.name(suffix = "EmbedClasspath")) {
       extendsFrom(configurations.getAt("embed"))
       extendsFrom(configurations.getAt("embedTree"))
@@ -196,6 +200,7 @@ class AarAarPlugin : Plugin<Project> {
     val androidAaptIgnoreEnv = providers.environmentVariable("ANDROID_AAPT_IGNORE").orElse("")
 
     val packageVariantAar = tasks.register<PackageAarTask>(variant.name("package", "Aar")) {
+      compileArtifacts.set(variantCompileClasspath.incoming.artifacts)
       embedArtifacts.set(variantEmbedClasspath.incoming.artifacts)
 
       shadeEnvironment.set(parseShadeEnvironment(aaraar, variant))

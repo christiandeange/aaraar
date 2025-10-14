@@ -8,7 +8,10 @@ import java.io.Serializable
  * add, remove, modify, validate, or inspect the contents of the archive.
  */
 fun interface ArtifactArchiveProcessor {
-  fun process(archive: ArtifactArchive): ArtifactArchive
+  fun process(
+    environment: ProcessorEnvironment,
+    archive: ArtifactArchive,
+  ): ArtifactArchive
 
   /** Factory for creating a new [ArtifactArchiveProcessor]. */
   interface Factory : Serializable {
