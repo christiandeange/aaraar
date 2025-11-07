@@ -28,6 +28,7 @@ class AarArchiveShader(
       lintRules = source.lintRules,
       navigationJson = source.navigationJson,
       apiJar = source.apiJar,
+      prefab = source.prefab,
     )
   }
 }

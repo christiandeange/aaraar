@@ -16,6 +16,7 @@ import sh.christian.aaraar.merger.impl.JniMerger
 import sh.christian.aaraar.merger.impl.LintRulesMerger
 import sh.christian.aaraar.merger.impl.NavigationJsonMerger
 import sh.christian.aaraar.merger.impl.NoJarArchiveMerger
+import sh.christian.aaraar.merger.impl.PrefabMerger
 import sh.christian.aaraar.merger.impl.ProguardMerger
 import sh.christian.aaraar.merger.impl.PublicTxtMerger
 import sh.christian.aaraar.merger.impl.RTxtMerger
@@ -111,6 +112,7 @@ class Packager(
     val resourcesJarMerger = GenericJarArchiveMerger(resourceMergeRules)
     val resourcesFileSetMerger = FileSetMerger(resourcesJarMerger, resourceMergeRules)
     val jniLibsFileSetMerger = FileSetMerger(NoJarArchiveMerger, jniLibsMergeRules)
+    val prefabFileSetMerger = FileSetMerger(NoJarArchiveMerger, MergeRules.None)
 
     val artifactArchiveMerger = ArtifactArchiveMerger(
       jarArchiveMerger = JarArchiveMerger(
@@ -128,6 +130,7 @@ class Packager(
         lintRulesMerger = LintRulesMerger(resourcesJarMerger),
         navigationJsonMerger = NavigationJsonMerger(),
         apiJarMerger = ApiJarMerger(resourcesJarMerger),
+        prefabMerger = PrefabMerger(prefabFileSetMerger),
       ),
     )
 

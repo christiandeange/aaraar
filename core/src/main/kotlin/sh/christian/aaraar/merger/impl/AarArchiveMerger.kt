@@ -15,6 +15,7 @@ import sh.christian.aaraar.model.Jni
 import sh.christian.aaraar.model.Libs
 import sh.christian.aaraar.model.LintRules
 import sh.christian.aaraar.model.NavigationJson
+import sh.christian.aaraar.model.Prefab
 import sh.christian.aaraar.model.Proguard
 import sh.christian.aaraar.model.PublicTxt
 import sh.christian.aaraar.model.RTxt
@@ -39,6 +40,7 @@ class AarArchiveMerger(
   private val lintRulesMerger: Merger<LintRules>,
   private val navigationJsonMerger: Merger<NavigationJson>,
   private val apiJarMerger: Merger<ApiJar>,
+  private val prefabMerger: Merger<Prefab>,
 ) : ArchiveMerger<AarArchive> {
   override fun merge(first: AarArchive, others: List<ArtifactArchive>): AarArchive {
     val aars = others.filterIsInstance<AarArchive>()
@@ -105,6 +107,10 @@ class AarArchiveMerger(
       first.apiJar,
       aars.map { it.apiJar },
     )
+    val mergedPrefab = prefabMerger.merge(
+      first.prefab,
+      aars.map { it.prefab },
+    )
 
     return AarArchive(
       aarMetadata = first.aarMetadata,
@@ -120,6 +126,7 @@ class AarArchiveMerger(
       lintRules = mergedLintRules,
       navigationJson = mergedNavigationJson,
       apiJar = mergedApiJar,
+      prefab = mergedPrefab,
     )
   }
 }

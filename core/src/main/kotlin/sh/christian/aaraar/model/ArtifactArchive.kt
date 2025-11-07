@@ -13,6 +13,7 @@ import sh.christian.aaraar.utils.lintJar
 import sh.christian.aaraar.utils.mkdirs
 import sh.christian.aaraar.utils.navigationJson
 import sh.christian.aaraar.utils.openArchive
+import sh.christian.aaraar.utils.prefab
 import sh.christian.aaraar.utils.proguardTxt
 import sh.christian.aaraar.utils.publicTxt
 import sh.christian.aaraar.utils.rTxt
@@ -76,6 +77,7 @@ data class AarArchive(
   val lintRules: LintRules,
   val navigationJson: NavigationJson,
   val apiJar: ApiJar,
+  val prefab: Prefab,
 ) : ArtifactArchive() {
   override fun writeTo(path: Path) {
     path.createArchive { outputAar ->
@@ -92,6 +94,7 @@ data class AarArchive(
       lintRules.writeTo(outputAar.lintJar)
       navigationJson.writeTo(outputAar.navigationJson)
       apiJar.writeTo(outputAar.apiJar)
+      prefab.writeTo(outputAar.prefab)
     }
   }
 
@@ -118,6 +121,7 @@ data class AarArchive(
       val lintRules = LintRules.from(aarRoot.lintJar)
       val navigationJson = NavigationJson.from(aarRoot.navigationJson)
       val apiJar = ApiJar.from(aarRoot.apiJar, environment.keepClassesMetaFiles)
+      val prefab = Prefab.from(aarRoot.prefab)
 
       AarArchive(
         aarMetadata = aarMetadata,
@@ -133,6 +137,7 @@ data class AarArchive(
         lintRules = lintRules,
         navigationJson = navigationJson,
         apiJar = apiJar,
+        prefab = prefab,
       )
     }
   }
