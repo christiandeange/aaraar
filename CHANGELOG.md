@@ -1,6 +1,13 @@
 Change Log
 ==========
 
+## Version 0.1.3
+
+_2025-11-18_
+
+* New: Expose more useful public constructors and factory methods for core data models.
+* New: Implement `equals()` and `hashCode()` for core data models.
+
 ## Version 0.1.2
 
 _2025-08-21_
