@@ -226,11 +226,10 @@ internal constructor(
       val current = kotlinMetadata.write()
       val default = Metadata()
 
-      @Suppress("KotlinConstantConditions")
       annotations = annotations - existingMetadataAnnotations + annotationInstance(classpath[annotationName]) {
-        if (default.kind != current.kind) {
-          addValue("k", IntegerValue(current.kind))
-        }
+        // Kind parameter must always be specified.
+        addValue("k", IntegerValue(current.kind))
+
         if (!default.metadataVersion.contentEquals(current.metadataVersion)) {
           addValue("mv", ArrayValue(current.metadataVersion.map(::IntegerValue)))
         }
