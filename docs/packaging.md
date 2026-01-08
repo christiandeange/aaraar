@@ -1,3 +1,20 @@
+The aaraar Gradle plugin can be applied to any module that is published as an `aar` or a `jar` file. For Android
+modules, the following entries in an `aar` file are recognized for merging:
+
+- Class files
+- Android manifests
+- Android resources
+- Android assets
+- Local `jar` libraries
+- Native JNI libraries
+- Proguard consumer rules
+- Lint consumer checks
+- Navigation graphs
+- `api.jar` files
+- `aar` metadata
+
+### Gradle Configuration
+
 The Gradle plugin exposes two configurations for you to include dependencies in a module's packaged output:
 
 | Configuration | Description                                                                             |
