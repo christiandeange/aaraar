@@ -20,6 +20,7 @@ class AndroidManifestMerger : Merger<AndroidManifest> {
     )
       .withFeatures(ManifestMerger2.Invoker.Feature.NO_PLACEHOLDER_REPLACEMENT)
       .withFeatures(ManifestMerger2.Invoker.Feature.REMOVE_TOOLS_DECLARATIONS)
+      .withFeatures(ManifestMerger2.Invoker.Feature.USES_SDK_IN_MANIFEST_LENIENT_HANDLING)
       .apply {
         others.forEach { other ->
           addLibraryManifest(other.asTempFile())
@@ -35,6 +36,15 @@ class AndroidManifestMerger : Merger<AndroidManifest> {
       """.trimIndent()
     }
 
-    return AndroidManifest(mergeReport.getMergedDocument(MergingReport.MergedManifestKind.MERGED))
+    val document = mergeReport.getMergedDocument(MergingReport.MergedManifestKind.MERGED)
+    check(document != null) {
+      """
+        Failed to merge manifest. Expected merged document to be a string but it's null.
+
+        ${mergeReport.loggingRecords.joinToString("\n")}
+      """.trimIndent()
+    }
+
+    return AndroidManifest(document)
   }
 }
