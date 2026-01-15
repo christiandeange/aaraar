@@ -1,6 +1,7 @@
 package sh.christian.aaraar.packaging
 
 import sh.christian.aaraar.Environment
+import sh.christian.aaraar.gradle.ArtifactArchiveProcessor
 import sh.christian.aaraar.merger.Glob
 import sh.christian.aaraar.merger.MergeRules
 import sh.christian.aaraar.merger.impl.AarArchiveMerger
@@ -134,7 +135,21 @@ class Packager(
     return artifactArchiveMerger.merge(inputArchive, dependencyArchives)
   }
 
-  private fun applyShading(
+  fun postProcessing(
+    archive: ArtifactArchive,
+    postProcessorFactories: List<ArtifactArchiveProcessor.Factory>,
+  ): ArtifactArchive {
+    val postProcessors = postProcessorFactories.map { it.create() }
+
+    var processedArchive = archive
+    for (processor in postProcessors) {
+      processedArchive = processor.process(processedArchive)
+    }
+
+    return processedArchive
+  }
+
+  fun applyShading(
     path: Path,
     archive: ArtifactArchive,
     identifier: ShadeConfigurationScope?,

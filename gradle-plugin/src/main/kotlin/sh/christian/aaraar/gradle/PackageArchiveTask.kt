@@ -99,21 +99,11 @@ abstract class PackageArchiveTask : DefaultTask() {
         .map { (archivePath, identifier) -> packager.prepareDependencyArchive(archivePath, identifier) }
 
     val mergedArchive = packager.mergeArchives(input, dependencyArchives)
-    val finalizedArchive = postProcessing(mergedArchive)
+    val finalizedArchive = packager.postProcessing(mergedArchive, postProcessorFactories.get())
 
     val outputPath = outputArchive.getPath().apply { Files.deleteIfExists(this) }
     logger.info("Merged into: $outputPath")
     finalizedArchive.writeTo(path = outputPath)
-  }
-
-  private fun postProcessing(archive: ArtifactArchive): ArtifactArchive {
-    val postProcessors = postProcessorFactories.get().map { it.create() }
-
-    var processedArchive = archive
-    for (processor in postProcessors) {
-      processedArchive = processor.process(processedArchive)
-    }
-    return processedArchive
   }
 
   private fun RegularFileProperty.getPath(): Path {
