@@ -1,7 +1,6 @@
 package sh.christian.aaraar.packaging
 
 import sh.christian.aaraar.Environment
-import sh.christian.aaraar.gradle.ArtifactArchiveProcessor
 import sh.christian.aaraar.merger.Glob
 import sh.christian.aaraar.merger.MergeRules
 import sh.christian.aaraar.merger.impl.AarArchiveMerger

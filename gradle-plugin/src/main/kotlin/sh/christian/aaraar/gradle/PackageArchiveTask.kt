@@ -23,6 +23,7 @@ import org.gradle.api.tasks.TaskAction
 import org.gradle.internal.component.local.model.OpaqueComponentArtifactIdentifier
 import sh.christian.aaraar.Environment
 import sh.christian.aaraar.model.ArtifactArchive
+import sh.christian.aaraar.packaging.ArtifactArchiveProcessor
 import sh.christian.aaraar.packaging.Packager
 import sh.christian.aaraar.packaging.PackagingEnvironment
 import sh.christian.aaraar.packaging.ShadeConfigurationScope

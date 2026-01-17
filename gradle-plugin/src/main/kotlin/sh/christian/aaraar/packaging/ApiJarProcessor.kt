@@ -1,4 +1,4 @@
-package sh.christian.aaraar.gradle
+package sh.christian.aaraar.packaging
 
 import sh.christian.aaraar.model.AarArchive
 import sh.christian.aaraar.model.ApiJar

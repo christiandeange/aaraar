@@ -8,8 +8,10 @@ import org.gradle.api.provider.Property
 import org.gradle.kotlin.dsl.invoke
 import org.gradle.kotlin.dsl.listProperty
 import org.gradle.kotlin.dsl.property
+import sh.christian.aaraar.packaging.ArtifactArchiveProcessor
 import sh.christian.aaraar.packaging.DefaultPackager
 import sh.christian.aaraar.packaging.Packager
+import sh.christian.aaraar.packaging.artifactArchiveProcessorFromClassName
 import javax.inject.Inject
 
 /**

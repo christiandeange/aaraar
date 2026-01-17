@@ -1,4 +1,4 @@
-package sh.christian.aaraar.gradle
+package sh.christian.aaraar.packaging
 
 import sh.christian.aaraar.model.ArtifactArchive
 import java.io.Serializable

@@ -1,4 +1,4 @@
-package sh.christian.aaraar.gradle
+package sh.christian.aaraar.packaging
 
 fun artifactArchiveProcessorFromClassName(processorFactoryClass: String): ArtifactArchiveProcessor.Factory {
   return ClassNameArtifactArchiveProcessorFactory(processorFactoryClass)

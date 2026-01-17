@@ -1,7 +1,6 @@
 package sh.christian.aaraar.packaging
 
 import sh.christian.aaraar.Environment
-import sh.christian.aaraar.gradle.ArtifactArchiveProcessor
 import sh.christian.aaraar.model.ArtifactArchive
 import java.io.Serializable
 import java.nio.file.Path
