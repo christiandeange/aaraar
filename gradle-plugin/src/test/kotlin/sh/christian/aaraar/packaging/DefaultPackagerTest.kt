@@ -12,14 +12,14 @@ import sh.christian.aaraar.utils.fooJarPath
 import sh.christian.aaraar.utils.shouldContainExactly
 import kotlin.test.Test
 
-class PackagerTest {
+class DefaultPackagerTest {
 
   private val defaultEnvironment = Environment(androidAaptIgnore = "", keepClassesMetaFiles = true)
   private val defaultPackagingEnvironment = PackagingEnvironment.None
   private val defaultShadeEnvironment = ShadeEnvironment.None
   private val defaultLogger = PackagerLogger { println(it) }
 
-  private val defaultPackager: Packager = createPackager()
+  private val defaultPackager: DefaultPackager = createPackager()
 
   private val fooScope: ShadeConfigurationScope = ProjectScope(":foo")
   private val animalScope: ShadeConfigurationScope = ProjectScope(":animal")
@@ -214,8 +214,8 @@ class PackagerTest {
     packagingEnvironment: PackagingEnvironment = defaultPackagingEnvironment,
     shadeEnvironment: ShadeEnvironment = defaultShadeEnvironment,
     logger: PackagerLogger = defaultLogger,
-  ): Packager {
-    return Packager(
+  ): DefaultPackager {
+    return DefaultPackager(
       environment = environment,
       packagingEnvironment = packagingEnvironment,
       shadeEnvironment = shadeEnvironment,
