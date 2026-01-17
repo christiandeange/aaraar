@@ -23,7 +23,7 @@ import org.gradle.api.tasks.TaskAction
 import org.gradle.internal.component.local.model.OpaqueComponentArtifactIdentifier
 import sh.christian.aaraar.Environment
 import sh.christian.aaraar.model.ArtifactArchive
-import sh.christian.aaraar.packaging.DefaultPackager
+import sh.christian.aaraar.packaging.Packager
 import sh.christian.aaraar.packaging.PackagingEnvironment
 import sh.christian.aaraar.packaging.ShadeConfigurationScope
 import sh.christian.aaraar.packaging.ShadeConfigurationScope.DependencyScope
@@ -53,6 +53,9 @@ abstract class PackageArchiveTask : DefaultTask() {
   abstract val keepMetaFiles: Property<Boolean>
 
   @get:Input
+  abstract val packagerFactory: Property<Packager.Factory>
+
+  @get:Input
   abstract val postProcessorFactories: ListProperty<ArtifactArchiveProcessor.Factory>
 
   @get:OutputFile
@@ -79,7 +82,7 @@ abstract class PackageArchiveTask : DefaultTask() {
       .associate { it.file.toPath() to it.id.componentIdentifier.toShadeConfigurationScope() }
       .mapValuesNotNull { it.value }
 
-    val packager = DefaultPackager(
+    val packager = packagerFactory.get().create(
       environment = environment,
       packagingEnvironment = packagingEnvironment.get(),
       shadeEnvironment = shadeEnvironment,

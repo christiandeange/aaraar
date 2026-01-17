@@ -202,6 +202,7 @@ class AarAarPlugin : Plugin<Project> {
       packagingEnvironment.set(parsePackagingEnvironment(variant))
       keepMetaFiles.set(aaraar.keepMetaFiles)
       androidAaptIgnore.set(androidAaptIgnoreEnv)
+      packagerFactory.set(aaraar.packagerFactory)
       postProcessorFactories.set(aaraar.postProcessorFactories)
     }
 

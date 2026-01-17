@@ -212,4 +212,20 @@ class DefaultPackager(
       return path in files
     }
   }
+
+  class Factory : Packager.Factory {
+    override fun create(
+      environment: Environment,
+      packagingEnvironment: PackagingEnvironment,
+      shadeEnvironment: ShadeEnvironment,
+      logger: PackagerLogger,
+    ): Packager {
+      return DefaultPackager(
+        environment = environment,
+        packagingEnvironment = packagingEnvironment,
+        shadeEnvironment = shadeEnvironment,
+        logger = logger,
+      )
+    }
+  }
 }

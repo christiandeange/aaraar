@@ -8,6 +8,8 @@ import org.gradle.api.provider.Property
 import org.gradle.kotlin.dsl.invoke
 import org.gradle.kotlin.dsl.listProperty
 import org.gradle.kotlin.dsl.property
+import sh.christian.aaraar.packaging.DefaultPackager
+import sh.christian.aaraar.packaging.Packager
 import javax.inject.Inject
 
 /**
@@ -32,6 +34,14 @@ abstract class AarAarExtension
   /** @see isEnabledForVariant */
   val variantFilter: Property<(VariantDescriptor) -> Boolean> =
     objects.property<(VariantDescriptor) -> Boolean>().convention { true }
+
+  /**
+   * Sets the factory to create the [Packager] responsible for merging and processing archives.
+   *
+   * Defaults to [DefaultPackager.Factory].
+   */
+  val packagerFactory: Property<Packager.Factory> =
+    objects.property<Packager.Factory>().convention(DefaultPackager.Factory())
 
   /** @see addPostProcessorFactory */
   val postProcessorFactories: ListProperty<ArtifactArchiveProcessor.Factory> =
