@@ -17,7 +17,7 @@ class DefaultPackagerTest {
   private val defaultEnvironment = Environment(androidAaptIgnore = "", keepClassesMetaFiles = true)
   private val defaultPackagingEnvironment = PackagingEnvironment.None
   private val defaultShadeEnvironment = ShadeEnvironment.None
-  private val defaultLogger = PackagerLogger { println(it) }
+  private val defaultLogger = SimplePackagerLogger()
 
   private val defaultPackager: DefaultPackager = createPackager()
 

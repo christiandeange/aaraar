@@ -86,7 +86,7 @@ abstract class PackageArchiveTask : DefaultTask() {
       environment = environment,
       packagingEnvironment = packagingEnvironment.get(),
       shadeEnvironment = shadeEnvironment,
-      logger = { msg -> logger.info(msg) },
+      logger = GradlePackagerLogger(logger),
     )
 
     val inputPath = inputArchive.getPath()
