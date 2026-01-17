@@ -371,3 +371,35 @@ Further documentation for the kind of transformations available can be found by 
           options.compilerArgs += "-parameters"
         }
         ```
+
+### Packager configuration
+
+The plugin uses a "packager" to handle merging of archive files. The packager is responsible for facilitating a few
+different tasks during the lifecycle of packaging the final artifact:
+
+- Processing the set of input archives.
+- Applying shading rules to the input archives.
+- Merge the input archives into a single output archive.
+- Applying any post-processing steps to the merged archive.
+
+[`DefaultPackager`](https://aaraar.christian.sh/kdoc/aaraar/sh.christian.aaraar.packaging/-default-packager/index.html)
+is the default implementation, which provides standard behaviour to shading, merging, and applying post-processor
+factories to the merged archive. However, you can also provide your own custom packager implementation by creating a
+[`Packager`](https://aaraar.christian.sh/kdoc/aaraar/sh.christian.aaraar.packaging/-packager/index.html) implementation
+and registering a factory for it via the plugin extension:
+
+=== "Kotlin"
+
+    ```kotlin
+    aaraar {
+      packagerFactory.set(MyPackagerFactory())
+    }
+    ```
+
+=== "Groovy"
+
+    ```groovy
+    aaraar {
+      packagerFactory.set(new MyPackagerFactory())
+    }
+    ```
