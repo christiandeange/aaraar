@@ -1,6 +1,6 @@
 [versions]
-agp-latest = "8.5.0"
-agp-tools = "31.5.0"
+agp-latest = "8.13.0"
+agp-tools = "31.13.2"
 detekt = "1.23.6"
 dokka = "1.9.20"
 kotlin = "1.9.24"
