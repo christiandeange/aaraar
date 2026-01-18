@@ -1,6 +1,17 @@
 Change Log
 ==========
 
+## Version 0.1.4
+
+_2026-01-17_
+
+* New: Expose property to allow custom `Packager` implementations for more customizability during packaging.
+* Update: Move post-processor factory classes to `sh.christian.aaraar.packaging` package:
+    * `class sh.christian.aaraar.packaging.ApiJarProcessor`
+    * `class sh.christian.aaraar.packaging.ArtifactArchiveProcessor`
+    * `fun sh.christian.aaraar.packaging.artifactArchiveProcessorFromClassName`
+* Fix: Properly generate `kotlin.Metadata` annotations for `api.jar` files.
+
 ## Version 0.1.3
 
 _2025-11-18_
