@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html class="no-js">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
+    <title>MutableClasspath</title>
+    <link href="../../../images/logo-icon.svg" rel="icon" type="image/svg">
+    <script>var pathToRoot = "../../../";</script>
+    <script>document.documentElement.classList.replace("no-js","js");</script>
+    <script>const storage = localStorage.getItem("dokka-dark-mode")
+    if (storage == null) {
+        const osDarkSchemePreferred = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
+        if (osDarkSchemePreferred === true) {
+            document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+    } else {
+        const savedDarkMode = JSON.parse(storage)
+        if(savedDarkMode === true) {
+            document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+    }
+    </script>
+<script type="text/javascript" src="https://unpkg.com/kotlin-playground@1/dist/playground.min.js" async="async"></script>
+<script type="text/javascript" src="../../../scripts/sourceset_dependencies.js" async="async"></script>
+<link href="../../../styles/style.css" rel="Stylesheet">
+<link href="../../../styles/main.css" rel="Stylesheet">
+<link href="../../../styles/prism.css" rel="Stylesheet">
+<link href="../../../styles/logo-styles.css" rel="Stylesheet">
+<link href="../../../styles/font-jb-sans-auto.css" rel="Stylesheet">
+<script type="text/javascript" src="../../../scripts/clipboard.js" async="async"></script>
+<script type="text/javascript" src="../../../scripts/navigation-loader.js" async="async"></script>
+<script type="text/javascript" src="../../../scripts/platform-content-handler.js" async="async"></script>
+<script type="text/javascript" src="../../../scripts/main.js" defer="defer"></script>
+<script type="text/javascript" src="../../../scripts/prism.js" async="async"></script>
+<script type="text/javascript" src="../../../scripts/symbol-parameters-wrapper_deferred.js" defer="defer"></script>
+</head>
+<body>
+    <div class="root">
+<nav class="navigation" id="navigation-wrapper">
+    <div class="navigation--inner">
+        <div class="navigation-title">
+            <button class="menu-toggle" id="menu-toggle" type="button">toggle menu</button>
+            <div class="library-name">
+                    <a class="library-name--link" href="../../../index.html">
+                            aaraar
+                    </a>
+            </div>
+            <div class="library-version">
+            </div>
+        </div>
+        <div class="filter-section" id="filter-section">
+                <button class="platform-tag platform-selector jvm-like" data-active="" data-filter=":agp-compat:base:dokkaHtml/main">jvm</button>
+        </div>
+    </div>
+    <div class="navigation-controls">
+        <button class="navigation-controls--btn navigation-controls--theme" id="theme-toggle-button" type="button">switch theme</button>
+        <div class="navigation-controls--btn navigation-controls--search" id="searchBar" role="button">search in API</div>
+    </div>
+</nav>
+        <div id="container">
+            <div class="sidebar" id="leftColumn">
+                <div class="sidebar--inner" id="sideMenu"></div>
+            </div>
+            <div id="main">
+<div class="main-content" data-page-type="classlike" id="content" pageIds="aaraar::sh.christian.aaraar.model.classeditor/MutableClasspath///PointingToDeclaration//1208392923">
+  <div class="breadcrumbs"><a href="../../../index.html">aaraar</a><span class="delimiter">/</span><a href="../index.html">sh.christian.aaraar.model.classeditor</a><span class="delimiter">/</span><span class="current">MutableClasspath</span></div>
+  <div class="cover ">
+    <h1 class="cover"><span>Mutable</span><wbr></wbr><span><span>Classpath</span></span></h1>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":agp-compat:base:dokkaHtml/main"><div class="symbol monospace"><span class="token keyword">class </span><a href="index.html">MutableClasspath</a> : <a href="../-classpath/index.html">Classpath</a></div><p class="paragraph">Represents a set of classes that are available at runtime.</p><p class="paragraph">The full set of runtime classes is likely more than what is represented here, which is why calling <a href="get.html">get</a> for any unknown classes will return a virtual class definition that can still be referenced as usual. However, these virtual classes will be ignored when exporting the classpath via <a href="to-generic-jar-archive.html">toGenericJarArchive</a>, and won't include all the information (like supertypes, declared functions, etc) that the real class would.</p></div></div>
+  </div>
+  <div class="tabbedcontent">
+    <div class="tabs-section" tabs-section="tabs-section"><button class="section-tab" data-active="" data-togglable="CONSTRUCTOR,TYPE,PROPERTY,FUNCTION">Members</button><button class="section-tab" data-togglable="CONSTRUCTOR,TYPE,PROPERTY,FUNCTION,EXTENSION_PROPERTY,EXTENSION_FUNCTION">Members &amp; Extensions</button></div>
+    <div class="tabs-section-body">
+      <div data-togglable="TYPE">
+        <h2 class="">Types</h2>
+        <div class="table"><a data-name="-1738091443%2FClasslikes%2F1208392923" anchor-label="Companion" id="-1738091443%2FClasslikes%2F1208392923" data-filterable-set=":agp-compat:base:dokkaHtml/main"></a>
+          <div class="table-row" data-filterable-current=":agp-compat:base:dokkaHtml/main" data-filterable-set=":agp-compat:base:dokkaHtml/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-companion/index.html"><span><span>Companion</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1738091443%2FClasslikes%2F1208392923"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":agp-compat:base:dokkaHtml/main"><div class="symbol monospace"><span class="token keyword">object </span><a href="-companion/index.html">Companion</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div data-togglable="PROPERTY">
+        <h2 class="">Properties</h2>
+        <div class="table"><a data-name="872623666%2FProperties%2F1208392923" anchor-label="booleanType" id="872623666%2FProperties%2F1208392923" data-filterable-set=":agp-compat:base:dokkaHtml/main"></a>
+          <div class="table-row" data-togglable="EXTENSION_PROPERTY" data-filterable-current=":agp-compat:base:dokkaHtml/main" data-filterable-set=":agp-compat:base:dokkaHtml/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../../sh.christian.aaraar.model.classeditor.types/boolean-type.html"><span>boolean</span><wbr></wbr><span><span>Type</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="872623666%2FProperties%2F1208392923"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":agp-compat:base:dokkaHtml/main"><div class="symbol monospace"><span class="token keyword">val </span><a href="../-classpath/index.html">Classpath</a><span class="token punctuation">.</span><a href="../../sh.christian.aaraar.model.classeditor.types/boolean-type.html">booleanType</a><span class="token operator">: </span><a href="../-class-reference/index.html">ClassReference</a></div><div class="symbol monospace"><span class="token keyword">val </span><a href="index.html">MutableClasspath</a><span class="token punctuation">.</span><a href="../../sh.christian.aaraar.model.classeditor.types/boolean-type.html">booleanType</a><span class="token operator">: </span><a href="../-mutable-class-reference/index.html">MutableClassReference</a></div><div class="brief "><p class="paragraph">The primitive <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a> type.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="312142084%2FProperties%2F1208392923" anchor-label="byteType" id="312142084%2FProperties%2F1208392923" data-filterable-set=":agp-compat:base:dokkaHtml/main"></a>
+          <div class="table-row" data-togglable="EXTENSION_PROPERTY" data-filterable-current=":agp-compat:base:dokkaHtml/main" data-filterable-set=":agp-compat:base:dokkaHtml/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../../sh.christian.aaraar.model.classeditor.types/byte-type.html"><span>byte</span><wbr></wbr><span><span>Type</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="312142084%2FProperties%2F1208392923"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":agp-compat:base:dokkaHtml/main"><div class="symbol monospace"><span class="token keyword">val </span><a href="../-classpath/index.html">Classpath</a><span class="token punctuation">.</span><a href="../../sh.christian.aaraar.model.classeditor.types/byte-type.html">byteType</a><span class="token operator">: </span><a href="../-class-reference/index.html">ClassReference</a></div><div class="symbol monospace"><span class="token keyword">val </span><a href="index.html">MutableClasspath</a><span class="token punctuation">.</span><a href="../../sh.christian.aaraar.model.classeditor.types/byte-type.html">byteType</a><span class="token operator">: </span><a href="../-mutable-class-reference/index.html">MutableClassReference</a></div><div class="brief "><p class="paragraph">The primitive <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-byte/index.html">Byte</a> type.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1809751356%2FProperties%2F1208392923" anchor-label="charType" id="-1809751356%2FProperties%2F1208392923" data-filterable-set=":agp-compat:base:dokkaHtml/main"></a>
+          <div class="table-row" data-togglable="EXTENSION_PROPERTY" data-filterable-current=":agp-compat:base:dokkaHtml/main" data-filterable-set=":agp-compat:base:dokkaHtml/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../../sh.christian.aaraar.model.classeditor.types/char-type.html"><span>char</span><wbr></wbr><span><span>Type</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1809751356%2FProperties%2F1208392923"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":agp-compat:base:dokkaHtml/main"><div class="symbol monospace"><span class="token keyword">val </span><a href="../-classpath/index.html">Classpath</a><span class="token punctuation">.</span><a href="../../sh.christian.aaraar.model.classeditor.types/char-type.html">charType</a><span class="token operator">: </span><a href="../-class-reference/index.html">ClassReference</a></div><div class="symbol monospace"><span class="token keyword">val </span><a href="index.html">MutableClasspath</a><span class="token punctuation">.</span><a href="../../sh.christian.aaraar.model.classeditor.types/char-type.html">charType</a><span class="token operator">: </span><a href="../-mutable-class-reference/index.html">MutableClassReference</a></div><div class="brief "><p class="paragraph">The primitive <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-char/index.html">Char</a> type.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="252403680%2FProperties%2F1208392923" anchor-label="classes" id="252403680%2FProperties%2F1208392923" data-filterable-set=":agp-compat:base:dokkaHtml/main"></a>
+          <div class="table-row" data-filterable-current=":agp-compat:base:dokkaHtml/main" data-filterable-set=":agp-compat:base:dokkaHtml/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="classes.html"><span><span>classes</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="252403680%2FProperties%2F1208392923"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":agp-compat:base:dokkaHtml/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">val </span><a href="classes.html">classes</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin.collections/-set/index.html">Set</a><span class="token operator">&lt;</span><a href="../-mutable-class-reference/index.html">MutableClassReference</a><span class="token operator">&gt;</span></div><div class="brief "><p class="paragraph">The set of all input classes that will be packaged in this JAR.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1033852206%2FProperties%2F1208392923" anchor-label="classType" id="-1033852206%2FProperties%2F1208392923" data-filterable-set=":agp-compat:base:dokkaHtml/main"></a>
+          <div class="table-row" data-togglable="EXTENSION_PROPERTY" data-filterable-current=":agp-compat:base:dokkaHtml/main" data-filterable-set=":agp-compat:base:dokkaHtml/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../../sh.christian.aaraar.model.classeditor.types/class-type.html"><span>class</span><wbr></wbr><span><span>Type</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1033852206%2FProperties%2F1208392923"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":agp-compat:base:dokkaHtml/main"><div class="symbol monospace"><span class="token keyword">val </span><a href="../-classpath/index.html">Classpath</a><span class="token punctuation">.</span><a href="../../sh.christian.aaraar.model.classeditor.types/class-type.html">classType</a><span class="token operator">: </span><a href="../-class-reference/index.html">ClassReference</a></div><div class="symbol monospace"><span class="token keyword">val </span><a href="index.html">MutableClasspath</a><span class="token punctuation">.</span><a href="../../sh.christian.aaraar.model.classeditor.types/class-type.html">classType</a><span class="token operator">: </span><a href="../-mutable-class-reference/index.html">MutableClassReference</a></div><div class="brief "><p class="paragraph">The platform <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Class.html">Class</a> type.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1581902884%2FProperties%2F1208392923" anchor-label="doubleType" id="1581902884%2FProperties%2F1208392923" data-filterable-set=":agp-compat:base:dokkaHtml/main"></a>
+          <div class="table-row" data-togglable="EXTENSION_PROPERTY" data-filterable-current=":agp-compat:base:dokkaHtml/main" data-filterable-set=":agp-compat:base:dokkaHtml/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../../sh.christian.aaraar.model.classeditor.types/double-type.html"><span>double</span><wbr></wbr><span><span>Type</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1581902884%2FProperties%2F1208392923"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":agp-compat:base:dokkaHtml/main"><div class="symbol monospace"><span class="token keyword">val </span><a href="../-classpath/index.html">Classpath</a><span class="token punctuation">.</span><a href="../../sh.christian.aaraar.model.classeditor.types/double-type.html">doubleType</a><span class="token operator">: </span><a href="../-class-reference/index.html">ClassReference</a></div><div class="symbol monospace"><span class="token keyword">val </span><a href="index.html">MutableClasspath</a><span class="token punctuation">.</span><a href="../../sh.christian.aaraar.model.classeditor.types/double-type.html">doubleType</a><span class="token operator">: </span><a href="../-mutable-class-reference/index.html">MutableClassReference</a></div><div class="brief "><p class="paragraph">The primitive <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-double/index.html">Double</a> type.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1811944458%2FProperties%2F1208392923" anchor-label="floatType" id="1811944458%2FProperties%2F1208392923" data-filterable-set=":agp-compat:base:dokkaHtml/main"></a>
+          <div class="table-row" data-togglable="EXTENSION_PROPERTY" data-filterable-current=":agp-compat:base:dokkaHtml/main" data-filterable-set=":agp-compat:base:dokkaHtml/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../../sh.christian.aaraar.model.classeditor.types/float-type.html"><span>float</span><wbr></wbr><span><span>Type</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1811944458%2FProperties%2F1208392923"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":agp-compat:base:dokkaHtml/main"><div class="symbol monospace"><span class="token keyword">val </span><a href="../-classpath/index.html">Classpath</a><span class="token punctuation">.</span><a href="../../sh.christian.aaraar.model.classeditor.types/float-type.html">floatType</a><span class="token operator">: </span><a href="../-class-reference/index.html">ClassReference</a></div><div class="symbol monospace"><span class="token keyword">val </span><a href="index.html">MutableClasspath</a><span class="token punctuation">.</span><a href="../../sh.christian.aaraar.model.classeditor.types/float-type.html">floatType</a><span class="token operator">: </span><a href="../-mutable-class-reference/index.html">MutableClassReference</a></div><div class="brief "><p class="paragraph">The primitive <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-float/index.html">Float</a> type.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1926674268%2FProperties%2F1208392923" anchor-label="intType" id="-1926674268%2FProperties%2F1208392923" data-filterable-set=":agp-compat:base:dokkaHtml/main"></a>
+          <div class="table-row" data-togglable="EXTENSION_PROPERTY" data-filterable-current=":agp-compat:base:dokkaHtml/main" data-filterable-set=":agp-compat:base:dokkaHtml/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../../sh.christian.aaraar.model.classeditor.types/int-type.html"><span>int</span><wbr></wbr><span><span>Type</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1926674268%2FProperties%2F1208392923"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":agp-compat:base:dokkaHtml/main"><div class="symbol monospace"><span class="token keyword">val </span><a href="../-classpath/index.html">Classpath</a><span class="token punctuation">.</span><a href="../../sh.christian.aaraar.model.classeditor.types/int-type.html">intType</a><span class="token operator">: </span><a href="../-class-reference/index.html">ClassReference</a></div><div class="symbol monospace"><span class="token keyword">val </span><a href="index.html">MutableClasspath</a><span class="token punctuation">.</span><a href="../../sh.christian.aaraar.model.classeditor.types/int-type.html">intType</a><span class="token operator">: </span><a href="../-mutable-class-reference/index.html">MutableClassReference</a></div><div class="brief "><p class="paragraph">The primitive <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-int/index.html">Int</a> type.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1181108348%2FProperties%2F1208392923" anchor-label="longType" id="-1181108348%2FProperties%2F1208392923" data-filterable-set=":agp-compat:base:dokkaHtml/main"></a>
+          <div class="table-row" data-togglable="EXTENSION_PROPERTY" data-filterable-current=":agp-compat:base:dokkaHtml/main" data-filterable-set=":agp-compat:base:dokkaHtml/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../../sh.christian.aaraar.model.classeditor.types/long-type.html"><span>long</span><wbr></wbr><span><span>Type</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1181108348%2FProperties%2F1208392923"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":agp-compat:base:dokkaHtml/main"><div class="symbol monospace"><span class="token keyword">val </span><a href="../-classpath/index.html">Classpath</a><span class="token punctuation">.</span><a href="../../sh.christian.aaraar.model.classeditor.types/long-type.html">longType</a><span class="token operator">: </span><a href="../-class-reference/index.html">ClassReference</a></div><div class="symbol monospace"><span class="token keyword">val </span><a href="index.html">MutableClasspath</a><span class="token punctuation">.</span><a href="../../sh.christian.aaraar.model.classeditor.types/long-type.html">longType</a><span class="token operator">: </span><a href="../-mutable-class-reference/index.html">MutableClassReference</a></div><div class="brief "><p class="paragraph">The primitive <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-long/index.html">Long</a> type.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1767229028%2FProperties%2F1208392923" anchor-label="objectType" id="1767229028%2FProperties%2F1208392923" data-filterable-set=":agp-compat:base:dokkaHtml/main"></a>
+          <div class="table-row" data-togglable="EXTENSION_PROPERTY" data-filterable-current=":agp-compat:base:dokkaHtml/main" data-filterable-set=":agp-compat:base:dokkaHtml/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../../sh.christian.aaraar.model.classeditor.types/object-type.html"><span>object</span><wbr></wbr><span><span>Type</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1767229028%2FProperties%2F1208392923"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":agp-compat:base:dokkaHtml/main"><div class="symbol monospace"><span class="token keyword">val </span><a href="../-classpath/index.html">Classpath</a><span class="token punctuation">.</span><a href="../../sh.christian.aaraar.model.classeditor.types/object-type.html">objectType</a><span class="token operator">: </span><a href="../-class-reference/index.html">ClassReference</a></div><div class="symbol monospace"><span class="token keyword">val </span><a href="index.html">MutableClasspath</a><span class="token punctuation">.</span><a href="../../sh.christian.aaraar.model.classeditor.types/object-type.html">objectType</a><span class="token operator">: </span><a href="../-mutable-class-reference/index.html">MutableClassReference</a></div><div class="brief "><p class="paragraph">The platform <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html">Object</a> type.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-839882806%2FProperties%2F1208392923" anchor-label="shortType" id="-839882806%2FProperties%2F1208392923" data-filterable-set=":agp-compat:base:dokkaHtml/main"></a>
+          <div class="table-row" data-togglable="EXTENSION_PROPERTY" data-filterable-current=":agp-compat:base:dokkaHtml/main" data-filterable-set=":agp-compat:base:dokkaHtml/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../../sh.christian.aaraar.model.classeditor.types/short-type.html"><span>short</span><wbr></wbr><span><span>Type</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-839882806%2FProperties%2F1208392923"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":agp-compat:base:dokkaHtml/main"><div class="symbol monospace"><span class="token keyword">val </span><a href="../-classpath/index.html">Classpath</a><span class="token punctuation">.</span><a href="../../sh.christian.aaraar.model.classeditor.types/short-type.html">shortType</a><span class="token operator">: </span><a href="../-class-reference/index.html">ClassReference</a></div><div class="symbol monospace"><span class="token keyword">val </span><a href="index.html">MutableClasspath</a><span class="token punctuation">.</span><a href="../../sh.christian.aaraar.model.classeditor.types/short-type.html">shortType</a><span class="token operator">: </span><a href="../-mutable-class-reference/index.html">MutableClassReference</a></div><div class="brief "><p class="paragraph">The primitive <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-short/index.html">Short</a> type.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-223583196%2FProperties%2F1208392923" anchor-label="stringType" id="-223583196%2FProperties%2F1208392923" data-filterable-set=":agp-compat:base:dokkaHtml/main"></a>
+          <div class="table-row" data-togglable="EXTENSION_PROPERTY" data-filterable-current=":agp-compat:base:dokkaHtml/main" data-filterable-set=":agp-compat:base:dokkaHtml/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../../sh.christian.aaraar.model.classeditor.types/string-type.html"><span>string</span><wbr></wbr><span><span>Type</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-223583196%2FProperties%2F1208392923"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":agp-compat:base:dokkaHtml/main"><div class="symbol monospace"><span class="token keyword">val </span><a href="../-classpath/index.html">Classpath</a><span class="token punctuation">.</span><a href="../../sh.christian.aaraar.model.classeditor.types/string-type.html">stringType</a><span class="token operator">: </span><a href="../-class-reference/index.html">ClassReference</a></div><div class="symbol monospace"><span class="token keyword">val </span><a href="index.html">MutableClasspath</a><span class="token punctuation">.</span><a href="../../sh.christian.aaraar.model.classeditor.types/string-type.html">stringType</a><span class="token operator">: </span><a href="../-mutable-class-reference/index.html">MutableClassReference</a></div><div class="brief "><p class="paragraph">The platform <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-string/index.html">String</a> type.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="381082244%2FProperties%2F1208392923" anchor-label="voidType" id="381082244%2FProperties%2F1208392923" data-filterable-set=":agp-compat:base:dokkaHtml/main"></a>
+          <div class="table-row" data-togglable="EXTENSION_PROPERTY" data-filterable-current=":agp-compat:base:dokkaHtml/main" data-filterable-set=":agp-compat:base:dokkaHtml/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../../sh.christian.aaraar.model.classeditor.types/void-type.html"><span>void</span><wbr></wbr><span><span>Type</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="381082244%2FProperties%2F1208392923"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":agp-compat:base:dokkaHtml/main"><div class="symbol monospace"><span class="token keyword">val </span><a href="../-classpath/index.html">Classpath</a><span class="token punctuation">.</span><a href="../../sh.christian.aaraar.model.classeditor.types/void-type.html">voidType</a><span class="token operator">: </span><a href="../-class-reference/index.html">ClassReference</a></div><div class="symbol monospace"><span class="token keyword">val </span><a href="index.html">MutableClasspath</a><span class="token punctuation">.</span><a href="../../sh.christian.aaraar.model.classeditor.types/void-type.html">voidType</a><span class="token operator">: </span><a href="../-mutable-class-reference/index.html">MutableClassReference</a></div><div class="brief "><p class="paragraph">The primitive <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Void.html">Void</a> type.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div data-togglable="FUNCTION">
+        <h2 class="">Functions</h2>
+        <div class="table"><a data-name="1960646382%2FFunctions%2F1208392923" anchor-label="addClass" id="1960646382%2FFunctions%2F1208392923" data-filterable-set=":agp-compat:base:dokkaHtml/main"></a>
+          <div class="table-row" data-filterable-current=":agp-compat:base:dokkaHtml/main" data-filterable-set=":agp-compat:base:dokkaHtml/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="add-class.html"><span>add</span><wbr></wbr><span><span>Class</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1960646382%2FFunctions%2F1208392923"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":agp-compat:base:dokkaHtml/main"><div class="symbol monospace"><span class="token keyword">fun </span><a href="add-class.html"><span class="token function">addClass</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">className<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span></span><span class="parameter ">configure<span class="token operator">: </span><a href="../-mutable-class-reference/index.html">MutableClassReference</a><span class="token punctuation">.</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-unit/index.html">Unit</a><span class="token operator"> = </span>{ }</span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../-mutable-class-reference/index.html">MutableClassReference</a></div><div class="brief "><p class="paragraph">Adds and configures a new class entry in this classpath. This class will be packaged in the resulting JAR file.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="538962961%2FFunctions%2F1208392923" anchor-label="addClasspath" id="538962961%2FFunctions%2F1208392923" data-filterable-set=":agp-compat:base:dokkaHtml/main"></a>
+          <div class="table-row" data-filterable-current=":agp-compat:base:dokkaHtml/main" data-filterable-set=":agp-compat:base:dokkaHtml/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="add-classpath.html"><span>add</span><wbr></wbr><span><span>Classpath</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="538962961%2FFunctions%2F1208392923"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":agp-compat:base:dokkaHtml/main"><div class="symbol monospace"><span class="token keyword">fun </span><a href="add-classpath.html"><span class="token function">addClasspath</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">other<span class="token operator">: </span><a href="index.html">MutableClasspath</a><span class="token punctuation">, </span></span><span class="parameter ">addAsInput<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a><span class="token operator"> = </span><span class="token boolean">true</span></span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Adds an entire set of other classes from another classpath to this one. Any classes you have defined in this classpath will be overwritten if also present in the other one. If <a href="add-classpath.html">addAsInput</a> is <code class="lang-kotlin">true</code>, the classes from the other classpath will also be included in the resulting JAR file.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1099418177%2FFunctions%2F1208392923" anchor-label="asApiJar" id="1099418177%2FFunctions%2F1208392923" data-filterable-set=":agp-compat:base:dokkaHtml/main"></a>
+          <div class="table-row" data-filterable-current=":agp-compat:base:dokkaHtml/main" data-filterable-set=":agp-compat:base:dokkaHtml/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="as-api-jar.html"><span>as</span><wbr></wbr><span>Api</span><wbr></wbr><span><span>Jar</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1099418177%2FFunctions%2F1208392923"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":agp-compat:base:dokkaHtml/main"><div class="symbol monospace"><span class="token keyword">fun </span><a href="as-api-jar.html"><span class="token function">asApiJar</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Modifies all class files to remove any information unrelated to a class's public API.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1333743090%2FFunctions%2F1208392923" anchor-label="get" id="-1333743090%2FFunctions%2F1208392923" data-filterable-set=":agp-compat:base:dokkaHtml/main"></a>
+          <div class="table-row" data-filterable-current=":agp-compat:base:dokkaHtml/main" data-filterable-set=":agp-compat:base:dokkaHtml/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="get.html"><span><span>get</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1333743090%2FFunctions%2F1208392923"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":agp-compat:base:dokkaHtml/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">operator override </span><span class="token keyword">fun </span><a href="get.html"><span class="token function">get</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">clazz<span class="token operator">: </span><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Class.html">Class</a><span class="token operator">&lt;</span><span class="token operator">*</span><span class="token operator">&gt;</span></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../-mutable-class-reference/index.html">MutableClassReference</a></div><div class="brief "><p class="paragraph">Returns the class definition for the given class, or throws if one does not exist.</p></div><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">operator override </span><span class="token keyword">fun </span><a href="get.html"><span class="token function">get</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">className<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-string/index.html">String</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../-mutable-class-reference/index.html">MutableClassReference</a></div><div class="brief "><p class="paragraph">Returns the class definition for the given class name, or returns a virtual definition if one does not exist. Virtual definitions won't include all the information (like supertypes, declared functions, etc) that the real class would, they are simply a placeholder for referencing a type from another compilation unit.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-938049421%2FFunctions%2F1208392923" anchor-label="getOrCreate" id="-938049421%2FFunctions%2F1208392923" data-filterable-set=":agp-compat:base:dokkaHtml/main"></a>
+          <div class="table-row" data-filterable-current=":agp-compat:base:dokkaHtml/main" data-filterable-set=":agp-compat:base:dokkaHtml/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="get-or-create.html"><span>get</span><wbr></wbr><span>Or</span><wbr></wbr><span><span>Create</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-938049421%2FFunctions%2F1208392923"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":agp-compat:base:dokkaHtml/main"><div class="symbol monospace"><span class="token keyword">fun </span><a href="get-or-create.html"><span class="token function">getOrCreate</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">className<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-string/index.html">String</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../-mutable-class-reference/index.html">MutableClassReference</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-363484994%2FFunctions%2F1208392923" anchor-label="getOrNull" id="-363484994%2FFunctions%2F1208392923" data-filterable-set=":agp-compat:base:dokkaHtml/main"></a>
+          <div class="table-row" data-filterable-current=":agp-compat:base:dokkaHtml/main" data-filterable-set=":agp-compat:base:dokkaHtml/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="get-or-null.html"><span>get</span><wbr></wbr><span>Or</span><wbr></wbr><span><span>Null</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-363484994%2FFunctions%2F1208392923"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":agp-compat:base:dokkaHtml/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">fun </span><a href="get-or-null.html"><span class="token function">getOrNull</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">className<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-string/index.html">String</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../-mutable-class-reference/index.html">MutableClassReference</a><span class="token operator">?</span></div><div class="brief "><p class="paragraph">Returns the class definition for the given class name, or <code class="lang-kotlin">null</code> if none exists.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-852196782%2FFunctions%2F1208392923" anchor-label="removeClass" id="-852196782%2FFunctions%2F1208392923" data-filterable-set=":agp-compat:base:dokkaHtml/main"></a>
+          <div class="table-row" data-filterable-current=":agp-compat:base:dokkaHtml/main" data-filterable-set=":agp-compat:base:dokkaHtml/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="remove-class.html"><span>remove</span><wbr></wbr><span><span>Class</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-852196782%2FFunctions%2F1208392923"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":agp-compat:base:dokkaHtml/main"><div class="symbol monospace"><span class="token keyword">fun </span><a href="remove-class.html"><span class="token function">removeClass</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">className<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-string/index.html">String</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div><div class="brief "><p class="paragraph">Removes a class from being packaged in the resulting JAR file.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="144136591%2FFunctions%2F1208392923" anchor-label="removeMethodBodies" id="144136591%2FFunctions%2F1208392923" data-filterable-set=":agp-compat:base:dokkaHtml/main"></a>
+          <div class="table-row" data-filterable-current=":agp-compat:base:dokkaHtml/main" data-filterable-set=":agp-compat:base:dokkaHtml/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="remove-method-bodies.html"><span>remove</span><wbr></wbr><span>Method</span><wbr></wbr><span><span>Bodies</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="144136591%2FFunctions%2F1208392923"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":agp-compat:base:dokkaHtml/main"><div class="symbol monospace"><span class="token keyword">fun </span><a href="remove-method-bodies.html"><span class="token function">removeMethodBodies</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Modifies all class files to remove method body bytecode.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1109668442%2FFunctions%2F1208392923" anchor-label="removePrivateMembers" id="1109668442%2FFunctions%2F1208392923" data-filterable-set=":agp-compat:base:dokkaHtml/main"></a>
+          <div class="table-row" data-filterable-current=":agp-compat:base:dokkaHtml/main" data-filterable-set=":agp-compat:base:dokkaHtml/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="remove-private-members.html"><span>remove</span><wbr></wbr><span>Private</span><wbr></wbr><span><span>Members</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1109668442%2FFunctions%2F1208392923"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":agp-compat:base:dokkaHtml/main"><div class="symbol monospace"><span class="token keyword">fun </span><a href="remove-private-members.html"><span class="token function">removePrivateMembers</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Modifies all class files to strip private members.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1748524285%2FFunctions%2F1208392923" anchor-label="toGenericJarArchive" id="-1748524285%2FFunctions%2F1208392923" data-filterable-set=":agp-compat:base:dokkaHtml/main"></a>
+          <div class="table-row" data-filterable-current=":agp-compat:base:dokkaHtml/main" data-filterable-set=":agp-compat:base:dokkaHtml/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="to-generic-jar-archive.html"><span>to</span><wbr></wbr><span>Generic</span><wbr></wbr><span>Jar</span><wbr></wbr><span><span>Archive</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1748524285%2FFunctions%2F1208392923"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":agp-compat:base:dokkaHtml/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">fun </span><a href="to-generic-jar-archive.html"><span class="token function">toGenericJarArchive</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../../sh.christian.aaraar.model/-generic-jar-archive/index.html">GenericJarArchive</a></div><div class="brief "><p class="paragraph">Returns the modified classpath as a JAR representation.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      <div class="footer">
+        <span class="go-to-top-icon"><a href="#content" id="go-to-top-link"></a></span><span>© 2026 Copyright</span><span
+                class="pull-right"><span>Generated by </span><a
+                href="https://github.com/Kotlin/dokka"><span>dokka</span><span class="padded-icon"></span></a></span>
+      </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html class="no-js">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
+    <title>sh.christian.aaraar.model</title>
+    <link href="../../images/logo-icon.svg" rel="icon" type="image/svg">
+    <script>var pathToRoot = "../../";</script>
+    <script>document.documentElement.classList.replace("no-js","js");</script>
+    <script>const storage = localStorage.getItem("dokka-dark-mode")
+    if (storage == null) {
+        const osDarkSchemePreferred = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
+        if (osDarkSchemePreferred === true) {
+            document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+    } else {
+        const savedDarkMode = JSON.parse(storage)
+        if(savedDarkMode === true) {
+            document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+    }
+    </script>
+<script type="text/javascript" src="https://unpkg.com/kotlin-playground@1/dist/playground.min.js" async="async"></script>
+<script type="text/javascript" src="../../scripts/sourceset_dependencies.js" async="async"></script>
+<link href="../../styles/style.css" rel="Stylesheet">
+<link href="../../styles/main.css" rel="Stylesheet">
+<link href="../../styles/prism.css" rel="Stylesheet">
+<link href="../../styles/logo-styles.css" rel="Stylesheet">
+<link href="../../styles/font-jb-sans-auto.css" rel="Stylesheet">
+<script type="text/javascript" src="../../scripts/clipboard.js" async="async"></script>
+<script type="text/javascript" src="../../scripts/navigation-loader.js" async="async"></script>
+<script type="text/javascript" src="../../scripts/platform-content-handler.js" async="async"></script>
+<script type="text/javascript" src="../../scripts/main.js" defer="defer"></script>
+<script type="text/javascript" src="../../scripts/prism.js" async="async"></script>
+<script type="text/javascript" src="../../scripts/symbol-parameters-wrapper_deferred.js" defer="defer"></script>
+</head>
+<body>
+    <div class="root">
+<nav class="navigation" id="navigation-wrapper">
+    <div class="navigation--inner">
+        <div class="navigation-title">
+            <button class="menu-toggle" id="menu-toggle" type="button">toggle menu</button>
+            <div class="library-name">
+                    <a class="library-name--link" href="../../index.html">
+                            aaraar
+                    </a>
+            </div>
+            <div class="library-version">
+            </div>
+        </div>
+        <div class="filter-section" id="filter-section">
+                <button class="platform-tag platform-selector jvm-like" data-active="" data-filter=":agp-compat:base:dokkaHtml/main">jvm</button>
+        </div>
+    </div>
+    <div class="navigation-controls">
+        <button class="navigation-controls--btn navigation-controls--theme" id="theme-toggle-button" type="button">switch theme</button>
+        <div class="navigation-controls--btn navigation-controls--search" id="searchBar" role="button">search in API</div>
+    </div>
+</nav>
+        <div id="container">
+            <div class="sidebar" id="leftColumn">
+                <div class="sidebar--inner" id="sideMenu"></div>
+            </div>
+            <div id="main">
+<div class="main-content" data-page-type="package" id="content" pageIds="aaraar::sh.christian.aaraar.model////PointingToDeclaration//1208392923">
+  <div class="breadcrumbs"><a href="../../index.html">aaraar</a><span class="delimiter">/</span><span class="current">sh.christian.aaraar.model</span></div>
+  <div class="cover ">
+    <h1 class="cover"><span><span>Package-level</span></span> <span><span>declarations</span></span></h1>
+  </div>
+  <div class="tabbedcontent">
+    <div class="tabs-section" tabs-section="tabs-section"><button class="section-tab" data-active="" data-togglable="TYPE">Types</button></div>
+    <div class="tabs-section-body">
+      <div data-togglable="TYPE">
+        <h2 class="">Types</h2>
+        <div class="table"><a data-name="-998427013%2FClasslikes%2F1208392923" anchor-label="AarArchive" id="-998427013%2FClasslikes%2F1208392923" data-filterable-set=":agp-compat:base:dokkaHtml/main"></a>
+          <div class="table-row" data-filterable-current=":agp-compat:base:dokkaHtml/main" data-filterable-set=":agp-compat:base:dokkaHtml/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-aar-archive/index.html"><span>Aar</span><wbr></wbr><span><span>Archive</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-998427013%2FClasslikes%2F1208392923"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":agp-compat:base:dokkaHtml/main"><div class="symbol monospace"><span class="token keyword">data </span><span class="token keyword">class </span><a href="-aar-archive/index.html">AarArchive</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">val </span>aarMetadata<span class="token operator">: </span><a href="-aar-metadata/index.html">AarMetadata</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>androidManifest<span class="token operator">: </span><a href="-android-manifest/index.html">AndroidManifest</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>classes<span class="token operator">: </span><a href="-classes/index.html">Classes</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>resources<span class="token operator">: </span><a href="-resources/index.html">Resources</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>rTxt<span class="token operator">: </span><a href="-r-txt/index.html">RTxt</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>publicTxt<span class="token operator">: </span><a href="-public-txt/index.html">PublicTxt</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>assets<span class="token operator">: </span><a href="-assets/index.html">Assets</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>libs<span class="token operator">: </span><a href="-libs/index.html">Libs</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>jni<span class="token operator">: </span><a href="-jni/index.html">Jni</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>proguard<span class="token operator">: </span><a href="-proguard/index.html">Proguard</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>lintRules<span class="token operator">: </span><a href="-lint-rules/index.html">LintRules</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>navigationJson<span class="token operator">: </span><a href="-navigation-json/index.html">NavigationJson</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>apiJar<span class="token operator">: </span><a href="-api-jar/index.html">ApiJar</a></span></span><span class="token punctuation">)</span> : <a href="-artifact-archive/index.html">ArtifactArchive</a></div><div class="brief "><p class="paragraph">Represents a packaged <code class="lang-kotlin">aar</code> archive output.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-880995178%2FClasslikes%2F1208392923" anchor-label="AarMetadata" id="-880995178%2FClasslikes%2F1208392923" data-filterable-set=":agp-compat:base:dokkaHtml/main"></a>
+          <div class="table-row" data-filterable-current=":agp-compat:base:dokkaHtml/main" data-filterable-set=":agp-compat:base:dokkaHtml/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-aar-metadata/index.html"><span>Aar</span><wbr></wbr><span><span>Metadata</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-880995178%2FClasslikes%2F1208392923"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":agp-compat:base:dokkaHtml/main"><div class="symbol monospace"><span class="token keyword">data </span><span class="token keyword">class </span><a href="-aar-metadata/index.html">AarMetadata</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">val </span>lines<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token operator">&gt;</span></span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Represents the contents of the <code class="lang-kotlin">META-INF/com/android/build/gradle/aar-metadata.properties</code> file.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="93198361%2FClasslikes%2F1208392923" anchor-label="AndroidManifest" id="93198361%2FClasslikes%2F1208392923" data-filterable-set=":agp-compat:base:dokkaHtml/main"></a>
+          <div class="table-row" data-filterable-current=":agp-compat:base:dokkaHtml/main" data-filterable-set=":agp-compat:base:dokkaHtml/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-android-manifest/index.html"><span>Android</span><wbr></wbr><span><span>Manifest</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="93198361%2FClasslikes%2F1208392923"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":agp-compat:base:dokkaHtml/main"><div class="symbol monospace"><span class="token keyword">class </span><a href="-android-manifest/index.html">AndroidManifest</a></div><div class="brief "><p class="paragraph">Represents the contents of the <code class="lang-kotlin">AndroidManifest.xml</code> file.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-891498742%2FClasslikes%2F1208392923" anchor-label="ApiJar" id="-891498742%2FClasslikes%2F1208392923" data-filterable-set=":agp-compat:base:dokkaHtml/main"></a>
+          <div class="table-row" data-filterable-current=":agp-compat:base:dokkaHtml/main" data-filterable-set=":agp-compat:base:dokkaHtml/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-api-jar/index.html"><span>Api</span><wbr></wbr><span><span>Jar</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-891498742%2FClasslikes%2F1208392923"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":agp-compat:base:dokkaHtml/main"><div class="symbol monospace"><span class="token keyword">data </span><span class="token keyword">class </span><a href="-api-jar/index.html">ApiJar</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">val </span>archive<span class="token operator">: </span><a href="-generic-jar-archive/index.html">GenericJarArchive</a></span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Represents the contents of the <code class="lang-kotlin">api.jar</code> file, the IDE sources for an <a href="-artifact-archive/index.html">ArtifactArchive</a>.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="524193671%2FClasslikes%2F1208392923" anchor-label="ArtifactArchive" id="524193671%2FClasslikes%2F1208392923" data-filterable-set=":agp-compat:base:dokkaHtml/main"></a>
+          <div class="table-row" data-filterable-current=":agp-compat:base:dokkaHtml/main" data-filterable-set=":agp-compat:base:dokkaHtml/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-artifact-archive/index.html"><span>Artifact</span><wbr></wbr><span><span>Archive</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="524193671%2FClasslikes%2F1208392923"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":agp-compat:base:dokkaHtml/main"><div class="symbol monospace"><span class="token keyword">sealed </span><span class="token keyword">class </span><a href="-artifact-archive/index.html">ArtifactArchive</a></div><div class="brief "><p class="paragraph">The base class of a packaged archive output, typically either a <code class="lang-kotlin">jar</code> or <code class="lang-kotlin">aar</code> file.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="317396840%2FClasslikes%2F1208392923" anchor-label="Assets" id="317396840%2FClasslikes%2F1208392923" data-filterable-set=":agp-compat:base:dokkaHtml/main"></a>
+          <div class="table-row" data-filterable-current=":agp-compat:base:dokkaHtml/main" data-filterable-set=":agp-compat:base:dokkaHtml/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-assets/index.html"><span><span>Assets</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="317396840%2FClasslikes%2F1208392923"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":agp-compat:base:dokkaHtml/main"><div class="symbol monospace"><span class="token keyword">data </span><span class="token keyword">class </span><a href="-assets/index.html">Assets</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">val </span>files<span class="token operator">: </span><a href="-file-set/index.html">FileSet</a></span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Represents the contents of the <code class="lang-kotlin">assets/</code> folder.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-425749327%2FClasslikes%2F1208392923" anchor-label="Classes" id="-425749327%2FClasslikes%2F1208392923" data-filterable-set=":agp-compat:base:dokkaHtml/main"></a>
+          <div class="table-row" data-filterable-current=":agp-compat:base:dokkaHtml/main" data-filterable-set=":agp-compat:base:dokkaHtml/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-classes/index.html"><span><span>Classes</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-425749327%2FClasslikes%2F1208392923"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":agp-compat:base:dokkaHtml/main"><div class="symbol monospace"><span class="token keyword">data </span><span class="token keyword">class </span><a href="-classes/index.html">Classes</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">val </span>archive<span class="token operator">: </span><a href="-generic-jar-archive/index.html">GenericJarArchive</a></span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Represents the contents of the <code class="lang-kotlin">classes.jar</code> file, the main runtime sources for an <a href="-artifact-archive/index.html">ArtifactArchive</a>.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-314883183%2FClasslikes%2F1208392923" anchor-label="FileSet" id="-314883183%2FClasslikes%2F1208392923" data-filterable-set=":agp-compat:base:dokkaHtml/main"></a>
+          <div class="table-row" data-filterable-current=":agp-compat:base:dokkaHtml/main" data-filterable-set=":agp-compat:base:dokkaHtml/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-file-set/index.html"><span>File</span><wbr></wbr><span><span>Set</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-314883183%2FClasslikes%2F1208392923"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":agp-compat:base:dokkaHtml/main"><div class="symbol monospace"><span class="token keyword">class </span><a href="-file-set/index.html">FileSet</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">val </span>indexedFiles<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin.collections/-map/index.html">Map</a><span class="token operator">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-byte-array/index.html">ByteArray</a><span class="token operator">&gt;</span></span></span><span class="token punctuation">)</span> : <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin.collections/-map/index.html">Map</a><span class="token operator">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-byte-array/index.html">ByteArray</a><span class="token operator">&gt; </span></div><div class="brief "><p class="paragraph">Represents an arbitrary set of files, indexed by their relative file path to a specified root.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1137087737%2FClasslikes%2F1208392923" anchor-label="GenericJarArchive" id="1137087737%2FClasslikes%2F1208392923" data-filterable-set=":agp-compat:base:dokkaHtml/main"></a>
+          <div class="table-row" data-filterable-current=":agp-compat:base:dokkaHtml/main" data-filterable-set=":agp-compat:base:dokkaHtml/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-generic-jar-archive/index.html"><span>Generic</span><wbr></wbr><span>Jar</span><wbr></wbr><span><span>Archive</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1137087737%2FClasslikes%2F1208392923"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":agp-compat:base:dokkaHtml/main"><div class="symbol monospace"><span class="token keyword">class </span><a href="-generic-jar-archive/index.html">GenericJarArchive</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">val </span>archiveEntries<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin.collections/-map/index.html">Map</a><span class="token operator">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-byte-array/index.html">ByteArray</a><span class="token operator">&gt;</span></span></span><span class="token punctuation">)</span> : <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin.collections/-map/index.html">Map</a><span class="token operator">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-byte-array/index.html">ByteArray</a><span class="token operator">&gt; </span></div><div class="brief "><p class="paragraph">Represents an arbitrary set of <code class="lang-kotlin">jar</code> entries, indexed by their relative file path to the root folder.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1645999172%2FClasslikes%2F1208392923" anchor-label="JarArchive" id="1645999172%2FClasslikes%2F1208392923" data-filterable-set=":agp-compat:base:dokkaHtml/main"></a>
+          <div class="table-row" data-filterable-current=":agp-compat:base:dokkaHtml/main" data-filterable-set=":agp-compat:base:dokkaHtml/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-jar-archive/index.html"><span>Jar</span><wbr></wbr><span><span>Archive</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1645999172%2FClasslikes%2F1208392923"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":agp-compat:base:dokkaHtml/main"><div class="symbol monospace"><span class="token keyword">data </span><span class="token keyword">class </span><a href="-jar-archive/index.html">JarArchive</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">val </span>classes<span class="token operator">: </span><a href="-classes/index.html">Classes</a></span></span><span class="token punctuation">)</span> : <a href="-artifact-archive/index.html">ArtifactArchive</a></div><div class="brief "><p class="paragraph">Represents a packaged <code class="lang-kotlin">jar</code> archive output.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1994608366%2FClasslikes%2F1208392923" anchor-label="Jni" id="-1994608366%2FClasslikes%2F1208392923" data-filterable-set=":agp-compat:base:dokkaHtml/main"></a>
+          <div class="table-row" data-filterable-current=":agp-compat:base:dokkaHtml/main" data-filterable-set=":agp-compat:base:dokkaHtml/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-jni/index.html"><span><span>Jni</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1994608366%2FClasslikes%2F1208392923"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":agp-compat:base:dokkaHtml/main"><div class="symbol monospace"><span class="token keyword">data </span><span class="token keyword">class </span><a href="-jni/index.html">Jni</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">val </span>files<span class="token operator">: </span><a href="-file-set/index.html">FileSet</a></span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Represents the compiled native files in the <code class="lang-kotlin">jni/</code> folder.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1560879811%2FClasslikes%2F1208392923" anchor-label="Libs" id="-1560879811%2FClasslikes%2F1208392923" data-filterable-set=":agp-compat:base:dokkaHtml/main"></a>
+          <div class="table-row" data-filterable-current=":agp-compat:base:dokkaHtml/main" data-filterable-set=":agp-compat:base:dokkaHtml/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-libs/index.html"><span><span>Libs</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1560879811%2FClasslikes%2F1208392923"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":agp-compat:base:dokkaHtml/main"><div class="symbol monospace"><span class="token keyword">data </span><span class="token keyword">class </span><a href="-libs/index.html">Libs</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">val </span>files<span class="token operator">: </span><a href="-file-set/index.html">FileSet</a></span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Represents the set of <code class="lang-kotlin">jar</code> files in the <code class="lang-kotlin">libs/</code> folder.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1797417885%2FClasslikes%2F1208392923" anchor-label="LintRules" id="-1797417885%2FClasslikes%2F1208392923" data-filterable-set=":agp-compat:base:dokkaHtml/main"></a>
+          <div class="table-row" data-filterable-current=":agp-compat:base:dokkaHtml/main" data-filterable-set=":agp-compat:base:dokkaHtml/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-lint-rules/index.html"><span>Lint</span><wbr></wbr><span><span>Rules</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1797417885%2FClasslikes%2F1208392923"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":agp-compat:base:dokkaHtml/main"><div class="symbol monospace"><span class="token keyword">data </span><span class="token keyword">class </span><a href="-lint-rules/index.html">LintRules</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">val </span>archive<span class="token operator">: </span><a href="-generic-jar-archive/index.html">GenericJarArchive</a></span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Represents the set of consumer Lint rules.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1786027503%2FClasslikes%2F1208392923" anchor-label="NavigationJson" id="1786027503%2FClasslikes%2F1208392923" data-filterable-set=":agp-compat:base:dokkaHtml/main"></a>
+          <div class="table-row" data-filterable-current=":agp-compat:base:dokkaHtml/main" data-filterable-set=":agp-compat:base:dokkaHtml/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-navigation-json/index.html"><span>Navigation</span><wbr></wbr><span><span>Json</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1786027503%2FClasslikes%2F1208392923"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":agp-compat:base:dokkaHtml/main"><div class="symbol monospace"><span class="token keyword">class </span><a href="-navigation-json/index.html">NavigationJson</a></div><div class="brief "><p class="paragraph">Represents the contents of the <code class="lang-kotlin">navigation.json</code> file.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-729485837%2FClasslikes%2F1208392923" anchor-label="Proguard" id="-729485837%2FClasslikes%2F1208392923" data-filterable-set=":agp-compat:base:dokkaHtml/main"></a>
+          <div class="table-row" data-filterable-current=":agp-compat:base:dokkaHtml/main" data-filterable-set=":agp-compat:base:dokkaHtml/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-proguard/index.html"><span><span>Proguard</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-729485837%2FClasslikes%2F1208392923"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":agp-compat:base:dokkaHtml/main"><div class="symbol monospace"><span class="token keyword">data </span><span class="token keyword">class </span><a href="-proguard/index.html">Proguard</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">val </span>lines<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token operator">&gt;</span></span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Represents the set of consumer Proguard rules.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1025142576%2FClasslikes%2F1208392923" anchor-label="PublicTxt" id="1025142576%2FClasslikes%2F1208392923" data-filterable-set=":agp-compat:base:dokkaHtml/main"></a>
+          <div class="table-row" data-filterable-current=":agp-compat:base:dokkaHtml/main" data-filterable-set=":agp-compat:base:dokkaHtml/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-public-txt/index.html"><span>Public</span><wbr></wbr><span><span>Txt</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1025142576%2FClasslikes%2F1208392923"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":agp-compat:base:dokkaHtml/main"><div class="symbol monospace"><span class="token keyword">class </span><a href="-public-txt/index.html">PublicTxt</a></div><div class="brief "><p class="paragraph">Represents the contents of the <code class="lang-kotlin">public.txt</code> file.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1895111186%2FClasslikes%2F1208392923" anchor-label="Resources" id="1895111186%2FClasslikes%2F1208392923" data-filterable-set=":agp-compat:base:dokkaHtml/main"></a>
+          <div class="table-row" data-filterable-current=":agp-compat:base:dokkaHtml/main" data-filterable-set=":agp-compat:base:dokkaHtml/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-resources/index.html"><span><span>Resources</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1895111186%2FClasslikes%2F1208392923"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":agp-compat:base:dokkaHtml/main"><div class="symbol monospace"><span class="token keyword">data </span><span class="token keyword">class </span><a href="-resources/index.html">Resources</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">val </span>files<span class="token operator">: </span><a href="-file-set/index.html">FileSet</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>packageName<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>minSdk<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>androidAaptIgnore<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-string/index.html">String</a></span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Represents the contents of the <code class="lang-kotlin">res/</code> folder.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-931045075%2FClasslikes%2F1208392923" anchor-label="RTxt" id="-931045075%2FClasslikes%2F1208392923" data-filterable-set=":agp-compat:base:dokkaHtml/main"></a>
+          <div class="table-row" data-filterable-current=":agp-compat:base:dokkaHtml/main" data-filterable-set=":agp-compat:base:dokkaHtml/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-r-txt/index.html"><span><span>RTxt</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-931045075%2FClasslikes%2F1208392923"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":agp-compat:base:dokkaHtml/main"><div class="symbol monospace"><span class="token keyword">class </span><a href="-r-txt/index.html">RTxt</a></div><div class="brief "><p class="paragraph">Represents the contents of the <code class="lang-kotlin">R.txt</code> file.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1057359586%2FClasslikes%2F1208392923" anchor-label="ShadeConfiguration" id="1057359586%2FClasslikes%2F1208392923" data-filterable-set=":agp-compat:base:dokkaHtml/main"></a>
+          <div class="table-row" data-filterable-current=":agp-compat:base:dokkaHtml/main" data-filterable-set=":agp-compat:base:dokkaHtml/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-shade-configuration/index.html"><span>Shade</span><wbr></wbr><span><span>Configuration</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1057359586%2FClasslikes%2F1208392923"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":agp-compat:base:dokkaHtml/main"><div class="symbol monospace"><span class="token keyword">data </span><span class="token keyword">class </span><a href="-shade-configuration/index.html">ShadeConfiguration</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">val </span>classRenames<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin.collections/-map/index.html">Map</a><span class="token operator">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token operator">&gt;</span><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>classDeletes<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin.collections/-set/index.html">Set</a><span class="token operator">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token operator">&gt;</span><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>resourceRenames<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin.collections/-map/index.html">Map</a><span class="token operator">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token operator">&gt;</span><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>resourceDeletes<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin.collections/-set/index.html">Set</a><span class="token operator">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token operator">&gt;</span></span></span><span class="token punctuation">)</span> : <a href="https://docs.oracle.com/javase/8/docs/api/java/io/Serializable.html">Serializable</a></div><div class="brief "><p class="paragraph">Defines the rules for shading, following a syntax for pattern matching classes and resources.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      <div class="footer">
+        <span class="go-to-top-icon"><a href="#content" id="go-to-top-link"></a></span><span>© 2026 Copyright</span><span
+                class="pull-right"><span>Generated by </span><a
+                href="https://github.com/Kotlin/dokka"><span>dokka</span><span class="padded-icon"></span></a></span>
+      </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
