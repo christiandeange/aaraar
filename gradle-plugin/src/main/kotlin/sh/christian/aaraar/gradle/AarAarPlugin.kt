@@ -86,6 +86,7 @@ class AarAarPlugin : Plugin<Project> {
       shadeEnvironment.set(parseShadeEnvironment(aaraar, variant = null))
       packagingEnvironment.set(PackagingEnvironment.None)
       keepMetaFiles.set(aaraar.keepMetaFiles)
+      packagerFactory.set(aaraar.packagerFactory)
 
       inputJar.set(jarTask.flatMap { it.archiveFile })
       outputJar.set(jarTask.flatMap { it.archiveFile })
