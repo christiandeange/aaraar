@@ -1,6 +1,12 @@
 Change Log
 ==========
 
+## Version 0.1.5
+
+_2026-01-30_
+
+* Fix: Configure a default value for the `PackageJarTask.packagerFactory` task property on JVM projects.
+
 ## Version 0.1.4
 
 _2026-01-17_
