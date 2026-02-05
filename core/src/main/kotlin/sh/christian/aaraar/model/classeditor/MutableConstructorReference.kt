@@ -7,7 +7,7 @@ import sh.christian.aaraar.model.classeditor.metadata.signature
 import sh.christian.aaraar.model.classeditor.metadata.toVisibility
 import kotlin.metadata.KmConstructor
 import kotlin.metadata.KmValueParameter
-import kotlin.metadata.hasAnnotations
+import kotlin.metadata.jvm.hasAnnotationsInBytecode
 import kotlin.metadata.visibility
 
 /**
@@ -66,7 +66,7 @@ internal constructor(
       parameters.map {
         KmValueParameter(it.name).apply {
           type = classpath.kmType(it.type.qualifiedName)
-          hasAnnotations = it.annotations.isNotEmpty()
+          hasAnnotationsInBytecode = it.annotations.isNotEmpty()
         }
       }
     )
