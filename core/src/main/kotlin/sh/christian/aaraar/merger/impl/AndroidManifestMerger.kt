@@ -20,6 +20,7 @@ class AndroidManifestMerger : Merger<AndroidManifest> {
     )
       .withFeatures(ManifestMerger2.Invoker.Feature.NO_PLACEHOLDER_REPLACEMENT)
       .withFeatures(ManifestMerger2.Invoker.Feature.REMOVE_TOOLS_DECLARATIONS)
+      .withFeatures(ManifestMerger2.Invoker.Feature.USES_SDK_IN_MANIFEST_LENIENT_HANDLING)
       .apply {
         others.forEach { other ->
           addLibraryManifest(other.asTempFile())
