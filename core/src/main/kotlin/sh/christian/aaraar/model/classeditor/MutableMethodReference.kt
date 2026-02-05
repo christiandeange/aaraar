@@ -2,13 +2,13 @@ package sh.christian.aaraar.model.classeditor
 
 import javassist.CtMethod
 import javassist.bytecode.Descriptor
-import kotlinx.metadata.KmFunction
-import kotlinx.metadata.KmValueParameter
-import kotlinx.metadata.hasAnnotations
-import kotlinx.metadata.visibility
 import sh.christian.aaraar.model.classeditor.Modifier.Companion.toModifiers
 import sh.christian.aaraar.model.classeditor.metadata.signature
 import sh.christian.aaraar.model.classeditor.metadata.toVisibility
+import kotlin.metadata.KmFunction
+import kotlin.metadata.KmValueParameter
+import kotlin.metadata.hasAnnotations
+import kotlin.metadata.visibility
 
 /**
  * Represents a declared method for a particular class.

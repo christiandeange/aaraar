@@ -2,13 +2,13 @@ package sh.christian.aaraar.model.classeditor
 
 import javassist.CtConstructor
 import javassist.bytecode.Descriptor
-import kotlinx.metadata.KmConstructor
-import kotlinx.metadata.KmValueParameter
-import kotlinx.metadata.hasAnnotations
-import kotlinx.metadata.visibility
 import sh.christian.aaraar.model.classeditor.Modifier.Companion.toModifiers
 import sh.christian.aaraar.model.classeditor.metadata.signature
 import sh.christian.aaraar.model.classeditor.metadata.toVisibility
+import kotlin.metadata.KmConstructor
+import kotlin.metadata.KmValueParameter
+import kotlin.metadata.hasAnnotations
+import kotlin.metadata.visibility
 
 /**
  * Represents a declared constructor for a particular class.

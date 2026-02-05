@@ -1,9 +1,9 @@
 package sh.christian.aaraar.utils
 
 import io.kotest.matchers.shouldBe
-import kotlinx.metadata.KmClass
-import kotlinx.metadata.jvm.JvmMetadataVersion
-import kotlinx.metadata.jvm.KotlinClassMetadata
+import kotlin.metadata.KmClass
+import kotlin.metadata.jvm.JvmMetadataVersion
+import kotlin.metadata.jvm.KotlinClassMetadata
 
 infix fun KmClass.shouldBe(other: KmClass) {
   val class1 = KotlinClassMetadata.Class(

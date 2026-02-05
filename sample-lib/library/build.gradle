@@ -1,12 +1,11 @@
 import org.jetbrains.annotations.NotNull
-import sh.christian.aaraar.gradle.ApiJarProcessor
-import sh.christian.aaraar.gradle.ArtifactArchiveProcessor
 import sh.christian.aaraar.model.AarArchive
 import sh.christian.aaraar.model.classeditor.MutableClasspath
+import sh.christian.aaraar.packaging.ApiJarProcessor
+import sh.christian.aaraar.packaging.ArtifactArchiveProcessor
 
 plugins {
   id "com.android.library"
-  id "org.jetbrains.kotlin.android"
   id "sh.christian.aaraar" version "0.1.5"
   id "maven-publish"
 }
@@ -44,10 +43,6 @@ android {
     targetCompatibility JavaVersion.VERSION_11
   }
 
-  kotlinOptions {
-    jvmTarget = "11"
-  }
-
   publishing {
     singleVariant("publish") {
       withSourcesJar()
@@ -55,8 +50,14 @@ android {
   }
 }
 
+java {
+  toolchain {
+    languageVersion.set(JavaLanguageVersion.of(17))
+  }
+}
+
 dependencies {
-  api "org.jetbrains.kotlin:kotlin-stdlib:1.8.0"
+  api "org.jetbrains.kotlin:kotlin-stdlib:2.2.21"
 
   compileOnly project(":helper-library")
   embed project(":helper-library")

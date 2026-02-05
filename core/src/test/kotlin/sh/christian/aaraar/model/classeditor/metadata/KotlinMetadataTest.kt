@@ -8,7 +8,6 @@ import io.kotest.matchers.nulls.shouldBeNull
 import io.kotest.matchers.should
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.types.shouldBeInstanceOf
-import kotlinx.metadata.KmClassifier
 import sh.christian.aaraar.model.GenericJarArchive
 import sh.christian.aaraar.model.classeditor.MutableClassReference
 import sh.christian.aaraar.model.classeditor.foo
@@ -20,6 +19,7 @@ import sh.christian.aaraar.utils.ktLibraryJarPath
 import sh.christian.aaraar.utils.loadJar
 import sh.christian.aaraar.utils.shouldBe
 import sh.christian.aaraar.utils.withClasspath
+import kotlin.metadata.KmClassifier
 import kotlin.test.Test
 
 class KotlinMetadataTest {

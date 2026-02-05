@@ -4,8 +4,6 @@ import javassist.CtClass
 import javassist.CtConstructor
 import javassist.CtField
 import javassist.CtMethod
-import kotlinx.metadata.jvm.KotlinClassMetadata
-import kotlinx.metadata.visibility
 import sh.christian.aaraar.model.classeditor.AnnotationInstance.Value.ArrayValue
 import sh.christian.aaraar.model.classeditor.AnnotationInstance.Value.IntegerValue
 import sh.christian.aaraar.model.classeditor.AnnotationInstance.Value.StringValue
@@ -14,6 +12,8 @@ import sh.christian.aaraar.model.classeditor.metadata.signatures
 import sh.christian.aaraar.model.classeditor.metadata.toClassName
 import sh.christian.aaraar.model.classeditor.metadata.toVisibility
 import sh.christian.aaraar.model.classeditor.types.objectType
+import kotlin.metadata.jvm.KotlinClassMetadata
+import kotlin.metadata.visibility
 
 /**
  * Represents a class definition.

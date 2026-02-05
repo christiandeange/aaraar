@@ -1,19 +1,19 @@
 package sh.christian.aaraar.model.classeditor.metadata
 
-import kotlinx.metadata.ClassName
-import kotlinx.metadata.KmConstructor
-import kotlinx.metadata.KmFunction
-import kotlinx.metadata.KmProperty
-import kotlinx.metadata.Visibility
-import kotlinx.metadata.jvm.fieldSignature
-import kotlinx.metadata.jvm.getterSignature
-import kotlinx.metadata.jvm.setterSignature
-import kotlinx.metadata.jvm.signature
 import sh.christian.aaraar.model.classeditor.ConstructorSignature
 import sh.christian.aaraar.model.classeditor.FieldSignature
 import sh.christian.aaraar.model.classeditor.MethodSignature
 import sh.christian.aaraar.model.classeditor.Modifier
 import sh.christian.aaraar.model.classeditor.Signature
+import kotlin.metadata.ClassName
+import kotlin.metadata.KmConstructor
+import kotlin.metadata.KmFunction
+import kotlin.metadata.KmProperty
+import kotlin.metadata.Visibility
+import kotlin.metadata.jvm.fieldSignature
+import kotlin.metadata.jvm.getterSignature
+import kotlin.metadata.jvm.setterSignature
+import kotlin.metadata.jvm.signature
 
 internal fun String.toClassName(): ClassName {
   return this.replace(".", "/")

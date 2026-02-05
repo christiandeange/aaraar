@@ -1,7 +1,7 @@
 package sh.christian.aaraar.model.classeditor
 
 import io.kotest.matchers.nulls.shouldNotBeNull
-import kotlinx.metadata.KmClass
+import kotlin.metadata.KmClass
 
 internal val MutableClasspath.foo get() = this["sh.christian.mylibrary.Foo"]
 internal val MutableClasspath.fooInternal get() = this["sh.christian.mylibrary.FooInternal"]

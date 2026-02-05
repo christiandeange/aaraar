@@ -1,6 +1,5 @@
 plugins {
   id "com.android.library"
-  id "org.jetbrains.kotlin.android"
   id "maven-publish"
 }
 
@@ -34,10 +33,6 @@ android {
     targetCompatibility JavaVersion.VERSION_11
   }
 
-  kotlinOptions {
-    jvmTarget = "11"
-  }
-
   publishing {
     singleVariant("release") {
       withSourcesJar()
@@ -45,10 +40,16 @@ android {
   }
 }
 
+java {
+  toolchain {
+    languageVersion.set(JavaLanguageVersion.of(17))
+  }
+}
+
 dependencies {
   api fileTree(dir: "libs", include: ["*.jar"])
   implementation "androidx.core:core-ktx:1.9.0"
-  implementation "org.jetbrains.kotlin:kotlin-stdlib:1.8.0"
+  implementation "org.jetbrains.kotlin:kotlin-stdlib:2.2.21"
 }
 
 afterEvaluate {

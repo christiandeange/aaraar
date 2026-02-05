@@ -17,6 +17,7 @@ dependencies {
   implementation(project(":core"))
   implementation(project(":agp-compat:agp7"))
   implementation(project(":agp-compat:agp8"))
+  implementation(project(":agp-compat:agp9"))
 
   implementation(platform(kotlin("bom")))
   compileOnly(libs.agp.api.latest)

@@ -5,8 +5,6 @@ import io.kotest.matchers.collections.shouldHaveSize
 import io.kotest.matchers.nulls.shouldBeNull
 import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.shouldBe
-import kotlinx.metadata.KmClass
-import kotlinx.metadata.KmFunction
 import sh.christian.aaraar.model.classeditor.NewParameter
 import sh.christian.aaraar.model.classeditor.name
 import sh.christian.aaraar.model.classeditor.requireMetadata
@@ -17,6 +15,8 @@ import sh.christian.aaraar.model.classeditor.types.voidType
 import sh.christian.aaraar.utils.ktLibraryJarPath
 import sh.christian.aaraar.utils.loadJar
 import sh.christian.aaraar.utils.withClasspath
+import kotlin.metadata.KmClass
+import kotlin.metadata.KmFunction
 import kotlin.test.Test
 
 class MethodMetadataTest {

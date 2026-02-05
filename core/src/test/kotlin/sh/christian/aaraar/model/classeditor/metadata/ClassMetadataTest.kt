@@ -4,14 +4,14 @@ import io.kotest.matchers.collections.shouldBeEmpty
 import io.kotest.matchers.collections.shouldContainExactly
 import io.kotest.matchers.nulls.shouldBeNull
 import io.kotest.matchers.shouldBe
-import kotlinx.metadata.Visibility
-import kotlinx.metadata.visibility
 import sh.christian.aaraar.model.classeditor.Modifier
 import sh.christian.aaraar.model.classeditor.foo
 import sh.christian.aaraar.model.classeditor.requireMetadata
 import sh.christian.aaraar.utils.ktLibraryJarPath
 import sh.christian.aaraar.utils.loadJar
 import sh.christian.aaraar.utils.withClasspath
+import kotlin.metadata.Visibility
+import kotlin.metadata.visibility
 import kotlin.test.Test
 
 class ClassMetadataTest {

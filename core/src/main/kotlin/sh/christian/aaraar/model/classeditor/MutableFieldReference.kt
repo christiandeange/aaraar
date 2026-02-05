@@ -2,11 +2,11 @@ package sh.christian.aaraar.model.classeditor
 
 import javassist.CtField
 import javassist.bytecode.ConstantAttribute
-import kotlinx.metadata.KmProperty
-import kotlinx.metadata.visibility
 import sh.christian.aaraar.model.classeditor.Modifier.Companion.toModifiers
 import sh.christian.aaraar.model.classeditor.metadata.fieldSignature
 import sh.christian.aaraar.model.classeditor.metadata.toVisibility
+import kotlin.metadata.KmProperty
+import kotlin.metadata.visibility
 
 /**
  * Represents a declared field for a particular class.

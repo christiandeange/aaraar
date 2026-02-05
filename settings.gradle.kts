@@ -21,6 +21,7 @@ dependencyResolutionManagement {
 
 include(":agp-compat:agp7")
 include(":agp-compat:agp8")
+include(":agp-compat:agp9")
 include(":agp-compat:base")
 include(":core")
 include(":fixtures")

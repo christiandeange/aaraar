@@ -1,11 +1,11 @@
 package sh.christian.aaraar.shading
 
-import kotlinx.metadata.jvm.JvmMetadataVersion
-import kotlinx.metadata.jvm.KmPackageParts
-import kotlinx.metadata.jvm.UnstableMetadataApi
 import sh.christian.aaraar.utils.forEntry
 import sh.christian.aaraar.utils.ktLibraryJarPath
 import sh.christian.aaraar.utils.loadJar
+import kotlin.metadata.jvm.JvmMetadataVersion
+import kotlin.metadata.jvm.KmPackageParts
+import kotlin.metadata.jvm.UnstableMetadataApi
 import kotlin.test.Test
 
 @OptIn(UnstableMetadataApi::class)
@@ -15,7 +15,7 @@ class GenericJarArchiveKotlinModuleShaderTest {
     ktLibraryJarPath.loadJar()
       .forEntry("META-INF/fixtures_ktLibrary.kotlin_module")
       .shouldHaveKotlinMetadata(
-        version = JvmMetadataVersion(1, 8, 0),
+        version = JvmMetadataVersion(2, 2, 0),
         packageParts = mapOf(
           "sh.christian.mylibrary" to KmPackageParts(
             fileFacades = mutableListOf(
@@ -36,7 +36,7 @@ class GenericJarArchiveKotlinModuleShaderTest {
     shadedClasses.forEntry("META-INF/fixtures_ktLibrary.kotlin_module").let {
       it.shouldExist()
       it.shouldHaveKotlinMetadata(
-        version = JvmMetadataVersion(1, 8, 0),
+        version = JvmMetadataVersion(2, 2, 0),
         packageParts = mapOf(
           "sh.christian.foolib" to KmPackageParts(
             fileFacades = mutableListOf(
@@ -58,7 +58,7 @@ class GenericJarArchiveKotlinModuleShaderTest {
     shadedClasses.forEntry("META-INF/fixtures_ktLibrary.kotlin_module").let {
       it.shouldExist()
       it.shouldHaveKotlinMetadata(
-        version = JvmMetadataVersion(1, 8, 0),
+        version = JvmMetadataVersion(2, 2, 0),
         packageParts = mapOf(
           "sh.christian.mylibrary" to KmPackageParts(
             fileFacades = mutableListOf(

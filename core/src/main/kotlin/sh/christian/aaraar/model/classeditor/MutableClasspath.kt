@@ -6,10 +6,10 @@ import javassist.CtConstructor
 import javassist.CtField
 import javassist.CtMethod
 import javassist.bytecode.annotation.Annotation
-import kotlinx.metadata.KmClassifier
-import kotlinx.metadata.KmType
 import sh.christian.aaraar.model.GenericJarArchive
 import sh.christian.aaraar.model.classeditor.metadata.toClassName
+import kotlin.metadata.KmClassifier
+import kotlin.metadata.KmType
 
 /**
  * Represents a set of classes that are available at runtime.

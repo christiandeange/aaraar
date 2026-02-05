@@ -3,7 +3,7 @@ package sh.christian.aaraar.model.classeditor
 import javassist.CtBehavior
 import javassist.bytecode.ByteArray
 import javassist.bytecode.MethodParametersAttribute
-import kotlinx.metadata.KmValueParameter
+import kotlin.metadata.KmValueParameter
 
 /**
  * Represents an argument that is part of a method or constructor signature.

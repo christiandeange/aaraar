@@ -1,6 +1,6 @@
 [versions]
-agp-latest = "8.5.0"
-agp-tools = "31.5.0"
+agp-latest = "9.0.0"
+agp-tools = "32.0.0"
 detekt = "1.23.6"
 dokka = "2.1.0"
 kotlin = "2.2.21"
@@ -12,8 +12,8 @@ kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 [libraries]
 agp-api7 = { module = "com.android.tools.build:gradle-api", version = "7.3.1" }
 agp-api8 = { module = "com.android.tools.build:gradle-api", version = "8.5.0" }
+agp-api9 = { module = "com.android.tools.build:gradle-api", version = "9.0.0" }
 agp-api-latest = { module = "com.android.tools.build:gradle-api", version.ref = "agp-latest" }
-agp-latest = { module = "com.android.tools.build:gradle", version.ref = "agp-latest" }
 agp-layoutlib = { module = "com.android.tools.layoutlib:layoutlib-api", version.ref = "agp-tools" }
 agp-tools-common = { module = "com.android.tools:common", version.ref = "agp-tools" }
 agp-tools-manifestmerger = { module = "com.android.tools.build:manifest-merger", version.ref = "agp-tools" }
@@ -22,7 +22,7 @@ agp-tools-sdk = { module = "com.android.tools:sdk-common", version.ref = "agp-to
 asm = { module = "org.ow2.asm:asm-commons", version = "9.4" }
 javassist = { module = "org.javassist:javassist", version = "3.30.2-GA" }
 decompiler = { module = "com.jetbrains.intellij.java:java-decompiler-engine", version = "233.14475.28" }
-kotlin-metadata = { module = "org.jetbrains.kotlinx:kotlinx-metadata-jvm", version = "0.9.0" }
+kotlin-metadata = { module = "org.jetbrains.kotlin:kotlin-metadata-jvm", version.ref = "kotlin" }
 
 jimfs = { module = "com.google.jimfs:jimfs", version = "1.2" }
 

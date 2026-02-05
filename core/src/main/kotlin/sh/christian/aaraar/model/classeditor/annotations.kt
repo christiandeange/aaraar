@@ -7,8 +7,8 @@ import javassist.bytecode.AttributeInfo
 import javassist.bytecode.ConstPool
 import javassist.bytecode.Descriptor
 import javassist.bytecode.ParameterAnnotationsAttribute
-import kotlinx.metadata.hasAnnotations
 import sh.christian.aaraar.model.classeditor.AnnotationInstance.Value.Companion.toValue
+import kotlin.metadata.hasAnnotations
 
 internal var MutableClassReference.classAnnotations: List<AnnotationInstance>
   get() {
