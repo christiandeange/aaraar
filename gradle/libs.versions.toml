@@ -10,8 +10,8 @@ maven-publish = "0.34.0"
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 
 [libraries]
-agp-api7 = { module = "com.android.tools.build:gradle-api", version = "7.3.1" }
-agp-api8 = { module = "com.android.tools.build:gradle-api", version = "8.5.0" }
+agp-api7 = { module = "com.android.tools.build:gradle-api", version = "7.4.2" }
+agp-api8 = { module = "com.android.tools.build:gradle-api", version = "8.13.2" }
 agp-api9 = { module = "com.android.tools.build:gradle-api", version = "9.0.0" }
 agp-api-latest = { module = "com.android.tools.build:gradle-api", version.ref = "agp-latest" }
 agp-layoutlib = { module = "com.android.tools.layoutlib:layoutlib-api", version.ref = "agp-tools" }
