@@ -6,6 +6,8 @@ import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.apply
 import org.gradle.kotlin.dsl.configure
+import org.gradle.kotlin.dsl.dependencies
+import org.jetbrains.dokka.gradle.DokkaExtension
 import org.jetbrains.dokka.gradle.DokkaPlugin
 
 @Suppress("UnstableApiUsage")
@@ -59,6 +61,17 @@ class PublishingPlugin : Plugin<Project> {
 
       publishToMavenCentral(automaticRelease = true)
       signAllPublications()
+    }
+
+    target.extensions.configure<DokkaExtension> {
+      dokkaPublications.configureEach {
+        moduleName.set(artifactId)
+      }
+    }
+
+    // Collect dokka output for publication via the root project.
+    target.rootProject.dependencies {
+      "dokka"(target)
     }
   }
 

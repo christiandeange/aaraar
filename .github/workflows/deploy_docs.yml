@@ -37,7 +37,7 @@ jobs:
             mkdocs-material-
 
       - name: Build API Reference
-        run: ./gradlew dokkaHtmlCollector
+        run: ./gradlew dokkaGenerate
 
       - name: Install MkDocs
         run: pip install mkdocs-material
