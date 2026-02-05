@@ -15,17 +15,18 @@ plugins {
 val fixtureJars by configurations.registering
 
 dependencies {
-  api(libs.agp.tools.common)
   api(libs.kotlin.metadata)
 
   implementation(platform(kotlin("bom")))
-  implementation(libs.agp.layoutlib)
-  implementation(libs.agp.tools.manifestmerger)
-  implementation(libs.agp.tools.sdk)
   implementation(libs.asm)
   implementation(libs.gson)
   implementation(libs.javassist)
   implementation(libs.kotlinxml)
+
+  compileOnly(libs.agp.layoutlib)
+  compileOnly(libs.agp.tools.common)
+  compileOnly(libs.agp.tools.manifestmerger)
+  compileOnly(libs.agp.tools.sdk)
 
   testImplementation(testFixtures(project(":fixtures")))
   testImplementation(kotlin("test"))

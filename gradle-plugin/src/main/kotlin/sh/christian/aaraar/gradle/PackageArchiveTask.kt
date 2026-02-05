@@ -1,6 +1,5 @@
 package sh.christian.aaraar.gradle
 
-import com.android.utils.mapValuesNotNull
 import org.gradle.api.DefaultTask
 import org.gradle.api.artifacts.ArtifactCollection
 import org.gradle.api.artifacts.component.ComponentIdentifier
@@ -78,10 +77,9 @@ abstract class PackageArchiveTask : DefaultTask() {
     val shadeEnvironment = shadeEnvironment.get()
     logger.info("Shading environment: $shadeEnvironment")
 
-    val scopeMapping: Map<Path, ShadeConfigurationScope> = embedArtifacts.get()
+    val scopeMapping: Map<Path, ShadeConfigurationScope?> = embedArtifacts.get()
       .resolvedArtifacts.get()
       .associate { it.file.toPath() to it.id.componentIdentifier.toShadeConfigurationScope() }
-      .mapValuesNotNull { it.value }
 
     val packager = packagerFactory.get().create(
       environment = environment,

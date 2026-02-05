@@ -12,16 +12,26 @@ import sh.christian.aaraar.model.AndroidManifest
  * The basis of this implementation uses the same manifest merging logic that the Android Gradle Plugin uses.
  */
 class AndroidManifestMerger : Merger<AndroidManifest> {
+  private val features: List<ManifestMerger2.Invoker.Feature>
+    get() {
+      // Ensures that we only use features that are available at runtime.
+      return listOfNotNull(
+        getOrNull { ManifestMerger2.Invoker.Feature.NO_PLACEHOLDER_REPLACEMENT },
+        getOrNull { ManifestMerger2.Invoker.Feature.REMOVE_TOOLS_DECLARATIONS },
+        getOrNull { ManifestMerger2.Invoker.Feature.USES_SDK_IN_MANIFEST_LENIENT_HANDLING },
+      )
+    }
+
   override fun merge(first: AndroidManifest, others: List<AndroidManifest>): AndroidManifest {
     val mergeReport = ManifestMerger2.newMerger(
       first.asTempFile(),
       StdLogger(StdLogger.Level.WARNING),
       ManifestMerger2.MergeType.APPLICATION
     )
-      .withFeatures(ManifestMerger2.Invoker.Feature.NO_PLACEHOLDER_REPLACEMENT)
-      .withFeatures(ManifestMerger2.Invoker.Feature.REMOVE_TOOLS_DECLARATIONS)
-      .withFeatures(ManifestMerger2.Invoker.Feature.USES_SDK_IN_MANIFEST_LENIENT_HANDLING)
       .apply {
+        features.forEach { feature ->
+          withFeatures(feature)
+        }
         others.forEach { other ->
           addLibraryManifest(other.asTempFile())
         }
@@ -37,5 +47,13 @@ class AndroidManifestMerger : Merger<AndroidManifest> {
     }
 
     return AndroidManifest(mergeReport.getMergedDocument(MergingReport.MergedManifestKind.MERGED)!!)
+  }
+
+  private fun getOrNull(provider: () -> ManifestMerger2.Invoker.Feature): ManifestMerger2.Invoker.Feature? {
+    return try {
+      return provider()
+    } catch (_: NoSuchFieldError) {
+      null
+    }
   }
 }

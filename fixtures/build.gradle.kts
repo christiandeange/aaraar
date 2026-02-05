@@ -9,7 +9,10 @@ plugins {
 
 dependencies {
   testFixturesApi(project(":core"))
+  testFixturesApi(libs.agp.layoutlib)
+  testFixturesApi(libs.agp.tools.common)
   testFixturesApi(libs.agp.tools.manifestmerger)
+  testFixturesApi(libs.agp.tools.sdk)
 
   testFixturesImplementation(libs.kotest)
   testFixturesImplementation(libs.decompiler)
