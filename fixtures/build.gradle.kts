@@ -7,16 +7,30 @@ plugins {
   id("aaraar-detekt")
 }
 
+val agpVersion = project.findProperty("agpVersion")?.toString()
+val toolsVersion = agpVersion
+  ?.split(".")
+  ?.mapIndexed { i, str -> if (i == 0) (str.toInt() + 23) else str }
+  ?.joinToString(".")
+
 dependencies {
   testFixturesApi(project(":core"))
-  testFixturesApi(libs.agp.layoutlib)
-  testFixturesApi(libs.agp.tools.common)
-  testFixturesApi(libs.agp.tools.manifestmerger)
-  testFixturesApi(libs.agp.tools.sdk)
 
   testFixturesImplementation(libs.kotest)
   testFixturesImplementation(libs.decompiler)
   testFixturesImplementation(libs.jimfs)
+
+  if (toolsVersion.isNullOrBlank()) {
+    testFixturesApi(libs.agp.layoutlib)
+    testFixturesApi(libs.agp.tools.common)
+    testFixturesApi(libs.agp.tools.manifestmerger)
+    testFixturesApi(libs.agp.tools.sdk)
+  } else {
+    testFixturesApi("com.android.tools.layoutlib:layoutlib-api:$toolsVersion")
+    testFixturesApi("com.android.tools:common:$toolsVersion")
+    testFixturesApi("com.android.tools.build:manifest-merger:$toolsVersion")
+    testFixturesApi("com.android.tools:sdk-common:$toolsVersion")
+  }
 }
 
 tasks.withType<Copy> {

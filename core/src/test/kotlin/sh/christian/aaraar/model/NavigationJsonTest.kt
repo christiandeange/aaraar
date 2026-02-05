@@ -1,6 +1,8 @@
 package sh.christian.aaraar.model
 
 import io.kotest.matchers.shouldBe
+import sh.christian.aaraar.utils.agpVersion
+import sh.christian.aaraar.utils.deepLinkActionVersion
 import sh.christian.aaraar.utils.navigationJsonDataString
 import java.io.File
 import kotlin.test.Test
@@ -10,6 +12,13 @@ class NavigationJsonTest {
   fun `test toString`() {
     val json = navigationJsonDataString("nav1", "/lib1")
     val navigationJson = NavigationJson(json)
+
+    val action = if (agpVersion >= deepLinkActionVersion) {
+      """,
+              "action": "android.intent.action.VIEW""""
+    } else {
+      ""
+    }
 
     val filePath = if (File.separatorChar == '\\') {
       """D:\\nav1.xml"""
@@ -45,8 +54,7 @@ class NavigationJsonTest {
                   "mEndOffset": 440
                 }
               },
-              "isAutoVerify": false,
-              "action": "android.intent.action.VIEW"
+              "isAutoVerify": false$action
             }
           ]
         }
