@@ -24,6 +24,7 @@ jobs:
           distribution: 'temurin'
           java-version: '17'
           check-latest: true
+      - uses: mlugg/setup-zig@v2
 
       - name: Assemble & Test
         run: ./gradlew clean assemble test detekt -PagpVersion="${{ matrix.agp }}" --no-build-cache --no-daemon --stacktrace

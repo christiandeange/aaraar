@@ -37,6 +37,33 @@ tasks.withType<Copy> {
   duplicatesStrategy = DuplicatesStrategy.INCLUDE
 }
 
+val libTinySource = layout.projectDirectory.file("src/nativelib/c/tiny.c")
+val libTinyLibrary = layout.buildDirectory.file("nativelib/libtiny.so").get()
+
+val compileLibTiny = tasks.register<Exec>("buildNativelib") {
+  description = "Build the native test fixture library (requires zig: https://ziglang.org/download/)"
+  group = "build"
+
+  inputs.file(libTinySource)
+  outputs.file(libTinyLibrary)
+
+  doFirst {
+    libTinyLibrary.asFile.parentFile.mkdirs()
+  }
+
+  commandLine(
+    "zig", "cc",
+    "-O3",
+    "-flto",
+    "-Wl",
+    "-target", "x86_64-linux-gnu",
+    "-shared",
+    "-fPIC",
+    "-o", libTinyLibrary.asFile.absolutePath,
+    libTinySource.asFile.absolutePath,
+  )
+}
+
 val fixtureJarsDir = layout.buildDirectory.dir("fixture-jars")
 val fixtureJars by configurations.registering
 
@@ -45,10 +72,15 @@ registerSourceSet("annotations")
 registerSourceSet("foo")
 registerSourceSet("foo2")
 registerSourceSet("ktLibrary")
-registerSourceSet("nativelib")
+registerSourceSet("nativelib") { sourceSet ->
+  sourceSet.resources.srcDir(compileLibTiny.map { libTinyLibrary.asFile.parentFile })
+}
 registerSourceSet("service")
 
-fun registerSourceSet(name: String) {
+fun registerSourceSet(
+  name: String,
+  configure: (SourceSet) -> Unit = { },
+) {
   val newSourceSet = sourceSets.create(name) {
     java.srcDir("src/$name/java")
     kotlin.srcDir("src/$name/kotlin")
@@ -66,4 +98,6 @@ fun registerSourceSet(name: String) {
       builtBy(newSourceSetJar)
     }
   }
+
+  configure(newSourceSet)
 }
