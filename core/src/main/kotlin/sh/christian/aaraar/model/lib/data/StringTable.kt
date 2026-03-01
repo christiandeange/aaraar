@@ -10,7 +10,7 @@ data class StringTable(
   val strings: List<String>,
 ) : NativeSectionData {
   private val data: ByteArray by lazy {
-    strings.joinToString(separator = "\u0000").encodeUtf8().toByteArray()
+    strings.joinToString(separator = NULL).encodeUtf8().toByteArray()
   }
 
   override fun bytes(
@@ -27,14 +27,23 @@ data class StringTable(
   }
 
   fun offsetOf(string: String): Int {
-    return dataAsString.indexOf(string + "\u0000").also { index ->
+    // Check if the target string is at the start of the string table.
+    if (dataAsString.startsWith(string + NULL)) {
+      return 0
+    }
+
+    // Otherwise, search for the target string in the string table, ensuring that it is delimited by null characters
+    // to avoid matching on the substring of another entry.
+    return dataAsString.indexOf(NULL + string + NULL).also { index ->
       require(index >= 0) {
         "'$string' not found in string table."
       }
-    }
+    } + 1
   }
 
   companion object {
+    private const val NULL = "\u0000"
+
     fun from(elfSection: ElfSection): StringTable {
       val strings = elfSection.data.data.toByteString().utf8().split('\u0000')
       return StringTable(strings)
