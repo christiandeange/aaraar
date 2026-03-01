@@ -161,8 +161,12 @@ class NativeLibraryParser(
     val sh_addralign = bytes.value()
     val sh_entsize = bytes.value()
 
-    val dataBytes = newElfSource(sh_offset, elfHeader)
-    val dataByteArray = dataBytes.bytes(sh_size)
+    val dataByteArray = if (sh_type == NativeSectionType.Nobits.value) {
+      ByteArray(0)
+    } else {
+      val dataBytes = newElfSource(sh_offset, elfHeader)
+      dataBytes.bytes(sh_size)
+    }
     val data = ElfSectionData(data = dataByteArray)
 
     return ElfSection(

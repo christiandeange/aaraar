@@ -9,6 +9,7 @@ import sh.christian.aaraar.model.lib.NativeFormat.BIT_64
 import sh.christian.aaraar.model.lib.NativeSectionFlag.Execinstr
 import sh.christian.aaraar.model.lib.Value.Value32
 import sh.christian.aaraar.model.lib.Value.Value64
+import sh.christian.aaraar.model.lib.data.NobitsData
 import sh.christian.aaraar.model.lib.data.StringTable
 import sh.christian.aaraar.model.lib.elf.ElfFileHeader
 import sh.christian.aaraar.model.lib.elf.ElfProgramHeader
@@ -217,6 +218,14 @@ class NativeLibraryWriter {
   ): ElfSection {
     val sectionNames = lib.sections[lib.fileHeader.sectionNamesHeaderIndex.toInt()].data as StringTable
 
+    val sectionDataSize = when (nativeSection.type) {
+      NativeSectionType.Nobits -> (nativeSection.data as NobitsData).size
+      else -> when (lib.fileHeader.architecture) {
+        BIT_32 -> Value32(data.size)
+        BIT_64 -> Value64(data.size.toLong())
+      }
+    }
+
     return ElfSection(
       sh_name = sectionNames.offsetOf(nativeSection.name),
       sh_type = nativeSection.type.value,
@@ -233,10 +242,7 @@ class NativeLibraryWriter {
       } else {
         sectionStarts[lib.sections.indexOf(nativeSection)]
       },
-      sh_size = when (lib.fileHeader.architecture) {
-        BIT_32 -> Value32(data.size)
-        BIT_64 -> Value64(data.size.toLong())
-      },
+      sh_size = sectionDataSize,
       sh_link = nativeSection.linkedSectionIndex,
       sh_info = nativeSection.extraInfo,
       sh_addralign = nativeSection.alignment,

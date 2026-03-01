@@ -26,6 +26,7 @@ import sh.christian.aaraar.model.lib.NativeSectionType.Companion.SymtabShndx
 import sh.christian.aaraar.model.lib.Value
 import sh.christian.aaraar.model.lib.data.Bytes
 import sh.christian.aaraar.model.lib.data.DynamicTable
+import sh.christian.aaraar.model.lib.data.NobitsData
 import sh.christian.aaraar.model.lib.data.Notes
 import sh.christian.aaraar.model.lib.data.RelocationAddendTable
 import sh.christian.aaraar.model.lib.data.RelocationTable
@@ -64,6 +65,7 @@ data class ElfSection(
         Symtab -> SymbolTable.from(parseContext, this)
         Dynsym -> SymbolTable.from(parseContext, this)
         Dynamic -> DynamicTable.from(parseContext, this)
+        Nobits -> NobitsData.from(this)
         Note -> Notes.from(parseContext, this)
         Rel -> RelocationTable.from(parseContext, this)
         Rela -> RelocationAddendTable.from(parseContext, this)
@@ -71,7 +73,6 @@ data class ElfSection(
         Group,
         Hash,
         InitArray,
-        Nobits,
         Null,
         Num,
         PreinitArray,
