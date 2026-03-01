@@ -45,6 +45,14 @@ class NativeLibraryWriter {
       }
     }
 
+    // Align section header start to 8 bytes.
+    addr = addr.alignTo(
+      when (lib.fileHeader.architecture) {
+        BIT_32 -> Value32(8)
+        BIT_64 -> Value64(8)
+      }
+    )
+
     val sectionHeadersStarts: List<Address> = buildList {
       repeat(lib.sections.size) {
         add(addr)
@@ -162,6 +170,15 @@ class NativeLibraryWriter {
   private fun computeElfFileHeader(context: WriteContext): ElfFileHeader {
     val nativeFileHeader = context.lib.fileHeader
 
+    val entrypoint = if (nativeFileHeader.hasEntrypoint) {
+      context.sectionStarts[context.lib.sections.indexOfFirst { it.flags.contains(Execinstr) }]
+    } else {
+      when (nativeFileHeader.architecture) {
+        BIT_32 -> Address32(0)
+        BIT_64 -> Address64(0)
+      }
+    }
+
     return ElfFileHeader(
       ei_mag = "\u007fELF",
       ei_class = nativeFileHeader.architecture.value,
@@ -172,7 +189,7 @@ class NativeLibraryWriter {
       e_type = nativeFileHeader.fileType.value,
       e_machine = nativeFileHeader.instructionSet,
       e_version = 1,
-      e_entry = context.sectionStarts[context.lib.sections.indexOfFirst { it.flags.contains(Execinstr) }],
+      e_entry = entrypoint,
       e_phoff = context.programHeaderStarts.first(),
       e_shoff = context.sectionHeadersStarts.first(),
       e_flags = nativeFileHeader.flags,

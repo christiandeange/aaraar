@@ -12,6 +12,12 @@ sealed interface Address {
     override fun toString(): String = "0x${value.toString(16).padStart(Long.SIZE_BYTES * 2, '0')}"
   }
 
+  val isZero: Boolean
+    get() = when (this) {
+      is Address32 -> value == 0
+      is Address64 -> value == 0L
+    }
+
   operator fun plus(offset: Number): Address {
     return when (this) {
       is Address32 -> Address32(value + offset.toInt())

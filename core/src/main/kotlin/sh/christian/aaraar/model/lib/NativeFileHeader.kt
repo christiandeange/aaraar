@@ -7,6 +7,7 @@ data class NativeFileHeader(
   val operatingSystemAbiVersion: Byte,
   val fileType: NativeFileHeaderType,
   val instructionSet: Short,
+  val hasEntrypoint: Boolean,
   val flags: Int,
   val fileHeaderSize: Short,
   val programHeaderSize: Short,

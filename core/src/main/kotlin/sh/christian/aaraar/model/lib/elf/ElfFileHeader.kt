@@ -35,6 +35,7 @@ data class ElfFileHeader(
       operatingSystemAbiVersion = ei_abiversion,
       fileType = NativeFileHeaderType(e_type),
       instructionSet = e_machine,
+      hasEntrypoint = !e_entry.isZero,
       flags = e_flags,
       fileHeaderSize = e_ehsize,
       programHeaderSize = e_phentsize,
