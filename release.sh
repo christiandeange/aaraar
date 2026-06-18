@@ -7,7 +7,7 @@ NEXT_SNAPSHOT_VERSION="${1-}"
 if [[ -z "${1}" ]]; then
   echo "Usage: $0 <new-version>" >&2
   exit 1
-elif ! [[ "${1}" =~ ^([0-9]+)\.([0-9]+)\.([0-9]+)$ ]]; then
+elif ! [[ "${1}" =~ ^([0-9]+)\.([0-9]+)\.([0-9]+)(\-[a-z]+[0-9]+)?$ ]]; then
   echo "Error: '${1}' is not a valid semantic version." >&2
   echo "Usage: $0 <new-version>" >&2
   exit 1

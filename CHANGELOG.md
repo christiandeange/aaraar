@@ -1,6 +1,15 @@
 Change Log
 ==========
 
+## Version 0.2.0-alpha01
+
+_2026-06-18_
+
+* New: Preliminary support for AGP 9
+    * Allow `<uses-sdk>` elements in the AndroidManifest.xml file.
+    * Avoid forcing a specific AGP version for plugin consumers.
+* Update: Update Kotlin to 2.3.21
+
 ## Version 0.1.5
 
 _2026-01-30_
