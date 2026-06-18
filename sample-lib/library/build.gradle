@@ -57,7 +57,7 @@ java {
 }
 
 dependencies {
-  api "org.jetbrains.kotlin:kotlin-stdlib:2.2.21"
+  api "org.jetbrains.kotlin:kotlin-stdlib:2.3.21"
 
   compileOnly project(":helper-library")
   embed project(":helper-library")
