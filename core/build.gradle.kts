@@ -17,7 +17,7 @@ val fixtureJars by configurations.registering
 dependencies {
   api(libs.kotlin.metadata)
 
-  implementation(platform(kotlin("bom")))
+  implementation(platform(libs.kotlin.bom))
   implementation(libs.asm)
   implementation(libs.gson)
   implementation(libs.javassist)

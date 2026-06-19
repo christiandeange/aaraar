@@ -3,6 +3,7 @@
 /build/
 !gradle/wrapper/gradle-wrapper.jar
 local.properties
+.kotlin/
 
 # IntelliJ IDEA
 .idea/copilot.*

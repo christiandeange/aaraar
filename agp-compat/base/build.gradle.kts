@@ -8,5 +8,5 @@ plugins {
 }
 
 dependencies {
-  api(platform(kotlin("bom")))
+  api(platform(libs.kotlin.bom))
 }

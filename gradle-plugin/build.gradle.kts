@@ -19,7 +19,7 @@ dependencies {
   implementation(project(":agp-compat:agp8"))
   implementation(project(":agp-compat:agp9"))
 
-  implementation(platform(kotlin("bom")))
+  implementation(platform(libs.kotlin.bom))
   compileOnly(libs.agp.api.latest)
 
   testImplementation(testFixtures(project(":fixtures")))
