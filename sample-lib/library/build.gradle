@@ -6,7 +6,7 @@ import sh.christian.aaraar.packaging.ArtifactArchiveProcessor
 
 plugins {
   id "com.android.library"
-  id "sh.christian.aaraar" version "0.1.5"
+  id "sh.christian.aaraar" version "0.2.0-alpha01"
   id "maven-publish"
 }
 
