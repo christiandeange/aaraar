@@ -1,7 +1,5 @@
 plugins {
-  @Suppress("DSL_SCOPE_VIOLATION") val plugins = libs.plugins
-
-  alias(plugins.kotlin.jvm)
+  alias(libs.plugins.kotlin.jvm)
   `java-gradle-plugin`
   `kotlin-dsl`
 }

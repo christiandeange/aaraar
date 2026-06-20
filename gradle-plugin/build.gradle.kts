@@ -2,9 +2,7 @@ import org.gradle.api.tasks.testing.logging.TestExceptionFormat
 import org.gradle.api.tasks.testing.logging.TestLogEvent
 
 plugins {
-  @Suppress("DSL_SCOPE_VIOLATION") val plugins = libs.plugins
-
-  alias(plugins.kotlin.jvm)
+  alias(libs.plugins.kotlin.jvm)
   `java-gradle-plugin`
   `kotlin-dsl`
   id("aaraar-detekt")
