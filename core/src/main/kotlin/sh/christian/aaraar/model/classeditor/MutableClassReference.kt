@@ -4,6 +4,7 @@ import javassist.CtClass
 import javassist.CtConstructor
 import javassist.CtField
 import javassist.CtMethod
+import javassist.setWasChanged
 import sh.christian.aaraar.model.classeditor.AnnotationInstance.Value.ArrayValue
 import sh.christian.aaraar.model.classeditor.AnnotationInstance.Value.IntegerValue
 import sh.christian.aaraar.model.classeditor.AnnotationInstance.Value.StringValue
@@ -31,13 +32,13 @@ internal constructor(
     }
 
   override var classMajorVersion: Int
-    get() = _class.classFile.majorVersion
+    get() = _class.classFile2.majorVersion
     set(value) {
       _class.classFile.majorVersion = value
     }
 
   override var classMinorVersion: Int
-    get() = _class.classFile.minorVersion
+    get() = _class.classFile2.minorVersion
     set(value) {
       _class.classFile.minorVersion = value
     }
@@ -188,9 +189,8 @@ internal constructor(
   }
 
   override fun toBytecode(): ByteArray {
-    if (!_class.isFrozen) {
-      _class.classFile.compact()
-    }
+    // Set this to ensure the class bytecode is properly written.
+    setWasChanged()
     return _class.toBytecode()
   }
 
@@ -208,6 +208,11 @@ internal constructor(
   }
 
   internal fun finalizeClass() {
+    if (!_class.isModified) {
+      // Optimization to ignore recomputing @Metadata if no changes were applied to this class.
+      return
+    }
+
     val annotationName = "kotlin.Metadata"
     val existingMetadataAnnotations = annotations.filter { it.type.qualifiedName == annotationName }.toSet()
 

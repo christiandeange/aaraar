@@ -6,6 +6,7 @@ import javassist.CtConstructor
 import javassist.CtField
 import javassist.CtMethod
 import javassist.bytecode.annotation.Annotation
+import javassist.unsetWasChanged
 import sh.christian.aaraar.model.GenericJarArchive
 import sh.christian.aaraar.model.classeditor.metadata.toClassName
 import kotlin.metadata.KmClassifier
@@ -234,7 +235,7 @@ internal constructor(
           // Parse the class file into the Javassist representation
           .map { (_, contents) -> cp.makeClass(contents.inputStream()) }
           // Prime the class name to reference cache.
-          .map { classpath[it] }
+          .map { classpath[it].apply { unsetWasChanged() } }
       )
 
       return classpath

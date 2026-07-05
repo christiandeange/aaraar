@@ -21,7 +21,7 @@ internal constructor(
   internal val _constructor: CtConstructor,
 ) : MutableMemberReference(), ConstructorReference {
   override val signature: Signature
-    get() = ConstructorSignature(_constructor.methodInfo.descriptor)
+    get() = ConstructorSignature(_constructor.methodInfo2.descriptor)
 
   val constructorMetadata: KmConstructor? =
     classpath[_constructor.declaringClass].kotlinMetadata?.kmClass?.constructors
@@ -48,7 +48,7 @@ internal constructor(
    */
   override val parameters: List<MutableParameter>
     get() {
-      val parameterCount = Descriptor.numOfParameters(_constructor.methodInfo.descriptor)
+      val parameterCount = Descriptor.numOfParameters(_constructor.methodInfo2.descriptor)
       return List(parameterCount) { index ->
         MutableParameter(FromConstructor(this), index)
       }

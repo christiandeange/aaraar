@@ -213,7 +213,7 @@ internal constructor(
     }
 
     fun forUseIn(classReference: MutableClassReference): AnnotationInstance {
-      val constPool = classReference._class.classFile.constPool
+      val constPool = classReference._class.classFile2.constPool
       val annotation = Annotation(name, constPool).apply {
         values.forEach { (name, value) ->
           addMemberValue(name, value.toMemberValue(constPool))

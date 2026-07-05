@@ -45,7 +45,7 @@ internal fun CtBehavior.toKotlinLikeString(): String {
   val className = declaringClass.toKotlinLikeName()
   val parametersAttribute = get(Attribute.MethodParameters)
   val parameterTypes = parameterTypes
-  val parameterStrings = List(Descriptor.numOfParameters(methodInfo.descriptor)) { i ->
+  val parameterStrings = List(Descriptor.numOfParameters(methodInfo2.descriptor)) { i ->
     val name = parametersAttribute?.parameterName(i) ?: "p$i"
     val type = parameterTypes[i].toKotlinLikeName()
     "$name: $type"

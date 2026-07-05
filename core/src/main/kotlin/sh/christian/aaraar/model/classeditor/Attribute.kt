@@ -32,7 +32,7 @@ internal sealed class Attribute<T : AttributeInfo>(val key: String) {
 }
 
 internal fun <T : AttributeInfo> CtClass.get(attribute: Attribute<T>): T? {
-  return classFile.getAttribute(attribute.key) as T?
+  return classFile2.getAttribute(attribute.key) as T?
 }
 
 internal fun <T : AttributeInfo> CtClass.set(
@@ -43,7 +43,7 @@ internal fun <T : AttributeInfo> CtClass.set(
 }
 
 internal fun <T : AttributeInfo> CtBehavior.get(attribute: Attribute<T>): T? {
-  return methodInfo.getAttribute(attribute.key) as T?
+  return methodInfo2.getAttribute(attribute.key) as T?
 }
 
 internal fun <T : AttributeInfo> CtBehavior.set(
@@ -54,7 +54,7 @@ internal fun <T : AttributeInfo> CtBehavior.set(
 }
 
 internal fun <T : AttributeInfo> CtField.get(attribute: Attribute<T>): T? {
-  return fieldInfo.getAttribute(attribute.key) as T?
+  return fieldInfo2.getAttribute(attribute.key) as T?
 }
 
 internal fun <T : AttributeInfo> CtField.set(

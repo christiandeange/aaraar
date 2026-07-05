@@ -21,7 +21,7 @@ internal constructor(
   internal val _method: CtMethod,
 ) : MutableMemberReference(), MethodReference {
   override val signature: Signature
-    get() = MethodSignature(_method.name, _method.methodInfo.descriptor)
+    get() = MethodSignature(_method.name, _method.methodInfo2.descriptor)
 
   val functionMetadata: KmFunction? =
     classpath[_method.declaringClass].kotlinMetadata?.kmClass?.functions
@@ -60,7 +60,7 @@ internal constructor(
    */
   override val parameters: List<MutableParameter>
     get() {
-      val parameterCount = Descriptor.numOfParameters(_method.methodInfo.descriptor)
+      val parameterCount = Descriptor.numOfParameters(_method.methodInfo2.descriptor)
       return List(parameterCount) { index ->
         MutableParameter(FromMethod(this), index)
       }
