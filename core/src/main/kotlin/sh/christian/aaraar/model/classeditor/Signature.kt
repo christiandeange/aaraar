@@ -6,7 +6,7 @@ sealed interface Signature {
 }
 
 data class ConstructorSignature(
-  override val descriptor: String
+  override val descriptor: String,
 ) : Signature {
   override val memberName: String = "<init>"
 }

@@ -10,7 +10,10 @@ import sh.christian.aaraar.model.PublicTxt
  * The basis of this implementation uses the same resource table merging logic that the Android Gradle Plugin uses.
  */
 class PublicTxtMerger : Merger<PublicTxt> {
-  override fun merge(first: PublicTxt, others: List<PublicTxt>): PublicTxt {
+  override fun merge(
+    first: PublicTxt,
+    others: List<PublicTxt>,
+  ): PublicTxt {
     return PublicTxt(SymbolTable.merge(listOf(first.symbolTable) + others.map { it.symbolTable }))
   }
 }

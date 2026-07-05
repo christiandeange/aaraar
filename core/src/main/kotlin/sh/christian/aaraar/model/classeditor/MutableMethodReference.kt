@@ -80,7 +80,7 @@ internal constructor(
           type = classpath.kmType(it.type.qualifiedName)
           hasAnnotationsInBytecode = it.annotations.isNotEmpty()
         }
-      }
+      },
     )
   }
 

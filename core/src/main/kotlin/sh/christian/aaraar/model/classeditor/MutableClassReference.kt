@@ -132,9 +132,7 @@ internal constructor(
     }
 
   /** Adds a new constructor explicitly declared by this class. */
-  fun addConstructor(
-    configure: MutableConstructorReference.() -> Unit = { },
-  ): MutableConstructorReference {
+  fun addConstructor(configure: MutableConstructorReference.() -> Unit = { }): MutableConstructorReference {
     val newConstructor = CtConstructor(emptyArray(), _class)
     return classpath[newConstructor].also {
       it.modifiers = setOf(Modifier.PUBLIC)

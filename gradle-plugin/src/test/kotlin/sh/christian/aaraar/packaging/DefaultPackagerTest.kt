@@ -79,7 +79,7 @@ class DefaultPackagerTest {
 
     val output = packager.mergeArchives(
       inputArchive = packager.prepareInputArchive(fooJarPath, fooScope),
-      dependencyArchives = listOf(packager.prepareDependencyArchive(animalJarPath, animalScope))
+      dependencyArchives = listOf(packager.prepareDependencyArchive(animalJarPath, animalScope)),
     )
 
     output.classes.archive.shouldContainExactly(
@@ -100,14 +100,14 @@ class DefaultPackagerTest {
             configuration = shadeConfiguration(
               classRenames = mapOf("com.example.**" to "com.biganimalcorp.@1"),
             ),
-          )
+          ),
         ),
       ),
     )
 
     val output = packager.mergeArchives(
       inputArchive = packager.prepareInputArchive(fooJarPath, fooScope),
-      dependencyArchives = listOf(packager.prepareDependencyArchive(animalJarPath, animalScope))
+      dependencyArchives = listOf(packager.prepareDependencyArchive(animalJarPath, animalScope)),
     )
 
     output.classes.archive.shouldContainExactly(
@@ -128,14 +128,14 @@ class DefaultPackagerTest {
             configuration = shadeConfiguration(
               classRenames = mapOf("com.example.**" to "com.biganimalcorp.@1"),
             ),
-          )
+          ),
         ),
       ),
     )
 
     val output = packager.mergeArchives(
       inputArchive = packager.prepareInputArchive(fooJarPath, fooScope),
-      dependencyArchives = listOf(packager.prepareDependencyArchive(animalJarPath, animalScope))
+      dependencyArchives = listOf(packager.prepareDependencyArchive(animalJarPath, animalScope)),
     )
 
     output.classes.archive.shouldContainExactly(
@@ -156,14 +156,14 @@ class DefaultPackagerTest {
             configuration = shadeConfiguration(
               classRenames = mapOf("com.example.**" to "com.fooanimals.@1"),
             ),
-          )
+          ),
         ),
       ),
     )
 
     val output = packager.mergeArchives(
       inputArchive = packager.prepareInputArchive(fooJarPath, fooScope),
-      dependencyArchives = listOf(packager.prepareDependencyArchive(animalJarPath, animalScope))
+      dependencyArchives = listOf(packager.prepareDependencyArchive(animalJarPath, animalScope)),
     )
 
     output.classes.archive.shouldContainExactly(
@@ -192,14 +192,14 @@ class DefaultPackagerTest {
                 configuration = shadeConfiguration(
                   classDeletes = setOf("com.example.**"),
                 ),
-              )
+              ),
             ),
           ),
         )
 
         val output = packager.mergeArchives(
           inputArchive = packager.prepareInputArchive(fooJarPath, fooScope),
-          dependencyArchives = listOf(packager.prepareDependencyArchive(animalJarPath, externalScope))
+          dependencyArchives = listOf(packager.prepareDependencyArchive(animalJarPath, externalScope)),
         )
 
         output.classes.archive.shouldContainExactly(

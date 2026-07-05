@@ -9,7 +9,10 @@ internal object RegexUtils {
   private val estar: Regex = Regex("""\+\??\)\Z""")
   private val nested: Regex = Regex("""\$""")
 
-  fun newPattern(regex: String, forClass: Boolean): Regex {
+  fun newPattern(
+    regex: String,
+    forClass: Boolean,
+  ): Regex {
     require(regex != "**") {
       "'**' is not a valid pattern"
     }
@@ -21,20 +24,23 @@ internal object RegexUtils {
     }
 
     val delimiter = if (forClass) "." else "/"
-    return Regex(
-      escapeComponents(regex, delimiter)
-        // One wildcard test requires the argument to be allowably empty.
-        .let { replaceAllLiteral(it, dstar, """(.+?)""") }
-        .let { replaceAllLiteral(it, star, """([^/]+)""") }
-        // Although we replaced with + above, we mean *
-        .let { replaceAllLiteral(it, estar, """*\??)""") }
-        // Convert nested class symbols to regular expressions
-        .let { replaceAllLiteral(it, nested, """\$""") }
-        .let { """\A$it\Z""" }
-    )
+    val pattern = escapeComponents(regex, delimiter)
+      // One wildcard test requires the argument to be allowably empty.
+      .let { replaceAllLiteral(it, dstar, """(.+?)""") }
+      .let { replaceAllLiteral(it, star, """([^/]+)""") }
+      // Although we replaced with + above, we mean *
+      .let { replaceAllLiteral(it, estar, """*\??)""") }
+      // Convert nested class symbols to regular expressions
+      .let { replaceAllLiteral(it, nested, """\$""") }
+      .let { """\A$it\Z""" }
+
+    return Regex(pattern)
   }
 
-  fun newReplace(result: String, forClass: Boolean): List<ReplacePart> {
+  fun newReplace(
+    result: String,
+    forClass: Boolean,
+  ): List<ReplacePart> {
     var isEscape = false
     var i = 0
     var mark = 0
@@ -68,7 +74,11 @@ internal object RegexUtils {
     }
   }
 
-  fun replace(pattern: AbstractPattern, replace: List<ReplacePart>, value: String): String? {
+  fun replace(
+    pattern: AbstractPattern,
+    replace: List<ReplacePart>,
+    value: String,
+  ): String? {
     val matchResult = pattern.matchOrNull(value) ?: return null
 
     return replace.joinToString("") { part ->
@@ -79,15 +89,25 @@ internal object RegexUtils {
     }
   }
 
-  fun isPossibleQualifiedName(value: String, extraAllowedCharacters: String): Boolean {
+  fun isPossibleQualifiedName(
+    value: String,
+    extraAllowedCharacters: String,
+  ): Boolean {
     return value.all { it !in disallowedJvmChars || it in extraAllowedCharacters }
   }
 
-  private fun replaceAllLiteral(value: String, regex: Regex, replace: String): String {
+  private fun replaceAllLiteral(
+    value: String,
+    regex: Regex,
+    replace: String,
+  ): String {
     return regex.replace(value, Regex.escapeReplacement(replace))
   }
 
-  private fun escapeComponents(s: String, delimiter: String): String {
+  private fun escapeComponents(
+    s: String,
+    delimiter: String,
+  ): String {
     return s.split(delimiter).joinToString(delimiter) { if ('*' in it) it else Regex.escape(it) }
   }
 }

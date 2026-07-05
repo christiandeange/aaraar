@@ -12,7 +12,10 @@ internal fun W3CNode.toNode(): Node {
   }.first(nodeName)
 }
 
-private fun copyNode(source: W3CNode, dest: Node) {
+private fun copyNode(
+  source: W3CNode,
+  dest: Node,
+) {
   when (source.nodeType) {
     W3CNode.ELEMENT_NODE -> {
       val cur = dest.element(source.nodeName)
@@ -34,7 +37,10 @@ private fun copyNode(source: W3CNode, dest: Node) {
   }
 }
 
-private fun copyAttributes(source: W3CNode, dest: Node) {
+private fun copyAttributes(
+  source: W3CNode,
+  dest: Node,
+) {
   val attributes = source.attributes
   if (attributes == null || attributes.length == 0) {
     return

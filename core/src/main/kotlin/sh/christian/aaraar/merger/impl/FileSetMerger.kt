@@ -15,7 +15,10 @@ class FileSetMerger(
   private val jarMerger: Merger<GenericJarArchive>,
   private val mergeRules: MergeRules,
 ) : Merger<FileSet> {
-  override fun merge(first: FileSet, others: List<FileSet>): FileSet {
+  override fun merge(
+    first: FileSet,
+    others: List<FileSet>,
+  ): FileSet {
     return FileSet(mergeContents(first, others, jarMerger, mergeRules))
   }
 }

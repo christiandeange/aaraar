@@ -76,7 +76,7 @@ class AnnotationTest {
             EnumValue(cp["java.lang.annotation.ElementType"], "PARAMETER"),
             EnumValue(cp["java.lang.annotation.ElementType"], "LOCAL_VARIABLE"),
             EnumValue(cp["java.lang.annotation.ElementType"], "ANNOTATION_TYPE"),
-          )
+          ),
         ),
       )
       annotations["Language"]!! shouldContainExactly mapOf(

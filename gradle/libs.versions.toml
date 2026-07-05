@@ -1,7 +1,7 @@
 [versions]
 agp-latest = "9.2.1"
 agp-tools = "32.2.1"
-detekt = "1.23.8"
+detekt = "2.0.0-alpha.5"
 dokka = "2.2.0"
 kotlin = "2.3.21"
 maven-publish = "0.36.0"
@@ -34,7 +34,7 @@ kotlinxml = { module = "org.redundent:kotlin-xml-builder", version = "1.9.3" }
 dokka-plugin = { module = "org.jetbrains.dokka:dokka-gradle-plugin", version.ref = "dokka" }
 maven-publish = { module = "com.vanniktech:gradle-maven-publish-plugin", version.ref = "maven-publish" }
 
-detekt-plugin = { module = "io.gitlab.arturbosch.detekt:detekt-gradle-plugin", version.ref = "detekt" }
-detekt-rules-formatting = { module = "io.gitlab.arturbosch.detekt:detekt-formatting", version.ref = "detekt" }
+detekt-plugin = { module = "dev.detekt:detekt-gradle-plugin", version.ref = "detekt" }
+detekt-rules-formatting = { module = "dev.detekt:detekt-rules-ktlint-wrapper", version.ref = "detekt" }
 
 kotest = { module = "io.kotest:kotest-assertions-core", version = "6.2.1" }

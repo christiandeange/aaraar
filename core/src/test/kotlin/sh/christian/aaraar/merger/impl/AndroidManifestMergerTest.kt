@@ -31,7 +31,7 @@ class AndroidManifestMergerTest {
       <manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.library.helper.core">
           <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
       </manifest>
-      """
+      """,
     )
 
     val mergedManifest = merger.merge(mainLibManifest, helperModuleManifest)
@@ -55,7 +55,7 @@ class AndroidManifestMergerTest {
 
           <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" tools:node="remove" />
       </manifest>
-      """
+      """,
     )
 
     val helperModuleManifest = AndroidManifest(
@@ -63,7 +63,7 @@ class AndroidManifestMergerTest {
       <manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.library.helper.core">
           <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
       </manifest>
-      """
+      """,
     )
 
     val mergedManifest = merger.merge(mainLibManifest, helperModuleManifest)
@@ -88,7 +88,7 @@ class AndroidManifestMergerTest {
                   android:screenOrientation="${'$'}screenOrientation}" />
           </application>
       </manifest>
-      """
+      """,
     )
 
     val mergedManifest = merger.merge(mainLibManifest, helperModuleManifest)

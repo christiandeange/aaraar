@@ -12,7 +12,10 @@ import sh.christian.aaraar.shading.Shader
 class LibsShader(
   private val genericJarArchiveShader: Shader<GenericJarArchive>,
 ) : Shader<Libs> {
-  override fun shade(source: Libs, shadeConfiguration: ShadeConfiguration): Libs {
+  override fun shade(
+    source: Libs,
+    shadeConfiguration: ShadeConfiguration,
+  ): Libs {
     val shadedFiles = source.files.mapValues { (path, contents) ->
       if (path.substringAfterLast('.') == "jar") {
         GenericJarArchive.from(contents, keepMetaFiles = true)

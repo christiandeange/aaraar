@@ -40,7 +40,10 @@ class AarArchiveMerger(
   private val navigationJsonMerger: Merger<NavigationJson>,
   private val apiJarMerger: Merger<ApiJar>,
 ) : ArchiveMerger<AarArchive> {
-  override fun merge(first: AarArchive, others: List<ArtifactArchive>): AarArchive {
+  override fun merge(
+    first: AarArchive,
+    others: List<ArtifactArchive>,
+  ): AarArchive {
     val aars = others.filterIsInstance<AarArchive>()
 
     // At merging time, jars in the `libs` folder are merged into the `classes.jar` file.

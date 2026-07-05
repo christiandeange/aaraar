@@ -21,7 +21,7 @@ class AndroidManifestTest {
               android:minSdkVersion="21"
               android:targetSdkVersion="30"/>
       </manifest>
-      """
+      """,
     )
 
     manifest.minSdk shouldBe 21

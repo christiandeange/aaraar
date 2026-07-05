@@ -19,9 +19,13 @@ internal val Project.agp: AgpCompat
       agpVersion.major > AGP_9 -> Agp9(this).also {
         project.logger.warn("aaraar has not been tested against AGP > 9. Use at your own risk!")
       }
+
       agpVersion.major == AGP_9 -> Agp9(this)
+
       agpVersion.major == AGP_8 -> Agp8(this)
+
       agpVersion.major == AGP_7 -> Agp7(this)
+
       else -> error("aaraar is not compatible with AGP < 7")
     }
   }

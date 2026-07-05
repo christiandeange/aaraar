@@ -22,11 +22,11 @@ internal var MutableClassReference.classAnnotations: List<AnnotationInstance>
     val constPool = _class.classFile.constPool
     _class.set(
       Attribute.VisibleAnnotations,
-      newAnnotation(constPool, visible, Attribute.VisibleAnnotations)
+      newAnnotation(constPool, visible, Attribute.VisibleAnnotations),
     )
     _class.set(
       Attribute.InvisibleAnnotations,
-      newAnnotation(constPool, invisible, Attribute.InvisibleAnnotations)
+      newAnnotation(constPool, invisible, Attribute.InvisibleAnnotations),
     )
 
     kotlinMetadata?.kmClass?.hasAnnotationsInBytecode = value.isNotEmpty()

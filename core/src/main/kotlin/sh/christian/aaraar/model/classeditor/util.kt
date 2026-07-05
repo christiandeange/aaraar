@@ -56,9 +56,11 @@ internal fun CtBehavior.toKotlinLikeString(): String {
       val returnType = returnType.takeIf { it != voidType }?.let { ": ${it.toKotlinLikeName()}" }.orEmpty()
       "fun $className.$name($parameterStrings)$returnType"
     }
+
     is CtConstructor -> {
       "constructor $className($parameterStrings)"
     }
+
     else -> {
       error("Unknown behavior: ${this::class}")
     }

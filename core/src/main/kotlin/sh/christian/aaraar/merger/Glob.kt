@@ -20,7 +20,7 @@ import java.nio.file.Files
  * - Within a bracket expression the `*`, `?` and `\` characters match themselves. The `-` character matches itself if
  *   it is the first character within the brackets, or the first character after the `!` if negating.
  * - The `{ }` characters are a group of subpatterns, where the group matches if any subpattern in the group matches.
- *   The `,` character is used to separate the subpatterns. Groups cannot be nested.
+ *   The `, ` character is used to separate the subpatterns. Groups cannot be nested.
  * - Leading period/dot characters in file name are treated as regular characters in match operations. For example, the
  *   `*` glob pattern matches file name ".login". The [Files.isHidden] method may be used to test whether a file is
  *   considered hidden.

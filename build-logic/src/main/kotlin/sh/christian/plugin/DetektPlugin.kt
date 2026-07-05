@@ -1,8 +1,7 @@
 package sh.christian.plugin
 
-import io.gitlab.arturbosch.detekt.CONFIGURATION_DETEKT_PLUGINS
-import io.gitlab.arturbosch.detekt.Detekt
-import io.gitlab.arturbosch.detekt.DetektPlugin
+import dev.detekt.gradle.Detekt
+import dev.detekt.gradle.plugin.DetektPlugin
 import org.gradle.accessors.dm.LibrariesForLibs
 import org.gradle.api.Plugin
 import org.gradle.api.Project
@@ -16,10 +15,12 @@ class DetektPlugin : Plugin<Project> {
 
     pluginManager.apply(DetektPlugin::class)
 
-    dependencies.add(CONFIGURATION_DETEKT_PLUGINS, libs.detekt.rules.formatting)
+    dependencies.add("detektPlugins", libs.detekt.rules.formatting)
 
     tasks.withType<Detekt>().configureEach {
-      buildUponDefaultConfig = true
+      buildUponDefaultConfig.set(true)
+      autoCorrect.set(false)
+      config.setFrom(rootProject.file("config/detekt/detekt.yml"))
     }
   }
 }

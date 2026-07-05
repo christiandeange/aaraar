@@ -51,7 +51,10 @@ internal constructor(
   }
 
   companion object {
-    fun from(path: Path, packageName: String): RTxt {
+    fun from(
+      path: Path,
+      packageName: String,
+    ): RTxt {
       if (!Files.isRegularFile(path)) return RTxt(symbolTable = SymbolTable.builder().build())
 
       val symbolTable = SymbolIo.readFromAaptNoValues(Files.newBufferedReader(path), path.toString(), packageName)

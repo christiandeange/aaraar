@@ -13,7 +13,10 @@ class AarArchiveShader(
   private val classesShader: Shader<Classes>,
   private val libsShader: Shader<Libs>,
 ) : Shader<AarArchive> {
-  override fun shade(source: AarArchive, shadeConfiguration: ShadeConfiguration): AarArchive {
+  override fun shade(
+    source: AarArchive,
+    shadeConfiguration: ShadeConfiguration,
+  ): AarArchive {
     return AarArchive(
       aarMetadata = source.aarMetadata,
       androidManifest = source.androidManifest,

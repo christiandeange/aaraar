@@ -52,12 +52,16 @@ private fun merge(
 ): MergeResult {
   return when {
     entry in mergeRules.pickFirsts -> PickFirst(contents1)
+
     entry in mergeRules.merges -> MergedContents(contents1 + contents2)
+
     entry in mergeRules.excludes -> Skip
+
     contents1.contentEquals(contents2) -> MergedContents(contents1)
+
     entry.startsWith("META-INF/services/") -> {
       MergedContents(
-        (contents1.decodeToString() + "\n" + contents2.decodeToString()).trim().encodeToByteArray()
+        (contents1.decodeToString() + "\n" + contents2.decodeToString()).trim().encodeToByteArray(),
       )
     }
 

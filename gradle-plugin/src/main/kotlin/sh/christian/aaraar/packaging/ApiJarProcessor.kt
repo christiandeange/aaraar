@@ -49,6 +49,7 @@ interface ApiJarProcessor : ArtifactArchiveProcessor {
           archive
         }
       }
+
       else -> archive
     }
   }

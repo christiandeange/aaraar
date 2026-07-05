@@ -14,7 +14,10 @@ class GradlePackagerLogger(
     logger.warn(message)
   }
 
-  override fun warning(message: String, exception: Exception) {
+  override fun warning(
+    message: String,
+    exception: Exception,
+  ) {
     logger.warn(message, exception)
   }
 
@@ -22,7 +25,10 @@ class GradlePackagerLogger(
     logger.error(message)
   }
 
-  override fun error(message: String, exception: Exception) {
+  override fun error(
+    message: String,
+    exception: Exception,
+  ) {
     logger.error(message, exception)
   }
 }

@@ -13,7 +13,7 @@ internal class KotlinModuleShader(
   classRenames: Map<String, String>,
 ) : JarProcessor {
   private val packageRemapper = PackageRemapper(
-    classRenames.map { (pattern, result) -> ClassRename(pattern, result) }
+    classRenames.map { (pattern, result) -> ClassRename(pattern, result) },
   )
 
   override fun process(struct: Transformable): JarProcessor.Result {
@@ -33,7 +33,7 @@ internal class KotlinModuleShader(
         packageParts.fileFacades.addAll(fileFacades.map { packageRemapper.mapType(it) })
 
         newPackageName to packageParts
-      }
+      },
     )
     struct.data = metadata.write()
 

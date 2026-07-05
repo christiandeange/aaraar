@@ -12,7 +12,10 @@ class ArtifactArchiveMerger(
   private val jarArchiveMerger: ArchiveMerger<JarArchive>,
   private val aarArchiveMerger: ArchiveMerger<AarArchive>,
 ) : ArchiveMerger<ArtifactArchive> {
-  override fun merge(first: ArtifactArchive, others: List<ArtifactArchive>): ArtifactArchive {
+  override fun merge(
+    first: ArtifactArchive,
+    others: List<ArtifactArchive>,
+  ): ArtifactArchive {
     return when (first) {
       is JarArchive -> jarArchiveMerger.merge(first, others)
       is AarArchive -> aarArchiveMerger.merge(first, others)

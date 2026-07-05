@@ -22,11 +22,14 @@ class AndroidManifestMerger : Merger<AndroidManifest> {
       )
     }
 
-  override fun merge(first: AndroidManifest, others: List<AndroidManifest>): AndroidManifest {
+  override fun merge(
+    first: AndroidManifest,
+    others: List<AndroidManifest>,
+  ): AndroidManifest {
     val mergeReport = ManifestMerger2.newMerger(
       first.asTempFile(),
       StdLogger(StdLogger.Level.WARNING),
-      ManifestMerger2.MergeType.APPLICATION
+      ManifestMerger2.MergeType.APPLICATION,
     )
       .apply {
         features.forEach { feature ->

@@ -27,11 +27,11 @@ internal class KotlinModuleFilter(
         val fileFacades = packageParts.fileFacades.toList()
         packageParts.fileFacades.clear()
         packageParts.fileFacades.addAll(
-          fileFacades.filter { clazz -> classDeletePatterns.none { it.matches(clazz) } }
+          fileFacades.filter { clazz -> classDeletePatterns.none { it.matches(clazz) } },
         )
 
         (packageName to packageParts).takeIf { packageParts.fileFacades.isNotEmpty() }
-      }
+      },
     )
 
     return if (kotlinModule.packageParts.isNotEmpty()) {

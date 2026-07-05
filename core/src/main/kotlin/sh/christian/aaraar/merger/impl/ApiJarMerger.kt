@@ -10,7 +10,10 @@ import sh.christian.aaraar.model.GenericJarArchive
 class ApiJarMerger(
   private val jarMerger: Merger<GenericJarArchive>,
 ) : Merger<ApiJar> {
-  override fun merge(first: ApiJar, others: List<ApiJar>): ApiJar {
+  override fun merge(
+    first: ApiJar,
+    others: List<ApiJar>,
+  ): ApiJar {
     return ApiJar(jarMerger.merge(first.archive, others.map { it.archive }))
   }
 }

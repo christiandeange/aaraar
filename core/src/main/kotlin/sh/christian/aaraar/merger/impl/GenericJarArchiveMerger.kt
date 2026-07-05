@@ -17,7 +17,10 @@ import sh.christian.aaraar.model.GenericJarArchive
 class GenericJarArchiveMerger(
   private val mergeRules: MergeRules,
 ) : Merger<GenericJarArchive> {
-  override fun merge(first: GenericJarArchive, others: List<GenericJarArchive>): GenericJarArchive {
+  override fun merge(
+    first: GenericJarArchive,
+    others: List<GenericJarArchive>,
+  ): GenericJarArchive {
     return GenericJarArchive(mergeContents(first, others, this, mergeRules))
   }
 }

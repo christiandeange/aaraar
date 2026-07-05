@@ -12,7 +12,10 @@ import sh.christian.aaraar.model.JarArchive
 class JarArchiveMerger(
   private val classesMerger: Merger<Classes>,
 ) : ArchiveMerger<JarArchive> {
-  override fun merge(first: JarArchive, others: List<ArtifactArchive>): JarArchive {
+  override fun merge(
+    first: JarArchive,
+    others: List<ArtifactArchive>,
+  ): JarArchive {
     val mergedClasses = classesMerger.merge(
       first.classes,
       others.map { it.classes },

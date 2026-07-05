@@ -9,7 +9,10 @@ import kotlin.test.Test
 class MergeContentsTest {
 
   private val jarMerger = object : Merger<GenericJarArchive> {
-    override fun merge(first: GenericJarArchive, others: List<GenericJarArchive>) = error("Not implemented")
+    override fun merge(
+      first: GenericJarArchive,
+      others: List<GenericJarArchive>,
+    ) = error("Not implemented")
   }
 
   @Test
@@ -166,7 +169,7 @@ class MergeContentsTest {
         pickFirsts = Glob.fromString("*.txt"),
         merges = Glob.fromString("*.txt"),
         excludes = Glob.fromString("*.txt"),
-      )
+      ),
     )
 
     mergedContents.shouldBeEmpty()
@@ -183,7 +186,7 @@ class MergeContentsTest {
       mergeRules = mergeRules(
         pickFirsts = Glob.fromString("*.txt"),
         merges = Glob.fromString("*.txt"),
-      )
+      ),
     )
 
     mergedContents.shouldBeExactly(
@@ -201,7 +204,7 @@ class MergeContentsTest {
       dependencies = listOf(contents2),
       mergeRules = mergeRules(
         merges = Glob.fromString("*.txt"),
-      )
+      ),
     )
 
     mergedContents.shouldBeExactly(

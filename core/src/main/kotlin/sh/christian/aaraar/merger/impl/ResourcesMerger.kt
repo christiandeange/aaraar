@@ -27,7 +27,10 @@ import com.android.ide.common.resources.ResourceMerger as AndroidResourceMerger
  * The basis of this implementation uses the same resource merging logic that the Android Gradle Plugin uses.
  */
 class ResourcesMerger : Merger<Resources> {
-  override fun merge(first: Resources, others: List<Resources>): Resources {
+  override fun merge(
+    first: Resources,
+    others: List<Resources>,
+  ): Resources {
     val consumer = ResourceMergerConsumer()
 
     AndroidResourceMerger(first.minSdk).apply {
@@ -87,7 +90,9 @@ class ResourcesMerger : Merger<Resources> {
     override fun addItem(item: ResourceMergerItem) {
       when (item.sourceType!!) {
         DataFile.FileType.SINGLE_FILE -> files.add(item)
+
         DataFile.FileType.GENERATED_FILES -> generated.add(item)
+
         DataFile.FileType.XML_VALUES -> {
           namespaces.computeIfAbsent(Pair(item.file, item.qualifiers)) { _ ->
             if (item.file != null) {
@@ -102,7 +107,10 @@ class ResourcesMerger : Merger<Resources> {
       }
     }
 
-    override fun removeItem(removedItem: ResourceMergerItem, replacedBy: ResourceMergerItem?) {
+    override fun removeItem(
+      removedItem: ResourceMergerItem,
+      replacedBy: ResourceMergerItem?,
+    ) {
       when (removedItem.sourceType!!) {
         DataFile.FileType.SINGLE_FILE -> files.remove(removedItem)
         DataFile.FileType.GENERATED_FILES -> generated.remove(removedItem)

@@ -255,7 +255,7 @@ class AarAarPlugin : Plugin<Project> {
                 resourceRenames = emptyMap(),
                 resourceDeletes = resourceExclusions,
               ),
-            )
+            ),
           )
         }
 
@@ -272,7 +272,7 @@ class AarAarPlugin : Plugin<Project> {
                 resourceDeletes = it.resourceDeletes.get(),
               ),
             )
-          }
+          },
         )
       }.toList(),
     )

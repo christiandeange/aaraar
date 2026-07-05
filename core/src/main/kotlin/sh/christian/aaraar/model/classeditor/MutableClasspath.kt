@@ -235,7 +235,7 @@ internal constructor(
           // Parse the class file into the Javassist representation
           .map { (_, contents) -> cp.makeClass(contents.inputStream()) }
           // Prime the class name to reference cache.
-          .map { classpath[it].apply { unsetWasChanged() } }
+          .map { classpath[it].apply { unsetWasChanged() } },
       )
 
       return classpath

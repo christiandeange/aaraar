@@ -162,7 +162,7 @@ class ClassesTest {
           name = "name",
           type = cp.stringType,
           annotations = listOf(person.annotationInstance(nonNull)),
-        )
+        ),
       )
     }
     person.addField("name", cp.stringType)

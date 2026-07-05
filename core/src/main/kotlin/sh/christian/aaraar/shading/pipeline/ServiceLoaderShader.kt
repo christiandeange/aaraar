@@ -10,7 +10,7 @@ internal class ServiceLoaderShader(
   classRenames: Map<String, String>,
 ) : JarProcessor {
   private val packageRemapper = PackageRemapper(
-    classRenames.map { (pattern, result) -> ClassRename(pattern, result) }
+    classRenames.map { (pattern, result) -> ClassRename(pattern, result) },
   )
 
   override fun process(struct: Transformable): JarProcessor.Result {

@@ -22,6 +22,6 @@ class Agp9(private val project: Project) : AgpCompat {
   }
 
   override fun onVariants(callback: (AndroidVariant) -> Unit) {
-    return androidComponents.onVariants { callback(Agp9AndroidVariant(it)) }
+    androidComponents.onVariants { callback(Agp9AndroidVariant(it)) }
   }
 }

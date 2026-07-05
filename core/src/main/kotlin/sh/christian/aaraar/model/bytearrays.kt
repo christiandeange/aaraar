@@ -15,9 +15,7 @@ internal fun contentEquals(
 }
 
 @Suppress("MagicNumber")
-internal fun contentHashCode(
-  map: Map<String, ByteArray>,
-): Int {
+internal fun contentHashCode(map: Map<String, ByteArray>): Int {
   var result = 1
   for ((key, value) in map) {
     result = 31 * result + key.hashCode()

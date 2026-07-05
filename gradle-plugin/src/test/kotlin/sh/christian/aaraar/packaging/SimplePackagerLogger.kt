@@ -9,7 +9,10 @@ class SimplePackagerLogger : PackagerLogger {
     println("WARNING: $message")
   }
 
-  override fun warning(message: String, exception: Exception) {
+  override fun warning(
+    message: String,
+    exception: Exception,
+  ) {
     println("WARNING: $message")
     exception.printStackTrace()
   }
@@ -18,7 +21,10 @@ class SimplePackagerLogger : PackagerLogger {
     println("ERROR: $message")
   }
 
-  override fun error(message: String, exception: Exception) {
+  override fun error(
+    message: String,
+    exception: Exception,
+  ) {
     println("ERROR: $message")
     exception.printStackTrace()
   }

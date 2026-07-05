@@ -5,6 +5,7 @@ import javassist.Modifier as JModifier
 /**
  * A modifier keyword that may be applied to a class, member, or parameter.
  */
+@Suppress("EnumWrapping")
 enum class Modifier {
   PUBLIC,
   PROTECTED,

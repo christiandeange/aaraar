@@ -50,8 +50,11 @@ internal fun KmProperty.signatures(): List<Signature> {
 internal fun Set<Modifier>.toVisibility(): Visibility {
   return when {
     Modifier.PUBLIC in this -> Visibility.PUBLIC
+
     Modifier.PROTECTED in this -> Visibility.PROTECTED
+
     Modifier.PRIVATE in this -> Visibility.PRIVATE
+
     // Assume internal if no visibility modifiers are present.
     else -> Visibility.INTERNAL
   }

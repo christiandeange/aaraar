@@ -9,7 +9,10 @@ import sh.christian.aaraar.model.Proguard
  * Concatenates all rule entries without any deduplication.
  */
 class ProguardMerger : Merger<Proguard> {
-  override fun merge(first: Proguard, others: List<Proguard>): Proguard {
+  override fun merge(
+    first: Proguard,
+    others: List<Proguard>,
+  ): Proguard {
     return Proguard(first.lines + others.flatMap { it.lines })
   }
 }

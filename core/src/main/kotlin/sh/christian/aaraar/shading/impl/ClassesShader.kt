@@ -11,7 +11,10 @@ import sh.christian.aaraar.shading.Shader
 class ClassesShader(
   private val genericJarArchiveShader: Shader<GenericJarArchive>,
 ) : Shader<Classes> {
-  override fun shade(source: Classes, shadeConfiguration: ShadeConfiguration): Classes {
+  override fun shade(
+    source: Classes,
+    shadeConfiguration: ShadeConfiguration,
+  ): Classes {
     return Classes(genericJarArchiveShader.shade(source.archive, shadeConfiguration))
   }
 }

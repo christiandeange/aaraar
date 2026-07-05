@@ -142,24 +142,34 @@ internal constructor(
 
     fun toMemberValue(constPool: ConstPool): MemberValue = when (this) {
       is AnnotationValue -> AnnotationMemberValue(value._annotation, constPool)
+
       is ArrayValue -> ArrayMemberValue(constPool).apply {
         value = values.mapToArray { it.toMemberValue(constPool) }
       }
 
       is BooleanValue -> BooleanMemberValue(value, constPool)
+
       is ByteValue -> ByteMemberValue(value, constPool)
+
       is CharValue -> CharMemberValue(value, constPool)
+
       is ClassValue -> ClassMemberValue(value.qualifiedName, constPool)
+
       is DoubleValue -> DoubleMemberValue(value, constPool)
+
       is EnumValue -> EnumMemberValue(constPool).apply {
         type = this@Value.type.qualifiedName
         value = this@Value.name
       }
 
       is FloatValue -> FloatMemberValue(value, constPool)
+
       is IntegerValue -> IntegerMemberValue(constPool, value)
+
       is LongValue -> LongMemberValue(value, constPool)
+
       is ShortValue -> ShortMemberValue(value, constPool)
+
       is StringValue -> StringMemberValue(value, constPool)
     }
 

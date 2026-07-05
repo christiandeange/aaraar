@@ -40,7 +40,10 @@ internal constructor(
    * A numbered reference is available for every wildcard in the pattern, starting from left to right: `@1`, `@2`, etc.
    * A special `@0` reference contains the entire matched class name.
    */
-  fun renameClass(pattern: String, replacement: String) {
+  fun renameClass(
+    pattern: String,
+    replacement: String,
+  ) {
     classRenames.put(pattern, replacement)
   }
 
@@ -66,7 +69,10 @@ internal constructor(
    * A numbered reference is available for every wildcard in the pattern, starting from left to right: `@1`, `@2`, etc.
    * A special `@0` reference contains the entire matched resource path.
    */
-  fun renameResource(pattern: String, replacement: String) {
+  fun renameResource(
+    pattern: String,
+    replacement: String,
+  ) {
     resourceRenames.put(pattern, replacement)
   }
 
@@ -92,7 +98,10 @@ internal constructor(
    * A numbered reference is available for every wildcard in the pattern, starting from left to right: `@1`, `@2`, etc.
    * A special `@0` reference contains the entire matched class name or resource path.
    */
-  fun rename(pattern: String, replacement: String) {
+  fun rename(
+    pattern: String,
+    replacement: String,
+  ) {
     // The replacement syntax is expected to be in class name format, so convert dots to slashes for resource paths.
     renameClass(pattern, replacement)
     renameResource(pattern, replacement.replace('.', '/'))

@@ -2,7 +2,7 @@ package sh.christian.aaraar.shading.impl.transform
 
 internal class ResourceRename(
   patternText: String,
-  replaceText: String
+  replaceText: String,
 ) : AbstractResourcePattern(patternText), ReplacePattern {
   private val replace: List<ReplacePart> = RegexUtils.newReplace(replaceText, forClass = false)
 

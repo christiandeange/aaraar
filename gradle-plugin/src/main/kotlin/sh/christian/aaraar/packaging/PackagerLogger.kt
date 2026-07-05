@@ -8,9 +8,15 @@ interface PackagerLogger {
 
   fun warning(message: String)
 
-  fun warning(message: String, exception: Exception)
+  fun warning(
+    message: String,
+    exception: Exception,
+  )
 
   fun error(message: String)
 
-  fun error(message: String, exception: Exception)
+  fun error(
+    message: String,
+    exception: Exception,
+  )
 }

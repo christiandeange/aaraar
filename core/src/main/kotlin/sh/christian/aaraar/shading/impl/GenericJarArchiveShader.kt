@@ -24,7 +24,10 @@ import sh.christian.aaraar.shading.pipeline.ServiceLoaderShader
  * This ordering is important since class files are removed based on their _original_ name, not their shaded name.
  */
 class GenericJarArchiveShader : Shader<GenericJarArchive> {
-  override fun shade(source: GenericJarArchive, shadeConfiguration: ShadeConfiguration): GenericJarArchive {
+  override fun shade(
+    source: GenericJarArchive,
+    shadeConfiguration: ShadeConfiguration,
+  ): GenericJarArchive {
     val processor = JarProcessorChain(
       ResourceFilter(shadeConfiguration.resourceDeletes),
       ClassFileFilter(shadeConfiguration.classDeletes),

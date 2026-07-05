@@ -44,7 +44,7 @@ class AarAarShading(
 
     configurations.add(
       ScopedShadeConfiguration(resolvedScope, objects)
-        .also { configure(it) }
+        .also { configure(it) },
     )
   }
 

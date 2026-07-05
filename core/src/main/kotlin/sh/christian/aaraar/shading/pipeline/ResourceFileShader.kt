@@ -11,7 +11,7 @@ internal class ResourceFileShader(
   resourceRenames: Map<String, String>,
 ) : JarProcessor {
   private val pathRemapper = PathRemapper(
-    resourceRenames.map { (pattern, result) -> ResourceRename(pattern, result) }
+    resourceRenames.map { (pattern, result) -> ResourceRename(pattern, result) },
   )
 
   override fun process(struct: Transformable): JarProcessor.Result {

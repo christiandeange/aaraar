@@ -1,21 +1,29 @@
 complexity:
   LongParameterList:
-    functionThreshold: 999
-    constructorThreshold: 999
+    allowedFunctionParameters: 999
+    allowedConstructorParameters: 999
   LongMethod:
-    threshold: 100
+    allowedLines: 100
   CyclomaticComplexMethod:
-    threshold: 20
+    allowedComplexity: 20
   TooManyFunctions:
-    thresholdInClasses: 20
+    allowedFunctionsPerClass: 20
 
 naming:
   ConstructorParameterNaming:
     parameterPattern: "[a-z_][A-Za-z0-9]*"
     privateParameterPattern: "[a-z_][A-Za-z0-9]*"
 
-formatting:
+ktlint:
+  ClassSignature:
+    # https://github.com/detekt/detekt/issues/9083
+    active: false
   Filename:
     active: false
+  FunctionExpressionBody:
+    active: false
+  FunctionSignature:
+    forceMultilineWhenParameterCountGreaterOrEqualThan: 2
+    indentSize: 2
   Indentation:
     indentSize: 2
