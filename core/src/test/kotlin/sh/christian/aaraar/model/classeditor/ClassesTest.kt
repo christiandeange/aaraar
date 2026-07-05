@@ -6,6 +6,7 @@ import io.kotest.matchers.collections.shouldHaveSize
 import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.should
 import io.kotest.matchers.shouldBe
+import org.gradle.api.JavaVersion
 import sh.christian.aaraar.model.classeditor.AnnotationInstance.Value.StringValue
 import sh.christian.aaraar.model.classeditor.Modifier.ABSTRACT
 import sh.christian.aaraar.model.classeditor.Modifier.ANNOTATION
@@ -227,7 +228,7 @@ class ClassesTest {
   fun `class version`() {
     withClasspath(fooJarPath.loadJar()) { cp ->
       val foo = cp["com.example.Foo"]
-      foo.classMajorVersion shouldBe 61
+      foo.classMajorVersion shouldBe JavaVersion.current().toClassVersion()
       foo.classMinorVersion shouldBe 0
     }
   }

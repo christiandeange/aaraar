@@ -71,7 +71,7 @@ class PublishingPlugin : Plugin<Project> {
 
     // Collect dokka output for publication via the root project.
     target.rootProject.dependencies {
-      "dokka"(target)
+      "dokka"(project(target.path))
     }
   }
 

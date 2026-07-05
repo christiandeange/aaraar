@@ -55,7 +55,7 @@ class ResourcesMerger : Merger<Resources> {
             .forEach { namespace -> namespace(namespace) }
 
           items.forEach { item ->
-            addNode(item.value.toNode())
+            addElement(item.value.toNode())
           }
         }
 

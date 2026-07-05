@@ -1,10 +1,11 @@
 package sh.christian.aaraar.shading.impl.transform
 
+import org.objectweb.asm.Opcodes
 import org.objectweb.asm.commons.Remapper
 
 internal class PackageRemapper<T>(
   private val patterns: List<T>,
-) : Remapper() where T : AbstractPattern, T : ReplacePattern {
+) : Remapper(Opcodes.ASM9) where T : AbstractPattern, T : ReplacePattern {
   private val typeCache: MutableMap<String, String> = mutableMapOf()
   private val pathCache: MutableMap<String, String> = mutableMapOf()
   private val valueCache: MutableMap<Any?, String> = mutableMapOf()

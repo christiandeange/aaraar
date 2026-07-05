@@ -10,7 +10,7 @@ plugins {
   id("aaraar-publish")
 }
 
-val fixtureJars by configurations.registering
+val fixtureJars = configurations.register("fixtureJars")
 
 dependencies {
   api(libs.kotlin.metadata)

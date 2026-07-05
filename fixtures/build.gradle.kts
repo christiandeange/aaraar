@@ -36,7 +36,7 @@ tasks.withType<Copy> {
 }
 
 val fixtureJarsDir = layout.buildDirectory.dir("fixture-jars")
-val fixtureJars by configurations.registering
+val fixtureJars = configurations.register("fixtureJars")
 
 registerSourceSet("animal")
 registerSourceSet("annotations")
