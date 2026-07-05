@@ -1,6 +1,6 @@
 plugins {
   alias(libs.plugins.kotlin.jvm)
-  `kotlin-dsl`
+  `kotlin-dsl-base`
   `java-test-fixtures`
   id("aaraar-detekt")
 }
@@ -14,6 +14,7 @@ val toolsVersion = agpVersion
 dependencies {
   testFixturesApi(project(":core"))
 
+  testFixturesImplementation(kotlin("reflect"))
   testFixturesImplementation(libs.kotest)
   testFixturesImplementation(libs.decompiler)
   testFixturesImplementation(libs.jimfs)

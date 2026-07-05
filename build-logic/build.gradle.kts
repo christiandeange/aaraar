@@ -1,7 +1,7 @@
 plugins {
   alias(libs.plugins.kotlin.jvm)
   `java-gradle-plugin`
-  `kotlin-dsl`
+  `kotlin-dsl-base`
 }
 
 dependencies {

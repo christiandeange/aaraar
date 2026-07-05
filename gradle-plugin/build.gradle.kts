@@ -4,7 +4,7 @@ import org.gradle.api.tasks.testing.logging.TestLogEvent
 plugins {
   alias(libs.plugins.kotlin.jvm)
   `java-gradle-plugin`
-  `kotlin-dsl`
+  `kotlin-dsl-base`
   id("aaraar-detekt")
   id("aaraar-publish")
 }
