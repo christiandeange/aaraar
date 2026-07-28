@@ -57,6 +57,7 @@ internal constructor(
     ): RTxt {
       if (!Files.isRegularFile(path)) return RTxt(symbolTable = SymbolTable.builder().build())
 
+      // Values are read back as 0x0 because R.txt symbols are parsed without values.
       val symbolTable = SymbolIo.readFromAaptNoValues(Files.newBufferedReader(path), path.toString(), packageName)
       return RTxt(symbolTable)
     }
