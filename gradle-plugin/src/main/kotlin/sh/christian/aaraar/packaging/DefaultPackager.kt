@@ -5,6 +5,7 @@ import sh.christian.aaraar.merger.Glob
 import sh.christian.aaraar.merger.MergeRules
 import sh.christian.aaraar.merger.impl.AarArchiveMerger
 import sh.christian.aaraar.merger.impl.AndroidManifestMerger
+import sh.christian.aaraar.merger.impl.AndroidManifestMerger.Feature
 import sh.christian.aaraar.merger.impl.ApiJarMerger
 import sh.christian.aaraar.merger.impl.ArtifactArchiveMerger
 import sh.christian.aaraar.merger.impl.AssetsMerger
@@ -98,7 +99,12 @@ class DefaultPackager(
         classesMerger = ClassesMerger(resourcesJarMerger),
       ),
       aarArchiveMerger = AarArchiveMerger(
-        androidManifestMerger = AndroidManifestMerger(),
+        androidManifestMerger = AndroidManifestMerger(
+          Feature.REMOVE_TOOLS_DECLARATIONS,
+          Feature.SKIP_BLAME,
+          Feature.SKIP_XML_STRING,
+          Feature.USES_SDK_IN_MANIFEST_LENIENT_HANDLING,
+        ),
         classesAndLibsMerger = ClassesMerger(resourcesJarMerger),
         resourcesMerger = ResourcesMerger(),
         rTxtMerger = RTxtMerger(),

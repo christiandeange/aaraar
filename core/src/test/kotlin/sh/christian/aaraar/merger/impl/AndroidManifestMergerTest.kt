@@ -1,21 +1,35 @@
 package sh.christian.aaraar.merger.impl
 
+import sh.christian.aaraar.merger.impl.AndroidManifestMerger.Feature
 import sh.christian.aaraar.model.AndroidManifest
 import sh.christian.aaraar.utils.shouldBe
 import kotlin.test.Test
 
 class AndroidManifestMergerTest {
 
-  private val merger = AndroidManifestMerger()
+  private val defaultMerger = AndroidManifestMerger()
+
+  private val featuredMerger = AndroidManifestMerger(
+    Feature.REMOVE_TOOLS_DECLARATIONS,
+    Feature.SKIP_BLAME,
+    Feature.SKIP_XML_STRING,
+    Feature.USES_SDK_IN_MANIFEST_LENIENT_HANDLING,
+  )
+
+  private val debuggableMerger = AndroidManifestMerger(
+    Feature.DEBUGGABLE,
+  )
+
+  private val testOnlyMerger = AndroidManifestMerger(
+    Feature.TEST_ONLY,
+  )
 
   @Test
   fun `keeps package name from main manifest file`() {
     val mainLibManifest = AndroidManifest("""<manifest package="com.library.main" />""")
     val helperModuleManifest = AndroidManifest("""<manifest package="com.library.helper.core" />""")
 
-    val mergedManifest = merger.merge(mainLibManifest, helperModuleManifest)
-
-    mergedManifest shouldBe """
+    defaultMerger.merge(mainLibManifest, helperModuleManifest) shouldBe """
       <manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.library.main">
           <application/>
       </manifest>
@@ -34,9 +48,7 @@ class AndroidManifestMergerTest {
       """,
     )
 
-    val mergedManifest = merger.merge(mainLibManifest, helperModuleManifest)
-
-    mergedManifest shouldBe """
+    defaultMerger.merge(mainLibManifest, helperModuleManifest) shouldBe """
       <manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.library.main">
           <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
           <application/>
@@ -66,9 +78,52 @@ class AndroidManifestMergerTest {
       """,
     )
 
-    val mergedManifest = merger.merge(mainLibManifest, helperModuleManifest)
+    val mergedManifest = featuredMerger.merge(mainLibManifest, helperModuleManifest)
 
     mergedManifest shouldBe """
+      <manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.library.main">
+          <application/>
+      </manifest>
+      """
+
+    defaultMerger.merge(mainLibManifest, helperModuleManifest) shouldBe """
+      <manifest xmlns:android="http://schemas.android.com/apk/res/android" xmlns:tools="http://schemas.android.com/tools" package="com.library.main">
+          <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" tools:node="remove"/>
+          <application/>
+      </manifest>
+      """
+  }
+
+  @Test
+  fun `keeps tool rules to manifests from dependencies when configured without it`() {
+    val mainLibManifest = AndroidManifest(
+      """
+      <manifest
+              xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              package="com.library.main">
+
+          <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" tools:node="remove" />
+      </manifest>
+      """,
+    )
+
+    val helperModuleManifest = AndroidManifest(
+      """
+      <manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.library.helper.core">
+          <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+      </manifest>
+      """,
+    )
+
+    defaultMerger.merge(mainLibManifest, helperModuleManifest) shouldBe """
+      <manifest xmlns:android="http://schemas.android.com/apk/res/android" xmlns:tools="http://schemas.android.com/tools" package="com.library.main">
+          <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" tools:node="remove"/>
+          <application/>
+      </manifest>
+      """
+
+    featuredMerger.merge(mainLibManifest, helperModuleManifest) shouldBe """
       <manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.library.main">
           <application/>
       </manifest>
@@ -76,28 +131,49 @@ class AndroidManifestMergerTest {
   }
 
   @Test
-  fun `keeps placeholders`() {
-    val mainLibManifest = AndroidManifest("""<manifest package="com.library.main" />""")
-
+  fun `test only merger`() {
+    val mainLibManifest = AndroidManifest(
+      """
+      <manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.library.main">
+          <application/>
+      </manifest>
+      """,
+    )
     val helperModuleManifest = AndroidManifest(
       """
       <manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.library.helper.core">
-          <application>
-              <activity
-                  android:name=".MainActivity"
-                  android:screenOrientation="${'$'}screenOrientation}" />
-          </application>
+          <application/>
       </manifest>
       """,
     )
 
-    val mergedManifest = merger.merge(mainLibManifest, helperModuleManifest)
-
-    mergedManifest shouldBe """
+    testOnlyMerger.merge(mainLibManifest, helperModuleManifest) shouldBe """
       <manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.library.main">
-          <application>
-              <activity android:name="com.library.helper.core.MainActivity" android:screenOrientation="${'$'}screenOrientation}"/>
-          </application>
+          <application android:testOnly="true"/>
+      </manifest>
+      """
+  }
+
+  @Test
+  fun `debuggable merger`() {
+    val mainLibManifest = AndroidManifest(
+      """
+      <manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.library.main">
+          <application/>
+      </manifest>
+      """,
+    )
+    val helperModuleManifest = AndroidManifest(
+      """
+      <manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.library.helper.core">
+          <application/>
+      </manifest>
+      """,
+    )
+
+    debuggableMerger.merge(mainLibManifest, helperModuleManifest) shouldBe """
+      <manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.library.main">
+          <application android:debuggable="true"/>
       </manifest>
       """
   }
