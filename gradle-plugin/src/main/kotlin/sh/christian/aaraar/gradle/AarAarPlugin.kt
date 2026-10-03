@@ -86,6 +86,7 @@ class AarAarPlugin : Plugin<Project> {
       shadeEnvironment.set(parseShadeEnvironment(aaraar, variant = null))
       packagingEnvironment.set(PackagingEnvironment.None)
       keepMetaFiles.set(aaraar.keepMetaFiles)
+      mergerProviderFactory.set(aaraar.mergerProviderFactory)
       packagerFactory.set(aaraar.packagerFactory)
 
       inputJar.set(jarTask.flatMap { it.archiveFile })
@@ -203,6 +204,7 @@ class AarAarPlugin : Plugin<Project> {
       packagingEnvironment.set(parsePackagingEnvironment(variant))
       keepMetaFiles.set(aaraar.keepMetaFiles)
       androidAaptIgnore.set(androidAaptIgnoreEnv)
+      mergerProviderFactory.set(aaraar.mergerProviderFactory)
       packagerFactory.set(aaraar.packagerFactory)
       postProcessorFactories.set(aaraar.postProcessorFactories)
     }

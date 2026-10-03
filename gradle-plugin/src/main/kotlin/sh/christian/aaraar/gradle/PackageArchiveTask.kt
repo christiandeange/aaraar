@@ -23,6 +23,7 @@ import org.gradle.internal.component.local.model.OpaqueComponentArtifactIdentifi
 import sh.christian.aaraar.Environment
 import sh.christian.aaraar.model.ArtifactArchive
 import sh.christian.aaraar.packaging.ArtifactArchiveProcessor
+import sh.christian.aaraar.packaging.MergerProvider
 import sh.christian.aaraar.packaging.Packager
 import sh.christian.aaraar.packaging.PackagingEnvironment
 import sh.christian.aaraar.packaging.ShadeConfigurationScope
@@ -53,6 +54,9 @@ abstract class PackageArchiveTask : DefaultTask() {
   abstract val keepMetaFiles: Property<Boolean>
 
   @get:Input
+  abstract val mergerProviderFactory: Property<MergerProvider.Factory>
+
+  @get:Input
   abstract val packagerFactory: Property<Packager.Factory>
 
   @get:Input
@@ -71,21 +75,28 @@ abstract class PackageArchiveTask : DefaultTask() {
 
   @TaskAction
   fun packageArtifactArchive() {
+    val packagerLogger = GradlePackagerLogger(logger)
     val environment = environment()
-    logger.info("Packaging environment: $environment")
+    packagerLogger.info("Packaging environment: $environment")
 
     val shadeEnvironment = shadeEnvironment.get()
-    logger.info("Shading environment: $shadeEnvironment")
+    packagerLogger.info("Shading environment: $shadeEnvironment")
 
     val scopeMapping: Map<Path, ShadeConfigurationScope?> = embedArtifacts.get()
       .resolvedArtifacts.get()
       .associate { it.file.toPath() to it.id.componentIdentifier.toShadeConfigurationScope() }
 
-    val packager = packagerFactory.get().create(
+    val mergerProvider = mergerProviderFactory.get().create(
       environment = environment,
       packagingEnvironment = packagingEnvironment.get(),
       shadeEnvironment = shadeEnvironment,
-      logger = GradlePackagerLogger(logger),
+      logger = packagerLogger,
+    )
+    val packager = packagerFactory.get().create(
+      environment = environment,
+      mergerProvider = mergerProvider,
+      shadeEnvironment = shadeEnvironment,
+      logger = packagerLogger,
     )
 
     val inputPath = inputArchive.getPath()
@@ -104,7 +115,7 @@ abstract class PackageArchiveTask : DefaultTask() {
     val finalizedArchive = packager.postProcessing(mergedArchive, postProcessorFactories.get())
 
     val outputPath = outputArchive.getPath().apply { Files.deleteIfExists(this) }
-    logger.info("Merged into: $outputPath")
+    packagerLogger.info("Merged into: $outputPath")
     finalizedArchive.writeTo(path = outputPath)
   }
 

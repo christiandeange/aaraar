@@ -62,7 +62,7 @@ interface Packager {
   interface Factory : Serializable {
     fun create(
       environment: Environment,
-      packagingEnvironment: PackagingEnvironment,
+      mergerProvider: MergerProvider,
       shadeEnvironment: ShadeEnvironment,
       logger: PackagerLogger,
     ): Packager

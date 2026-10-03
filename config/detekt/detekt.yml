@@ -8,6 +8,7 @@ complexity:
     allowedComplexity: 20
   TooManyFunctions:
     allowedFunctionsPerClass: 20
+    allowedFunctionsPerInterface: 20
 
 naming:
   ConstructorParameterNaming:

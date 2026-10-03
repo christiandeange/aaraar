@@ -1,26 +1,6 @@
 package sh.christian.aaraar.packaging
 
 import sh.christian.aaraar.Environment
-import sh.christian.aaraar.merger.Glob
-import sh.christian.aaraar.merger.MergeRules
-import sh.christian.aaraar.merger.impl.AarArchiveMerger
-import sh.christian.aaraar.merger.impl.AndroidManifestMerger
-import sh.christian.aaraar.merger.impl.AndroidManifestMerger.Feature
-import sh.christian.aaraar.merger.impl.ApiJarMerger
-import sh.christian.aaraar.merger.impl.ArtifactArchiveMerger
-import sh.christian.aaraar.merger.impl.AssetsMerger
-import sh.christian.aaraar.merger.impl.ClassesMerger
-import sh.christian.aaraar.merger.impl.FileSetMerger
-import sh.christian.aaraar.merger.impl.GenericJarArchiveMerger
-import sh.christian.aaraar.merger.impl.JarArchiveMerger
-import sh.christian.aaraar.merger.impl.JniMerger
-import sh.christian.aaraar.merger.impl.LintRulesMerger
-import sh.christian.aaraar.merger.impl.NavigationJsonMerger
-import sh.christian.aaraar.merger.impl.NoJarArchiveMerger
-import sh.christian.aaraar.merger.impl.ProguardMerger
-import sh.christian.aaraar.merger.impl.PublicTxtMerger
-import sh.christian.aaraar.merger.impl.RTxtMerger
-import sh.christian.aaraar.merger.impl.ResourcesMerger
 import sh.christian.aaraar.model.AarArchive
 import sh.christian.aaraar.model.ArtifactArchive
 import sh.christian.aaraar.model.JarArchive
@@ -40,7 +20,7 @@ import java.nio.file.Path
 
 class DefaultPackager(
   private val environment: Environment,
-  private val packagingEnvironment: PackagingEnvironment,
+  private val mergerProvider: MergerProvider,
   private val shadeEnvironment: ShadeEnvironment,
   private val logger: PackagerLogger,
 ) : Packager {
@@ -78,46 +58,7 @@ class DefaultPackager(
     inputArchive: ArtifactArchive,
     dependencyArchives: List<ArtifactArchive>,
   ): ArtifactArchive {
-    val jniLibsMergeRules = MergeRules(
-      pickFirsts = packagingEnvironment.jniLibs.pickFirsts.toGlob(),
-      merges = Glob.None,
-      excludes = packagingEnvironment.jniLibs.excludes.toGlob(),
-    )
-
-    val resourceMergeRules = MergeRules(
-      pickFirsts = packagingEnvironment.resources.pickFirsts.toGlob(),
-      merges = packagingEnvironment.resources.merges.toGlob(),
-      excludes = packagingEnvironment.resources.excludes.toGlob(),
-    )
-
-    val resourcesJarMerger = GenericJarArchiveMerger(resourceMergeRules)
-    val resourcesFileSetMerger = FileSetMerger(resourcesJarMerger, resourceMergeRules)
-    val jniLibsFileSetMerger = FileSetMerger(NoJarArchiveMerger, jniLibsMergeRules)
-
-    val artifactArchiveMerger = ArtifactArchiveMerger(
-      jarArchiveMerger = JarArchiveMerger(
-        classesMerger = ClassesMerger(resourcesJarMerger),
-      ),
-      aarArchiveMerger = AarArchiveMerger(
-        androidManifestMerger = AndroidManifestMerger(
-          Feature.REMOVE_TOOLS_DECLARATIONS,
-          Feature.SKIP_BLAME,
-          Feature.SKIP_XML_STRING,
-          Feature.USES_SDK_IN_MANIFEST_LENIENT_HANDLING,
-        ),
-        classesAndLibsMerger = ClassesMerger(resourcesJarMerger),
-        resourcesMerger = ResourcesMerger(),
-        rTxtMerger = RTxtMerger(),
-        publicTxtMerger = PublicTxtMerger(),
-        assetsMerger = AssetsMerger(resourcesFileSetMerger),
-        jniMerger = JniMerger(jniLibsFileSetMerger),
-        proguardMerger = ProguardMerger(),
-        lintRulesMerger = LintRulesMerger(resourcesJarMerger),
-        navigationJsonMerger = NavigationJsonMerger(),
-        apiJarMerger = ApiJarMerger(resourcesJarMerger),
-      ),
-    )
-
+    val artifactArchiveMerger = mergerProvider.archiveMerger()
     return artifactArchiveMerger.merge(inputArchive, dependencyArchives)
   }
 
@@ -185,10 +126,6 @@ class DefaultPackager(
     }
   }
 
-  private fun Collection<String>.toGlob(): Glob {
-    return map(Glob::fromString).fold(Glob.None, Glob::plus)
-  }
-
   companion object {
     fun ShadeConfigurationScope.matches(
       path: Path,
@@ -221,13 +158,13 @@ class DefaultPackager(
   class Factory : Packager.Factory {
     override fun create(
       environment: Environment,
-      packagingEnvironment: PackagingEnvironment,
+      mergerProvider: MergerProvider,
       shadeEnvironment: ShadeEnvironment,
       logger: PackagerLogger,
     ): Packager {
       return DefaultPackager(
         environment = environment,
-        packagingEnvironment = packagingEnvironment,
+        mergerProvider = mergerProvider,
         shadeEnvironment = shadeEnvironment,
         logger = logger,
       )

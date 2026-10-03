@@ -217,7 +217,9 @@ class DefaultPackagerTest {
   ): DefaultPackager {
     return DefaultPackager(
       environment = environment,
-      packagingEnvironment = packagingEnvironment,
+      mergerProvider = DefaultMergerProvider(
+        packagingEnvironment = packagingEnvironment,
+      ),
       shadeEnvironment = shadeEnvironment,
       logger = logger,
     )

@@ -9,7 +9,9 @@ import org.gradle.kotlin.dsl.invoke
 import org.gradle.kotlin.dsl.listProperty
 import org.gradle.kotlin.dsl.property
 import sh.christian.aaraar.packaging.ArtifactArchiveProcessor
+import sh.christian.aaraar.packaging.DefaultMergerProvider
 import sh.christian.aaraar.packaging.DefaultPackager
+import sh.christian.aaraar.packaging.MergerProvider
 import sh.christian.aaraar.packaging.Packager
 import sh.christian.aaraar.packaging.artifactArchiveProcessorFromClassName
 import javax.inject.Inject
@@ -36,6 +38,14 @@ abstract class AarAarExtension
   /** @see isEnabledForVariant */
   val variantFilter: Property<(VariantDescriptor) -> Boolean> =
     objects.property<(VariantDescriptor) -> Boolean>().convention { true }
+
+  /**
+   * Sets the factory to create the [MergerProvider] responsible for defining merge strategies.
+   *
+   * Defaults to [DefaultMergerProvider.Factory].
+   */
+  val mergerProviderFactory: Property<MergerProvider.Factory> =
+    objects.property<MergerProvider.Factory>().convention(DefaultMergerProvider.Factory())
 
   /**
    * Sets the factory to create the [Packager] responsible for merging and processing archives.
