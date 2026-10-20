@@ -13,6 +13,7 @@ import sh.christian.aaraar.model.JarArchive
 import sh.christian.aaraar.model.Jni
 import sh.christian.aaraar.model.LintRules
 import sh.christian.aaraar.model.NavigationJson
+import sh.christian.aaraar.model.Prefab
 import sh.christian.aaraar.model.Proguard
 import sh.christian.aaraar.model.PublicTxt
 import sh.christian.aaraar.model.RTxt
@@ -78,6 +79,11 @@ interface MergerProvider {
    * Creates a merger for API JAR archives.
    */
   fun apiJarMerger(): Merger<ApiJar>
+
+  /**
+   * Creates a merger for Prefab native-library packages.
+   */
+  fun prefabMerger(): Merger<Prefab>
 
   /**
    * Creates a merger for Android AAR archives.

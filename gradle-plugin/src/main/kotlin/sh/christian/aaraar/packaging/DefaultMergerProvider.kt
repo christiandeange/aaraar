@@ -20,6 +20,7 @@ import sh.christian.aaraar.merger.impl.JniMerger
 import sh.christian.aaraar.merger.impl.LintRulesMerger
 import sh.christian.aaraar.merger.impl.NavigationJsonMerger
 import sh.christian.aaraar.merger.impl.NoJarArchiveMerger
+import sh.christian.aaraar.merger.impl.PrefabMerger
 import sh.christian.aaraar.merger.impl.ProguardMerger
 import sh.christian.aaraar.merger.impl.PublicTxtMerger
 import sh.christian.aaraar.merger.impl.RTxtMerger
@@ -35,6 +36,7 @@ import sh.christian.aaraar.model.JarArchive
 import sh.christian.aaraar.model.Jni
 import sh.christian.aaraar.model.LintRules
 import sh.christian.aaraar.model.NavigationJson
+import sh.christian.aaraar.model.Prefab
 import sh.christian.aaraar.model.Proguard
 import sh.christian.aaraar.model.PublicTxt
 import sh.christian.aaraar.model.RTxt
@@ -58,6 +60,7 @@ class DefaultMergerProvider(
   val resourcesJarMerger: Merger<GenericJarArchive> = GenericJarArchiveMerger(resourceMergeRules)
   val resourcesFileSetMerger: Merger<FileSet> = FileSetMerger(resourcesJarMerger, resourceMergeRules)
   val jniLibsFileSetMerger: Merger<FileSet> = FileSetMerger(NoJarArchiveMerger, jniLibsMergeRules)
+  val prefabFileSetMerger: Merger<FileSet> = FileSetMerger(NoJarArchiveMerger, MergeRules.None)
 
   override fun androidManifestMerger(): Merger<AndroidManifest> {
     return AndroidManifestMerger(
@@ -109,6 +112,10 @@ class DefaultMergerProvider(
     return ApiJarMerger(resourcesJarMerger)
   }
 
+  override fun prefabMerger(): Merger<Prefab> {
+    return PrefabMerger(prefabFileSetMerger)
+  }
+
   override fun aarMerger(): ArchiveMerger<AarArchive> {
     return AarArchiveMerger(
       androidManifestMerger = androidManifestMerger(),
@@ -122,6 +129,7 @@ class DefaultMergerProvider(
       lintRulesMerger = lintRulesMerger(),
       navigationJsonMerger = navigationJsonMerger(),
       apiJarMerger = apiJarMerger(),
+      prefabMerger = prefabMerger(),
     )
   }
 

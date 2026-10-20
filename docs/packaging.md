@@ -11,6 +11,7 @@ modules, the following entries in an `aar` file are recognized for merging:
 - Lint consumer checks
 - Navigation graphs
 - `api.jar` files
+- Prefab native-library packages
 - `aar` metadata
 
 ### Gradle Configuration
