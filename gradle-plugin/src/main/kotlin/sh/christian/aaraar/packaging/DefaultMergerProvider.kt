@@ -42,7 +42,7 @@ import sh.christian.aaraar.model.PublicTxt
 import sh.christian.aaraar.model.RTxt
 import sh.christian.aaraar.model.Resources
 
-class DefaultMergerProvider(
+open class DefaultMergerProvider(
   packagingEnvironment: PackagingEnvironment,
 ) : MergerProvider {
   val jniLibsMergeRules = MergeRules(

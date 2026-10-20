@@ -18,7 +18,7 @@ import sh.christian.aaraar.shading.impl.LibsShader
 import java.io.File
 import java.nio.file.Path
 
-class DefaultPackager(
+open class DefaultPackager(
   private val environment: Environment,
   private val mergerProvider: MergerProvider,
   private val shadeEnvironment: ShadeEnvironment,

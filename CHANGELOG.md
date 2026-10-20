@@ -68,7 +68,7 @@ _2024-12-11_
 * Update: Improvements to `api.jar` generation:
     * Expose Kotlin `@Metadata` annotation property.
     * Automatically update Kotlin metadata when member changes.
-    * [`Classpath.get()`](https://aaraar.christian.sh/kdoc/aaraar/sh.christian.aaraar.model.classeditor/-classpath/get.html) returns a virtual definition if not found.
+    * [`Classpath.get()`](https://aaraar.christian.sh/kdoc/core/sh.christian.aaraar.model.classeditor/-classpath/get.html) returns a virtual definition if not found.
 * Fix: Android resources from embedded dependencies could not be resolved.
 
 ## Version 0.0.17
@@ -121,8 +121,6 @@ _2024-02-07_
 
 * New: Support for limiting shading rules to a particular scope.
     * See [shading guide](https://aaraar.christian.sh/shading) for info on configuration and syntax.
-* New: Added `addPrefix()` shorthand method for shading to add a prefix to each class package.
-
 ## Version 0.0.11
 
 _2024-02-01_

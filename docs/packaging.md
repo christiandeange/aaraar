@@ -334,7 +334,7 @@ meant for internal use only:
     ```
 
 Further documentation for the kind of transformations available can be found by referencing
-[API documentation](https://aaraar.christian.sh/kdoc/aaraar/sh.christian.aaraar.model.classeditor/index.html) for the
+[API documentation](https://aaraar.christian.sh/kdoc/core/sh.christian.aaraar.model.classeditor/index.html) for the
 `sh.christian.aaraar.model.classeditor` package.
 
 !!! bug "Modifying Enums"
@@ -383,10 +383,10 @@ different tasks during the lifecycle of packaging the final artifact:
 - Merge the input archives into a single output archive.
 - Applying any post-processing steps to the merged archive.
 
-[`DefaultPackager`](https://aaraar.christian.sh/kdoc/aaraar/sh.christian.aaraar.packaging/-default-packager/index.html)
+[`DefaultPackager`](https://aaraar.christian.sh/kdoc/gradle-plugin/sh.christian.aaraar.packaging/-default-packager/index.html)
 is the default implementation, which provides standard behaviour to shading, merging, and applying post-processor
 factories to the merged archive. However, you can also provide your own custom packager implementation by creating a
-[`Packager`](https://aaraar.christian.sh/kdoc/aaraar/sh.christian.aaraar.packaging/-packager/index.html) implementation
+[`Packager`](https://aaraar.christian.sh/kdoc/gradle-plugin/sh.christian.aaraar.packaging/-packager/index.html) implementation
 and registering a factory for it via the plugin extension:
 
 === "Kotlin"
@@ -402,5 +402,89 @@ and registering a factory for it via the plugin extension:
     ```groovy
     aaraar {
       packagerFactory.set(new MyPackagerFactory())
+    }
+    ```
+
+### Merge strategy configuration
+
+For more targeted customization, the default packager can be retained while replacing only the strategies used to merge
+archive contents. Set `mergerProviderFactory` to a
+[`MergerProvider.Factory`](https://aaraar.christian.sh/kdoc/gradle-plugin/sh.christian.aaraar.packaging/-merger-provider/-factory/index.html)
+that creates your custom [`MergerProvider`](https://aaraar.christian.sh/kdoc/gradle-plugin/sh.christian.aaraar.packaging/-merger-provider/index.html).
+
+For a JVM-only library, implement `JarMergerProvider` when the custom provider should support JAR packaging only. It
+marks AAR-specific merge operations as unsupported; provide the JAR strategies through `classesAndLibsMerger()`,
+`jarMerger()`, and `archiveMerger()`. Do not use it for Android library modules.
+
+The provider selects a merger for each archive component, allowing you to customize the behaviour for merging any of
+these asset types. This is useful when a subset of merge behaviours needs to differ from the default implementation.
+
+The following example shows how to customize the behaviour for merging and embedding Android manifest files:
+
+=== "Kotlin"
+
+    ```kotlin
+    aaraar {
+      mergerProviderFactory.set(MyMergerProviderFactory())
+    }
+
+    class MyMergerProviderFactory : MergerProvider.Factory {
+      override fun create(
+        environment: Environment,
+        packagingEnvironment: PackagingEnvironment,
+        shadeEnvironment: ShadeEnvironment,
+        logger: PackagerLogger,
+      ): MergerProvider = MyMergerProvider(packagingEnvironment)
+    }
+
+    class MyMergerProvider(
+      packagingEnvironment: PackagingEnvironment,
+    ) : MergerProvider by DefaultMergerProvider(packagingEnvironment) {
+      override fun androidManifestMerger(): Merger<AndroidManifest> = AndroidManifestMerger(
+        AndroidManifestMerger.Feature.NO_PLACEHOLDER_REPLACEMENT,
+        AndroidManifestMerger.Feature.REMOVE_TOOLS_DECLARATIONS,
+        AndroidManifestMerger.Feature.SKIP_BLAME,
+        AndroidManifestMerger.Feature.SKIP_XML_STRING,
+        AndroidManifestMerger.Feature.USES_SDK_IN_MANIFEST_LENIENT_HANDLING,
+        AndroidManifestMerger.Feature.HANDLE_VALUE_CONFLICTS_AUTOMATICALLY,
+      )
+    }
+    ```
+
+=== "Groovy"
+
+    ```groovy
+    aaraar {
+      mergerProviderFactory.set(new MyMergerProviderFactory())
+    }
+
+    class MyMergerProviderFactory implements MergerProvider.Factory {
+      @Override
+      MergerProvider create(
+          Environment environment,
+          PackagingEnvironment packagingEnvironment,
+          ShadeEnvironment shadeEnvironment,
+          PackagerLogger logger,
+      ) {
+        return new MyMergerProvider(packagingEnvironment)
+      }
+    }
+
+    class MyMergerProvider extends DefaultMergerProvider {
+      MyMergerProvider(PackagingEnvironment packagingEnvironment) {
+        super(packagingEnvironment)
+      }
+
+      @Override
+      Merger<AndroidManifest> androidManifestMerger() {
+        new AndroidManifestMerger(
+            AndroidManifestMerger.Feature.NO_PLACEHOLDER_REPLACEMENT,
+            AndroidManifestMerger.Feature.REMOVE_TOOLS_DECLARATIONS,
+            AndroidManifestMerger.Feature.SKIP_BLAME,
+            AndroidManifestMerger.Feature.SKIP_XML_STRING,
+            AndroidManifestMerger.Feature.USES_SDK_IN_MANIFEST_LENIENT_HANDLING,
+            AndroidManifestMerger.Feature.HANDLE_VALUE_CONFLICTS_AUTOMATICALLY,
+        )
+      }
     }
     ```

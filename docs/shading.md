@@ -44,6 +44,10 @@ There are multiple ways to specify a scope for shading rules:
 
 Rules can be applied to one or more matching scope.
 
+When classes are renamed or deleted, aaraar also updates Java `ServiceLoader` provider configuration files and Kotlin
+`.kotlin_module` metadata files. If a deletion removes every class represented by a Kotlin module metadata file, that
+metadata file is removed as well.
+
 ## Examples
 
 Shading an embedded external dependency to prevent conflicts:
@@ -67,32 +71,6 @@ Shading an embedded external dependency to prevent conflicts:
       shading {
         createRule([forProject(path), forGroup("io.reactivex.rxjava3")]) {
           it.rename "io.reactivex.**", "shaded.io.reactivex.@1"
-        }
-      }
-    }
-    ```
-
-Adding a prefix to internal sources to reinforce usage type:
-
-=== "Kotlin"
-
-    ```kotlin
-    aaraar {
-      shading {
-        createRule(forProject(path) and forProject(project(":internal"))) {
-          addPrefix("internal.")
-        }
-      }
-    }
-    ```
-
-=== "Groovy"
-
-    ```groovy
-    aaraar {
-      shading {
-        createRule([forProject(path), forProject(project(":internal"))]) {
-          it.addPrefix "internal."
         }
       }
     }
@@ -173,6 +151,36 @@ Renaming classes from static jar files:
       shading {
         createRule([forProject(path), forFiles(fileTree(dir: "libs/debug/", include: ["*.jar"]))]) {
           it.rename "com.**", "com.debug.@1"
+        }
+      }
+    }
+    ```
+
+The `rename()` and `delete()` rules apply to both class files and resource files. If a rule should affect only a
+resource path, use `renameResource()` or `deleteResource()` instead. Resource paths use `/` separators and support the
+same `*`, `**`, and `@0`/`@1` replacement syntax as class rules.
+
+=== "Kotlin"
+
+    ```kotlin
+    aaraar {
+      shading {
+        createRule(forProject(path) and forGroup("com.example")) {
+          renameResource("META-INF/NOTICE", "META-INF/licenses/example-NOTICE")
+          deleteResource("META-INF/*.SF")
+        }
+      }
+    }
+    ```
+
+=== "Groovy"
+
+    ```groovy
+    aaraar {
+      shading {
+        createRule([forProject(path), forGroup("com.example")]) {
+          it.renameResource "META-INF/NOTICE", "META-INF/licenses/example-NOTICE"
+          it.deleteResource "META-INF/*.SF"
         }
       }
     }
