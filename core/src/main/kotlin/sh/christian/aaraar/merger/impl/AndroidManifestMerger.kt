@@ -18,6 +18,8 @@ class AndroidManifestMerger(
   vararg val features: Feature,
 ) : Merger<AndroidManifest> {
 
+  private val placeholderValues = mutableMapOf<String, String>()
+
   override fun merge(
     first: AndroidManifest,
     others: List<AndroidManifest>,
@@ -28,6 +30,10 @@ class AndroidManifestMerger(
       ManifestMerger2.MergeType.APPLICATION,
     )
       .apply {
+        placeholderValues.forEach { (key, value) ->
+          setPlaceHolderValue(key, value)
+        }
+
         features.forEach { feature ->
           try {
             withFeatures(ManifestMerger2.Invoker.Feature.valueOf(feature.name))
@@ -49,6 +55,13 @@ class AndroidManifestMerger(
     }
 
     return AndroidManifest(mergeReport.getMergedDocument(MergingReport.MergedManifestKind.MERGED)!!)
+  }
+
+  fun setPlaceholder(
+    key: String,
+    value: String,
+  ) {
+    placeholderValues[key] = value
   }
 
   /**

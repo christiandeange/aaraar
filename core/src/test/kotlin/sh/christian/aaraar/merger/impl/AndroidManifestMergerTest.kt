@@ -10,6 +10,7 @@ class AndroidManifestMergerTest {
   private val defaultMerger = AndroidManifestMerger()
 
   private val featuredMerger = AndroidManifestMerger(
+    Feature.NO_PLACEHOLDER_REPLACEMENT,
     Feature.REMOVE_TOOLS_DECLARATIONS,
     Feature.SKIP_BLAME,
     Feature.SKIP_XML_STRING,
@@ -57,6 +58,32 @@ class AndroidManifestMergerTest {
   }
 
   @Test
+  fun `applies manifest placeholders rules`() {
+    val manifest = AndroidManifest(
+      $$"""
+      <manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.library.main">
+          <application android:label="${applicationLabel}"/>
+      </manifest>
+      """,
+    )
+
+    featuredMerger.setPlaceholder("applicationLabel", "Library")
+    defaultMerger.setPlaceholder("applicationLabel", "Library")
+
+    featuredMerger.merge(manifest, emptyList()) shouldBe $$"""
+      <manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.library.main">
+          <application android:label="${applicationLabel}"/>
+      </manifest>
+      """
+
+    defaultMerger.merge(manifest, emptyList()) shouldBe """
+      <manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.library.main">
+          <application android:label="Library"/>
+      </manifest>
+      """
+  }
+
+  @Test
   fun `applies tool rules to manifests from dependencies`() {
     val mainLibManifest = AndroidManifest(
       """
@@ -78,9 +105,7 @@ class AndroidManifestMergerTest {
       """,
     )
 
-    val mergedManifest = featuredMerger.merge(mainLibManifest, helperModuleManifest)
-
-    mergedManifest shouldBe """
+    featuredMerger.merge(mainLibManifest, helperModuleManifest) shouldBe """
       <manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.library.main">
           <application/>
       </manifest>

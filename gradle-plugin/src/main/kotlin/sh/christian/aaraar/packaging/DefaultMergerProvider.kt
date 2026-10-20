@@ -61,6 +61,7 @@ class DefaultMergerProvider(
 
   override fun androidManifestMerger(): Merger<AndroidManifest> {
     return AndroidManifestMerger(
+      Feature.NO_PLACEHOLDER_REPLACEMENT,
       Feature.REMOVE_TOOLS_DECLARATIONS,
       Feature.SKIP_BLAME,
       Feature.SKIP_XML_STRING,
