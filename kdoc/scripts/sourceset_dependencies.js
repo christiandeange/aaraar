@@ -1,0 +1,1 @@
+sourceset_dependencies = '{":core/main":[],":agp-compat:agp8/main":[],":agp-compat:agp9/main":[],":agp-compat:agp7/main":[],":gradle-plugin/main":[],":agp-compat:base/main":[]}'

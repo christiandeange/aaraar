@@ -1,0 +1,614 @@
+<!doctype html>
+<html class="no-js" lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
+    <title>Feature</title>
+<link href="../../../../images/logo-icon.svg" rel="icon" type="image/svg"><script>var pathToRoot = "../../../../";</script>
+    <script>document.documentElement.classList.replace("no-js", "js");</script>
+    <script>const storage = localStorage.getItem("dokka-dark-mode")
+      if (storage == null) {
+        const osDarkSchemePreferred = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
+        if (osDarkSchemePreferred === true) {
+          document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+      } else {
+        const savedDarkMode = JSON.parse(storage)
+        if (savedDarkMode === true) {
+          document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+      }
+    </script>
+<script type="text/javascript" src="../../../../scripts/sourceset_dependencies.js" async></script>
+<link href="../../../../styles/style.css" rel="Stylesheet">
+<link href="../../../../styles/main.css" rel="Stylesheet">
+<link href="../../../../styles/prism.css" rel="Stylesheet">
+<link href="../../../../styles/logo-styles.css" rel="Stylesheet">
+<link href="../../../../ui-kit/ui-kit.min.css" rel="Stylesheet">
+<script type="text/javascript" src="../../../../scripts/safe-local-storage_blocking.js"></script>
+<script type="text/javascript" src="../../../../scripts/navigation-loader.js" async></script>
+<script type="text/javascript" src="../../../../scripts/platform-content-handler.js" async></script>
+<script type="text/javascript" src="../../../../scripts/main.js" defer></script>
+<script type="text/javascript" src="../../../../scripts/prism.js" async></script>
+<script type="text/javascript" src="../../../../ui-kit/ui-kit.min.js" defer></script></head>
+<body>
+<div class="root">
+    <header class="navigation theme-dark" id="navigation-wrapper" role="banner">
+<a class="library-name--link" href="../../../../index.html" tabindex="1">
+                    aaraar
+            </a>        <button class="navigation-controls--btn navigation-controls--btn_toc ui-kit_mobile-only" id="toc-toggle" type="button">Toggle table of contents
+        </button>
+        <div class="navigation-controls--break ui-kit_mobile-only"></div>
+        <div class="library-version" id="library-version">
+        </div>
+        <div class="navigation-controls">
+        <ul class="filter-section filter-section_loading" id="filter-section" aria-label="Target filter">
+                <button class="platform-tag platform-selector jvm-like" data-active="" aria-pressed="true" data-filter=":core/main">jvm</button>
+            <div class="dropdown filter-section--dropdown" data-role="dropdown" id="filter-section-dropdown">
+                <button class="button button_dropdown filter-section--dropdown-toggle" role="combobox" data-role="dropdown-toggle" aria-controls="platform-tags-listbox" aria-haspopup="listbox" aria-expanded="false" aria-label="Toggle source sets"></button>
+                <ul role="listbox" id="platform-tags-listbox" class="dropdown--list" data-role="dropdown-listbox" aria-label="Target filter">
+                    <div class="dropdown--header"><span>Target filter</span>
+                        <button class="button" data-role="dropdown-toggle" aria-label="Close target filter">
+                            <i class="ui-kit-icon ui-kit-icon_cross"></i>
+                        </button>
+                    </div>
+                        <li role="option" class="dropdown--option platform-selector-option jvm-like" tabindex="0">
+                            <label class="checkbox">
+                                <input type="checkbox" class="checkbox--input" id=":core/main" data-filter=":core/main">
+                                <span class="checkbox--icon"></span>
+                                jvm
+                            </label>
+                        </li>
+                </ul>
+                <div class="dropdown--overlay"></div>
+            </div>
+        </ul>
+            <button class="navigation-controls--btn navigation-controls--btn_theme" id="theme-toggle-button" type="button">Switch theme
+            </button>
+            <div class="navigation-controls--btn navigation-controls--btn_search" id="searchBar" role="button">Search in
+                API
+            </div>
+        </div>
+    </header>
+    <div id="container">
+        <nav id="leftColumn" class="sidebar" data-item-type="SECTION" data-item-config="{&quot;defaultSize&quot;: 280, &quot;minSize&quot;: 200, &quot;maxSize&quot;: 400}">
+            <a class="toc--skip-link" href="#main">Skip to content</a>
+            <div class="dropdown theme-dark_mobile" data-role="dropdown" id="toc-dropdown">
+                <ul role="listbox" id="toc-listbox" class="dropdown--list dropdown--list_toc-list" data-role="dropdown-listbox" aria-label="Table of contents">
+                    <div class="dropdown--header">
+                            <span>
+                                    aaraar
+                            </span>
+                        <button class="button" data-role="dropdown-toggle" aria-label="Close table of contents">
+                            <i class="ui-kit-icon ui-kit-icon_cross"></i>
+                        </button>
+                    </div>
+                    <div class="sidebar--inner" id="sideMenu"></div>
+                </ul>
+                <div class="dropdown--overlay"></div>
+            </div>
+        </nav>
+        <div id="resizer" class="resizer" data-item-type="BAR"></div>
+        <div id="main" data-item-type="SECTION" role="main">
+<div class="main-content" data-page-type="classlike" id="content" pageids="core::sh.christian.aaraar.merger.impl/AndroidManifestMerger.Feature///PointingToDeclaration//-431355489">
+  <div class="breadcrumbs"><a href="../../../index.html">core</a><span class="delimiter">/</span><a href="../../index.html">sh.christian.aaraar.merger.impl</a><span class="delimiter">/</span><a href="../index.html">AndroidManifestMerger</a><span class="delimiter">/</span><span class="current">Feature</span></div>
+  <div class="cover ">
+    <h1 class="cover"><span><span>Feature</span></span></h1>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/main"><div class="symbol monospace"><span class="token keyword">enum </span><a href="index.html">Feature</a> : <a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-enum/index.html">Enum</a><span class="token operator">&lt;</span><a href="index.html">AndroidManifestMerger.Feature</a><span class="token operator">&gt; </span></div><p class="paragraph">Optional behavior of the merging tool can be turned on by setting these features during manifest merging.</p></div></div>
+  </div>
+  <div class="tabbedcontent">
+    <div class="tabs-section" tabs-section="tabs-section"><button class="section-tab" data-active="" data-togglable="CONSTRUCTOR,TYPE,PROPERTY,FUNCTION">Members</button><button class="section-tab" data-togglable="ENTRY">Entries</button></div>
+    <div class="tabs-section-body">
+      <div data-togglable="ENTRY">
+        <h2 class="tableheader">Entries</h2>
+        <div class="table"><a data-name="1930211848%2FClasslikes%2F-431355489" anchor-label="KEEP_INTERMEDIARY_STAGES" id="1930211848%2FClasslikes%2F-431355489" data-filterable-set=":core/main"></a>
+          <div class="table-row table-row_content" data-togglable="ENTRY" data-filterable-current=":core/main" data-filterable-set=":core/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-k-e-e-p_-i-n-t-e-r-m-e-d-i-a-r-y_-s-t-a-g-e-s/index.html">KEEP_INTERMEDIARY_STAGES</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1930211848%2FClasslikes%2F-431355489"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/main"><div class="symbol monospace"><div class="block"><a href="-k-e-e-p_-i-n-t-e-r-m-e-d-i-a-r-y_-s-t-a-g-e-s/index.html">KEEP_INTERMEDIARY_STAGES</a></div></div><div class="brief "><p class="paragraph">Keep all intermediary merged files during the merging process.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-378551506%2FClasslikes%2F-431355489" anchor-label="PRINT_SIMPLE_FILENAMES" id="-378551506%2FClasslikes%2F-431355489" data-filterable-set=":core/main"></a>
+          <div class="table-row table-row_content" data-togglable="ENTRY" data-filterable-current=":core/main" data-filterable-set=":core/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-p-r-i-n-t_-s-i-m-p-l-e_-f-i-l-e-n-a-m-e-s/index.html">PRINT_SIMPLE_FILENAMES</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-378551506%2FClasslikes%2F-431355489"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/main"><div class="symbol monospace"><div class="block"><a href="-p-r-i-n-t_-s-i-m-p-l-e_-f-i-l-e-n-a-m-e-s/index.html">PRINT_SIMPLE_FILENAMES</a></div></div><div class="brief "><p class="paragraph">When logging file names, use <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/io/File.html#getName()">getName</a> rather than <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/io/File.html#getPath()">getPath</a>.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-333594262%2FClasslikes%2F-431355489" anchor-label="EXTRACT_FQCNS" id="-333594262%2FClasslikes%2F-431355489" data-filterable-set=":core/main"></a>
+          <div class="table-row table-row_content" data-togglable="ENTRY" data-filterable-current=":core/main" data-filterable-set=":core/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-e-x-t-r-a-c-t_-f-q-c-n-s/index.html">EXTRACT_FQCNS</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-333594262%2FClasslikes%2F-431355489"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/main"><div class="symbol monospace"><div class="block"><a href="-e-x-t-r-a-c-t_-f-q-c-n-s/index.html">EXTRACT_FQCNS</a></div></div><div class="brief "><p class="paragraph">Perform a sweep after all merging activities to remove all fully qualified class names and replace them with the equivalent short version.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1458109379%2FClasslikes%2F-431355489" anchor-label="REMOVE_TOOLS_DECLARATIONS" id="1458109379%2FClasslikes%2F-431355489" data-filterable-set=":core/main"></a>
+          <div class="table-row table-row_content" data-togglable="ENTRY" data-filterable-current=":core/main" data-filterable-set=":core/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-r-e-m-o-v-e_-t-o-o-l-s_-d-e-c-l-a-r-a-t-i-o-n-s/index.html">REMOVE_TOOLS_DECLARATIONS</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1458109379%2FClasslikes%2F-431355489"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/main"><div class="symbol monospace"><div class="block"><a href="-r-e-m-o-v-e_-t-o-o-l-s_-d-e-c-l-a-r-a-t-i-o-n-s/index.html">REMOVE_TOOLS_DECLARATIONS</a></div></div><div class="brief "><p class="paragraph">Perform a sweep after all merging activities to remove all <code class="lang-kotlin">tools:</code> decorations.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="155827365%2FClasslikes%2F-431355489" anchor-label="NO_PLACEHOLDER_REPLACEMENT" id="155827365%2FClasslikes%2F-431355489" data-filterable-set=":core/main"></a>
+          <div class="table-row table-row_content" data-togglable="ENTRY" data-filterable-current=":core/main" data-filterable-set=":core/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-n-o_-p-l-a-c-e-h-o-l-d-e-r_-r-e-p-l-a-c-e-m-e-n-t/index.html">NO_PLACEHOLDER_REPLACEMENT</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="155827365%2FClasslikes%2F-431355489"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/main"><div class="symbol monospace"><div class="block"><a href="-n-o_-p-l-a-c-e-h-o-l-d-e-r_-r-e-p-l-a-c-e-m-e-n-t/index.html">NO_PLACEHOLDER_REPLACEMENT</a></div></div><div class="brief "><p class="paragraph">Do no perform placeholders replacement.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-32504556%2FClasslikes%2F-431355489" anchor-label="MAKE_AAPT_SAFE" id="-32504556%2FClasslikes%2F-431355489" data-filterable-set=":core/main"></a>
+          <div class="table-row table-row_content" data-togglable="ENTRY" data-filterable-current=":core/main" data-filterable-set=":core/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-m-a-k-e_-a-a-p-t_-s-a-f-e/index.html">MAKE_AAPT_SAFE</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-32504556%2FClasslikes%2F-431355489"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/main"><div class="symbol monospace"><div class="block"><a href="-m-a-k-e_-a-a-p-t_-s-a-f-e/index.html">MAKE_AAPT_SAFE</a></div></div><div class="brief "><p class="paragraph">Encode unresolved placeholders to be AAPT friendly.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1413722668%2FClasslikes%2F-431355489" anchor-label="SKIP_BLAME" id="1413722668%2FClasslikes%2F-431355489" data-filterable-set=":core/main"></a>
+          <div class="table-row table-row_content" data-togglable="ENTRY" data-filterable-current=":core/main" data-filterable-set=":core/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-s-k-i-p_-b-l-a-m-e/index.html">SKIP_BLAME</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1413722668%2FClasslikes%2F-431355489"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/main"><div class="symbol monospace"><div class="block"><a href="-s-k-i-p_-b-l-a-m-e/index.html">SKIP_BLAME</a></div></div><div class="brief "><p class="paragraph">Clients will not request the blame history</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1259863812%2FClasslikes%2F-431355489" anchor-label="SKIP_XML_STRING" id="1259863812%2FClasslikes%2F-431355489" data-filterable-set=":core/main"></a>
+          <div class="table-row table-row_content" data-togglable="ENTRY" data-filterable-current=":core/main" data-filterable-set=":core/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-s-k-i-p_-x-m-l_-s-t-r-i-n-g/index.html">SKIP_XML_STRING</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1259863812%2FClasslikes%2F-431355489"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/main"><div class="symbol monospace"><div class="block"><a href="-s-k-i-p_-x-m-l_-s-t-r-i-n-g/index.html">SKIP_XML_STRING</a></div></div><div class="brief "><p class="paragraph">Clients will only request the merged XML documents, not XML pretty printed documents</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1056700260%2FClasslikes%2F-431355489" anchor-label="TEST_ONLY" id="1056700260%2FClasslikes%2F-431355489" data-filterable-set=":core/main"></a>
+          <div class="table-row table-row_content" data-togglable="ENTRY" data-filterable-current=":core/main" data-filterable-set=":core/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-t-e-s-t_-o-n-l-y/index.html">TEST_ONLY</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1056700260%2FClasslikes%2F-431355489"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/main"><div class="symbol monospace"><div class="block"><a href="-t-e-s-t_-o-n-l-y/index.html">TEST_ONLY</a></div></div><div class="brief "><p class="paragraph">Add <code class="lang-kotlin">android:testOnly="true"</code> attribute to prevent APK from being uploaded to Play store.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-20158853%2FClasslikes%2F-431355489" anchor-label="NO_IMPLICIT_PERMISSION_ADDITION" id="-20158853%2FClasslikes%2F-431355489" data-filterable-set=":core/main"></a>
+          <div class="table-row table-row_content" data-togglable="ENTRY" data-filterable-current=":core/main" data-filterable-set=":core/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-n-o_-i-m-p-l-i-c-i-t_-p-e-r-m-i-s-s-i-o-n_-a-d-d-i-t-i-o-n/index.html">NO_IMPLICIT_PERMISSION_ADDITION</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-20158853%2FClasslikes%2F-431355489"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/main"><div class="symbol monospace"><div class="block"><a href="-n-o_-i-m-p-l-i-c-i-t_-p-e-r-m-i-s-s-i-o-n_-a-d-d-i-t-i-o-n/index.html">NO_IMPLICIT_PERMISSION_ADDITION</a></div></div><div class="brief "><p class="paragraph">Do not perform implicit permission addition.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-493442682%2FClasslikes%2F-431355489" anchor-label="ADVANCED_PROFILING" id="-493442682%2FClasslikes%2F-431355489" data-filterable-set=":core/main"></a>
+          <div class="table-row table-row_content" data-togglable="ENTRY" data-filterable-current=":core/main" data-filterable-set=":core/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-a-d-v-a-n-c-e-d_-p-r-o-f-i-l-i-n-g/index.html">ADVANCED_PROFILING</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-493442682%2FClasslikes%2F-431355489"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/main"><div class="symbol monospace"><div class="block"><a href="-a-d-v-a-n-c-e-d_-p-r-o-f-i-l-i-n-g/index.html">ADVANCED_PROFILING</a></div></div><div class="brief "><p class="paragraph">Perform Studio advanced profiling manifest modifications.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1938085349%2FClasslikes%2F-431355489" anchor-label="ADD_DYNAMIC_FEATURE_ATTRIBUTES" id="-1938085349%2FClasslikes%2F-431355489" data-filterable-set=":core/main"></a>
+          <div class="table-row table-row_content" data-togglable="ENTRY" data-filterable-current=":core/main" data-filterable-set=":core/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-a-d-d_-d-y-n-a-m-i-c_-f-e-a-t-u-r-e_-a-t-t-r-i-b-u-t-e-s/index.html">ADD_DYNAMIC_FEATURE_ATTRIBUTES</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1938085349%2FClasslikes%2F-431355489"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/main"><div class="symbol monospace"><div class="block"><a href="-a-d-d_-d-y-n-a-m-i-c_-f-e-a-t-u-r-e_-a-t-t-r-i-b-u-t-e-s/index.html">ADD_DYNAMIC_FEATURE_ATTRIBUTES</a></div></div><div class="brief "><p class="paragraph">Mark this application as a feature split.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1628179605%2FClasslikes%2F-431355489" anchor-label="DEBUGGABLE" id="-1628179605%2FClasslikes%2F-431355489" data-filterable-set=":core/main"></a>
+          <div class="table-row table-row_content" data-togglable="ENTRY" data-filterable-current=":core/main" data-filterable-set=":core/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-d-e-b-u-g-g-a-b-l-e/index.html">DEBUGGABLE</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1628179605%2FClasslikes%2F-431355489"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/main"><div class="symbol monospace"><div class="block"><a href="-d-e-b-u-g-g-a-b-l-e/index.html">DEBUGGABLE</a></div></div><div class="brief "><p class="paragraph">Set the <code class="lang-kotlin">android:debuggable</code> flag to the application.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="879156381%2FClasslikes%2F-431355489" anchor-label="HANDLE_VALUE_CONFLICTS_AUTOMATICALLY" id="879156381%2FClasslikes%2F-431355489" data-filterable-set=":core/main"></a>
+          <div class="table-row table-row_content" data-togglable="ENTRY" data-filterable-current=":core/main" data-filterable-set=":core/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-h-a-n-d-l-e_-v-a-l-u-e_-c-o-n-f-l-i-c-t-s_-a-u-t-o-m-a-t-i-c-a-l-l-y/index.html">HANDLE_VALUE_CONFLICTS_AUTOMATICALLY</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="879156381%2FClasslikes%2F-431355489"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/main"><div class="symbol monospace"><div class="block"><a href="-h-a-n-d-l-e_-v-a-l-u-e_-c-o-n-f-l-i-c-t-s_-a-u-t-o-m-a-t-i-c-a-l-l-y/index.html">HANDLE_VALUE_CONFLICTS_AUTOMATICALLY</a></div></div><div class="brief "><p class="paragraph">When there are attribute value conflicts, automatically pick the higher priority value.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1538478084%2FClasslikes%2F-431355489" anchor-label="ADD_ANDROIDX_MULTIDEX_APPLICATION_IF_NO_NAME" id="-1538478084%2FClasslikes%2F-431355489" data-filterable-set=":core/main"></a>
+          <div class="table-row table-row_content" data-togglable="ENTRY" data-filterable-current=":core/main" data-filterable-set=":core/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-a-d-d_-a-n-d-r-o-i-d-x_-m-u-l-t-i-d-e-x_-a-p-p-l-i-c-a-t-i-o-n_-i-f_-n-o_-n-a-m-e/index.html">ADD_ANDROIDX_MULTIDEX_APPLICATION_IF_NO_NAME</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1538478084%2FClasslikes%2F-431355489"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/main"><div class="symbol monospace"><div class="block"><a href="-a-d-d_-a-n-d-r-o-i-d-x_-m-u-l-t-i-d-e-x_-a-p-p-l-i-c-a-t-i-o-n_-i-f_-n-o_-n-a-m-e/index.html">ADD_ANDROIDX_MULTIDEX_APPLICATION_IF_NO_NAME</a></div></div><div class="brief "><p class="paragraph">Adds the AndroidX name of <span data-unresolved-link="com.android/AndroidXConstants/MULTI_DEX_APPLICATION/#/PointingToDeclaration/">MULTI_DEX_APPLICATION</span> as application name if none is specified. Used for legacy multidex.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="2106515668%2FClasslikes%2F-431355489" anchor-label="ADD_SUPPORT_MULTIDEX_APPLICATION_IF_NO_NAME" id="2106515668%2FClasslikes%2F-431355489" data-filterable-set=":core/main"></a>
+          <div class="table-row table-row_content" data-togglable="ENTRY" data-filterable-current=":core/main" data-filterable-set=":core/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-a-d-d_-s-u-p-p-o-r-t_-m-u-l-t-i-d-e-x_-a-p-p-l-i-c-a-t-i-o-n_-i-f_-n-o_-n-a-m-e/index.html">ADD_SUPPORT_MULTIDEX_APPLICATION_IF_NO_NAME</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="2106515668%2FClasslikes%2F-431355489"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/main"><div class="symbol monospace"><div class="block"><a href="-a-d-d_-s-u-p-p-o-r-t_-m-u-l-t-i-d-e-x_-a-p-p-l-i-c-a-t-i-o-n_-i-f_-n-o_-n-a-m-e/index.html">ADD_SUPPORT_MULTIDEX_APPLICATION_IF_NO_NAME</a></div></div><div class="brief "><p class="paragraph">Adds the pre-AndroidX name of <span data-unresolved-link="com.android/AndroidXConstants/MULTI_DEX_APPLICATION/#/PointingToDeclaration/">MULTI_DEX_APPLICATION</span> as application name if none is specified. Used for legacy multidex.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1586461408%2FClasslikes%2F-431355489" anchor-label="DISABLE_PACKAGE_NAME_UNIQUENESS_CHECK" id="1586461408%2FClasslikes%2F-431355489" data-filterable-set=":core/main"></a>
+          <div class="table-row table-row_content" data-togglable="ENTRY" data-filterable-current=":core/main" data-filterable-set=":core/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-d-i-s-a-b-l-e_-p-a-c-k-a-g-e_-n-a-m-e_-u-n-i-q-u-e-n-e-s-s_-c-h-e-c-k/index.html">DISABLE_PACKAGE_NAME_UNIQUENESS_CHECK</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1586461408%2FClasslikes%2F-431355489"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/main"><div class="symbol monospace"><div class="block"><a href="-d-i-s-a-b-l-e_-p-a-c-k-a-g-e_-n-a-m-e_-u-n-i-q-u-e-n-e-s-s_-c-h-e-c-k/index.html">DISABLE_PACKAGE_NAME_UNIQUENESS_CHECK</a></div></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1905222624%2FClasslikes%2F-431355489" anchor-label="ENFORCE_UNIQUE_PACKAGE_NAME" id="-1905222624%2FClasslikes%2F-431355489" data-filterable-set=":core/main"></a>
+          <div class="table-row table-row_content" data-togglable="ENTRY" data-filterable-current=":core/main" data-filterable-set=":core/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-e-n-f-o-r-c-e_-u-n-i-q-u-e_-p-a-c-k-a-g-e_-n-a-m-e/index.html">ENFORCE_UNIQUE_PACKAGE_NAME</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1905222624%2FClasslikes%2F-431355489"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/main"><div class="symbol monospace"><div class="block"><a href="-e-n-f-o-r-c-e_-u-n-i-q-u-e_-p-a-c-k-a-g-e_-n-a-m-e/index.html">ENFORCE_UNIQUE_PACKAGE_NAME</a></div></div><div class="brief "><p class="paragraph">Enforce that dependencies manifests don't have duplicated package names.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1937021936%2FClasslikes%2F-431355489" anchor-label="DISABLE_MINSDKLIBRARY_CHECK" id="-1937021936%2FClasslikes%2F-431355489" data-filterable-set=":core/main"></a>
+          <div class="table-row table-row_content" data-togglable="ENTRY" data-filterable-current=":core/main" data-filterable-set=":core/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-d-i-s-a-b-l-e_-m-i-n-s-d-k-l-i-b-r-a-r-y_-c-h-e-c-k/index.html">DISABLE_MINSDKLIBRARY_CHECK</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1937021936%2FClasslikes%2F-431355489"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/main"><div class="symbol monospace"><div class="block"><a href="-d-i-s-a-b-l-e_-m-i-n-s-d-k-l-i-b-r-a-r-y_-c-h-e-c-k/index.html">DISABLE_MINSDKLIBRARY_CHECK</a></div></div><div class="brief "><p class="paragraph">Unsafely disables minSdkVersion check in libraries.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1556324874%2FClasslikes%2F-431355489" anchor-label="CHECK_IF_PACKAGE_IN_MAIN_MANIFEST" id="1556324874%2FClasslikes%2F-431355489" data-filterable-set=":core/main"></a>
+          <div class="table-row table-row_content" data-togglable="ENTRY" data-filterable-current=":core/main" data-filterable-set=":core/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-c-h-e-c-k_-i-f_-p-a-c-k-a-g-e_-i-n_-m-a-i-n_-m-a-n-i-f-e-s-t/index.html">CHECK_IF_PACKAGE_IN_MAIN_MANIFEST</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1556324874%2FClasslikes%2F-431355489"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/main"><div class="symbol monospace"><div class="block"><a href="-c-h-e-c-k_-i-f_-p-a-c-k-a-g-e_-i-n_-m-a-i-n_-m-a-n-i-f-e-s-t/index.html">CHECK_IF_PACKAGE_IN_MAIN_MANIFEST</a></div></div><div class="brief "><p class="paragraph">Warn if the <code class="lang-kotlin">package</code> attribute is present in the main manifest, or throw an exception if it's present and not equal to the component's namespace.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-144866389%2FClasslikes%2F-431355489" anchor-label="DISABLE_STRIP_LIBRARY_TARGET_SDK" id="-144866389%2FClasslikes%2F-431355489" data-filterable-set=":core/main"></a>
+          <div class="table-row table-row_content" data-togglable="ENTRY" data-filterable-current=":core/main" data-filterable-set=":core/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-d-i-s-a-b-l-e_-s-t-r-i-p_-l-i-b-r-a-r-y_-t-a-r-g-e-t_-s-d-k/index.html">DISABLE_STRIP_LIBRARY_TARGET_SDK</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-144866389%2FClasslikes%2F-431355489"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/main"><div class="symbol monospace"><div class="block"><a href="-d-i-s-a-b-l-e_-s-t-r-i-p_-l-i-b-r-a-r-y_-t-a-r-g-e-t_-s-d-k/index.html">DISABLE_STRIP_LIBRARY_TARGET_SDK</a></div></div><div class="brief "><p class="paragraph">Removes target SDK for library manifest.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="174159224%2FClasslikes%2F-431355489" anchor-label="KEEP_GOING_AFTER_ERRORS" id="174159224%2FClasslikes%2F-431355489" data-filterable-set=":core/main"></a>
+          <div class="table-row table-row_content" data-togglable="ENTRY" data-filterable-current=":core/main" data-filterable-set=":core/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-k-e-e-p_-g-o-i-n-g_-a-f-t-e-r_-e-r-r-o-r-s/index.html">KEEP_GOING_AFTER_ERRORS</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="174159224%2FClasslikes%2F-431355489"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/main"><div class="symbol monospace"><div class="block"><a href="-k-e-e-p_-g-o-i-n-g_-a-f-t-e-r_-e-r-r-o-r-s/index.html">KEEP_GOING_AFTER_ERRORS</a></div></div><div class="brief "><p class="paragraph">If set, merger will continue merging after any errors, allowing to surface errors in the "merged manifest" editor view.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1500736341%2FClasslikes%2F-431355489" anchor-label="VALIDATE_EXTRACT_NATIVE_LIBS_FROM_DEPENDENCIES" id="-1500736341%2FClasslikes%2F-431355489" data-filterable-set=":core/main"></a>
+          <div class="table-row table-row_content" data-togglable="ENTRY" data-filterable-current=":core/main" data-filterable-set=":core/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-v-a-l-i-d-a-t-e_-e-x-t-r-a-c-t_-n-a-t-i-v-e_-l-i-b-s_-f-r-o-m_-d-e-p-e-n-d-e-n-c-i-e-s/index.html">VALIDATE_EXTRACT_NATIVE_LIBS_FROM_DEPENDENCIES</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1500736341%2FClasslikes%2F-431355489"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/main"><div class="symbol monospace"><div class="block"><a href="-v-a-l-i-d-a-t-e_-e-x-t-r-a-c-t_-n-a-t-i-v-e_-l-i-b-s_-f-r-o-m_-d-e-p-e-n-d-e-n-c-i-e-s/index.html">VALIDATE_EXTRACT_NATIVE_LIBS_FROM_DEPENDENCIES</a></div></div><div class="brief "><p class="paragraph">Warn if the <span data-unresolved-link="com.android/SdkConstants/ATTR_EXTRACT_NATIVE_LIBS/#/PointingToDeclaration/">ATTR_EXTRACT_NATIVE_LIBS</span> attribute is set to true in a dependency manifest but not set to true in the merged manifest.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-20373304%2FClasslikes%2F-431355489" anchor-label="SUPPRESS_MANIFEST_PACKAGE_WARNING" id="-20373304%2FClasslikes%2F-431355489" data-filterable-set=":core/main"></a>
+          <div class="table-row table-row_content" data-togglable="ENTRY" data-filterable-current=":core/main" data-filterable-set=":core/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-s-u-p-p-r-e-s-s_-m-a-n-i-f-e-s-t_-p-a-c-k-a-g-e_-w-a-r-n-i-n-g/index.html">SUPPRESS_MANIFEST_PACKAGE_WARNING</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-20373304%2FClasslikes%2F-431355489"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/main"><div class="symbol monospace"><div class="block"><a href="-s-u-p-p-r-e-s-s_-m-a-n-i-f-e-s-t_-p-a-c-k-a-g-e_-w-a-r-n-i-n-g/index.html">SUPPRESS_MANIFEST_PACKAGE_WARNING</a></div></div><div class="brief "><p class="paragraph">Suppresses the warning shown when <code class="lang-kotlin">package</code> attribute is present in the main manifest, and is equal to the component's namespace.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="837069950%2FClasslikes%2F-431355489" anchor-label="CHECK_INSTANT_FLAG" id="837069950%2FClasslikes%2F-431355489" data-filterable-set=":core/main"></a>
+          <div class="table-row table-row_content" data-togglable="ENTRY" data-filterable-current=":core/main" data-filterable-set=":core/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-c-h-e-c-k_-i-n-s-t-a-n-t_-f-l-a-g/index.html">CHECK_INSTANT_FLAG</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="837069950%2FClasslikes%2F-431355489"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/main"><div class="symbol monospace"><div class="block"><a href="-c-h-e-c-k_-i-n-s-t-a-n-t_-f-l-a-g/index.html">CHECK_INSTANT_FLAG</a></div></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="593170054%2FClasslikes%2F-431355489" anchor-label="USES_SDK_IN_MANIFEST_LENIENT_HANDLING" id="593170054%2FClasslikes%2F-431355489" data-filterable-set=":core/main"></a>
+          <div class="table-row table-row_content" data-togglable="ENTRY" data-filterable-current=":core/main" data-filterable-set=":core/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-u-s-e-s_-s-d-k_-i-n_-m-a-n-i-f-e-s-t_-l-e-n-i-e-n-t_-h-a-n-d-l-i-n-g/index.html">USES_SDK_IN_MANIFEST_LENIENT_HANDLING</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="593170054%2FClasslikes%2F-431355489"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/main"><div class="symbol monospace"><div class="block"><a href="-u-s-e-s_-s-d-k_-i-n_-m-a-n-i-f-e-s-t_-l-e-n-i-e-n-t_-h-a-n-d-l-i-n-g/index.html">USES_SDK_IN_MANIFEST_LENIENT_HANDLING</a></div></div><div class="brief "><p class="paragraph">Warns instead of throwing an error when the main manifest contains <code class="lang-kotlin">&lt;uses-sdk&gt;</code> for the purpose of minSdkVersion, maxSdkVersion or targetSdkVersion. Starting with AGP 9.0.0 this tag will be allowed for the purpose of <code class="lang-kotlin">tools:overrideLibrary</code> only.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="558872965%2FClasslikes%2F-431355489" anchor-label="DISABLE_REPLACE_WARNING" id="558872965%2FClasslikes%2F-431355489" data-filterable-set=":core/main"></a>
+          <div class="table-row table-row_content" data-togglable="ENTRY" data-filterable-current=":core/main" data-filterable-set=":core/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-d-i-s-a-b-l-e_-r-e-p-l-a-c-e_-w-a-r-n-i-n-g/index.html">DISABLE_REPLACE_WARNING</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="558872965%2FClasslikes%2F-431355489"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/main"><div class="symbol monospace"><div class="block"><a href="-d-i-s-a-b-l-e_-r-e-p-l-a-c-e_-w-a-r-n-i-n-g/index.html">DISABLE_REPLACE_WARNING</a></div></div><div class="brief "><p class="paragraph">When androidTest manifest can have <code class="lang-kotlin">replace</code> attributes. AGP merge it with generated manifest triggering false warnings.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div data-togglable="PROPERTY">
+        <h2 class="tableheader">Properties</h2>
+        <div class="table"><a data-name="578191031%2FProperties%2F-431355489" anchor-label="entries" id="578191031%2FProperties%2F-431355489" data-filterable-set=":core/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":core/main" data-filterable-set=":core/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="entries.html"><span><span>entries</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="578191031%2FProperties%2F-431355489"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/main"><div class="symbol monospace"><span class="token keyword">val </span><a href="entries.html">entries</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.enums/-enum-entries/index.html">EnumEntries</a><span class="token operator">&lt;</span><a href="index.html">AndroidManifestMerger.Feature</a><span class="token operator">&gt;</span></div><div class="brief "><p class="paragraph">Returns a representation of an immutable list of all enum entries, in the order they're declared.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-372974862%2FProperties%2F-431355489" anchor-label="name" id="-372974862%2FProperties%2F-431355489" data-filterable-set=":core/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":core/main" data-filterable-set=":core/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../../../sh.christian.aaraar.model.classeditor/-modifier/-e-n-u-m/index.html#-372974862%2FProperties%2F-431355489"><span><span>name</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-372974862%2FProperties%2F-431355489"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/main"><div class="symbol monospace"><span class="token keyword">val </span><a href="../../../sh.christian.aaraar.model.classeditor/-modifier/-e-n-u-m/index.html#-372974862%2FProperties%2F-431355489">name</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-739389684%2FProperties%2F-431355489" anchor-label="ordinal" id="-739389684%2FProperties%2F-431355489" data-filterable-set=":core/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":core/main" data-filterable-set=":core/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../../../sh.christian.aaraar.model.classeditor/-modifier/-e-n-u-m/index.html#-739389684%2FProperties%2F-431355489"><span><span>ordinal</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-739389684%2FProperties%2F-431355489"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/main"><div class="symbol monospace"><span class="token keyword">val </span><a href="../../../sh.christian.aaraar.model.classeditor/-modifier/-e-n-u-m/index.html#-739389684%2FProperties%2F-431355489">ordinal</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div data-togglable="FUNCTION">
+        <h2 class="tableheader">Functions</h2>
+        <div class="table"><a data-name="-1445117883%2FFunctions%2F-431355489" anchor-label="valueOf" id="-1445117883%2FFunctions%2F-431355489" data-filterable-set=":core/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":core/main" data-filterable-set=":core/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="value-of.html"><span>value</span><wbr><span><span>Of</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1445117883%2FFunctions%2F-431355489"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/main"><div class="symbol monospace"><span class="token keyword">fun </span><a href="value-of.html"><span class="token function">valueOf</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">value<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="index.html">AndroidManifestMerger.Feature</a></div><div class="brief "><p class="paragraph">Returns the enum constant of this type with the specified name. The string must match exactly an identifier used to declare an enum constant in this type. (Extraneous whitespace characters are not permitted.)</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="912570897%2FFunctions%2F-431355489" anchor-label="values" id="912570897%2FFunctions%2F-431355489" data-filterable-set=":core/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":core/main" data-filterable-set=":core/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="values.html"><span><span>values</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="912570897%2FFunctions%2F-431355489"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":core/main"><div class="symbol monospace"><span class="token keyword">fun </span><a href="values.html"><span class="token function">values</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-array/index.html">Array</a><span class="token operator">&lt;</span><a href="index.html">AndroidManifestMerger.Feature</a><span class="token operator">&gt;</span></div><div class="brief "><p class="paragraph">Returns an array containing the constants of this enum type, in the order they're declared.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    <div class="footer">
+        <div class="footer--container">
+            <a href="#content" id="go-to-top-link" class="footer--button footer--button_go-to-top"></a>
+            <div class="footer--content">
+                <div>
+                    <span>Generated by </span>
+                    <a class="footer--link footer--link_external" href="https://github.com/Kotlin/dokka">
+                        Dokka
+                    </a>
+                    <div>© 2026 Copyright</div>
+                </div>
+            </div>
+        </div>
+    </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

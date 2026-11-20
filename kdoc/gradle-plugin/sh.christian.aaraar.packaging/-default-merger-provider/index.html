@@ -1,0 +1,483 @@
+<!doctype html>
+<html class="no-js" lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
+    <title>DefaultMergerProvider</title>
+<link href="../../../images/logo-icon.svg" rel="icon" type="image/svg"><script>var pathToRoot = "../../../";</script>
+    <script>document.documentElement.classList.replace("no-js", "js");</script>
+    <script>const storage = localStorage.getItem("dokka-dark-mode")
+      if (storage == null) {
+        const osDarkSchemePreferred = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
+        if (osDarkSchemePreferred === true) {
+          document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+      } else {
+        const savedDarkMode = JSON.parse(storage)
+        if (savedDarkMode === true) {
+          document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+      }
+    </script>
+<script type="text/javascript" src="../../../scripts/sourceset_dependencies.js" async></script>
+<link href="../../../styles/style.css" rel="Stylesheet">
+<link href="../../../styles/main.css" rel="Stylesheet">
+<link href="../../../styles/prism.css" rel="Stylesheet">
+<link href="../../../styles/logo-styles.css" rel="Stylesheet">
+<link href="../../../ui-kit/ui-kit.min.css" rel="Stylesheet">
+<script type="text/javascript" src="../../../scripts/safe-local-storage_blocking.js"></script>
+<script type="text/javascript" src="../../../scripts/navigation-loader.js" async></script>
+<script type="text/javascript" src="../../../scripts/platform-content-handler.js" async></script>
+<script type="text/javascript" src="../../../scripts/main.js" defer></script>
+<script type="text/javascript" src="../../../scripts/prism.js" async></script>
+<script type="text/javascript" src="../../../ui-kit/ui-kit.min.js" defer></script></head>
+<body>
+<div class="root">
+    <header class="navigation theme-dark" id="navigation-wrapper" role="banner">
+<a class="library-name--link" href="../../../index.html" tabindex="1">
+                    aaraar
+            </a>        <button class="navigation-controls--btn navigation-controls--btn_toc ui-kit_mobile-only" id="toc-toggle" type="button">Toggle table of contents
+        </button>
+        <div class="navigation-controls--break ui-kit_mobile-only"></div>
+        <div class="library-version" id="library-version">
+        </div>
+        <div class="navigation-controls">
+        <ul class="filter-section filter-section_loading" id="filter-section" aria-label="Target filter">
+                <button class="platform-tag platform-selector jvm-like" data-active="" aria-pressed="true" data-filter=":gradle-plugin/main">jvm</button>
+            <div class="dropdown filter-section--dropdown" data-role="dropdown" id="filter-section-dropdown">
+                <button class="button button_dropdown filter-section--dropdown-toggle" role="combobox" data-role="dropdown-toggle" aria-controls="platform-tags-listbox" aria-haspopup="listbox" aria-expanded="false" aria-label="Toggle source sets"></button>
+                <ul role="listbox" id="platform-tags-listbox" class="dropdown--list" data-role="dropdown-listbox" aria-label="Target filter">
+                    <div class="dropdown--header"><span>Target filter</span>
+                        <button class="button" data-role="dropdown-toggle" aria-label="Close target filter">
+                            <i class="ui-kit-icon ui-kit-icon_cross"></i>
+                        </button>
+                    </div>
+                        <li role="option" class="dropdown--option platform-selector-option jvm-like" tabindex="0">
+                            <label class="checkbox">
+                                <input type="checkbox" class="checkbox--input" id=":gradle-plugin/main" data-filter=":gradle-plugin/main">
+                                <span class="checkbox--icon"></span>
+                                jvm
+                            </label>
+                        </li>
+                </ul>
+                <div class="dropdown--overlay"></div>
+            </div>
+        </ul>
+            <button class="navigation-controls--btn navigation-controls--btn_theme" id="theme-toggle-button" type="button">Switch theme
+            </button>
+            <div class="navigation-controls--btn navigation-controls--btn_search" id="searchBar" role="button">Search in
+                API
+            </div>
+        </div>
+    </header>
+    <div id="container">
+        <nav id="leftColumn" class="sidebar" data-item-type="SECTION" data-item-config="{&quot;defaultSize&quot;: 280, &quot;minSize&quot;: 200, &quot;maxSize&quot;: 400}">
+            <a class="toc--skip-link" href="#main">Skip to content</a>
+            <div class="dropdown theme-dark_mobile" data-role="dropdown" id="toc-dropdown">
+                <ul role="listbox" id="toc-listbox" class="dropdown--list dropdown--list_toc-list" data-role="dropdown-listbox" aria-label="Table of contents">
+                    <div class="dropdown--header">
+                            <span>
+                                    aaraar
+                            </span>
+                        <button class="button" data-role="dropdown-toggle" aria-label="Close table of contents">
+                            <i class="ui-kit-icon ui-kit-icon_cross"></i>
+                        </button>
+                    </div>
+                    <div class="sidebar--inner" id="sideMenu"></div>
+                </ul>
+                <div class="dropdown--overlay"></div>
+            </div>
+        </nav>
+        <div id="resizer" class="resizer" data-item-type="BAR"></div>
+        <div id="main" data-item-type="SECTION" role="main">
+<div class="main-content" data-page-type="classlike" id="content" pageids="gradle-plugin::sh.christian.aaraar.packaging/DefaultMergerProvider///PointingToDeclaration//-937474457">
+  <div class="breadcrumbs"><a href="../../index.html">gradle-plugin</a><span class="delimiter">/</span><a href="../index.html">sh.christian.aaraar.packaging</a><span class="delimiter">/</span><span class="current">DefaultMergerProvider</span></div>
+  <div class="cover ">
+    <h1 class="cover"><span>Default</span><wbr><span>Merger</span><wbr><span><span>Provider</span></span></h1>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":gradle-plugin/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">class </span><a href="index.html">DefaultMergerProvider</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">packagingEnvironment<span class="token operator">: </span><a href="../-packaging-environment/index.html">PackagingEnvironment</a></span></span><span class="token punctuation">)</span> : <a href="../-merger-provider/index.html">MergerProvider</a></div></div></div>
+  </div>
+  <div class="tabbedcontent">
+    <div class="tabs-section" tabs-section="tabs-section"><button class="section-tab" data-active="" data-togglable="CONSTRUCTOR,TYPE,PROPERTY,FUNCTION">Members</button></div>
+    <div class="tabs-section-body">
+      <div data-togglable="CONSTRUCTOR">
+        <h2 class="tableheader">Constructors</h2>
+        <div class="table"><a data-name="630852805%2FConstructors%2F-937474457" anchor-label="DefaultMergerProvider" id="630852805%2FConstructors%2F-937474457" data-filterable-set=":gradle-plugin/main"></a>
+          <div class="table-row table-row_content" data-togglable="CONSTRUCTOR" data-filterable-current=":gradle-plugin/main" data-filterable-set=":gradle-plugin/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-default-merger-provider.html"><span>Default</span><wbr><span>Merger</span><wbr><span><span>Provider</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="630852805%2FConstructors%2F-937474457"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":gradle-plugin/main"><div class="symbol monospace"><span class="token keyword">constructor</span><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">packagingEnvironment<span class="token operator">: </span><a href="../-packaging-environment/index.html">PackagingEnvironment</a></span></span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div data-togglable="TYPE">
+        <h2 class="tableheader">Types</h2>
+        <div class="table"><a data-name="-1378716651%2FClasslikes%2F-937474457" anchor-label="Factory" id="-1378716651%2FClasslikes%2F-937474457" data-filterable-set=":gradle-plugin/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":gradle-plugin/main" data-filterable-set=":gradle-plugin/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-factory/index.html"><span><span>Factory</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1378716651%2FClasslikes%2F-937474457"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":gradle-plugin/main"><div class="symbol monospace"><span class="token keyword">class </span><a href="-factory/index.html">Factory</a> : <a href="../-merger-provider/-factory/index.html">MergerProvider.Factory</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div data-togglable="PROPERTY">
+        <h2 class="tableheader">Properties</h2>
+        <div class="table"><a data-name="-1444156895%2FProperties%2F-937474457" anchor-label="jniLibsFileSetMerger" id="-1444156895%2FProperties%2F-937474457" data-filterable-set=":gradle-plugin/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":gradle-plugin/main" data-filterable-set=":gradle-plugin/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="jni-libs-file-set-merger.html"><span>jni</span><wbr><span>Libs</span><wbr><span>File</span><wbr><span>Set</span><wbr><span><span>Merger</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1444156895%2FProperties%2F-937474457"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":gradle-plugin/main"><div class="symbol monospace"><span class="token keyword">val </span><a href="jni-libs-file-set-merger.html">jniLibsFileSetMerger</a><span class="token operator">: </span><a href="../../../core/sh.christian.aaraar.merger/-merger/index.html">Merger</a><span class="token operator">&lt;</span><a href="../../../core/sh.christian.aaraar.model/-file-set/index.html">FileSet</a><span class="token operator">&gt;</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1587316986%2FProperties%2F-937474457" anchor-label="jniLibsMergeRules" id="1587316986%2FProperties%2F-937474457" data-filterable-set=":gradle-plugin/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":gradle-plugin/main" data-filterable-set=":gradle-plugin/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="jni-libs-merge-rules.html"><span>jni</span><wbr><span>Libs</span><wbr><span>Merge</span><wbr><span><span>Rules</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1587316986%2FProperties%2F-937474457"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":gradle-plugin/main"><div class="symbol monospace"><span class="token keyword">val </span><a href="jni-libs-merge-rules.html">jniLibsMergeRules</a><span class="token operator">: </span><a href="../../../core/sh.christian.aaraar.merger/-merge-rules/index.html">MergeRules</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="514906960%2FProperties%2F-937474457" anchor-label="prefabFileSetMerger" id="514906960%2FProperties%2F-937474457" data-filterable-set=":gradle-plugin/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":gradle-plugin/main" data-filterable-set=":gradle-plugin/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="prefab-file-set-merger.html"><span>prefab</span><wbr><span>File</span><wbr><span>Set</span><wbr><span><span>Merger</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="514906960%2FProperties%2F-937474457"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":gradle-plugin/main"><div class="symbol monospace"><span class="token keyword">val </span><a href="prefab-file-set-merger.html">prefabFileSetMerger</a><span class="token operator">: </span><a href="../../../core/sh.christian.aaraar.merger/-merger/index.html">Merger</a><span class="token operator">&lt;</span><a href="../../../core/sh.christian.aaraar.model/-file-set/index.html">FileSet</a><span class="token operator">&gt;</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1682226977%2FProperties%2F-937474457" anchor-label="resourceMergeRules" id="1682226977%2FProperties%2F-937474457" data-filterable-set=":gradle-plugin/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":gradle-plugin/main" data-filterable-set=":gradle-plugin/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="resource-merge-rules.html"><span>resource</span><wbr><span>Merge</span><wbr><span><span>Rules</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1682226977%2FProperties%2F-937474457"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":gradle-plugin/main"><div class="symbol monospace"><span class="token keyword">val </span><a href="resource-merge-rules.html">resourceMergeRules</a><span class="token operator">: </span><a href="../../../core/sh.christian.aaraar.merger/-merge-rules/index.html">MergeRules</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-460585293%2FProperties%2F-937474457" anchor-label="resourcesFileSetMerger" id="-460585293%2FProperties%2F-937474457" data-filterable-set=":gradle-plugin/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":gradle-plugin/main" data-filterable-set=":gradle-plugin/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="resources-file-set-merger.html"><span>resources</span><wbr><span>File</span><wbr><span>Set</span><wbr><span><span>Merger</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-460585293%2FProperties%2F-937474457"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":gradle-plugin/main"><div class="symbol monospace"><span class="token keyword">val </span><a href="resources-file-set-merger.html">resourcesFileSetMerger</a><span class="token operator">: </span><a href="../../../core/sh.christian.aaraar.merger/-merger/index.html">Merger</a><span class="token operator">&lt;</span><a href="../../../core/sh.christian.aaraar.model/-file-set/index.html">FileSet</a><span class="token operator">&gt;</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1711891906%2FProperties%2F-937474457" anchor-label="resourcesJarMerger" id="-1711891906%2FProperties%2F-937474457" data-filterable-set=":gradle-plugin/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":gradle-plugin/main" data-filterable-set=":gradle-plugin/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="resources-jar-merger.html"><span>resources</span><wbr><span>Jar</span><wbr><span><span>Merger</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1711891906%2FProperties%2F-937474457"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":gradle-plugin/main"><div class="symbol monospace"><span class="token keyword">val </span><a href="resources-jar-merger.html">resourcesJarMerger</a><span class="token operator">: </span><a href="../../../core/sh.christian.aaraar.merger/-merger/index.html">Merger</a><span class="token operator">&lt;</span><a href="../../../core/sh.christian.aaraar.model/-generic-jar-archive/index.html">GenericJarArchive</a><span class="token operator">&gt;</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div data-togglable="FUNCTION">
+        <h2 class="tableheader">Functions</h2>
+        <div class="table"><a data-name="-1559172384%2FFunctions%2F-937474457" anchor-label="aarMerger" id="-1559172384%2FFunctions%2F-937474457" data-filterable-set=":gradle-plugin/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":gradle-plugin/main" data-filterable-set=":gradle-plugin/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="aar-merger.html"><span>aar</span><wbr><span><span>Merger</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1559172384%2FFunctions%2F-937474457"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":gradle-plugin/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">fun </span><a href="aar-merger.html"><span class="token function">aarMerger</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../../../core/sh.christian.aaraar.merger/-archive-merger/index.html">ArchiveMerger</a><span class="token operator">&lt;</span><a href="../../../core/sh.christian.aaraar.model/-aar-archive/index.html">AarArchive</a><span class="token operator">&gt;</span></div><div class="brief "><p class="paragraph">Creates a merger for Android AAR archives.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1649865356%2FFunctions%2F-937474457" anchor-label="androidManifestMerger" id="-1649865356%2FFunctions%2F-937474457" data-filterable-set=":gradle-plugin/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":gradle-plugin/main" data-filterable-set=":gradle-plugin/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="android-manifest-merger.html"><span>android</span><wbr><span>Manifest</span><wbr><span><span>Merger</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1649865356%2FFunctions%2F-937474457"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":gradle-plugin/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">fun </span><a href="android-manifest-merger.html"><span class="token function">androidManifestMerger</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../../../core/sh.christian.aaraar.merger/-merger/index.html">Merger</a><span class="token operator">&lt;</span><a href="../../../core/sh.christian.aaraar.model/-android-manifest/index.html">AndroidManifest</a><span class="token operator">&gt;</span></div><div class="brief "><p class="paragraph">Creates a merger for Android manifests.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1105492403%2FFunctions%2F-937474457" anchor-label="apiJarMerger" id="1105492403%2FFunctions%2F-937474457" data-filterable-set=":gradle-plugin/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":gradle-plugin/main" data-filterable-set=":gradle-plugin/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="api-jar-merger.html"><span>api</span><wbr><span>Jar</span><wbr><span><span>Merger</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1105492403%2FFunctions%2F-937474457"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":gradle-plugin/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">fun </span><a href="api-jar-merger.html"><span class="token function">apiJarMerger</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../../../core/sh.christian.aaraar.merger/-merger/index.html">Merger</a><span class="token operator">&lt;</span><a href="../../../core/sh.christian.aaraar.model/-api-jar/index.html">ApiJar</a><span class="token operator">&gt;</span></div><div class="brief "><p class="paragraph">Creates a merger for API JAR archives.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="916845808%2FFunctions%2F-937474457" anchor-label="archiveMerger" id="916845808%2FFunctions%2F-937474457" data-filterable-set=":gradle-plugin/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":gradle-plugin/main" data-filterable-set=":gradle-plugin/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="archive-merger.html"><span>archive</span><wbr><span><span>Merger</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="916845808%2FFunctions%2F-937474457"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":gradle-plugin/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">fun </span><a href="archive-merger.html"><span class="token function">archiveMerger</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../../../core/sh.christian.aaraar.merger/-archive-merger/index.html">ArchiveMerger</a><span class="token operator">&lt;</span><a href="../../../core/sh.christian.aaraar.model/-artifact-archive/index.html">ArtifactArchive</a><span class="token operator">&gt;</span></div><div class="brief "><p class="paragraph">Creates a merger for JAR or Android AAR archives.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-190413935%2FFunctions%2F-937474457" anchor-label="assetsMerger" id="-190413935%2FFunctions%2F-937474457" data-filterable-set=":gradle-plugin/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":gradle-plugin/main" data-filterable-set=":gradle-plugin/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="assets-merger.html"><span>assets</span><wbr><span><span>Merger</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-190413935%2FFunctions%2F-937474457"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":gradle-plugin/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">fun </span><a href="assets-merger.html"><span class="token function">assetsMerger</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../../../core/sh.christian.aaraar.merger/-merger/index.html">Merger</a><span class="token operator">&lt;</span><a href="../../../core/sh.christian.aaraar.model/-assets/index.html">Assets</a><span class="token operator">&gt;</span></div><div class="brief "><p class="paragraph">Creates a merger for Android asset files.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1899095189%2FFunctions%2F-937474457" anchor-label="classesAndLibsMerger" id="1899095189%2FFunctions%2F-937474457" data-filterable-set=":gradle-plugin/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":gradle-plugin/main" data-filterable-set=":gradle-plugin/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="classes-and-libs-merger.html"><span>classes</span><wbr><span>And</span><wbr><span>Libs</span><wbr><span><span>Merger</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1899095189%2FFunctions%2F-937474457"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":gradle-plugin/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">fun </span><a href="classes-and-libs-merger.html"><span class="token function">classesAndLibsMerger</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../../../core/sh.christian.aaraar.merger/-classes-and-libs-merger/index.html">ClassesAndLibsMerger</a></div><div class="brief "><p class="paragraph">Creates a merger for classes and library archives.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-919678985%2FFunctions%2F-937474457" anchor-label="jarMerger" id="-919678985%2FFunctions%2F-937474457" data-filterable-set=":gradle-plugin/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":gradle-plugin/main" data-filterable-set=":gradle-plugin/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="jar-merger.html"><span>jar</span><wbr><span><span>Merger</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-919678985%2FFunctions%2F-937474457"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":gradle-plugin/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">fun </span><a href="jar-merger.html"><span class="token function">jarMerger</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../../../core/sh.christian.aaraar.merger/-archive-merger/index.html">ArchiveMerger</a><span class="token operator">&lt;</span><a href="../../../core/sh.christian.aaraar.model/-jar-archive/index.html">JarArchive</a><span class="token operator">&gt;</span></div><div class="brief "><p class="paragraph">Creates a merger for JAR archives.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1668357421%2FFunctions%2F-937474457" anchor-label="jniMerger" id="1668357421%2FFunctions%2F-937474457" data-filterable-set=":gradle-plugin/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":gradle-plugin/main" data-filterable-set=":gradle-plugin/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="jni-merger.html"><span>jni</span><wbr><span><span>Merger</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1668357421%2FFunctions%2F-937474457"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":gradle-plugin/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">fun </span><a href="jni-merger.html"><span class="token function">jniMerger</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../../../core/sh.christian.aaraar.merger/-merger/index.html">Merger</a><span class="token operator">&lt;</span><a href="../../../core/sh.christian.aaraar.model/-jni/index.html">Jni</a><span class="token operator">&gt;</span></div><div class="brief "><p class="paragraph">Creates a merger for JNI libraries.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1057885438%2FFunctions%2F-937474457" anchor-label="lintRulesMerger" id="1057885438%2FFunctions%2F-937474457" data-filterable-set=":gradle-plugin/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":gradle-plugin/main" data-filterable-set=":gradle-plugin/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="lint-rules-merger.html"><span>lint</span><wbr><span>Rules</span><wbr><span><span>Merger</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1057885438%2FFunctions%2F-937474457"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":gradle-plugin/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">fun </span><a href="lint-rules-merger.html"><span class="token function">lintRulesMerger</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../../../core/sh.christian.aaraar.merger/-merger/index.html">Merger</a><span class="token operator">&lt;</span><a href="../../../core/sh.christian.aaraar.model/-lint-rules/index.html">LintRules</a><span class="token operator">&gt;</span></div><div class="brief "><p class="paragraph">Creates a merger for lint rule files.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="855302616%2FFunctions%2F-937474457" anchor-label="navigationJsonMerger" id="855302616%2FFunctions%2F-937474457" data-filterable-set=":gradle-plugin/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":gradle-plugin/main" data-filterable-set=":gradle-plugin/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="navigation-json-merger.html"><span>navigation</span><wbr><span>Json</span><wbr><span><span>Merger</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="855302616%2FFunctions%2F-937474457"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":gradle-plugin/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">fun </span><a href="navigation-json-merger.html"><span class="token function">navigationJsonMerger</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../../../core/sh.christian.aaraar.merger/-merger/index.html">Merger</a><span class="token operator">&lt;</span><a href="../../../core/sh.christian.aaraar.model/-navigation-json/index.html">NavigationJson</a><span class="token operator">&gt;</span></div><div class="brief "><p class="paragraph">Creates a merger for navigation JSON files.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-498416272%2FFunctions%2F-937474457" anchor-label="prefabMerger" id="-498416272%2FFunctions%2F-937474457" data-filterable-set=":gradle-plugin/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":gradle-plugin/main" data-filterable-set=":gradle-plugin/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="prefab-merger.html"><span>prefab</span><wbr><span><span>Merger</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-498416272%2FFunctions%2F-937474457"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":gradle-plugin/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">fun </span><a href="prefab-merger.html"><span class="token function">prefabMerger</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../../../core/sh.christian.aaraar.merger/-merger/index.html">Merger</a><span class="token operator">&lt;</span><a href="../../../core/sh.christian.aaraar.model/-prefab/index.html">Prefab</a><span class="token operator">&gt;</span></div><div class="brief "><p class="paragraph">Creates a merger for Prefab native-library packages.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1736139804%2FFunctions%2F-937474457" anchor-label="proguardMerger" id="1736139804%2FFunctions%2F-937474457" data-filterable-set=":gradle-plugin/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":gradle-plugin/main" data-filterable-set=":gradle-plugin/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="proguard-merger.html"><span>proguard</span><wbr><span><span>Merger</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1736139804%2FFunctions%2F-937474457"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":gradle-plugin/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">fun </span><a href="proguard-merger.html"><span class="token function">proguardMerger</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../../../core/sh.christian.aaraar.merger/-merger/index.html">Merger</a><span class="token operator">&lt;</span><a href="../../../core/sh.christian.aaraar.model/-proguard/index.html">Proguard</a><span class="token operator">&gt;</span></div><div class="brief "><p class="paragraph">Creates a merger for ProGuard configuration files.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="891083275%2FFunctions%2F-937474457" anchor-label="publicTxtMerger" id="891083275%2FFunctions%2F-937474457" data-filterable-set=":gradle-plugin/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":gradle-plugin/main" data-filterable-set=":gradle-plugin/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="public-txt-merger.html"><span>public</span><wbr><span>Txt</span><wbr><span><span>Merger</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="891083275%2FFunctions%2F-937474457"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":gradle-plugin/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">fun </span><a href="public-txt-merger.html"><span class="token function">publicTxtMerger</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../../../core/sh.christian.aaraar.merger/-merger/index.html">Merger</a><span class="token operator">&lt;</span><a href="../../../core/sh.christian.aaraar.model/-public-txt/index.html">PublicTxt</a><span class="token operator">&gt;</span></div><div class="brief "><p class="paragraph">Creates a merger for public resource symbol files.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="873485165%2FFunctions%2F-937474457" anchor-label="resourcesMerger" id="873485165%2FFunctions%2F-937474457" data-filterable-set=":gradle-plugin/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":gradle-plugin/main" data-filterable-set=":gradle-plugin/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="resources-merger.html"><span>resources</span><wbr><span><span>Merger</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="873485165%2FFunctions%2F-937474457"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":gradle-plugin/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">fun </span><a href="resources-merger.html"><span class="token function">resourcesMerger</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../../../core/sh.christian.aaraar.merger/-merger/index.html">Merger</a><span class="token operator">&lt;</span><a href="../../../core/sh.christian.aaraar.model/-resources/index.html">Resources</a><span class="token operator">&gt;</span></div><div class="brief "><p class="paragraph">Creates a merger for Android resources.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1192867670%2FFunctions%2F-937474457" anchor-label="rTxtMerger" id="1192867670%2FFunctions%2F-937474457" data-filterable-set=":gradle-plugin/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":gradle-plugin/main" data-filterable-set=":gradle-plugin/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="r-txt-merger.html"><span>r</span><wbr><span>Txt</span><wbr><span><span>Merger</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1192867670%2FFunctions%2F-937474457"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":gradle-plugin/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">fun </span><a href="r-txt-merger.html"><span class="token function">rTxtMerger</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../../../core/sh.christian.aaraar.merger/-merger/index.html">Merger</a><span class="token operator">&lt;</span><a href="../../../core/sh.christian.aaraar.model/-r-txt/index.html">RTxt</a><span class="token operator">&gt;</span></div><div class="brief "><p class="paragraph">Creates a merger for compiled resource symbol files.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    <div class="footer">
+        <div class="footer--container">
+            <a href="#content" id="go-to-top-link" class="footer--button footer--button_go-to-top"></a>
+            <div class="footer--content">
+                <div>
+                    <span>Generated by </span>
+                    <a class="footer--link footer--link_external" href="https://github.com/Kotlin/dokka">
+                        Dokka
+                    </a>
+                    <div>© 2026 Copyright</div>
+                </div>
+            </div>
+        </div>
+    </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
