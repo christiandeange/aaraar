@@ -1,6 +1,17 @@
 Change Log
 ==========
 
+## Version 0.2.0-alpha02
+
+_2026-11-20_
+
+* New: Support for retaining and merging Prefab native-library packages in AAR files.
+* New: Expose `MergerProvider` and `mergerProviderFactory` for customizing merge strategies for individual archive components.
+* New: Allow `AndroidManifestMerger` features and placeholder values to be configured.
+* Update: `Packager.Factory.create()` and `DefaultPackager` now accept a `MergerProvider` instead of a `PackagingEnvironment`.
+* Update: Optimize class file processing by avoiding marking classes as modified during read-only access.
+* Fix: Preserve manifest placeholders during default packaging so consuming applications can resolve them.
+
 ## Version 0.2.0-alpha01
 
 _2026-06-18_
